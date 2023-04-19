@@ -1,63 +1,70 @@
-# ISAT图像分割标注工具
+# ISAT with segment anything
+# ISAT 图像分割标注工具(集成segment anything)
 
-![examples/demo/标注组合图.png](examples/demo/标注组合图.png)
+集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
-基于多边形的图像分割标注工具，支持实例分割与语义分割。
-
+[中文](README.md)         [English](README-en.md)
 ## 特点
-主要对语义标注过程中存在标注重复部分进行优化。
-自己标注过分割样本，或者使用coco分割数据集的朋友，肯定遇到过标注多边形之间存在覆盖的问题。
-本项目通过引入多边形图层高低的方式，让上层的多边形覆盖下层多边形，从而保证每一个像素的类别都是单一的，降低数据的干扰。
+1. 集成segment anything，快速进行图像分割标注
 
-* 支持对多边形图层进行调整(图层置顶或置底)。
-* 标注文件转png单通道图(支持实例与语义)。
-* 支持滚轮缩放，左键拖动图片。
-* 类别标签导入与导出，方便不同任务之间快速切换。
+   - 通过鼠标左右键提示感兴趣区域，调用segment anything自动计算分割掩码。不必再手动进行目标轮廓选取。
+   - 自动生成的掩码转换为多边形，进行手动调整。
+
+2. 手动绘制多边形进行精细标注
+
+   - 保留了ISAT手动绘制多边形进行标注的功能，可满足Segment anything无法分割目标的标注。
+   - 手动标注较自动标注更加精确，但工作量也更大。
+   
 ## 安装
 ### 1. 源码运行
 ```shell
-git clone https://github.com/yatengLG/ISAT.git
-cd ISAT
-conda create -n ISAT python==3.8
-conda activate ISAT
+# 创建虚拟环境
+conda create -n ISAT_with_segment_anything python==3.8
+conda activate ISAT_with_segment_anything
+```
+
+```shell
+# 安装Segment anything
+git clone git@github.com:facebookresearch/segment-anything.git
+cd segment-anything
+pip install -e .
+cd ..
+```
+
+```shell
+# 安装ISAT_with_segment_anything
+git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
+cd ISAT_with_segment_anything
 pip install -r requirements.txt
+```
+
+```text
+# 下载Segment anything预训练模型
+下载任一模型，并将模型存放于ISAT_with_segment_anything/segment_any目录下
+模型链接：
+   https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+   https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth
+   https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth
+h模型最大，效果也最好；
+b模型最小，效果也最差；
+请按照硬件下载合适的模型，h模型在示例样本上的显存需求约8G.
+```
+
+```shell
+# 运行软件
 python main.py
 ```
-### 2. 下载打包好的exe
-- 2.1 点击[链接](https://github.com/yatengLG/ISAT/releases/download/v1.0.0/ISAT_windows.zip)下载ISAT_windows.zip
-- 2.2 解压
-- 2.3 双击ISAT/main.exe运行
-
-## 标注结果
-
-### 标注文件与标签图片
-ISAT提供了**json格式标注文件**，可以方便的进行传输与二次修改；同时，软件也提供将标注文件转换为**png单通道标签图片**的功能。
-
-#### 1. json格式标注文件
-主要用于传输、备份以及二次修改。但不方便直接参与模型训练等过程。
-
-存储信息包括：图片名、图片尺寸、图片额外说明、标注目标类别、标注目标实例id、标注目标多边形顶点等。
-
-#### 2. png单通道标签图片
-主要用于模型的训练、测试等过程。
-
-转换后的单通道标签图片具有与原图一致的分辨率，**参与模型训练时，直接读取像素值作为标签即可（图片为单通道图，像素值为单一的值，不是rgb）。**
-
-> 部分软件查看png单通道图片时，存在对颜色边界处进行调整的情况。具体表现为，如  （0， 5， 0）到(0， 255， 0)过渡时，边缘会出现(0， 125， 0)的情况。https://github.com/yatengLG/ISAT/issues/2#issue-1662058434
-
-**最终的标签是图像的像素值，而非颜色值**
-这种情况不会对标签图片造成影响，请放心使用。
 
 
-### 导出png单通道标签图片
-软件内置了，将json标注文件转换为png单通道标签图片的工具。
+## 标注操作
 
-转换时，区分**语义分割**与**实例分割**：
-- 语义分割
+1. 通过鼠标左键（或右键）提示感兴趣区域（或不感兴趣区域），自动形成目标分割掩码。
+2. 可通过多次左右键提示，提升掩码质量。
+3. E键结束标注，选择类别，得到多边形标注区域。
+4. 拖拽多边形顶点，精细化调整标注。
 
-  转换后的语义分割png单通道标签图片中，每个像素值为对应的类别id，具体的类别含义与标注时类别设置相一致，同时在转换目录中也会留存一份classesition.txt，便于查看类别与id对应关系。
-- 实例分割
-
-  转换后的实例分割png单通道标签图片中，每个像素值为对应的组id。
-  
-![examples/demo/将标注结果导出为png单通道图.png](examples/demo/将标注结果导出为png单通道图.png)
+## 注意事项
+1. 自动分割效果受segment anything模型分割效果限制，如需更为精确的分割效果，可通过手动绘制多边形实现。
+2. 如只需要使用手动绘制多边形标注，推荐使用[ISAT](https://github.com/yatengLG/ISAT)。
+3. 如果没有GPU，不建议使用ISAT_with_segment_anything，载入图片花费时间较长。
+4. 如果GPU显存较小，建议使用sam_vit_b_01ec64模型。

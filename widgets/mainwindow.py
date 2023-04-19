@@ -66,7 +66,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_b_01ec64.pth'))
             self.segany = SegAny('./segment_any/sam_vit_b_01ec64.pth')
             self.use_segment_anything = True
-            self.statusbar.showMessage()
         else:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format('https://github.com/facebookresearch/segment-anything#model-checkpoints'))
             self.use_segment_anything = False

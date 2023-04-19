@@ -1,0 +1,10 @@
+__background__ 0
+person 1
+knife 2
+fork 3
+cup 4
+giraffe 5
+plate 6
+table 7
+cake 8
+fence 9

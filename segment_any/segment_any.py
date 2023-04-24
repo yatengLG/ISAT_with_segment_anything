@@ -17,18 +17,20 @@ class SegAny:
         else:
             raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
 
-        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         sam = sam_model_registry[model_type](checkpoint=checkpoint)
-        sam.to(device=device)
+        sam.to(device=self.device)
         self.predictor = SamPredictor(sam)
         self.image = None
 
     def set_image(self, image):
+
         self.predictor.set_image(image)
 
     def reset_image(self):
         self.predictor.reset_image()
         self.image = None
+        torch.cuda.empty_cache()
 
     def predict(self, input_point, input_label):
         input_point = np.array(input_point)
@@ -46,5 +48,5 @@ class SegAny:
             mask_input=mask_input[None, :, :],
             multimask_output=False,
         )
-        print('masks: {}'.format(masks))
+        torch.cuda.empty_cache()
         return masks

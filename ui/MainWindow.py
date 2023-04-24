@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/MainWindow.ui'
+# Form implementation generated from reading ui file 'MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setEnabled(True)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 25))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -93,7 +93,7 @@ class Ui_MainWindow(object):
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.info_dock = QtWidgets.QDockWidget(MainWindow)
-        self.info_dock.setMinimumSize(QtCore.QSize(80, 38))
+        self.info_dock.setMinimumSize(QtCore.QSize(85, 43))
         self.info_dock.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.info_dock.setObjectName("info_dock")
         self.dockWidgetContents_2 = QtWidgets.QWidget()
@@ -101,7 +101,7 @@ class Ui_MainWindow(object):
         self.info_dock.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(2), self.info_dock)
         self.labels_dock = QtWidgets.QDockWidget(MainWindow)
-        self.labels_dock.setMinimumSize(QtCore.QSize(80, 38))
+        self.labels_dock.setMinimumSize(QtCore.QSize(85, 43))
         self.labels_dock.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.labels_dock.setObjectName("labels_dock")
         self.dockWidgetContents_3 = QtWidgets.QWidget()
@@ -250,6 +250,11 @@ class Ui_MainWindow(object):
         icon23.addPixmap(QtGui.QPixmap(":/icon/icons/锚点_anchor.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionPolygon.setIcon(icon23)
         self.actionPolygon.setObjectName("actionPolygon")
+        self.actionVisible = QtWidgets.QAction(MainWindow)
+        icon24 = QtGui.QIcon()
+        icon24.addPixmap(QtGui.QPixmap(":/icon/icons/眼睛_eyes.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionVisible.setIcon(icon24)
+        self.actionVisible.setObjectName("actionVisible")
         self.menuFile.addAction(self.actionOpen_dir)
         self.menuFile.addAction(self.actionSave_dir)
         self.menuFile.addSeparator()
@@ -308,6 +313,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionZoom_out)
         self.toolBar.addAction(self.actionFit_wiondow)
         self.toolBar.addAction(self.actionBit_map)
+        self.toolBar.addAction(self.actionVisible)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -397,4 +403,7 @@ class Ui_MainWindow(object):
         self.actionPolygon.setToolTip(_translate("MainWindow", "Draw polygon"))
         self.actionPolygon.setStatusTip(_translate("MainWindow", "Accurately annotate by drawing polygon. "))
         self.actionPolygon.setShortcut(_translate("MainWindow", "C"))
+        self.actionVisible.setText(_translate("MainWindow", "Visible"))
+        self.actionVisible.setStatusTip(_translate("MainWindow", "Visible"))
+        self.actionVisible.setShortcut(_translate("MainWindow", "V"))
 import icons_rc

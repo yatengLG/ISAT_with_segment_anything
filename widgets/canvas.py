@@ -342,7 +342,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 状态栏,显示当前坐标
         if self.image_data is not None:
             x, y = round(pos.x()), round(pos.y())
-            self.mainwindow.labelCoordinates.setText('({}, {}) [{}]'.format(x, y, self.image_data[y-1][x-1]))
+            self.mainwindow.labelCoord.setText('xy: ({:>4d},{:>4d})'.format(x, y))
+
+            data = self.image_data[y-1][x-1]
+            if self.image_data.ndim == 2:
+                self.mainwindow.labelData.setText('pix: [{:^3d}]'.format(data))
+            elif self.image_data.ndim == 3:
+                if len(data) == 3:
+                    self.mainwindow.labelData.setText('rgb: [{:>3d},{:>3d},{:>3d}]'.format(data[0], data[1], data[2]))
+                else:
+                    self.mainwindow.labelData.setText('pix: [{}]'.format(data))
+
         super(AnnotationScene, self).mouseMoveEvent(event)
 
     def update_mask(self):

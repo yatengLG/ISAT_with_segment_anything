@@ -19,6 +19,7 @@ from annotation import Object, Annotation
 from widgets.polygon import Polygon
 import os
 from PIL import Image
+import functools
 import imgviz
 from segment_any.segment_any import SegAny
 import icons_rc
@@ -70,6 +71,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self, 'Warning', 'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format('https://github.com/facebookresearch/segment-anything#model-checkpoints'))
             self.use_segment_anything = False
 
+        if self.use_segment_anything:
+            if self.segany.device != 'cpu':
+                from segment_any.gpu_resource import GPUResource_Thread
+                self.gpu_resource_thread = GPUResource_Thread()
+                self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
+                self.gpu_resource_thread.start()
+            else:
+                self.labelGPUResource.setText('cpu')
+        else:
+            self.labelGPUResource.setText('segment anything unused.')
+
     def init_ui(self):
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
@@ -100,8 +112,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.shortcut_dialog = ShortcutDialog(self)
         self.about_dialog = AboutDialog(self)
 
-        self.labelCoordinates = QtWidgets.QLabel('')
-        self.statusbar.addPermanentWidget(self.labelCoordinates)
+        self.labelGPUResource = QtWidgets.QLabel('')
+        self.labelGPUResource.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+        self.labelGPUResource.setFixedWidth(180)
+        self.statusbar.addPermanentWidget(self.labelGPUResource)
+
+        self.labelCoord = QtWidgets.QLabel('')
+        self.labelCoord.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+        self.labelCoord.setFixedWidth(150)
+        self.statusbar.addPermanentWidget(self.labelCoord)
+
+        self.labelData = QtWidgets.QLabel('')
+        self.labelData.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+        self.labelData.setFixedWidth(150)
+        self.statusbar.addPermanentWidget(self.labelData)
 
         self.trans = QtCore.QTranslator()
 
@@ -347,6 +371,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             del self.current_label.objects[index]
 
     def change_bit_map(self):
+        self.set_labels_visible(True)
         if self.scene.mode == STATUSMode.CREATE:
             self.scene.cancel_draw()
         if self.map_mode == MAPMode.LABEL:
@@ -359,8 +384,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.color.setAlpha(255)
                 polygon.setBrush(polygon.color)
             self.labels_dock_widget.listWidget.setEnabled(False)
+            self.labels_dock_widget.checkBox_visible.setEnabled(False)
             self.actionSegment_anything.setEnabled(False)
             self.actionPolygon.setEnabled(False)
+            self.actionVisible.setEnabled(False)
             self.map_mode = MAPMode.SEMANTIC
             semantic_icon = QtGui.QIcon()
             semantic_icon.addPixmap(QtGui.QPixmap(":/icon/icons/semantic.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -380,8 +407,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.color.setAlpha(255)
                 polygon.setBrush(polygon.color)
             self.labels_dock_widget.listWidget.setEnabled(False)
+            self.labels_dock_widget.checkBox_visible.setEnabled(False)
             self.actionSegment_anything.setEnabled(False)
             self.actionPolygon.setEnabled(False)
+            self.actionVisible.setEnabled(False)
             self.map_mode = MAPMode.INSTANCE
             instance_icon = QtGui.QIcon()
             instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -398,14 +427,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.color.setAlpha(polygon.nohover_alpha)
                 polygon.setBrush(polygon.color)
             self.labels_dock_widget.listWidget.setEnabled(True)
+            self.labels_dock_widget.checkBox_visible.setEnabled(True)
             self.actionSegment_anything.setEnabled(self.use_segment_anything)
             self.actionPolygon.setEnabled(True)
+            self.actionVisible.setEnabled(True)
             self.map_mode = MAPMode.LABEL
             label_icon = QtGui.QIcon()
             label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.actionBit_map.setIcon(label_icon)
         else:
             pass
+
+    def set_labels_visible(self, visible=None):
+        if visible is None:
+            visible = not self.labels_dock_widget.checkBox_visible.isChecked()
+        self.labels_dock_widget.checkBox_visible.setChecked(visible)
+        self.labels_dock_widget.set_all_polygon_visible(visible)
 
     def label_converter(self):
         self.convert_dialog.reset_gui()
@@ -450,6 +487,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionZoom_out.triggered.connect(self.view.zoom_out)
         self.actionFit_wiondow.triggered.connect(self.view.zoomfit)
         self.actionBit_map.triggered.connect(self.change_bit_map)
+        self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
 
         self.actionConverter.triggered.connect(self.label_converter)
 

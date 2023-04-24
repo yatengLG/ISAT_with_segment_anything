@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
@@ -234,12 +234,13 @@
    <addaction name="actionZoom_out"/>
    <addaction name="actionFit_wiondow"/>
    <addaction name="actionBit_map"/>
+   <addaction name="actionVisible"/>
   </widget>
   <widget class="QDockWidget" name="info_dock">
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>38</height>
+     <width>85</width>
+     <height>43</height>
     </size>
    </property>
    <property name="features">
@@ -256,8 +257,8 @@
   <widget class="QDockWidget" name="labels_dock">
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>38</height>
+     <width>85</width>
+     <height>43</height>
     </size>
    </property>
    <property name="features">
@@ -681,6 +682,21 @@
    </property>
    <property name="shortcut">
     <string>C</string>
+   </property>
+  </action>
+  <action name="actionVisible">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/眼睛_eyes.svg</normaloff>:/icon/icons/眼睛_eyes.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Visible</string>
+   </property>
+   <property name="statusTip">
+    <string>Visible</string>
+   </property>
+   <property name="shortcut">
+    <string>V</string>
    </property>
   </action>
  </widget>

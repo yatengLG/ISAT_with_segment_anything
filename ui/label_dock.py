@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT/ui/label_dock.ui'
+# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/label_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -14,11 +14,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(250, 304)
+        Form.resize(250, 302)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setContentsMargins(2, 2, 2, 2)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.widget = QtWidgets.QWidget(Form)
+        self.widget.setObjectName("widget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.checkBox_visible = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_visible.setObjectName("checkBox_visible")
+        self.horizontalLayout.addWidget(self.checkBox_visible)
+        self.verticalLayout.addWidget(self.widget)
         self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
@@ -29,3 +38,4 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
+        self.checkBox_visible.setText(_translate("Form", "Visible"))

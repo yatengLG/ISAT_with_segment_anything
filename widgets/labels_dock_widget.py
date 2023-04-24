@@ -14,6 +14,7 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
         self.polygon_item_dict = {}
 
         self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
+        self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
 
         self.listWidget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.listWidget.customContextMenuRequested.connect(
@@ -32,6 +33,7 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
         check_box = QtWidgets.QCheckBox()
         check_box.setFixedWidth(20)
         check_box.setChecked(polygon.isVisible())
+        check_box.setObjectName('check_box')
         check_box.stateChanged.connect(functools.partial(self.set_polygon_show, polygon))
         layout.addWidget(check_box)
 
@@ -62,6 +64,7 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
     def update_listwidget(self):
         self.listWidget.clear()
         self.polygon_item_dict.clear()
+        self.checkBox_visible.setChecked(True)
 
         for polygon in self.mainwindow.polygons:
             item, item_widget = self.generate_item_and_itemwidget(polygon)
@@ -102,3 +105,12 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
         for vertex in polygon.vertexs:
             vertex.setVisible(self.sender().checkState())
         polygon.setVisible(self.sender().checkState())
+
+    def set_all_polygon_visible(self, visible:bool=None):
+        visible = self.checkBox_visible.isChecked() if visible is None else visible
+        for index in range(self.listWidget.count()):
+            item = self.listWidget.item(index)
+            widget = self.listWidget.itemWidget(item)
+            check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
+            check_box.setChecked(visible)
+        self.checkBox_visible.setChecked(visible)

@@ -38,24 +38,46 @@ class Annotation:
             with open(self.label_path, 'r') as f:
                 dataset = load(f)
                 info = dataset.get('info', {})
-                objects = dataset.get('objects', [])
-
-                self.img_name = info.get('name', '')
-                self.width = info.get('width', 0)
-                self.height = info.get('height', 0)
-                self.depth = info.get('depth', 0)
-                self.note = info.get('note', '')
-                for obj in objects:
-                    category = obj.get('category', 'unknow')
-                    group = obj.get('group', '')
-                    segmentation = obj.get('segmentation', [])
-                    iscrowd = obj.get('iscrowd', 0)
-                    note = obj.get('note', '')
-                    area = obj.get('area', 0)
-                    layer = obj.get('layer', 1)
-                    bbox = obj.get('bbox', [])
-                    obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
-                    self.objects.append(obj)
+                description = info.get('description', '')
+                if description == 'ISAT':
+                    # ISAT格式json
+                    objects = dataset.get('objects', [])
+                    self.img_name = info.get('name', '')
+                    self.width = info.get('width', 0)
+                    self.height = info.get('height', 0)
+                    self.depth = info.get('depth', 0)
+                    self.note = info.get('note', '')
+                    for obj in objects:
+                        category = obj.get('category', 'unknow')
+                        group = obj.get('group', 0)
+                        if group is None: group = 0
+                        segmentation = obj.get('segmentation', [])
+                        iscrowd = obj.get('iscrowd', 0)
+                        note = obj.get('note', '')
+                        area = obj.get('area', 0)
+                        layer = obj.get('layer', 2)
+                        bbox = obj.get('bbox', [])
+                        obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
+                        self.objects.append(obj)
+                else:
+                    # labelme格式json
+                    shapes = dataset.get('shapes', {})
+                    for shape in shapes:
+                        # 只加载多边形
+                        is_polygon = shape.get('shape_type', '') == 'polygon'
+                        if not is_polygon:
+                            continue
+                        category = shape.get('label', 'unknow')
+                        group = shape.get('group_id', 0)
+                        if group is None: group = 0
+                        segmentation = shape.get('points', [])
+                        iscrowd = shape.get('iscrowd', 0)
+                        note = shape.get('note', '')
+                        area = shape.get('area', 0)
+                        layer = shape.get('layer', 2)
+                        bbox = shape.get('bbox', [])
+                        obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
+                        self.objects.append(obj)
 
     def save_annotation(self):
         dataset = {}

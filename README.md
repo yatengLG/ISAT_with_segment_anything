@@ -3,6 +3,10 @@
 
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
+**项目持续更新中，[更新日志](./UpdateLog.md)，欢迎大家提出建议**
+
+演示视频：https://www.bilibili.com/video/BV1Lk4y1J7uB/
+
 [中文](README.md)         [English](README-en.md)
 ## 特点
 1. 集成segment anything，快速进行图像分割标注

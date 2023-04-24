@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>icons/眼睛_eyes.svg</file>
     <file>icons/semantic.png</file>
     <file>icons/M_Favicon.ico</file>
     <file>icons/instance.png</file>

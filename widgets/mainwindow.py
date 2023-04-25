@@ -22,6 +22,7 @@ from PIL import Image
 import functools
 import imgviz
 from segment_any.segment_any import SegAny
+from segment_any.gpu_resource import GPUResource_Thread, osplatform
 import icons_rc
 
 
@@ -73,7 +74,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.use_segment_anything:
             if self.segany.device != 'cpu':
-                from segment_any.gpu_resource import GPUResource_Thread
                 self.gpu_resource_thread = GPUResource_Thread()
                 self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
                 self.gpu_resource_thread.start()

@@ -3,6 +3,9 @@
 
 from PyQt5.QtCore import QThread, pyqtSignal
 import os
+import platform
+
+osplatform = platform.system()
 
 
 class GPUResource_Thread(QThread):
@@ -13,9 +16,16 @@ class GPUResource_Thread(QThread):
         self.gpu_id = None
         self.callback = None
 
-        self.keep = True
+        if osplatform == 'Windows':
+            self.command = 'nvidia-smi -q -d MEMORY -i 0 | findstr'
+        elif osplatform == 'Linux':
+            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
+        elif osplatform == 'Darwin':
+            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
+        else:
+            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
         try:
-            r = os.popen('nvidia-smi -q -d MEMORY -i 0 | grep Total').readline()
+            r = os.popen('{} Total'.format(self.command)).readline()
             self.total = r.split(':')[-1].strip().split(' ')[0]
         except Exception as e:
             print(e)
@@ -23,7 +33,7 @@ class GPUResource_Thread(QThread):
 
     def run(self):
         while True:
-            r = os.popen('nvidia-smi -q -d MEMORY -i 0 | grep Used').readline()
+            r = os.popen('{} Used'.format(self.command)).readline()
             used = r.split(':')[-1].strip().split(' ')[0]
             self.message.emit("cuda: {}/{}MiB".format(used, self.total))
 

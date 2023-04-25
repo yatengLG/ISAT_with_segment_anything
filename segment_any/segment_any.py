@@ -9,16 +9,16 @@ import numpy as np
 class SegAny:
     def __init__(self, checkpoint):
         if 'vit_b' in checkpoint:
-            model_type = "vit_b"
+            self.model_type = "vit_b"
         elif 'vit_l' in checkpoint:
-            model_type = "vit_l"
+            self.model_type = "vit_l"
         elif 'vit_h' in checkpoint:
-            model_type = "vit_h"
+            self.model_type = "vit_h"
         else:
             raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        sam = sam_model_registry[model_type](checkpoint=checkpoint)
+        sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
         sam.to(device=self.device)
         self.predictor = SamPredictor(sam)
         self.image = None

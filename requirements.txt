@@ -1,6 +1,6 @@
 imgviz==1.2.6
 mahotas==1.4.13
-numpy==1.21.4
+numpy==1.24.3
 opencv_python_headless==4.5.3.56
 Pillow==9.2.0
 PyQt5==5.15.7

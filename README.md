@@ -1,11 +1,14 @@
 # ISAT with segment anything
 # ISAT 图像分割标注工具(集成segment anything)
+[标注.gif](./display/标注%20-big-original.gif)
 
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
 **项目持续更新中，[更新日志](./UpdateLog.md)，欢迎大家提出建议**
 
-演示视频：https://www.bilibili.com/video/BV1Lk4y1J7uB/
+演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
+
+Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 [中文](README.md)         [English](README-en.md)
 ## 特点

@@ -1,6 +1,6 @@
 # ISAT with segment anything
-# Image segmentation annotation tool with segment anything.
-[标注.gif](./display/标注%20-big-original.gif)
+## Image segmentation annotation tool with segment anything.
+![annotate.gif](./display/标注%20-big-original.gif)
 
 Quick annotate for image segmentation by [segment anything](https://github.com/facebookresearch/segment-anything)
 
@@ -13,15 +13,15 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 [中文](README.md)         [English](README-en.md)
 
 
-## INSTALL
-### 1. Run the source code
-#### (1) Create environment
+# INSTALL
+## 1. Run the source code
+### (1) Create environment
 ```shell
 conda create -n ISAT_with_segment_anything python==3.8
 conda activate ISAT_with_segment_anything
 ```
 
-#### (2) Install Segment anything
+### (2) Install Segment anything
 ```shell
 git clone git@github.com:facebookresearch/segment-anything.git
 cd segment-anything
@@ -29,14 +29,14 @@ pip install -e .
 cd ..
 ```
 
-#### (3) Install ISAT_with_segment_anything
+### (3) Install ISAT_with_segment_anything
 ```shell
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
 
-#### (4) Download Segment anything pretrained checkpoint.
+### (4) Download Segment anything pretrained checkpoint.
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/segment_any
 - H-checkpoint:[sam_vit_h_4b8939.pth](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth)
@@ -49,7 +49,7 @@ Download the checkpoint，and save in the path: ISAT_with_segment_anything/segme
     
     B checkpoint has pool effect, but need less resources.VRAM needs at least 6G.
 
-#### (5) Run
+### (5) Run
 ```shell
 python main.py
 ```

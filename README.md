@@ -12,17 +12,18 @@
 Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 [中文](README.md)         [English](README-en.md)
+
 # 特点
-1. 集成segment anything，快速进行图像分割标注
 
-   - 通过鼠标左右键提示感兴趣区域，调用segment anything自动计算分割掩码。不必再手动进行目标轮廓选取。
-   - 自动生成的掩码转换为多边形，进行手动调整。
+1. 支持同时标注语义分割与实例分割
+2. 基于SAM(segment anything model)快速获取目标mask(掩码)，并将mask转换为多边形。
+3. 交互式修正mask，通过鼠标左(右)键点击感兴趣(不感兴趣)区域，指引模型修正mask。
+4. 支持手动创建多边形。
+5. 支持修改多边形。
+6. 支持调整多边形遮挡关系。
+7. 支持打开labelme标注的json文件（打开前请先备份一份）。
+8. 支持导出标注为单通道png图片。
 
-2. 手动绘制多边形进行精细标注
-
-   - 保留了ISAT手动绘制多边形进行标注的功能，可满足Segment anything无法分割目标的标注。
-   - 手动标注较自动标注更加精确，但工作量也更大。
-   
 # 安装
 ## 1. 源码运行
 ### (1) 创建虚拟环境

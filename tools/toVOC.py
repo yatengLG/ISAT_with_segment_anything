@@ -7,7 +7,8 @@ from PIL import Image, ImageDraw, ImageColor
 import mahotas
 import imgviz
 
-class Converter:
+
+class ToVOC:
     def __init__(self, cfg, is_segmentation):
         self.is_segmentation = is_segmentation
 

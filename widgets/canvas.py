@@ -30,18 +30,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def load_image(self, image_path:str):
         self.clear()
-
-        self.image_data = np.array(Image.open(image_path))
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
 
+        self.image_data = np.array(Image.open(image_path))
+        if self.mainwindow.use_segment_anything and self.mainwindow.can_be_annotated:
             if self.image_data.ndim == 3 and self.image_data.shape[-1] == 3:
                 self.mainwindow.segany.set_image(self.image_data)
-            elif self.image_data.ndim == 2 and image_path.endswith('.png'):
-                # 单通道图标签图
-                pass
             else:
-                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Segment anything only support 3 channel rgb image.')
+                self.mainwindow.statusbar.showMessage('Segment anything only support 3 channel rgb image.')
 
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
@@ -74,6 +71,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(False)
 
+        self.mainwindow.set_labels_visible(False)
+        self.mainwindow.labels_dock_widget.setEnabled(False)
+
     def change_mode_to_view(self):
         self.mode = STATUSMode.VIEW
         self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
@@ -81,8 +81,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionPrev.setEnabled(True)
         self.mainwindow.actionNext.setEnabled(True)
 
-        self.mainwindow.actionSegment_anything.setEnabled(self.mainwindow.use_segment_anything)
-        self.mainwindow.actionPolygon.setEnabled(True)
+        self.mainwindow.actionSegment_anything.setEnabled(self.mainwindow.use_segment_anything and self.mainwindow.can_be_annotated)
+        if self.mainwindow.use_segment_anything and self.mainwindow.segany.image is None:
+            self.mainwindow.actionSegment_anything.setEnabled(False)
+
+        self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(False)
@@ -91,7 +94,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionTo_bottom.setEnabled(False)
         self.mainwindow.actionEdit.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
-        self.mainwindow.actionSave.setEnabled(True)
+        self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
+
+        self.mainwindow.set_labels_visible(True)
+        self.mainwindow.labels_dock_widget.setEnabled(True)
 
     def change_mode_to_edit(self):
         self.mode = STATUSMode.EDIT

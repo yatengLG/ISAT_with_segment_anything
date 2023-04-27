@@ -8,3 +8,14 @@
 
 - 添加了显示/隐藏按钮（快捷键V），用于显示或隐藏所有多边形
 - 添加了GPU显存占用
+
+# 
+
+- 标注时隐藏所有多边形
+- 修改windows中文路径下，图片打开的bug
+- bug修复
+
+# 
+- 添加转换voc格式png图片的功能 finish
+- 添加转换coco格式json的功能 ing
+- 添加转换coco格式json转ISAT格式json的功能 ing

@@ -24,7 +24,7 @@ class SegAny:
         self.image = None
 
     def set_image(self, image):
-
+        self.image = image
         self.predictor.set_image(image)
 
     def reset_image(self):

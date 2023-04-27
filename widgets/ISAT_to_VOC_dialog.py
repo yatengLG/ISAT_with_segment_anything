@@ -7,9 +7,9 @@ from tools.toVOC import ToVOC
 import os
 
 
-class TOVOCDialog(QtWidgets.QDialog, Ui_Dialog):
+class ISATtoVOCDialog(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, parent, mainwindow):
-        super(TOVOCDialog, self).__init__(parent)
+        super(ISATtoVOCDialog, self).__init__(parent)
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.label_root = None

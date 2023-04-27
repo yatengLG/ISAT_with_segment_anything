@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
+    <width>509</width>
     <height>175</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>ISAT to png converter</string>
+   <string>ISAT to VOC png</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -173,7 +173,7 @@
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>
         <property name="text">
-         <string>Convert ISAT annotations to png.</string>
+         <string>Convert ISAT annotations to VOC png.</string>
         </property>
        </widget>
       </item>
@@ -196,7 +196,7 @@
          <string>cache</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
         </property>
        </widget>
@@ -207,7 +207,7 @@
          <string>convert</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/icons/icons/校验_check-one.svg</normaloff>:/icons/icons/校验_check-one.svg</iconset>
         </property>
        </widget>

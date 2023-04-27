@@ -12,7 +12,7 @@ from widgets.info_dock_widget import InfoDockWidget
 from widgets.right_button_menu import RightButtonMenu
 from widgets.shortcut_dialog import ShortcutDialog
 from widgets.about_dialog import AboutDialog
-from widgets.converter import ConvertDialog
+from widgets.ISAT_to_VOC_dialog import ISATtoVOCDialog
 from widgets.canvas import AnnotationScene, AnnotationView
 from configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE
 from annotation import Object, Annotation
@@ -40,6 +40,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.config_file = CONFIG_FILE if os.path.exists(CONFIG_FILE) else DEFAULT_CONFIG_FILE
         self.saved = True
+        self.can_be_annotated = True
         self.load_finished = False
         self.polygons:list = []
 
@@ -83,6 +84,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelGPUResource.setText('segment anything unused.')
 
     def init_ui(self):
+        # 待完成
+        self.actionToCOCO.setEnabled(False)
+        #
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
         self.labels_dock_widget = LabelsDockWidget(mainwindow=self)
@@ -98,7 +102,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
-        self.convert_dialog = ConvertDialog(self, mainwindow=self)
+        self.ISAT_to_VOC_dialog = ISATtoVOCDialog(self, mainwindow=self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -147,7 +151,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setting_dialog.retranslateUi(self.setting_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
-        self.convert_dialog.retranslateUi(self.convert_dialog)
+        self.ISAT_to_VOC_dialog.retranslateUi(self.ISAT_to_VOC_dialog)
 
     def translate_to_chinese(self):
         self.translate('zh')
@@ -248,22 +252,37 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             image_data = Image.open(file_path)
 
             self.png_palette = image_data.getpalette()
-            if self.png_palette is not None:
+            if self.png_palette is not None and file_path.endswith('.png'):
                 self.statusbar.showMessage('This is a label file.')
-                self.actionSegment_anything.setEnabled(False)
-                self.actionPolygon.setEnabled(False)
-                self.actionSave.setEnabled(False)
-                self.actionBit_map.setEnabled(False)
+                self.can_be_annotated = False
+
             else:
+                self.can_be_annotated = True
+
+            if self.can_be_annotated:
                 self.actionSegment_anything.setEnabled(self.use_segment_anything)
                 self.actionPolygon.setEnabled(True)
                 self.actionSave.setEnabled(True)
                 self.actionBit_map.setEnabled(True)
+                self.actionBackspace.setEnabled(True)
+                self.actionFinish.setEnabled(True)
+                self.actionCancel.setEnabled(True)
+                self.actionVisible.setEnabled(True)
+            else:
+                self.actionSegment_anything.setEnabled(False)
+                self.actionPolygon.setEnabled(False)
+                self.actionSave.setEnabled(False)
+                self.actionBit_map.setEnabled(False)
+                self.actionBackspace.setEnabled(False)
+                self.actionFinish.setEnabled(False)
+                self.actionCancel.setEnabled(False)
+                self.actionVisible.setEnabled(False)
+
             self.scene.load_image(file_path)
             self.view.zoomfit()
 
             # load label
-            if self.png_palette is None:
+            if self.can_be_annotated:
                 _, name = os.path.split(file_path)
                 label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
                 self.current_label = Annotation(file_path, label_path)
@@ -444,9 +463,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.labels_dock_widget.checkBox_visible.setChecked(visible)
         self.labels_dock_widget.set_all_polygon_visible(visible)
 
-    def label_converter(self):
-        self.convert_dialog.reset_gui()
-        self.convert_dialog.show()
+    def ISAT_to_VOC(self):
+        self.ISAT_to_VOC_dialog.reset_gui()
+        self.ISAT_to_VOC_dialog.show()
 
     def help(self):
         self.shortcut_dialog.show()
@@ -489,7 +508,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionBit_map.triggered.connect(self.change_bit_map)
         self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
 
-        self.actionConverter.triggered.connect(self.label_converter)
+        self.actionToVOC.triggered.connect(self.ISAT_to_VOC)
 
         self.actionShortcut.triggered.connect(self.help)
         self.actionAbout.triggered.connect(self.about)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/convert_dialog.ui'
+# Form implementation generated from reading ui file 'ISAT_to_VOC_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -15,7 +15,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.NonModal)
-        Dialog.resize(450, 175)
+        Dialog.resize(509, 175)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -103,7 +103,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "ISAT to png converter"))
+        Dialog.setWindowTitle(_translate("Dialog", "ISAT to VOC png"))
         self.lineEdit_save_root.setPlaceholderText(_translate("Dialog", "png save root"))
         self.pushButton_save_root.setText(_translate("Dialog", "Save root"))
         self.checkBox_is_instance.setText(_translate("Dialog", "Is Instance"))
@@ -111,7 +111,7 @@ class Ui_Dialog(object):
         self.pushButton_label_root.setText(_translate("Dialog", "Label root"))
         self.label_3.setAccessibleName(_translate("Dialog", "aaa"))
         self.label_3.setText(_translate("Dialog", "/"))
-        self.label.setText(_translate("Dialog", "Convert ISAT annotations to png."))
+        self.label.setText(_translate("Dialog", "Convert ISAT annotations to VOC png."))
         self.pushButton_cache.setText(_translate("Dialog", "cache"))
         self.pushButton_apply.setText(_translate("Dialog", "convert"))
 import icons_rc

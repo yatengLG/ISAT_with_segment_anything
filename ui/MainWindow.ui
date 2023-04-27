@@ -150,7 +150,8 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionConverter"/>
+    <addaction name="actionToVOC"/>
+    <addaction name="actionToCOCO"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -569,13 +570,16 @@
     <string>B</string>
    </property>
   </action>
-  <action name="actionConverter">
+  <action name="actionToVOC">
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</iconset>
+     <normaloff>:/icon/icons/voc.png</normaloff>:/icon/icons/voc.png</iconset>
    </property>
    <property name="text">
-    <string>Label converter</string>
+    <string>ToVOC</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert ISAT to VOC</string>
    </property>
    <property name="statusTip">
     <string>Convert annotations to png image.</string>
@@ -697,6 +701,18 @@
    </property>
    <property name="shortcut">
     <string>V</string>
+   </property>
+  </action>
+  <action name="actionToCOCO">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/coco.ico</normaloff>:/icon/icons/coco.ico</iconset>
+   </property>
+   <property name="text">
+    <string>ToCOCO</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert ISAT to COCO</string>
    </property>
   </action>
  </widget>

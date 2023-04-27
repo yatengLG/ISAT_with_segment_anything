@@ -2,7 +2,8 @@
 # @Author  : LG
 
 import os
-import cv2
+from PIL import Image
+import numpy as np
 from json import load, dump
 from typing import List
 
@@ -27,8 +28,16 @@ class Annotation:
         self.img_name = img_name
         self.label_path = label_path
         self.note = ''
-        image = cv2.imread(image_path)
-        self.height, self.width, self.depth = image.shape
+
+        image = np.array(Image.open(image_path))
+        if image.ndim == 3:
+            self.height, self.width, self.depth = image.shape
+        elif image.ndim == 2:
+            self.height, self.width = image.shape
+            self.depth = 0
+        else:
+            self.height, self.width, self.depth = image.shape[:, :3]
+            print('Warning: Except image has 2 or 3 ndim, but get {}.'.format(image.ndim))
         del image
 
         self.objects:List[Object,...] = []
@@ -43,9 +52,15 @@ class Annotation:
                     # ISAT格式json
                     objects = dataset.get('objects', [])
                     self.img_name = info.get('name', '')
-                    self.width = info.get('width', 0)
-                    self.height = info.get('height', 0)
-                    self.depth = info.get('depth', 0)
+                    width = info.get('width', None)
+                    if width is not None:
+                        self.width = width
+                    height = info.get('height', None)
+                    if height is not None:
+                        self.height = height
+                    depth = info.get('depth', None)
+                    if depth is not None:
+                        self.depth = depth
                     self.note = info.get('note', '')
                     for obj in objects:
                         category = obj.get('category', 'unknow')

@@ -8,7 +8,7 @@ import mahotas
 import imgviz
 
 
-class ToVOC:
+class VOCConverter:
     def __init__(self, cfg, is_segmentation):
         self.is_segmentation = is_segmentation
 

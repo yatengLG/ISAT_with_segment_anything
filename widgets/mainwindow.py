@@ -13,6 +13,8 @@ from widgets.right_button_menu import RightButtonMenu
 from widgets.shortcut_dialog import ShortcutDialog
 from widgets.about_dialog import AboutDialog
 from widgets.ISAT_to_VOC_dialog import ISATtoVOCDialog
+from widgets.ISAT_to_COCO_dialog import ISATtoCOCODialog
+from widgets.COCO_to_ISAT_dialog import COCOtoISATDialog
 from widgets.canvas import AnnotationScene, AnnotationView
 from configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE
 from annotation import Object, Annotation
@@ -84,8 +86,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.labelGPUResource.setText('segment anything unused.')
 
     def init_ui(self):
-        # 待完成
-        self.actionToCOCO.setEnabled(False)
         #
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
@@ -103,6 +103,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
         self.ISAT_to_VOC_dialog = ISATtoVOCDialog(self, mainwindow=self)
+        self.ISAT_to_COCO_dialog = ISATtoCOCODialog(self, mainwindow=self)
+        self.COCO_to_ISAT_dialog = COCOtoISATDialog(self, mainwindow=self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -152,6 +154,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.ISAT_to_VOC_dialog.retranslateUi(self.ISAT_to_VOC_dialog)
+        self.ISAT_to_COCO_dialog.retranslateUi(self.ISAT_to_COCO_dialog)
+        self.COCO_to_ISAT_dialog.retranslateUi(self.COCO_to_ISAT_dialog)
 
     def translate_to_chinese(self):
         self.translate('zh')
@@ -467,6 +471,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ISAT_to_VOC_dialog.reset_gui()
         self.ISAT_to_VOC_dialog.show()
 
+    def ISAT_to_COCO(self):
+        self.ISAT_to_COCO_dialog.reset_gui()
+        self.ISAT_to_COCO_dialog.show()
+
+    def COCO_to_ISAT(self):
+        self.COCO_to_ISAT_dialog.reset_gui()
+        self.COCO_to_ISAT_dialog.show()
+
     def help(self):
         self.shortcut_dialog.show()
 
@@ -509,6 +521,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
 
         self.actionToVOC.triggered.connect(self.ISAT_to_VOC)
+        self.actionToCOCO.triggered.connect(self.ISAT_to_COCO)
+        self.actionFromCOCO.triggered.connect(self.COCO_to_ISAT)
 
         self.actionShortcut.triggered.connect(self.help)
         self.actionAbout.triggered.connect(self.about)

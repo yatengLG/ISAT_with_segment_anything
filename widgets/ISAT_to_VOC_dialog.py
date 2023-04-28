@@ -3,7 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ui.ISAT_to_VOC_dialog import Ui_Dialog
-from tools.toVOC import ToVOC
+from tools.toVOC import VOCConverter
 import os
 
 
@@ -55,7 +55,7 @@ class ISATtoVOCDialog(QtWidgets.QDialog, Ui_Dialog):
                 for index, label in enumerate(self.mainwindow.cfg.get('label', [])):
                     f.write('{} {}\n'.format(label.get('name'), index))
 
-        converter = ToVOC(self.mainwindow.cfg, self.checkBox_is_instance.isChecked())
+        converter = VOCConverter(self.mainwindow.cfg, self.checkBox_is_instance.isChecked())
         jsons = [f for f in os.listdir(self.label_root) if f.endswith('.json')]
 
         self.pushButton_label_root.setEnabled(False)

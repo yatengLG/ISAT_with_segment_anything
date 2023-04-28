@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>760</height>
+    <height>764</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -152,6 +152,7 @@
     </property>
     <addaction name="actionToVOC"/>
     <addaction name="actionToCOCO"/>
+    <addaction name="actionFromCOCO"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -576,13 +577,13 @@
      <normaloff>:/icon/icons/voc.png</normaloff>:/icon/icons/voc.png</iconset>
    </property>
    <property name="text">
-    <string>ToVOC</string>
+    <string>To VOC</string>
    </property>
    <property name="toolTip">
     <string>Convert ISAT to VOC</string>
    </property>
    <property name="statusTip">
-    <string>Convert annotations to png image.</string>
+    <string>Convert ISAT jsons to VOC png image.</string>
    </property>
    <property name="whatsThis">
     <string/>
@@ -709,10 +710,28 @@
      <normaloff>:/icon/icons/coco.ico</normaloff>:/icon/icons/coco.ico</iconset>
    </property>
    <property name="text">
-    <string>ToCOCO</string>
+    <string>To COCO</string>
    </property>
    <property name="toolTip">
     <string>Convert ISAT to COCO</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert ISAT jsons to COCO json.</string>
+   </property>
+  </action>
+  <action name="actionFromCOCO">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/coco.ico</normaloff>:/icon/icons/coco.ico</iconset>
+   </property>
+   <property name="text">
+    <string>From COCO</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert COCO to ISAT</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert COCO json to ISAT jsons.</string>
    </property>
   </action>
  </widget>

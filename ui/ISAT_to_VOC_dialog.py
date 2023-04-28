@@ -15,7 +15,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.NonModal)
-        Dialog.resize(509, 175)
+        Dialog.resize(600, 173)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)

@@ -15,7 +15,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.NonModal)
-        Dialog.resize(508, 155)
+        Dialog.resize(600, 137)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -49,6 +49,7 @@ class Ui_Dialog(object):
         self.widget_3 = QtWidgets.QWidget(Dialog)
         self.widget_3.setObjectName("widget_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_3)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
@@ -87,12 +88,12 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "ISAT to VOC png"))
+        Dialog.setWindowTitle(_translate("Dialog", "ISAT to COCO"))
         self.pushButton_save_path.setText(_translate("Dialog", "Save path"))
         self.pushButton_label_root.setText(_translate("Dialog", "Jsons root"))
         self.lineEdit_save_path.setPlaceholderText(_translate("Dialog", "COCO json save path"))
         self.lineEdit_label_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
-        self.label.setText(_translate("Dialog", "Convert ISAT jsons to COCO json."))
+        self.label.setText(_translate("Dialog", "Convert ISAT jsons to COCO json.The layer attr will be lost."))
         self.pushButton_cache.setText(_translate("Dialog", "cache"))
         self.pushButton_apply.setText(_translate("Dialog", "convert"))
 import icons_rc

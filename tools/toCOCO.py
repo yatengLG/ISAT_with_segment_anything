@@ -263,7 +263,10 @@ class COCOConverter:
                     for obj in objects:
                         object = {}
                         object['category'] = obj.get('category', '')
-                        object['group'] = groups_dict.get(obj.get('group', 0))
+                        if 'background' in object['category']:
+                            object['group'] = 0
+                        else:
+                            object['group'] = groups_dict.get(obj.get('group', 0))
                         object['segmentation'] = obj.get('segmentation', [])
                         object['area'] = obj.get('area', None)
                         object['layer'] = obj.get('layer', None)

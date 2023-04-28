@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>508</width>
-    <height>155</height>
+    <width>600</width>
+    <height>137</height>
    </rect>
   </property>
   <property name="font">
@@ -20,7 +20,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>ISAT to VOC png</string>
+   <string>ISAT to COCO</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -90,6 +90,18 @@
    <item>
     <widget class="QWidget" name="widget_3" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
@@ -134,7 +146,7 @@
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>
         <property name="text">
-         <string>Convert ISAT jsons to COCO json.</string>
+         <string>Convert ISAT jsons to COCO json.The layer attr will be lost.</string>
         </property>
        </widget>
       </item>

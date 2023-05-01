@@ -78,3 +78,14 @@ python main.py
     - h模型最大，效果也最好，显存至少需求8G，演示时软件实际占用7305M；
     - l模型适中，效果也适中，显存至少需求8G，演示时软件实际占用5855M；
     - b模型最小，效果也最差，显存至少需求6G，演示时软件实际占用4149M；
+
+# 引用
+```text
+@misc{ISAT with segment anything,
+  title={{ISAT with segment anything}: Image segmentation annotation tool with segment anything},
+  url={https://github.com/yatengLG/ISAT_with_segment_anything},
+  note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
+  author={yatengLG and horffmanwang},
+  year={2023},
+}
+```

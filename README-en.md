@@ -68,3 +68,15 @@ python main.py
 1. The software needs to run well under the GPU and enought VRAM.
 2. If you don't have a GPU or don't have enought VARM, please manually draw polygons for labeling by [ISAT](https://github.com/yatengLG/ISAT).
 3. 
+
+
+# Citation
+```text
+@misc{ISAT with segment anything,
+  title={{ISAT with segment anything}: Image segmentation annotation tool with segment anything},
+  url={https://github.com/yatengLG/ISAT_with_segment_anything},
+  note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
+  author={yatengLG and horffmanwang},
+  year={2023},
+}
+```

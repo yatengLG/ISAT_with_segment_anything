@@ -19,3 +19,6 @@
 - 添加转换voc格式png图片的功能（单通道png）
 - 添加转换coco格式json的功能（ISAT jsons to COCO json）
 - 添加转换coco格式json转ISAT格式json的功能（COCO json to ISAT jsons）
+
+# 
+- 优化了转换界面，以显示详细的转换进度

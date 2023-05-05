@@ -14,7 +14,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 # Feature
 
-1. Support semantic segmentation and instance segmentation
+1. Support semantic segmentation and instance segmentation.
 2. Get the mask by SAM (segment anything model) and convert the mask into polygon.
 3. Interactive correction mask, by clicking on the area of interest (not of interest) with the left (right) mouse button.
 4. Support manual creation of polygons.

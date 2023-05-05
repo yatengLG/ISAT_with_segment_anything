@@ -237,6 +237,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.current_label.note = self.info_dock_widget.lineEdit_note.text()
         self.current_label.save_annotation()
+        # 保存标注文件的同时保存一份isat配置文件
+        self.save_cfg(os.path.join(self.label_root, 'isat.yaml'))
         self.set_saved_state(True)
 
     def show_image(self, index:int):

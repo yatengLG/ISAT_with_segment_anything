@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from ui.COCO_to_ISAT_dialog import Ui_Dialog
-from tools.toCOCO import COCOConverter
+from tools.fromCOCO import FROMCOCO
 
 
 class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
@@ -13,15 +13,20 @@ class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
         self.mainwindow = mainwindow
         self.label_path = None
         self.save_root = None
-        self.pause = False
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+
+        self.converter = FROMCOCO()
+        self.converter.message.connect(self.print_message)
 
         self.init_connect()
 
     def reset_gui(self):
         self.lineEdit_label_path.clear()
         self.lineEdit_save_root.clear()
+        self.checkBox_keepcrowd.setChecked(False)
+        self.progressBar.reset()
+        self.textBrowser.clear()
 
     def _label_path(self):
         path, suffix = QtWidgets.QFileDialog.getOpenFileName(self, caption='COCO json save file',
@@ -43,24 +48,38 @@ class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
             self.lineEdit_save_root.clear()
 
     def cache(self):
-        self.pause = True
+        self.converter.cache = True
         self.close()
 
     def apply(self):
-        self.pause = False
         if self.label_path is None or self.save_root is None:
             return
 
-        converter = COCOConverter()
-
         self.pushButton_label_path.setEnabled(False)
         self.pushButton_save_root.setEnabled(False)
-        self.label_info.setText('Convering...')
-        converter.convert_from_coco(self.label_path, self.save_root, keep_crowd=self.checkBox_keepcrowd.isChecked())
-        self.label_info.setText('Finish!!!')
+        self.checkBox_keepcrowd.setEnabled(False)
+        self.pushButton_apply.setEnabled((False))
+
+        self.progressBar.reset()
+        self.textBrowser.clear()
+        self.converter.cache = False
+        self.converter.coco_json_path = self.label_path
+        self.converter.to_root = self.save_root
+        self.converter.keep_crowd = self.checkBox_keepcrowd.isChecked()
+        self.converter.run()
 
         self.pushButton_label_path.setEnabled(True)
         self.pushButton_save_root.setEnabled(True)
+        self.checkBox_keepcrowd.setEnabled(True)
+        self.pushButton_apply.setEnabled((True))
+
+    def print_message(self, index, all, message):
+        if all:
+            self.progressBar.setMaximum(all)
+        if index:
+            self.progressBar.setValue(index)
+        if message:
+            self.textBrowser.append(message)
 
     def init_connect(self):
         self.pushButton_label_path.clicked.connect(self._label_path)

@@ -24,15 +24,49 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <pointsize>20</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Label</string>
-        </property>
+       <widget class="QWidget" name="widget_2" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Label</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_config_file">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -71,7 +105,7 @@
            <string>Add new label</string>
           </property>
           <property name="icon">
-           <iconset resource="../icons.qrc">
+           <iconset>
             <normaloff>:/icons/icons/书签_bookmark-one.svg</normaloff>:/icons/icons/书签_bookmark-one.svg</iconset>
           </property>
          </widget>
@@ -86,7 +120,7 @@
            <string>Import</string>
           </property>
           <property name="icon">
-           <iconset resource="../icons.qrc">
+           <iconset>
             <normaloff>:/icons/icons/传入3_afferent-three.svg</normaloff>:/icons/icons/传入3_afferent-three.svg</iconset>
           </property>
          </widget>
@@ -97,7 +131,7 @@
            <string>Export</string>
           </property>
           <property name="icon">
-           <iconset resource="../icons.qrc">
+           <iconset>
             <normaloff>:/icons/icons/传出3_efferent-three.svg</normaloff>:/icons/icons/传出3_efferent-three.svg</iconset>
           </property>
          </widget>
@@ -121,7 +155,7 @@
            <string>Cache</string>
           </property>
           <property name="icon">
-           <iconset resource="../icons.qrc">
+           <iconset>
             <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
           </property>
          </widget>
@@ -132,7 +166,7 @@
            <string>Apply</string>
           </property>
           <property name="icon">
-           <iconset resource="../icons.qrc">
+           <iconset>
             <normaloff>:/icons/icons/校验_check-one.svg</normaloff>:/icons/icons/校验_check-one.svg</iconset>
           </property>
          </widget>

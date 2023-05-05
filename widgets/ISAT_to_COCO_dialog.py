@@ -3,7 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ui.ISAT_to_COCO_dialog import Ui_Dialog
-from tools.toCOCO import COCOConverter
+from tools.toCOCO import TOCOCO
 
 
 class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
@@ -13,15 +13,18 @@ class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
         self.mainwindow = mainwindow
         self.label_root = None
         self.save_path = None
-        self.pause = False
+
+        self.converter = TOCOCO()
+        self.converter.message.connect(self.print_message)
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-
         self.init_connect()
 
     def reset_gui(self):
         self.lineEdit_label_root.clear()
         self.lineEdit_save_path.clear()
+        self.textBrowser.clear()
+        self.progressBar.reset()
 
     def _label_root(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='ISAT jsons root')
@@ -42,25 +45,35 @@ class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
             self.lineEdit_save_path.clear()
 
     def cache(self):
-        self.pause = True
+        self.converter.cache = True
         self.close()
 
     def apply(self):
-        self.pause = False
         if self.label_root is None or self.save_path is None:
             return
 
-        converter = COCOConverter()
-
         self.pushButton_label_root.setEnabled(False)
         self.pushButton_save_path.setEnabled(False)
-        self.label_info.setText('Convering...')
+        self.pushButton_apply.setEnabled(False)
 
-        converter.convert_to_coco(self.label_root, self.save_path)
-        self.label_info.setText('Finish!!!')
+        self.progressBar.reset()
+        self.textBrowser.clear()
+        self.converter.cache = False
+        self.converter.isat_json_root = self.label_root
+        self.converter.to_path = self.save_path
+        self.converter.start()
 
         self.pushButton_label_root.setEnabled(True)
         self.pushButton_save_path.setEnabled(True)
+        self.pushButton_apply.setEnabled(True)
+
+    def print_message(self, index, all, message):
+        if index:
+            self.progressBar.setValue(index)
+        if all:
+            self.progressBar.setMaximum(all)
+        if message:
+            self.textBrowser.append(message)
 
     def init_connect(self):
         self.pushButton_label_root.clicked.connect(self._label_root)

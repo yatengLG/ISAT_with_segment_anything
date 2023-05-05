@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'COCO_to_ISAT_dialog.ui'
+# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/COCO_to_ISAT_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -15,7 +15,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.NonModal)
-        Dialog.resize(600, 166)
+        Dialog.resize(600, 257)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -62,13 +62,18 @@ class Ui_Dialog(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget_4)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem1)
-        self.label_info = QtWidgets.QLabel(self.widget_4)
-        self.label_info.setText("")
-        self.label_info.setObjectName("label_info")
-        self.horizontalLayout_3.addWidget(self.label_info)
         self.verticalLayout.addWidget(self.widget_4)
+        self.textBrowser = QtWidgets.QTextBrowser(Dialog)
+        font = QtGui.QFont()
+        font.setFamily("宋体")
+        self.textBrowser.setFont(font)
+        self.textBrowser.setLineWrapMode(QtWidgets.QTextEdit.NoWrap)
+        self.textBrowser.setObjectName("textBrowser")
+        self.verticalLayout.addWidget(self.textBrowser)
+        self.progressBar = QtWidgets.QProgressBar(Dialog)
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setObjectName("progressBar")
+        self.verticalLayout.addWidget(self.progressBar)
         self.widget_2 = QtWidgets.QWidget(Dialog)
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
@@ -78,8 +83,8 @@ class Ui_Dialog(object):
         self.label.setStyleSheet("color: rgb(255, 0, 0);")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem1)
         self.pushButton_cache = QtWidgets.QPushButton(self.widget_2)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/关闭_close-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)

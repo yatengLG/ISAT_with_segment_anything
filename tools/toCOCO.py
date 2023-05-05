@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
+from PyQt5.QtCore import QThread, pyqtSignal
 from json import load, dump
 import os
-from pycocotools import mask as coco_mask
-import cv2
-import imgviz
-import yaml
 import numpy as np
 
 
-class COCOConverter:
-    def convert_to_coco(self, isat_json_root:str, to_path:str):
+class TOCOCO(QThread):
+    message = pyqtSignal(int, int, str)
+
+    def __init__(self):
+        super(TOCOCO, self).__init__()
+        self.isat_json_root:str = None
+        self.to_path:str = None
+        self.cache = False
+
+    def run(self):
         coco_anno = {}
         # info
         coco_anno['info'] = {}
@@ -36,11 +41,15 @@ class COCOConverter:
 
         categories_dict = {}
 
-        jsons = [f for f in os.listdir(isat_json_root) if f.endswith('.json')]
+        jsons = [f for f in os.listdir(self.isat_json_root) if f.endswith('.json')]
+        num_jsons = len(jsons)
+        self.message.emit(None, None, 'Loading ISAT jsons...')
         for file_index, json in enumerate(jsons):
-            print('Load ISAT: {}'.format(json))
+            if self.cache:
+                return
+            self.message.emit(file_index+1, num_jsons, '{:>8d}/{:<8d} | Loading ISAT json: {}'.format(file_index+1, num_jsons, json))
             try:
-                with open(os.path.join(isat_json_root, json), 'r') as f:
+                with open(os.path.join(self.isat_json_root, json), 'r') as f:
                     dataset = load(f)
                     info = dataset.get('info', {})
                     description = info.get('description', '')
@@ -129,169 +138,23 @@ class COCOConverter:
                                                           bbox_tmp[2] - bbox_tmp[0], bbox_tmp[3] - bbox_tmp[1]]
 
                                 coco_anno['annotations'].append(coco_anno_info)
+                self.message.emit(None, None, ' ' * 18 + '| Loading finished.')
             except Exception as e:
-                print('Load ISAT: {}, error: {}'.format(json, e))
+                self.message.emit(None, None, ' ' * 18 + '| Error: {}'.format(e))
 
         categories_dict = sorted(categories_dict.items(), key=lambda x:x[1])
         coco_anno['categories'] = [{'name': name, 'id': id, 'supercategory': None} for name, id in categories_dict]
 
-        with open(to_path, 'w') as f:
+        self.message.emit(None, None, 'Saving COCO json {}'.format(self.to_path))
+        with open(self.to_path, 'w') as f:
             try:
                 dump(coco_anno, f)
-                print('Save coco json to {}'.format(to_path))
+                self.message.emit(None, None, 'Saved finished!')
+
             except Exception as e:
-                print('Save {} error :{}'.format(to_path, e))
+                self.message.emit(None, None, 'Error: {}'.format(e))
 
+        self.message.emit(None, None, '*** Finished! ***')
 
-    def convert_from_coco(self, coco_json_path:str, to_root:str, keep_crowd:bool=False):
-        assert coco_json_path.endswith('.json')
-        annos = {}
-        if os.path.exists(coco_json_path):
-            with open(coco_json_path, 'r') as f:
-                dataset = load(f)
-                images = {image.get('id', None):{
-                    'file_name': image.get('file_name', ''),
-                    'height': image.get('height', ''),
-                    'width': image.get('width', ''),
-                } for image in dataset.get('images', [])}
-                annotations = dataset.get('annotations', [])
-                categories = {categorie.get('id', None): {'name': categorie.get('name', '')} for categorie in dataset.get('categories', [])}
-                for index, annotation in enumerate(annotations):
-
-                    annotation_index = annotation.get('id')
-                    annotation_image_id = annotation.get('image_id')
-                    annotation_category_id = annotation.get('category_id')
-
-                    file_name = images[annotation_image_id].get('file_name')
-                    height = images[annotation_image_id].get('height')
-                    width = images[annotation_image_id].get('width')
-                    iscrowd = annotation["iscrowd"]
-
-                    if file_name == '000000279278.jpg':
-                        continue
-                    if annotation_image_id not in annos:
-                        annos[annotation_image_id] = {}
-
-                    objects = annos[annotation_image_id].get('objects', [])
-
-                    if iscrowd == 0:
-                        # polygon
-                        segmentations = annotation.get('segmentation')
-                        for segmentation in segmentations:
-                            xs = segmentation[::2]
-                            ys = segmentation[1::2]
-                            points = [[x, y] for x ,y in zip(xs, ys)]
-                            obj = {
-                                'category': categories.get(annotation_category_id).get('name'),
-                                'group': annotation_index,
-                                'area': None,
-                                'segmentation': points,
-                                'layer': 1,
-                                'bbox': None,
-                                'iscrowd': iscrowd,
-                                'note': ''
-                            }
-                            objects.append(obj)
-                    elif iscrowd == 1 and keep_crowd:
-                        segmentations = annotation.get('segmentation', {})
-                        if isinstance(segmentations, dict) and 'counts' in segmentations:
-                            # RLE
-                            rles = coco_mask.frPyObjects(segmentations, height, width)
-                            masks = coco_mask.decode(rles)
-                            contours, _ = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
-                            for contour in contours:
-                                points = []
-                                for point in contour:
-                                    x, y = point[0]
-                                    points.append([float(x), float(y)])
-                                obj = {
-                                    'category': categories.get(annotation_category_id).get('name'),
-                                    'group': annotation_index,
-                                    'area': None,
-                                    'segmentation': points,
-                                    'layer': 1,
-                                    'bbox': None,
-                                    'iscrowd': iscrowd,
-                                    'note': ''
-                                }
-                                objects.append(obj)
-                        else:
-                            # polygon
-                            for segmentation in segmentations:
-                                xs = segmentation[::2]
-                                ys = segmentation[1::2]
-                                points = [[x, y] for x, y in zip(xs, ys)]
-                                obj = {
-                                    'category': categories.get(annotation_category_id).get('name'),
-                                    'group': annotation_index,
-                                    'area': None,
-                                    'segmentation': points,
-                                    'layer': 1,
-                                    'bbox': None,
-                                    'iscrowd': iscrowd,
-                                    'note': ''
-                                }
-                                objects.append(obj)
-                    else:
-                        pass
-                    annos[annotation_image_id]['objects'] = objects
-
-
-                for image_id, values in annos.items():
-                    image_path = images[image_id].get('file_name')
-                    folder, name = os.path.split(image_path)
-                    height = images[image_id].get('height')
-                    width = images[image_id].get('width')
-                    objects = values.get('objects', [])
-
-                    isat_anno = {}
-                    isat_anno['info'] = {}
-                    isat_anno['info']['description'] = 'ISAT'
-                    isat_anno['info']['folder'] = folder
-                    isat_anno['info']['name'] = name
-                    isat_anno['info']['width'] = width
-                    isat_anno['info']['height'] = height
-                    isat_anno['info']['depth'] = None
-                    isat_anno['info']['note'] = ''
-                    isat_anno['objects'] = []
-                    # coco annotation的id 太大了，这里缩一下，每张图片重新开始计数
-                    groups_dict = {}
-                    for obj in objects:
-                        group = obj.get('group', 0)
-                        if group not in groups_dict:
-                            groups_dict[group] = len(groups_dict)+1
-                    for obj in objects:
-                        object = {}
-                        object['category'] = obj.get('category', '')
-                        if 'background' in object['category']:
-                            object['group'] = 0
-                        else:
-                            object['group'] = groups_dict.get(obj.get('group', 0))
-                        object['segmentation'] = obj.get('segmentation', [])
-                        object['area'] = obj.get('area', None)
-                        object['layer'] = obj.get('layer', None)
-                        object['bbox'] = obj.get('bbox', None)
-                        object['iscrowd'] = obj.get('iscrowd', 0)
-                        object['note'] = obj.get('note', '')
-                        isat_anno['objects'].append(object)
-                    json_name = '.'.join(name.split('.')[:-1]) + '.json'
-                    save_json = os.path.join(to_root, json_name)
-                    with open(save_json, 'w') as f:
-                        try:
-                            dump(isat_anno, f)
-                            print('Converted coco to ISAT: {}'.format(json_name))
-
-                        except Exception as e:
-                            print('Convert coco to ISAT {} ,error: {}'.format(json_name, e))
-
-                ### 类别文件
-                cmap = imgviz.label_colormap()
-                sorted(categories)
-                for index, (k, categorie_dict) in enumerate(categories.items()):
-                    r, g, b = cmap[index+1]
-                    categorie_dict['color'] = "#{:02x}{:02x}{:02x}".format(r, g, b)
-                print(categories)
-
-                s = yaml.dump({'label': list(categories.values())})
-                with open(os.path.join(to_root, 'categorys.yaml'), 'w') as f:
-                    f.write(s)
+    def __del__(self):
+        self.wait()

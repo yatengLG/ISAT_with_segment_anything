@@ -60,6 +60,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.category_list_widget.takeItem(row)
 
     def load_cfg(self):
+        self.label_config_file.setText(self.mainwindow.config_file)
         cfg = load_config(self.mainwindow.config_file)
         self.category_list_widget.clear()
         labels = cfg.get('label', [])

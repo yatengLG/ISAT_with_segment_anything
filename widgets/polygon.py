@@ -37,12 +37,12 @@ class Vertex(QtWidgets.QGraphicsPathItem):
             # 限制顶点移动到图外
             if value.x() < 0:
                 value.setX(0)
-            if value.x() > self.scene().width():
-                value.setX(self.scene().width())
+            if value.x() > self.scene().width()-1:
+                value.setX(self.scene().width()-1)
             if value.y() < 0:
                 value.setY(0)
-            if value.y() > self.scene().height():
-                value.setY(self.scene().height())
+            if value.y() > self.scene().height()-1:
+                value.setY(self.scene().height()-1)
 
             self.polygon.movePoint(self.index, value)
 

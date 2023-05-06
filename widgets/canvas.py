@@ -282,9 +282,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.CREATE:
             sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
             sceneX = 0 if sceneX < 0 else sceneX
-            sceneX = self.width() if sceneX > self.width() else sceneX
+            sceneX = self.width()-1 if sceneX > self.width()-1 else sceneX
             sceneY = 0 if sceneY < 0 else sceneY
-            sceneY = self.height() if sceneY > self.height() else sceneY
+            sceneY = self.height()-1 if sceneY > self.height()-1 else sceneY
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
@@ -325,9 +325,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         pos = event.scenePos()
         if pos.x() < 0: pos.setX(0)
-        if pos.x() > self.width(): pos.setX(self.width())
+        if pos.x() > self.width()-1: pos.setX(self.width()-1)
         if pos.y() < 0: pos.setY(0)
-        if pos.y() > self.height(): pos.setY(self.height())
+        if pos.y() > self.height()-1: pos.setY(self.height()-1)
         # 限制在图片范围内
 
         if self.mode == STATUSMode.CREATE:
@@ -347,10 +347,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         # 状态栏,显示当前坐标
         if self.image_data is not None:
+            print('-- ', pos.x(), pos.y())
             x, y = round(pos.x()), round(pos.y())
+            print('---', x, y)
             self.mainwindow.labelCoord.setText('xy: ({:>4d},{:>4d})'.format(x, y))
 
-            data = self.image_data[y-1][x-1]
+            data = self.image_data[y][x]
             if self.image_data.ndim == 2:
                 self.mainwindow.labelData.setText('pix: [{:^3d}]'.format(data))
             elif self.image_data.ndim == 3:

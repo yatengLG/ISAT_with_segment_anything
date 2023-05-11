@@ -107,7 +107,7 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "ISAT to VOC png"))
         self.pushButton_save_root.setText(_translate("Dialog", "Save root"))
-        self.lineEdit_label_root.setPlaceholderText(_translate("Dialog", "ISAT annotations root"))
+        self.lineEdit_label_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
         self.pushButton_label_root.setText(_translate("Dialog", "Label root"))
         self.lineEdit_save_root.setPlaceholderText(_translate("Dialog", "png save root"))
         self.checkBox_is_instance.setText(_translate("Dialog", "Is instance"))

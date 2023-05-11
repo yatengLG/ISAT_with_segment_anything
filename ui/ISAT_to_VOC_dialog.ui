@@ -60,7 +60,7 @@
          <bool>true</bool>
         </property>
         <property name="placeholderText">
-         <string>ISAT annotations root</string>
+         <string>ISAT jsons root</string>
         </property>
        </widget>
       </item>

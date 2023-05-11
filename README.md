@@ -1,5 +1,5 @@
 # ISAT with segment anything
-## ISAT 图像分割标注工具(集成segment anything)
+# 交互式半自动图像分割标注工具
 
 ![标注.gif](./display/标注%20-big-original.gif)
 

@@ -1,5 +1,6 @@
 # ISAT with segment anything
-## Image segmentation annotation tool with segment anything.
+# Interactive semi-automatic annotation tool for image segmentation.
+
 ![annotate.gif](./display/标注%20-big-original.gif)
 
 Quick annotate for image segmentation by [segment anything](https://github.com/facebookresearch/segment-anything)
@@ -15,13 +16,17 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 # Feature
 
 1. Support semantic segmentation and instance segmentation.
-2. Get the mask by SAM (segment anything model) and convert the mask into polygon.
+2. Integrating SAM (segment anything model) for interactive semi-automatic annotation of image segmentation.
 3. Interactive correction mask, by clicking on the area of interest (not of interest) with the left (right) mouse button.
 4. Support manual creation of polygons.
 5. Support modifying polygons.
 6. Support for adjusting polygon occlusion.
-7. Support opening JSON files annotated by labelme (please backup a copy before opening).
-8. Support exporting annotations as single-channel png images.
+7. Support preview annotation result.
+8. ISAT format json, contains more information.
+9. Support opening JSON files annotated by labelme (please backup a copy before opening), and modify.
+10. Support exporting ISAT format json to VOC as single-channel png images.
+11. Support exporting ISAT format jsons to COCO format json.
+12. Support exporting COCO format json to ISAT format jsons.
 
 # INSTALL
 ## 1. Run the source code

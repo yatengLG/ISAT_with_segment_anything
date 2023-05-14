@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/category_choice.ui'
+# Form implementation generated from reading ui file 'category_choice.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(350, 400)
+        Dialog.resize(350, 399)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -97,12 +97,12 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.checkBox_iscrowded)
         spacerItem = QtWidgets.QSpacerItem(97, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
-        self.pushButton_cache = QtWidgets.QPushButton(self.widget_2)
+        self.pushButton_cancel = QtWidgets.QPushButton(self.widget_2)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/关闭_close-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_cache.setIcon(icon)
-        self.pushButton_cache.setObjectName("pushButton_cache")
-        self.horizontalLayout_2.addWidget(self.pushButton_cache)
+        self.pushButton_cancel.setIcon(icon)
+        self.pushButton_cancel.setObjectName("pushButton_cancel")
+        self.horizontalLayout_2.addWidget(self.pushButton_cancel)
         self.pushButton_apply = QtWidgets.QPushButton(self.widget_2)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/校验_check-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -123,6 +123,6 @@ class Ui_Dialog(object):
         self.lineEdit_note.setPlaceholderText(_translate("Dialog", "add extra note here"))
         self.label_4.setText(_translate("Dialog", "layer:"))
         self.checkBox_iscrowded.setText(_translate("Dialog", "is crowded"))
-        self.pushButton_cache.setText(_translate("Dialog", "cache"))
+        self.pushButton_cancel.setText(_translate("Dialog", "cancel"))
         self.pushButton_apply.setText(_translate("Dialog", "apply"))
 import icons_rc

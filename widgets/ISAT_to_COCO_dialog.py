@@ -44,8 +44,8 @@ class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.lineEdit_save_path.clear()
 
-    def cache(self):
-        self.converter.cache = True
+    def cancel(self):
+        self.converter.cancel = True
         self.close()
 
     def apply(self):
@@ -58,7 +58,7 @@ class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.progressBar.reset()
         self.textBrowser.clear()
-        self.converter.cache = False
+        self.converter.cancel = False
         self.converter.isat_json_root = self.label_root
         self.converter.to_path = self.save_path
         self.converter.start()
@@ -79,4 +79,4 @@ class ISATtoCOCODialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_label_root.clicked.connect(self._label_root)
         self.pushButton_save_path.clicked.connect(self._save_path)
         self.pushButton_apply.clicked.connect(self.apply)
-        self.pushButton_cache.clicked.connect(self.cache)
+        self.pushButton_cancel.clicked.connect(self.cancel)

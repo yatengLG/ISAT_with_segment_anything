@@ -47,8 +47,8 @@ class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.lineEdit_save_root.clear()
 
-    def cache(self):
-        self.converter.cache = True
+    def cancel(self):
+        self.converter.cancel = True
         self.close()
 
     def apply(self):
@@ -62,7 +62,7 @@ class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.progressBar.reset()
         self.textBrowser.clear()
-        self.converter.cache = False
+        self.converter.cancel = False
         self.converter.coco_json_path = self.label_path
         self.converter.to_root = self.save_root
         self.converter.keep_crowd = self.checkBox_keepcrowd.isChecked()
@@ -85,4 +85,4 @@ class COCOtoISATDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_label_path.clicked.connect(self._label_path)
         self.pushButton_save_root.clicked.connect(self._save_root)
         self.pushButton_apply.clicked.connect(self.apply)
-        self.pushButton_cache.clicked.connect(self.cache)
+        self.pushButton_cancel.clicked.connect(self.cancel)

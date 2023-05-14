@@ -347,9 +347,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         # 状态栏,显示当前坐标
         if self.image_data is not None:
-            print('-- ', pos.x(), pos.y())
             x, y = round(pos.x()), round(pos.y())
-            print('---', x, y)
             self.mainwindow.labelCoord.setText('xy: ({:>4d},{:>4d})'.format(x, y))
 
             data = self.image_data[y][x]

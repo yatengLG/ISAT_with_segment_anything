@@ -20,7 +20,7 @@ class CategoryChoiceDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.listWidget.itemClicked.connect(self.get_category)
         self.pushButton_apply.clicked.connect(self.apply)
-        self.pushButton_cache.clicked.connect(self.cache)
+        self.pushButton_cancel.clicked.connect(self.cancel)
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
@@ -94,12 +94,12 @@ class CategoryChoiceDialog(QtWidgets.QDialog, Ui_Dialog):
         self.scene.change_mode_to_view()
         self.close()
 
-    def cache(self):
+    def cancel(self):
         self.scene.cancel_draw()
         self.close()
 
     def closeEvent(self, a0: QtGui.QCloseEvent):
-        self.cache()
+        self.cancel()
 
     def reject(self):
-        self.cache()
+        self.cancel()

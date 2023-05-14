@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/setting_dialog.ui'
+# Form implementation generated from reading ui file 'setting_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -81,12 +81,12 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.pushButton_export)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
-        self.cache_button = QtWidgets.QPushButton(self.widget)
+        self.cancel_button = QtWidgets.QPushButton(self.widget)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/icons/icons/关闭_close-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.cache_button.setIcon(icon3)
-        self.cache_button.setObjectName("cache_button")
-        self.horizontalLayout_2.addWidget(self.cache_button)
+        self.cancel_button.setIcon(icon3)
+        self.cancel_button.setObjectName("cancel_button")
+        self.horizontalLayout_2.addWidget(self.cancel_button)
         self.apply_button = QtWidgets.QPushButton(self.widget)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(":/icons/icons/校验_check-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -106,6 +106,6 @@ class Ui_Dialog(object):
         self.add_button.setText(_translate("Dialog", "Add new label"))
         self.pushButton_import.setText(_translate("Dialog", "Import"))
         self.pushButton_export.setText(_translate("Dialog", "Export"))
-        self.cache_button.setText(_translate("Dialog", "Cache"))
+        self.cancel_button.setText(_translate("Dialog", "Cancel"))
         self.apply_button.setText(_translate("Dialog", "Apply"))
 import icons_rc

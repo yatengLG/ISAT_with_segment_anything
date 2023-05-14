@@ -14,7 +14,7 @@ class TOCOCO(QThread):
         super(TOCOCO, self).__init__()
         self.isat_json_root:str = None
         self.to_path:str = None
-        self.cache = False
+        self.cancel = False
 
     def run(self):
         coco_anno = {}
@@ -45,7 +45,7 @@ class TOCOCO(QThread):
         num_jsons = len(jsons)
         self.message.emit(None, None, 'Loading ISAT jsons...')
         for file_index, json in enumerate(jsons):
-            if self.cache:
+            if self.cancel:
                 return
             self.message.emit(file_index+1, num_jsons, '{:>8d}/{:<8d} | Loading ISAT json: {}'.format(file_index+1, num_jsons, json))
             try:

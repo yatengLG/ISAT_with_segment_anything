@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/ISAT_to_VOC_dialog.ui'
+# Form implementation generated from reading ui file 'ISAT_to_VOC_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -86,12 +86,12 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.label)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
-        self.pushButton_cache = QtWidgets.QPushButton(self.widget_2)
+        self.pushButton_cancel = QtWidgets.QPushButton(self.widget_2)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/关闭_close-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_cache.setIcon(icon)
-        self.pushButton_cache.setObjectName("pushButton_cache")
-        self.horizontalLayout.addWidget(self.pushButton_cache)
+        self.pushButton_cancel.setIcon(icon)
+        self.pushButton_cancel.setObjectName("pushButton_cancel")
+        self.horizontalLayout.addWidget(self.pushButton_cancel)
         self.pushButton_apply = QtWidgets.QPushButton(self.widget_2)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/校验_check-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -118,6 +118,6 @@ class Ui_Dialog(object):
 "</style></head><body style=\" font-family:\'宋体\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label.setText(_translate("Dialog", "Convert ISAT annotations to VOC png."))
-        self.pushButton_cache.setText(_translate("Dialog", "cache"))
+        self.pushButton_cancel.setText(_translate("Dialog", "cancel"))
         self.pushButton_apply.setText(_translate("Dialog", "convert"))
 import icons_rc

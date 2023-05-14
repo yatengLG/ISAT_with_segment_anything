@@ -40,7 +40,7 @@
     </message>
     <message>
         <location filename="ISAT_to_VOC_dialog.py" line="121"/>
-        <source>cache</source>
+        <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
@@ -295,7 +295,7 @@
     </message>
     <message>
         <location filename="setting_dialog.py" line="109"/>
-        <source>Cache</source>
+        <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>

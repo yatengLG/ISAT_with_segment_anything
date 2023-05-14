@@ -150,9 +150,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="cache_button">
+         <widget class="QPushButton" name="cancel_button">
           <property name="text">
-           <string>Cache</string>
+           <string>Cancel</string>
           </property>
           <property name="icon">
            <iconset>

@@ -121,13 +121,13 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.mainwindow.reload_cfg()
         self.close()
 
-    def cache(self):
+    def cancel(self):
         self.close()
 
     def init_connect(self):
         self.add_button.clicked.connect(self.add_new_category)
         self.apply_button.clicked.connect(self.apply)
-        self.cache_button.clicked.connect(self.cache)
+        self.cancel_button.clicked.connect(self.cancel)
         self.color_button.clicked.connect(self.choice_color)
         self.pushButton_import.clicked.connect(self.import_cfg)
         self.pushButton_export.clicked.connect(self.export_cfg)

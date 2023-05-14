@@ -201,9 +201,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_cache">
+       <widget class="QPushButton" name="pushButton_cancel">
         <property name="text">
-         <string>cache</string>
+         <string>cancel</string>
         </property>
         <property name="icon">
          <iconset>

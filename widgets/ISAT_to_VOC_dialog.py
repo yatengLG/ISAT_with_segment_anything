@@ -47,8 +47,8 @@ class ISATtoVOCDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.lineEdit_save_root.clear()
 
-    def cache(self):
-        self.converter.cache = True
+    def cancel(self):
+        self.converter.cancel = True
         self.close()
 
     def apply(self):
@@ -68,7 +68,7 @@ class ISATtoVOCDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.progressBar.reset()
         self.textBrowser.clear()
-        self.converter.cache = False
+        self.converter.cancel = False
         if os.path.exists(os.path.join(self.label_root, 'isat.yaml')):
             self.converter.cfg = load_config(os.path.join(self.label_root, 'isat.yaml'))
         else:
@@ -97,4 +97,4 @@ class ISATtoVOCDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_label_root.clicked.connect(self._label_root)
         self.pushButton_save_root.clicked.connect(self._save_root)
         self.pushButton_apply.clicked.connect(self.apply)
-        self.pushButton_cache.clicked.connect(self.cache)
+        self.pushButton_cancel.clicked.connect(self.cancel)

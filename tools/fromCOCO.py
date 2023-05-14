@@ -19,7 +19,7 @@ class FROMCOCO(QThread):
         self.to_root:str = None
         self.keep_crowd = False
 
-        self.cache = False
+        self.cancel = False
 
     def run(self):
         assert self.coco_json_path.endswith('.json')
@@ -45,7 +45,7 @@ class FROMCOCO(QThread):
 
                 self.message.emit(None, None, 'Loading annotations...')
                 for index, annotation in enumerate(annotations):
-                    if self.cache:
+                    if self.cancel:
                         return
                     self.message.emit(index+1, len(annotations), None)
 
@@ -129,7 +129,7 @@ class FROMCOCO(QThread):
 
                 self.message.emit(None, None, 'Start convert to ISAT json...')
                 for index, (image_id, values) in enumerate(annos.items()):
-                    if self.cache:
+                    if self.cancel:
                         return
                     image_path = images[image_id].get('file_name')
                     folder, name = os.path.split(image_path)

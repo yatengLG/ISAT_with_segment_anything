@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>226</height>
+    <height>227</height>
    </rect>
   </property>
   <property name="font">
@@ -170,9 +170,9 @@ p, li { white-space: pre-wrap; }
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_cache">
+       <widget class="QPushButton" name="pushButton_cancel">
         <property name="text">
-         <string>cache</string>
+         <string>cancel</string>
         </property>
         <property name="icon">
          <iconset>

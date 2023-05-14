@@ -20,7 +20,7 @@ class TOVOC(QThread):
         self.to_root = None
         self.is_instance = False
         self.keep_crowd = False
-        self.cache = False
+        self.cancel = False
 
     def run(self):
         labels = self.cfg.get('label', [])
@@ -48,7 +48,7 @@ class TOVOC(QThread):
 
         for index, json in enumerate(jsons):
 
-            if self.cache:
+            if self.cancel:
                 return
             from_path = os.path.join(self.from_root, json)
             self.message.emit(index+1, num_jsons, '{:>8d}/{:<8d} | Loading json:{}'.format(index+1, num_jsons, json))

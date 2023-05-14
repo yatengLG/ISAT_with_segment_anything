@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>400</height>
+    <height>399</height>
    </rect>
   </property>
   <property name="font">
@@ -259,12 +259,12 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_cache">
+       <widget class="QPushButton" name="pushButton_cancel">
         <property name="text">
-         <string>cache</string>
+         <string>cancel</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
         </property>
        </widget>
@@ -275,7 +275,7 @@
          <string>apply</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
+         <iconset>
           <normaloff>:/icons/icons/校验_check-one.svg</normaloff>:/icons/icons/校验_check-one.svg</iconset>
         </property>
        </widget>

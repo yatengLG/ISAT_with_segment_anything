@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/COCO_to_ISAT_dialog.ui'
+# Form implementation generated from reading ui file 'COCO_to_ISAT_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -85,12 +85,12 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.label)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
-        self.pushButton_cache = QtWidgets.QPushButton(self.widget_2)
+        self.pushButton_cancel = QtWidgets.QPushButton(self.widget_2)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/关闭_close-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_cache.setIcon(icon)
-        self.pushButton_cache.setObjectName("pushButton_cache")
-        self.horizontalLayout.addWidget(self.pushButton_cache)
+        self.pushButton_cancel.setIcon(icon)
+        self.pushButton_cancel.setObjectName("pushButton_cancel")
+        self.horizontalLayout.addWidget(self.pushButton_cancel)
         self.pushButton_apply = QtWidgets.QPushButton(self.widget_2)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/校验_check-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -111,6 +111,6 @@ class Ui_Dialog(object):
         self.lineEdit_label_path.setPlaceholderText(_translate("Dialog", "COCO json path"))
         self.checkBox_keepcrowd.setText(_translate("Dialog", "Keep crowd"))
         self.label.setText(_translate("Dialog", "Convert COCO json to ISAT jsons.All layer attr is 1."))
-        self.pushButton_cache.setText(_translate("Dialog", "cache"))
+        self.pushButton_cancel.setText(_translate("Dialog", "cancel"))
         self.pushButton_apply.setText(_translate("Dialog", "convert"))
 import icons_rc

@@ -8,6 +8,8 @@
 ![](https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything?style=social)
 ![](https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything?style=social)
 
+[[中文](README.md)]         [[English](README-en.md)]
+
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
 **项目持续更新中，[更新日志](./UpdateLog.md)，欢迎大家提出建议**
@@ -16,7 +18,7 @@
 
 Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
-[中文](README.md)         [English](README-en.md)
+
 
 # 特点
 

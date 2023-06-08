@@ -3,6 +3,11 @@
 
 ![标注.gif](./display/标注%20-big-original.gif)
 
+**如果这个项目给您的工作生活带来了便捷，请给一个Star；如果想对该项目贡献代码，请发Pull requests**
+
+![](https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything?style=social)
+![](https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything?style=social)
+
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
 **项目持续更新中，[更新日志](./UpdateLog.md)，欢迎大家提出建议**

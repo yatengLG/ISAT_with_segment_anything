@@ -26,7 +26,8 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 9. Support opening JSON files annotated by labelme (please backup a copy before opening), and modify.
 10. Support exporting ISAT format json to VOC as single-channel png images.
 11. Support exporting ISAT format jsons to COCO format json.
-12. Support exporting COCO format json to ISAT format jsons.
+12. Support exporting ISAT format json to LabelMe format json.
+13. Support exporting COCO format json to ISAT format jsons.
 
 # INSTALL
 ## 1. Run the source code

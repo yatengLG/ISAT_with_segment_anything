@@ -33,7 +33,8 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 9. **兼容labelme**标注的json文件，支持开打并进行二次修改（打开前请先备份一份）。
 10. 支持将ISAT格式json转换为VOC格式（单通道png）。
 11. 支持将ISAT格式json转换为COCO格式json（会丢失图层信息）。
-12. 支持将COCO格式json转换为ISAT格式json，进行二次修改。
+12. 支持将ISAT格式json转换为LabelMe格式json(会丢失图层信息)。
+13. 支持将COCO格式json转换为ISAT格式json，进行二次修改。
 
 # 安装
 ## 1. 源码运行

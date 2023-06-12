@@ -39,7 +39,7 @@ conda activate ISAT_with_segment_anything
 
 ### (2) Install Segment anything
 ```shell
-git clone git@github.com:facebookresearch/segment-anything.git
+git clone https://github.com/facebookresearch/segment-anything.git
 cd segment-anything
 pip install -e .
 cd ..

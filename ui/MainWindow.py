@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
+# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setEnabled(True)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1280, 24))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -212,7 +212,7 @@ class Ui_MainWindow(object):
         self.actionTo_bottom.setObjectName("actionTo_bottom")
         self.actionToVOC = QtWidgets.QAction(MainWindow)
         icon19 = QtGui.QIcon()
-        icon19.addPixmap(QtGui.QPixmap(":/icon/icons/voc.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon19.addPixmap(QtGui.QPixmap(":/icon/icons/VOC_32x32.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionToVOC.setIcon(icon19)
         self.actionToVOC.setWhatsThis("")
         self.actionToVOC.setObjectName("actionToVOC")
@@ -263,6 +263,11 @@ class Ui_MainWindow(object):
         self.actionFromCOCO = QtWidgets.QAction(MainWindow)
         self.actionFromCOCO.setIcon(icon25)
         self.actionFromCOCO.setObjectName("actionFromCOCO")
+        self.actionTo_LabelMe = QtWidgets.QAction(MainWindow)
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(":/icon/icons/labelme_32x32.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionTo_LabelMe.setIcon(icon26)
+        self.actionTo_LabelMe.setObjectName("actionTo_LabelMe")
         self.menuFile.addAction(self.actionOpen_dir)
         self.menuFile.addAction(self.actionSave_dir)
         self.menuFile.addSeparator()
@@ -285,6 +290,8 @@ class Ui_MainWindow(object):
         self.menuAbout.addAction(self.actionAbout)
         self.menuTools.addAction(self.actionToVOC)
         self.menuTools.addAction(self.actionToCOCO)
+        self.menuTools.addAction(self.actionTo_LabelMe)
+        self.menuTools.addSeparator()
         self.menuTools.addAction(self.actionFromCOCO)
         self.menuEdit.addAction(self.actionSegment_anything)
         self.menuEdit.addAction(self.actionPolygon)
@@ -395,7 +402,7 @@ class Ui_MainWindow(object):
         self.actionTo_bottom.setShortcut(_translate("MainWindow", "B"))
         self.actionToVOC.setText(_translate("MainWindow", "To VOC"))
         self.actionToVOC.setToolTip(_translate("MainWindow", "Convert ISAT to VOC"))
-        self.actionToVOC.setStatusTip(_translate("MainWindow", "Convert ISAT jsons to VOC png image."))
+        self.actionToVOC.setStatusTip(_translate("MainWindow", "Convert ISAT jsons to VOC png images."))
         self.actionChinese.setText(_translate("MainWindow", "中文"))
         self.actionEnglish.setText(_translate("MainWindow", "English"))
         self.actionBackspace.setText(_translate("MainWindow", "Backspace"))
@@ -423,4 +430,7 @@ class Ui_MainWindow(object):
         self.actionFromCOCO.setText(_translate("MainWindow", "From COCO"))
         self.actionFromCOCO.setToolTip(_translate("MainWindow", "Convert COCO to ISAT"))
         self.actionFromCOCO.setStatusTip(_translate("MainWindow", "Convert COCO json to ISAT jsons."))
+        self.actionTo_LabelMe.setText(_translate("MainWindow", "To LabelMe"))
+        self.actionTo_LabelMe.setToolTip(_translate("MainWindow", "Convert ISAT to LabelMe"))
+        self.actionTo_LabelMe.setStatusTip(_translate("MainWindow", "Convert ISAT jsons to LabelMe jsons."))
 import icons_rc

@@ -39,7 +39,7 @@
         <translation>图层:</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="121"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="125"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
@@ -54,12 +54,12 @@
         <translation type="obsolete">ISAT标签文件转png</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="112"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="116"/>
         <source>png save root</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="109"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="113"/>
         <source>Save root</source>
         <translation>保存目录</translation>
     </message>
@@ -69,12 +69,12 @@
         <translation type="obsolete">实例分割</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="110"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="114"/>
         <source>ISAT jsons root</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="111"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="115"/>
         <source>Label root</source>
         <translation>标注目录</translation>
     </message>
@@ -84,7 +84,7 @@
         <translation type="obsolete">将ISAT标注文件转换为png图片.</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="122"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="126"/>
         <source>convert</source>
         <translation>转换</translation>
     </message>
@@ -326,7 +326,7 @@
     <message>
         <location filename="about_dialog.py" line="74"/>
         <source>ISAT with Segment anything.</source>
-        <translation>ISAT集成Segment anything.</translation>
+        <translation>ISAT with Segment anything.</translation>
     </message>
     <message>
         <location filename="about_dialog.py" line="75"/>
@@ -420,57 +420,57 @@ http://www.yatenglg.cn/isat</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="COCO_to_ISAT_dialog.py" line="107"/>
+        <location filename="COCO_to_ISAT_dialog.py" line="111"/>
         <source>COCO to ISAT</source>
         <translation>COCO转ISAT</translation>
     </message>
     <message>
-        <location filename="COCO_to_ISAT_dialog.py" line="109"/>
+        <location filename="COCO_to_ISAT_dialog.py" line="113"/>
         <source>Json path</source>
         <translation>Json路径</translation>
     </message>
     <message>
-        <location filename="COCO_to_ISAT_dialog.py" line="110"/>
+        <location filename="COCO_to_ISAT_dialog.py" line="114"/>
         <source>ISAT jsons save root</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="COCO_to_ISAT_dialog.py" line="111"/>
+        <location filename="COCO_to_ISAT_dialog.py" line="115"/>
         <source>COCO json path</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="114"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="118"/>
         <source>Keep crowd</source>
         <translation>保留拥挤目标</translation>
     </message>
     <message>
-        <location filename="COCO_to_ISAT_dialog.py" line="113"/>
+        <location filename="COCO_to_ISAT_dialog.py" line="117"/>
         <source>Convert COCO json to ISAT jsons.All layer attr is 1.</source>
         <translation>将COCO格式json转为ISAT格式json,图层默认为1。</translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="96"/>
+        <location filename="ISAT_to_COCO_dialog.py" line="100"/>
         <source>ISAT to COCO</source>
         <translation>ISAT转COCO</translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="97"/>
+        <location filename="ISAT_to_COCO_dialog.py" line="101"/>
         <source>Save path</source>
         <translation>保存路径</translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="98"/>
+        <location filename="ISAT_to_LABELME_dialog.py" line="101"/>
         <source>Jsons root</source>
         <translation>jsons目录</translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="99"/>
+        <location filename="ISAT_to_COCO_dialog.py" line="103"/>
         <source>COCO json save path</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="101"/>
+        <location filename="ISAT_to_COCO_dialog.py" line="105"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -479,22 +479,22 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_COCO_dialog.py" line="106"/>
+        <location filename="ISAT_to_COCO_dialog.py" line="110"/>
         <source>Convert ISAT jsons to COCO json.The layer attr will be lost.</source>
         <translation>将ISAT格式json转换为COCO格式json.将丢失图层信息。</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="108"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="112"/>
         <source>ISAT to VOC png</source>
         <translation>ISAT转VOC</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="113"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="117"/>
         <source>Is instance</source>
         <translation>实例分割</translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="115"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="119"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -503,9 +503,24 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ISAT_to_VOC_dialog.py" line="120"/>
+        <location filename="ISAT_to_VOC_dialog.py" line="124"/>
         <source>Convert ISAT annotations to VOC png.</source>
         <translation>将ISAT格式json转换为VOC格式单通道png图片。</translation>
+    </message>
+    <message>
+        <location filename="ISAT_to_LABELME_dialog.py" line="99"/>
+        <source>ISAT to LabelMe</source>
+        <translation>ISAT转LabelMe</translation>
+    </message>
+    <message>
+        <location filename="ISAT_to_LABELME_dialog.py" line="102"/>
+        <source>LabelMe jsons save root</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ISAT_to_LABELME_dialog.py" line="105"/>
+        <source>Convert ISAT annotations to LabelMe json.</source>
+        <translation>将ISAT格式json转换为LabelMe格式json。</translation>
     </message>
 </context>
 <context>
@@ -564,52 +579,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="333"/>
+        <location filename="MainWindow.py" line="340"/>
         <source>ISAT</source>
         <translation>ISAT 图片分割标注工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="334"/>
+        <location filename="MainWindow.py" line="341"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="335"/>
+        <location filename="MainWindow.py" line="342"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="336"/>
+        <location filename="MainWindow.py" line="343"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="338"/>
+        <location filename="MainWindow.py" line="345"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="385"/>
+        <location filename="MainWindow.py" line="392"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="340"/>
+        <location filename="MainWindow.py" line="347"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="341"/>
+        <location filename="MainWindow.py" line="348"/>
         <source>Info</source>
         <translation>图片信息</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="342"/>
+        <location filename="MainWindow.py" line="349"/>
         <source>Labels</source>
         <translation>标签列表</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="343"/>
+        <location filename="MainWindow.py" line="350"/>
         <source>Files</source>
         <translation>文件列表</translation>
     </message>
@@ -624,32 +639,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="346"/>
+        <location filename="MainWindow.py" line="353"/>
         <source>Zoom in</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="348"/>
+        <location filename="MainWindow.py" line="355"/>
         <source>Zoom out</source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="351"/>
+        <location filename="MainWindow.py" line="358"/>
         <source>Fit window</source>
         <translation>适应窗口</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="353"/>
+        <location filename="MainWindow.py" line="360"/>
         <source>F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="354"/>
+        <location filename="MainWindow.py" line="361"/>
         <source>Setting</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="357"/>
+        <location filename="MainWindow.py" line="364"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -659,12 +674,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">标签保存位置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="361"/>
+        <location filename="MainWindow.py" line="368"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="363"/>
+        <location filename="MainWindow.py" line="370"/>
         <source>S</source>
         <translation></translation>
     </message>
@@ -674,12 +689,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">上一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="365"/>
+        <location filename="MainWindow.py" line="372"/>
         <source>Prev image</source>
         <translation>上一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="367"/>
+        <location filename="MainWindow.py" line="374"/>
         <source>A</source>
         <translation></translation>
     </message>
@@ -689,17 +704,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">下一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="369"/>
+        <location filename="MainWindow.py" line="376"/>
         <source>Next image</source>
         <translation>下一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="371"/>
+        <location filename="MainWindow.py" line="378"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="373"/>
+        <location filename="MainWindow.py" line="380"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -714,72 +729,72 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">创建多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="416"/>
+        <location filename="MainWindow.py" line="423"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="378"/>
+        <location filename="MainWindow.py" line="385"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="379"/>
+        <location filename="MainWindow.py" line="386"/>
         <source>Delete polygon</source>
         <translation>删除多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="381"/>
+        <location filename="MainWindow.py" line="388"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="382"/>
+        <location filename="MainWindow.py" line="389"/>
         <source>Bit map</source>
         <translation>位图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="384"/>
+        <location filename="MainWindow.py" line="391"/>
         <source>Space</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="386"/>
+        <location filename="MainWindow.py" line="393"/>
         <source>Edit polygon</source>
         <translation>编辑多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="412"/>
+        <location filename="MainWindow.py" line="419"/>
         <source>E</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="388"/>
+        <location filename="MainWindow.py" line="395"/>
         <source>To top</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="389"/>
+        <location filename="MainWindow.py" line="396"/>
         <source>Move polygon to top layer</source>
         <translation>移动多边形到顶层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="391"/>
+        <location filename="MainWindow.py" line="398"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="392"/>
+        <location filename="MainWindow.py" line="399"/>
         <source>To bottom</source>
         <translation>置底</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="393"/>
+        <location filename="MainWindow.py" line="400"/>
         <source>Move polygon to bottom layer</source>
         <translation>移动多边形到底层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="395"/>
+        <location filename="MainWindow.py" line="402"/>
         <source>B</source>
         <translation></translation>
     </message>
@@ -794,12 +809,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">将ISAT标注文件转换为png图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="337"/>
+        <location filename="MainWindow.py" line="344"/>
         <source>Laguage</source>
         <translation>语言</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="372"/>
+        <location filename="MainWindow.py" line="379"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
@@ -809,52 +824,52 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">中文</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="400"/>
+        <location filename="MainWindow.py" line="407"/>
         <source>English</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="399"/>
+        <location filename="MainWindow.py" line="406"/>
         <source>中文</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="344"/>
+        <location filename="MainWindow.py" line="351"/>
         <source>Images dir</source>
         <translation>图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="345"/>
+        <location filename="MainWindow.py" line="352"/>
         <source>Open images dir.</source>
         <translation>打开图片文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="347"/>
+        <location filename="MainWindow.py" line="354"/>
         <source>Zoom in.</source>
         <translation>放大.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="349"/>
+        <location filename="MainWindow.py" line="356"/>
         <source>Zoom out.</source>
         <translation>缩小.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="352"/>
+        <location filename="MainWindow.py" line="359"/>
         <source>Fit window.</source>
         <translation>适应窗口.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="359"/>
+        <location filename="MainWindow.py" line="366"/>
         <source>Label dir</source>
         <translation>标签文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="360"/>
+        <location filename="MainWindow.py" line="367"/>
         <source>Open label dir.</source>
         <translation>打开标签文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="362"/>
+        <location filename="MainWindow.py" line="369"/>
         <source>Save annotation.</source>
         <translation>保存.</translation>
     </message>
@@ -869,7 +884,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开上一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="370"/>
+        <location filename="MainWindow.py" line="377"/>
         <source>Next image.</source>
         <translation>下一张图片.</translation>
     </message>
@@ -879,179 +894,199 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开下一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="380"/>
+        <location filename="MainWindow.py" line="387"/>
         <source>Delete polygon.</source>
         <translation>删除多边形.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="383"/>
+        <location filename="MainWindow.py" line="390"/>
         <source>Show instance or segmeent state.</source>
         <translation>显示语义与实例结果.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="387"/>
+        <location filename="MainWindow.py" line="394"/>
         <source>Edit polygon attribute.</source>
         <translation>编辑多边形属性.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="390"/>
+        <location filename="MainWindow.py" line="397"/>
         <source>Move polygon to top layer.</source>
         <translation>将多边形移动到最上层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="394"/>
+        <location filename="MainWindow.py" line="401"/>
         <source>Move polygon to bottom layer.</source>
         <translation>将多边形移动到最下层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="355"/>
+        <location filename="MainWindow.py" line="362"/>
         <source>Setting.</source>
         <translation>设置.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="358"/>
+        <location filename="MainWindow.py" line="365"/>
         <source>Exit.</source>
         <translation>退出.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="366"/>
+        <location filename="MainWindow.py" line="373"/>
         <source>Prev image.</source>
         <translation>前一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="375"/>
+        <location filename="MainWindow.py" line="382"/>
         <source>Segment anything</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="376"/>
+        <location filename="MainWindow.py" line="383"/>
         <source>Quick annotate using Segment anything.</source>
         <translation>使用Segment anything进行快速标注.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="377"/>
+        <location filename="MainWindow.py" line="384"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="402"/>
+        <location filename="MainWindow.py" line="409"/>
         <source>Backspace</source>
         <translation>回退</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="403"/>
+        <location filename="MainWindow.py" line="410"/>
         <source>Backspace.</source>
         <translation>回退.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="404"/>
+        <location filename="MainWindow.py" line="411"/>
         <source>Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="405"/>
+        <location filename="MainWindow.py" line="412"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="406"/>
+        <location filename="MainWindow.py" line="413"/>
         <source>Annotate canceled</source>
         <translation>标注取消</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="407"/>
+        <location filename="MainWindow.py" line="414"/>
         <source>Annotate canceled.</source>
         <translation>标注取消.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="408"/>
+        <location filename="MainWindow.py" line="415"/>
         <source>Esc</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="409"/>
+        <location filename="MainWindow.py" line="416"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="410"/>
+        <location filename="MainWindow.py" line="417"/>
         <source>Annotate finished</source>
         <translation>标注完成</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="411"/>
+        <location filename="MainWindow.py" line="418"/>
         <source>Annotate finished.</source>
         <translation>标注完成.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="413"/>
+        <location filename="MainWindow.py" line="420"/>
         <source>Polygon</source>
         <translation>多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="414"/>
+        <location filename="MainWindow.py" line="421"/>
         <source>Draw polygon</source>
         <translation>绘制多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="415"/>
+        <location filename="MainWindow.py" line="422"/>
         <source>Accurately annotate by drawing polygon. </source>
         <translation>通过手动绘制多边形,进行精细标注. </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="418"/>
+        <location filename="MainWindow.py" line="425"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="419"/>
+        <location filename="MainWindow.py" line="426"/>
         <source>V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="396"/>
+        <location filename="MainWindow.py" line="403"/>
         <source>To VOC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="397"/>
+        <location filename="MainWindow.py" line="404"/>
         <source>Convert ISAT to VOC</source>
         <translation>ISAT转VOC</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="398"/>
         <source>Convert ISAT jsons to VOC png image.</source>
-        <translation>将ISAT格式json转换为VOC单通道png。</translation>
+        <translation type="obsolete">将ISAT格式json转换为VOC单通道png。</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="420"/>
+        <location filename="MainWindow.py" line="427"/>
         <source>To COCO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="421"/>
+        <location filename="MainWindow.py" line="428"/>
         <source>Convert ISAT to COCO</source>
         <translation>ISAT转COCO</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="422"/>
+        <location filename="MainWindow.py" line="429"/>
         <source>Convert ISAT jsons to COCO json.</source>
         <translation>将ISAT格式json转换为COCO格式json。</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="423"/>
+        <location filename="MainWindow.py" line="430"/>
         <source>From COCO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="424"/>
+        <location filename="MainWindow.py" line="431"/>
         <source>Convert COCO to ISAT</source>
         <translation>COCO转ISAT</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="425"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>Convert COCO json to ISAT jsons.</source>
         <translation>将COCO格式json转换为ISAT格式json。</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="405"/>
+        <source>Convert ISAT jsons to VOC png images.</source>
+        <translation>将ISAT格式json转换为VOC单通道png图片。</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="433"/>
+        <source>To LabelMe</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="434"/>
+        <source>Convert ISAT to LabelMe</source>
+        <translation>ISAT转LabelMe</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="435"/>
+        <source>Convert ISAT jsons to LabelMe jsons.</source>
+        <translation>将ISAT格式json转换为LabelMe格式json。</translation>
     </message>
 </context>
 </TS>

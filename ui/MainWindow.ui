@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
@@ -152,6 +152,8 @@
     </property>
     <addaction name="actionToVOC"/>
     <addaction name="actionToCOCO"/>
+    <addaction name="actionTo_LabelMe"/>
+    <addaction name="separator"/>
     <addaction name="actionFromCOCO"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -574,7 +576,7 @@
   <action name="actionToVOC">
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/voc.png</normaloff>:/icon/icons/voc.png</iconset>
+     <normaloff>:/icon/icons/VOC_32x32.png</normaloff>:/icon/icons/VOC_32x32.png</iconset>
    </property>
    <property name="text">
     <string>To VOC</string>
@@ -583,7 +585,7 @@
     <string>Convert ISAT to VOC</string>
    </property>
    <property name="statusTip">
-    <string>Convert ISAT jsons to VOC png image.</string>
+    <string>Convert ISAT jsons to VOC png images.</string>
    </property>
    <property name="whatsThis">
     <string/>
@@ -691,7 +693,7 @@
   </action>
   <action name="actionVisible">
    <property name="icon">
-    <iconset resource="../icons.qrc">
+    <iconset>
      <normaloff>:/icon/icons/眼睛_eyes.svg</normaloff>:/icon/icons/眼睛_eyes.svg</iconset>
    </property>
    <property name="text">
@@ -732,6 +734,21 @@
    </property>
    <property name="statusTip">
     <string>Convert COCO json to ISAT jsons.</string>
+   </property>
+  </action>
+  <action name="actionTo_LabelMe">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/labelme_32x32.png</normaloff>:/icon/icons/labelme_32x32.png</iconset>
+   </property>
+   <property name="text">
+    <string>To LabelMe</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert ISAT to LabelMe</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert ISAT jsons to LabelMe jsons.</string>
    </property>
   </action>
  </widget>

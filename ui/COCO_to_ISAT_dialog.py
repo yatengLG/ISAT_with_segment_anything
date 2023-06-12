@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'COCO_to_ISAT_dialog.ui'
+# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/COCO_to_ISAT_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -80,6 +80,10 @@ class Ui_Dialog(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(self.widget_2)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        self.label.setFont(font)
         self.label.setStyleSheet("color: rgb(255, 0, 0);")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)

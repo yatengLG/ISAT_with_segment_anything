@@ -76,6 +76,7 @@ class Annotation:
                         self.objects.append(obj)
                 else:
                     # labelme格式json
+                    print('Warning: Load LabelMe formate json.')
                     shapes = dataset.get('shapes', {})
                     for shape in shapes:
                         # 只加载多边形
@@ -83,8 +84,8 @@ class Annotation:
                         if not is_polygon:
                             continue
                         category = shape.get('label', 'unknow')
-                        group = shape.get('group_id', 0)
-                        if group is None: group = 0
+                        group = shape.get('group_id', '')
+                        if group is None: group = ''
                         segmentation = shape.get('points', [])
                         iscrowd = shape.get('iscrowd', 0)
                         note = shape.get('note', '')

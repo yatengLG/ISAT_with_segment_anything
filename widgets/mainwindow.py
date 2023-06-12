@@ -14,6 +14,7 @@ from widgets.shortcut_dialog import ShortcutDialog
 from widgets.about_dialog import AboutDialog
 from widgets.ISAT_to_VOC_dialog import ISATtoVOCDialog
 from widgets.ISAT_to_COCO_dialog import ISATtoCOCODialog
+from widgets.ISAT_to_LABELME_dialog import ISATtoLabelMeDialog
 from widgets.COCO_to_ISAT_dialog import COCOtoISATDialog
 from widgets.canvas import AnnotationScene, AnnotationView
 from configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE
@@ -104,6 +105,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.ISAT_to_VOC_dialog = ISATtoVOCDialog(self, mainwindow=self)
         self.ISAT_to_COCO_dialog = ISATtoCOCODialog(self, mainwindow=self)
+        self.ISAT_to_LABELME_dialog = ISATtoLabelMeDialog(self, mainwindow=self)
         self.COCO_to_ISAT_dialog = COCOtoISATDialog(self, mainwindow=self)
 
         self.view = AnnotationView(parent=self)
@@ -155,6 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.ISAT_to_VOC_dialog.retranslateUi(self.ISAT_to_VOC_dialog)
         self.ISAT_to_COCO_dialog.retranslateUi(self.ISAT_to_COCO_dialog)
+        self.ISAT_to_LABELME_dialog.retranslateUi(self.ISAT_to_LABELME_dialog)
         self.COCO_to_ISAT_dialog.retranslateUi(self.COCO_to_ISAT_dialog)
 
     def translate_to_chinese(self):
@@ -477,6 +480,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ISAT_to_COCO_dialog.reset_gui()
         self.ISAT_to_COCO_dialog.show()
 
+    def ISAT_to_LABELME(self):
+        self.ISAT_to_LABELME_dialog.reset_gui()
+        self.ISAT_to_LABELME_dialog.show()
+
     def COCO_to_ISAT(self):
         self.COCO_to_ISAT_dialog.reset_gui()
         self.COCO_to_ISAT_dialog.show()
@@ -524,6 +531,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionToVOC.triggered.connect(self.ISAT_to_VOC)
         self.actionToCOCO.triggered.connect(self.ISAT_to_COCO)
+        self.actionTo_LabelMe.triggered.connect(self.ISAT_to_LABELME)
         self.actionFromCOCO.triggered.connect(self.COCO_to_ISAT)
 
         self.actionShortcut.triggered.connect(self.help)

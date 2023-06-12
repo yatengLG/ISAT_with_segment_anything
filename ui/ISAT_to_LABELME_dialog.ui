@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>Dialog</class>
  <widget class="QDialog" name="Dialog">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -20,18 +17,12 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>ISAT to VOC png</string>
-  </property>
-  <property name="sizeGripEnabled">
-   <bool>false</bool>
-  </property>
-  <property name="modal">
-   <bool>false</bool>
+   <string>ISAT to LabelMe</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="widget" native="true">
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -44,43 +35,26 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="pushButton_save_root">
+      <item>
+       <widget class="QLineEdit" name="lineEdit_fromroot">
         <property name="text">
-         <string>Save root</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLineEdit" name="lineEdit_label_root">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
+         <string/>
         </property>
         <property name="placeholderText">
          <string>ISAT jsons root</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="pushButton_label_root">
+      <item>
+       <widget class="QPushButton" name="pushButton_fromroot">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
-         <string>Label root</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLineEdit" name="lineEdit_save_root">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="placeholderText">
-         <string>png save root</string>
+         <string>Jsons root</string>
         </property>
        </widget>
       </item>
@@ -88,7 +62,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_3" native="true">
+    <widget class="QWidget" name="widget_2" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -103,36 +77,58 @@
        <number>0</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <widget class="QLineEdit" name="lineEdit_toroot">
+        <property name="placeholderText">
+         <string>LabelMe jsons save root</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_toroot">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Save root</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_3" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>469</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_is_instance">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="accessibleName">
-         <string/>
-        </property>
-        <property name="accessibleDescription">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Is instance</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_keep_crowd">
+       <widget class="QCheckBox" name="checkBox_keepcrowd">
         <property name="text">
          <string>Keep crowd</string>
         </property>
@@ -146,31 +142,20 @@
      <property name="font">
       <font>
        <family>宋体</family>
-       <pointsize>12</pointsize>
       </font>
-     </property>
-     <property name="lineWrapMode">
-      <enum>QTextEdit::NoWrap</enum>
-     </property>
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QProgressBar" name="progressBar">
      <property name="value">
-      <number>0</number>
+      <number>24</number>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="QWidget" name="widget_4" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -187,7 +172,6 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label">
         <property name="font">
          <font>
-          <family>Times New Roman</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -195,18 +179,18 @@ p, li { white-space: pre-wrap; }
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>
         <property name="text">
-         <string>Convert ISAT annotations to VOC png.</string>
+         <string>Convert ISAT annotations to LabelMe json.</string>
         </property>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>191</width>
           <height>20</height>
          </size>
         </property>
@@ -217,20 +201,12 @@ p, li { white-space: pre-wrap; }
         <property name="text">
          <string>cancel</string>
         </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
-        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_apply">
         <property name="text">
          <string>convert</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>:/icons/icons/校验_check-one.svg</normaloff>:/icons/icons/校验_check-one.svg</iconset>
         </property>
        </widget>
       </item>
@@ -239,8 +215,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

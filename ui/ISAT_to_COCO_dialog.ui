@@ -148,6 +148,12 @@ p, li { white-space: pre-wrap; }
       </property>
       <item>
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>

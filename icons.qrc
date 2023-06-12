@@ -1,9 +1,9 @@
 <RCC>
   <qresource prefix="icon">
-    <file>icons/coco.ico</file>
-    <file>icons/voc.png</file>
-    <file>icons/眼睛_eyes.svg</file>
     <file>icons/semantic.png</file>
+    <file>icons/VOC_32x32.png</file>
+    <file>icons/labelme_32x32.png</file>
+    <file>icons/coco.ico</file>
     <file>icons/M_Favicon.ico</file>
     <file>icons/instance.png</file>
     <file>icons/转换文件夹1_folder-conversion-one.svg</file>

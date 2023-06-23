@@ -142,8 +142,16 @@ class TOCOCO(QThread):
             except Exception as e:
                 self.message.emit(None, None, ' ' * 18 + '| Error: {}'.format(e))
 
-        categories_dict = sorted(categories_dict.items(), key=lambda x:x[1])
-        coco_anno['categories'] = [{'name': name, 'id': id, 'supercategory': None} for name, id in categories_dict]
+        #categories_dict = sorted(categories_dict.items(), key=lambda x:x[1])
+        #coco_anno['categories'] = [{'name': name, 'id': id, 'supercategory': None} for name, id in categories_dict]
+        categories_dict = sorted(categories_dict.items(), key=lambda x:x[0]) # sort categories by keys 根据种类名称排序，因为种类类别最终是一致的
+        new_category_ids = {category: index for index, (category, old_id) in enumerate(categories_dict)} # create a new dictionary mapping class names to new ids 将种类id重新排序
+        for annotation in coco_anno['annotations']:
+            old_category_id = annotation['category_id']
+            for category, new_id in new_category_ids.items():
+                if old_category_id == categories_dict[new_category_ids[category]][1]: # match old id 替换老的种类id为新排序的种类id
+                    annotation['category_id'] = new_id
+        coco_anno['categories'] = new_category_ids
 
         self.message.emit(None, None, 'Saving COCO json {}'.format(self.to_path))
         with open(self.to_path, 'w') as f:

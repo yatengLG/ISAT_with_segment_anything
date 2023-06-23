@@ -37,11 +37,11 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 13. 支持将COCO格式json转换为ISAT格式json，进行二次修改。
 
 # 安装
-## 1. 源码运行
+## 1. 源码运行 (推荐 mamba， conda也可以)
 ### (1) 创建虚拟环境
 ```shell
-conda create -n ISAT_with_segment_anything python==3.8
-conda activate ISAT_with_segment_anything
+mamba create -n ISAT_with_segment_anything python=3.8 -y
+mamba activate ISAT_with_segment_anything
 ```
 ### (2) 安装Segment anything
 ```shell
@@ -55,6 +55,23 @@ cd ..
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
+```
+### (3) （如果上述安装有问题）手动安装ISAT_with_segment_anything with GPU support
+```shell
+git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
+cd ISAT_with_segment_anything
+```
+Windows
+```shell
+mamba install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
+mamba install -c fastai opencv-python-headless -y
+mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
+```
+Mac
+```shell
+mamba install pytorch::pytorch torchvision torchaudio -c pytorch -y
+mamba install -c fastai opencv-python-headless -y
+mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
 ```
 ### (4) 下载Segment anything预训练模型
 下载任一模型，并将模型存放于ISAT_with_segment_anything/segment_any目录下

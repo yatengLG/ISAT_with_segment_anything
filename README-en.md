@@ -29,11 +29,11 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 12. Support exporting ISAT format json to LabelMe format json.
 13. Support exporting COCO format json to ISAT format jsons.
 
-# INSTALL
+# INSTALL （recommend to use mamba or conda）
 ## 1. Run the source code
 ### (1) Create environment
 ```shell
-conda create -n ISAT_with_segment_anything python==3.8
+conda create -n ISAT_with_segment_anything python==3.8 -y
 conda activate ISAT_with_segment_anything
 ```
 
@@ -51,7 +51,23 @@ git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
-
+### (3) （in case the installation above fails）Manually install ISAT_with_segment_anything with GPU support
+```shell
+git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
+cd ISAT_with_segment_anything
+```
+Windows
+```shell
+mamba install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia -y
+mamba install -c fastai opencv-python-headless -y
+mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
+```
+Mac
+```shell
+mamba install pytorch::pytorch torchvision torchaudio -c pytorch -y
+mamba install -c fastai opencv-python-headless -y
+mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
+```
 ### (4) Download Segment anything pretrained checkpoint.
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/segment_any

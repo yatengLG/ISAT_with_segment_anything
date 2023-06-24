@@ -151,7 +151,7 @@ class TOCOCO(QThread):
             for category, new_id in new_category_ids.items():
                 if old_category_id == categories_dict[new_category_ids[category]][1]: # match old id 替换老的种类id为新排序的种类id
                     annotation['category_id'] = new_id
-        coco_anno['categories'] = new_category_ids
+        coco_anno['categories'] = [{"name": name, "id": id, "supercategory": None} for name, id in new_category_ids.items()]
 
         self.message.emit(None, None, 'Saving COCO json {}'.format(self.to_path))
         with open(self.to_path, 'w') as f:

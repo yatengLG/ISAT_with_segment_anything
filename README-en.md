@@ -64,9 +64,9 @@ mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
 ```
 Mac
 ```shell
-mamba install pytorch::pytorch torchvision torchaudio -c pytorch -y
-mamba install -c fastai opencv-python-headless -y
-mamba install imgviz mahotas numpy pillow pyqt pyyaml pycocotools -y
+conda install pytorch::pytorch torchvision torchaudio -c pytorch -y
+pip install opencv-python-headless imgviz mahotas pycocotools 
+conda install numpy pillow pyqt pyyaml -y
 ```
 ### (4) Download Segment anything pretrained checkpoint.
 

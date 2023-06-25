@@ -5,7 +5,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from json import load, dump
 import os
 import numpy as np
-
+import yaml
 
 class TOCOCO(QThread):
     message = pyqtSignal(int, int, str)
@@ -40,6 +40,14 @@ class TOCOCO(QThread):
         coco_anno['categories'] = []
 
         categories_dict = {}
+        # categories_dict from isat.yaml, https://github.com/yatengLG/ISAT_with_segment_anything/issues/36
+        yaml_path = os.path.join(self.isat_json_root, 'isat.yaml')
+        if os.path.exists(yaml_path):
+            with open(yaml_path, 'rb')as f:
+                cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
+                for index, label_dict in enumerate(cfg.get('label', [])):
+                    label = label_dict.get('name', 'UNKNOW')
+                    categories_dict[label] = index
 
         jsons = [f for f in os.listdir(self.isat_json_root) if f.endswith('.json')]
         num_jsons = len(jsons)

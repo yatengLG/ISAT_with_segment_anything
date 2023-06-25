@@ -40,6 +40,7 @@ class TOCOCO(QThread):
         coco_anno['categories'] = []
 
         categories_dict = {}
+        uncontained_dict = {}
         # categories_dict from isat.yaml, https://github.com/yatengLG/ISAT_with_segment_anything/issues/36
         yaml_path = os.path.join(self.isat_json_root, 'isat.yaml')
         if os.path.exists(yaml_path):
@@ -95,6 +96,7 @@ class TOCOCO(QThread):
                         for cat in cats:
                             if cat not in categories_dict:
                                 categories_dict[cat] = len(categories_dict)
+                                uncontained_dict[cat] = len(categories_dict)
                             category_index = categories_dict.get(cat)
 
                             objs_with_cat = [obj for obj in objs_with_group if obj.get('category', 0) == cat]
@@ -162,6 +164,10 @@ class TOCOCO(QThread):
             except Exception as e:
                 self.message.emit(None, None, 'Error: {}'.format(e))
 
+        if uncontained_dict:
+            for k,i in uncontained_dict.items():
+                self.message.emit(None, None, 'Warning!!! The category [{}] is not contained in isat.yaml. Add it by id {}.'.format(k, i))
+        
         self.message.emit(None, None, '*** Finished! ***')
 
     def __del__(self):

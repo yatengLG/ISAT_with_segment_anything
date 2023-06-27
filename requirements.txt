@@ -7,3 +7,4 @@ PyQt5==5.15.7
 PyYAML==6.0
 torch==1.8.1
 torchvision==0.9.1
+pycocotools

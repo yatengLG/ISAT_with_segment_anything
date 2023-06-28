@@ -35,11 +35,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.image_data = np.array(Image.open(image_path))
         if self.mainwindow.use_segment_anything and self.mainwindow.can_be_annotated:
-            if self.image_data.ndim == 3 and self.image_data.shape[-1] == 3:
+            if self.image_data.ndim == 3 and self.image_data.shape[-1] == 3: # 三通道图
+                self.mainwindow.segany.set_image(self.image_data)
+            elif self.image_data.ndim == 2: # 单通道图
+                self.image_data = self.image_data[:, :, np.newaxis]
+                self.image_data = np.repeat(self.image_data, 3, axis=2) # 转换为三通道
                 self.mainwindow.segany.set_image(self.image_data)
             else:
-                self.mainwindow.statusbar.showMessage('Segment anything only support 3 channel rgb image.')
-
+                self.mainwindow.statusbar.showMessage("Segment anything don't support the image with {} ndim.".format(self.image_data.ndim))
+                
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
         self.addItem(self.image_item)

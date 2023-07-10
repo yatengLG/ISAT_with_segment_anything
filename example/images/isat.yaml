@@ -21,4 +21,4 @@ label:
 - color: '#5c3566'
   name: fence
 language: en
-mask_alpha: 0.6
+mask_alpha: 0.5

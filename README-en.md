@@ -1,7 +1,7 @@
 # ISAT with segment anything
 # Interactive semi-automatic annotation tool for image segmentation.
 
-![annotate.gif](./display/标注%20-big-original.gif)
+![annotate.gif](./display/标注.gif)
 
 Quick annotate for image segmentation by [segment anything](https://github.com/facebookresearch/segment-anything)
 

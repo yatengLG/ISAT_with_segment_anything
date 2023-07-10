@@ -179,9 +179,33 @@
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuMode">
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Mode</string>
+    </property>
+    <widget class="QMenu" name="menuContour_mode">
+     <property name="title">
+      <string>Contour mode</string>
+     </property>
+     <addaction name="actionContour_Max_only"/>
+     <addaction name="actionContour_External"/>
+     <addaction name="actionContour_All"/>
+    </widget>
+    <addaction name="menuContour_mode"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
+   <addaction name="menuMode"/>
    <addaction name="menuTools"/>
    <addaction name="menuAbout"/>
   </widget>
@@ -258,7 +282,7 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2"/>
   </widget>
-  <widget class="QDockWidget" name="labels_dock">
+  <widget class="QDockWidget" name="annos_dock">
    <property name="minimumSize">
     <size>
      <width>85</width>
@@ -269,7 +293,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Labels</string>
+    <string>Annos</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -284,6 +308,17 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents"/>
+  </widget>
+  <widget class="QDockWidget" name="categories_dock">
+   <property name="windowTitle">
+    <string>Categories</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout" name="verticalLayout_2"/>
+   </widget>
   </widget>
   <action name="actionOpen_dir">
    <property name="icon">
@@ -693,14 +728,17 @@
   </action>
   <action name="actionVisible">
    <property name="icon">
-    <iconset>
+    <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/眼睛_eyes.svg</normaloff>:/icon/icons/眼睛_eyes.svg</iconset>
    </property>
    <property name="text">
     <string>Visible</string>
    </property>
+   <property name="toolTip">
+    <string>Visible.</string>
+   </property>
    <property name="statusTip">
-    <string>Visible</string>
+    <string>Visible.</string>
    </property>
    <property name="shortcut">
     <string>V</string>
@@ -749,6 +787,66 @@
    </property>
    <property name="statusTip">
     <string>Convert ISAT jsons to LabelMe jsons.</string>
+   </property>
+  </action>
+  <action name="actionContour_Max_only">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Max only</string>
+   </property>
+   <property name="statusTip">
+    <string>Contour save max only.</string>
+   </property>
+   <property name="whatsThis">
+    <string>Contour save max only.</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionContour_External">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>External</string>
+   </property>
+   <property name="statusTip">
+    <string>Contour save external only.</string>
+   </property>
+   <property name="whatsThis">
+    <string>Contour save external only.</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionContour_All">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>All</string>
+   </property>
+   <property name="statusTip">
+    <string>Contour save all.</string>
+   </property>
+   <property name="whatsThis">
+    <string>Contour save all.</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
  </widget>

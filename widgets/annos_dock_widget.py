@@ -2,13 +2,13 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtCore, QtGui
-from ui.label_dock import Ui_Form
+from ui.anno_dock import Ui_Form
 import functools
 
 
-class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
+class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, mainwindow):
-        super(LabelsDockWidget, self).__init__()
+        super(AnnosDockWidget, self).__init__()
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.polygon_item_dict = {}

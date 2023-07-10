@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="icon">
     <file>icons/semantic.png</file>
+    <file>icons/眼睛_eyes.svg</file>
     <file>icons/VOC_32x32.png</file>
     <file>icons/labelme_32x32.png</file>
     <file>icons/coco.ico</file>

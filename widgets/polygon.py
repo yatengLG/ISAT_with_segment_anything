@@ -133,7 +133,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             else:
                 self.color.setAlpha(self.nohover_alpha)
                 self.setBrush(self.color)
-            self.scene().mainwindow.labels_dock_widget.set_selected(self) # 更新label面板
+            self.scene().mainwindow.annos_dock_widget.set_selected(self) # 更新label面板
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange: # ItemPositionHasChanged
             bias = value

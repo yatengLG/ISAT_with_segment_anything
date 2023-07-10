@@ -1,3 +1,4 @@
+contour_mode: external
 label:
 - color: '#000000'
   name: __background__
@@ -19,4 +20,5 @@ label:
   name: cake
 - color: '#5c3566'
   name: fence
-language: zh
+language: en
+mask_alpha: 0.5

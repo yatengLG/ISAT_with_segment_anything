@@ -2,9 +2,8 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtGui, QtCore
-from enum import Enum
 from widgets.polygon import Polygon
-from configs import STATUSMode, CLICKMode, DRAWMode
+from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
 import cv2
@@ -20,9 +19,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.VIEW
         self.click = CLICKMode.POSITIVE
         self.draw_mode = DRAWMode.SEGMENTANYTHING   # 默认使用segment anything进行快速标注
+        self.contour_mode = CONTOURMode.SAVE_EXTERNAL       # 默认SAM只保留外轮廓
         self.click_points = []
         self.click_points_mode = []
         self.masks:np.ndarray = None
+        self.mask_alpha = 0.5
         self.top_layer = 1
 
         self.guide_line_x:QtWidgets.QGraphicsLineItem = None
@@ -42,7 +43,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.image_data = np.repeat(self.image_data, 3, axis=2) # 转换为三通道
                 self.mainwindow.segany.set_image(self.image_data)
             else:
-                self.mainwindow.statusbar.showMessage("Segment anything don't support the image with {} ndim.".format(self.image_data.ndim))
+                self.mainwindow.statusbar.showMessage("Segment anything don't support the image with shape {} .".format(self.image_data.shape))
                 
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
@@ -76,7 +77,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSave.setEnabled(False)
 
         self.mainwindow.set_labels_visible(False)
-        self.mainwindow.labels_dock_widget.setEnabled(False)
+        self.mainwindow.annos_dock_widget.setEnabled(False)
 
     def change_mode_to_view(self):
         self.mode = STATUSMode.VIEW
@@ -101,7 +102,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
 
         self.mainwindow.set_labels_visible(True)
-        self.mainwindow.labels_dock_widget.setEnabled(True)
+        self.mainwindow.annos_dock_widget.setEnabled(True)
 
     def change_mode_to_edit(self):
         self.mode = STATUSMode.EDIT
@@ -127,6 +128,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def change_click_to_negative(self):
         self.click = CLICKMode.NEGATIVE
+
+    def change_contour_mode_to_save_all(self):
+        self.contour_mode = CONTOURMode.SAVE_ALL
+
+    def change_contour_mode_to_save_max_only(self):
+        self.contour_mode = CONTOURMode.SAVE_MAX_ONLY
+
+    def change_contour_mode_to_save_external(self):
+        self.contour_mode = CONTOURMode.SAVE_EXTERNAL
 
     def start_segment_anything(self):
         self.draw_mode = DRAWMode.SEGMENTANYTHING
@@ -154,6 +164,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.change_mode_to_view()
 
+        category = self.mainwindow.current_category
+        group = self.mainwindow.current_group
+        is_crowd = False
+        note = ''
+
         if self.draw_mode == DRAWMode.SEGMENTANYTHING:
             # mask to polygon
             # --------------
@@ -163,17 +178,54 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 h, w = masks.shape[-2:]
                 masks = masks.reshape(h, w)
 
-                contours, _ = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
+                if self.contour_mode == CONTOURMode.SAVE_ALL:
+                    # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
+                    contours, hierarchy = cv2.findContours(masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
+                else:
+                    # 当只保留外轮廓或单个mask时，只检测外轮廓
+                    contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
 
-                # 这里取轮廓点数最多的（可能返回多个轮廓）
-                contour = contours[0]
-                for cont in contours:
-                    if len(cont) > len(contour):
-                        contour = cont
+                if self.contour_mode == CONTOURMode.SAVE_MAX_ONLY:
+                    contour = contours[0]
+                    for cont in contours:
+                        if len(cont) > len(contour):
+                            contour = cont
+                    contours = [contour]
 
-                for point in contour:
-                    x, y = point[0]
-                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+                for index, contour in enumerate(contours):
+                    if self.current_graph is None:
+                        self.current_graph = Polygon()
+                        self.addItem(self.current_graph)
+
+                    if len(contour) < 3:
+                        continue
+                    for point in contour:
+                        x, y = point[0]
+                        self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                    if self.contour_mode == CONTOURMode.SAVE_ALL and hierarchy[0][index][3] != -1:
+                        # 保存所有轮廓，且当前轮廓为子轮廓，则自轮廓类别设置为背景
+                        category = '__background__'
+                        group = 0
+                    else:
+                        category = self.mainwindow.current_category
+                        group = self.mainwindow.current_group
+
+                    self.current_graph.set_drawed(category,
+                                                  group,
+                                                  is_crowd,
+                                                  note,
+                                                  QtGui.QColor(self.mainwindow.category_color_dict[category]),
+                                                  self.top_layer)
+
+                    # 添加新polygon
+                    self.mainwindow.polygons.append(self.current_graph)
+                    # 设置为最高图层
+                    self.current_graph.setZValue(len(self.mainwindow.polygons))
+                    for vertex in self.current_graph.vertexs:
+                        vertex.setZValue(len(self.mainwindow.polygons))
+                    self.current_graph = None
+                self.mainwindow.current_group += 1
 
         elif self.draw_mode == DRAWMode.POLYGON:
             if len(self.current_graph.points) < 1:
@@ -198,9 +250,28 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.current_graph.addPoint(last_point)
                 self.current_graph.addPoint(QtCore.QPointF(last_point.x(), first_point.y()))
 
+            # 设置polygon 属性
+            self.current_graph.set_drawed(category,
+                                          group,
+                                          is_crowd,
+                                          note,
+                                          QtGui.QColor(self.mainwindow.category_color_dict[category]),
+                                          self.top_layer)
+            self.mainwindow.current_group += 1
+            # 添加新polygon
+            self.mainwindow.polygons.append(self.current_graph)
+            # 设置为最高图层
+            self.current_graph.setZValue(len(self.mainwindow.polygons))
+            for vertex in self.current_graph.vertexs:
+                vertex.setZValue(len(self.mainwindow.polygons))
         # 选择类别
-        self.mainwindow.category_choice_widget.load_cfg()
-        self.mainwindow.category_choice_widget.show()
+        # self.mainwindow.category_choice_widget.load_cfg()
+        # self.mainwindow.category_choice_widget.show()
+
+        self.mainwindow.annos_dock_widget.update_listwidget()
+
+        self.current_graph = None
+        self.change_mode_to_view()
 
         # mask清空
         self.click_points.clear()
@@ -234,7 +305,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for p in self.mainwindow.polygons:
                 if p.zValue() > deleted_layer:
                     p.setZValue(p.zValue() - 1)
-            self.mainwindow.labels_dock_widget.update_listwidget()
+            self.mainwindow.annos_dock_widget.update_listwidget()
 
     def edit_polygon(self):
         selectd_items = self.selectedItems()
@@ -368,18 +439,21 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
     def update_mask(self):
         if not self.mainwindow.use_segment_anything:
             return
+        if self.image_data is None:
+            return
         if not (self.image_data.ndim == 3 and self.image_data.shape[-1] == 3):
             return
 
         if len(self.click_points) > 0 and len(self.click_points_mode) > 0:
-            masks = self.mainwindow.segany.predict(self.click_points, self.click_points_mode)
+            masks = self.mainwindow.segany.predict_with_point_prompt(self.click_points, self.click_points_mode)
             self.masks = masks
             color = np.array([0, 0, 255])
             h, w = masks.shape[-2:]
             mask_image = masks.reshape(h, w, 1) * color.reshape(1, 1, -1)
             mask_image = mask_image.astype("uint8")
             mask_image = cv2.cvtColor(mask_image, cv2.COLOR_BGR2RGB)
-            mask_image = cv2.addWeighted(self.image_data, 0.5, mask_image, 0.9, 0)
+            # 这里通过调整原始图像的权重self.mask_alpha，来调整mask的明显程度。
+            mask_image = cv2.addWeighted(self.image_data, self.mask_alpha, mask_image, 1, 0)
             mask_image = QtGui.QImage(mask_image[:], mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
                                       QtGui.QImage.Format_RGB888)
             mask_pixmap = QtGui.QPixmap(mask_image)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/label_dock.ui'
+# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/anno_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #

@@ -202,9 +202,15 @@
     </widget>
     <addaction name="menuContour_mode"/>
    </widget>
+   <widget class="QMenu" name="menuSAM_model">
+    <property name="title">
+     <string>SAM</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
+   <addaction name="menuSAM_model"/>
    <addaction name="menuMode"/>
    <addaction name="menuTools"/>
    <addaction name="menuAbout"/>

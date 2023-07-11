@@ -34,8 +34,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
-        self.init_ui()
-        self.init_segment_anything()
 
         self.image_root: str = None
         self.label_root:str = None
@@ -58,41 +56,51 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.map_mode = MAPMode.LABEL
         # 标注目标
         self.current_label:Annotation = None
+        self.use_segment_anything = False
 
+        self.init_ui()
         self.reload_cfg()
 
         self.init_connect()
         self.reset_action()
 
-    def init_segment_anything(self):
-        if os.path.exists('./segment_any/sam_vit_h_4b8939.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_h_4b8939.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_h_4b8939.pth')
-            self.use_segment_anything = True
-        elif os.path.exists('./segment_any/sam_vit_l_0b3195.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_l_0b3195.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_l_0b3195.pth')
-            self.use_segment_anything = True
-        elif os.path.exists('./segment_any/sam_vit_b_01ec64.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_b_01ec64.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_b_01ec64.pth')
-            self.use_segment_anything = True
-        else:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format('https://github.com/facebookresearch/segment-anything#model-checkpoints'))
+    def init_segment_anything(self, model_name, reload=False):
+        if model_name == '':
             self.use_segment_anything = False
+            for name, action in self.pths_actions.items():
+                action.setChecked(model_name == name)
+            return
+        model_path = os.path.join('segment_any', model_name)
+        if not os.path.exists(model_path):
+            QtWidgets.QMessageBox.warning(self, 'Warning',
+                                          'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format(
+                                              'https://github.com/facebookresearch/segment-anything#model-checkpoints'))
+            for name, action in self.pths_actions.items():
+                action.setChecked(model_name == name)
+            self.use_segment_anything = False
+            return
 
-        if self.use_segment_anything:
-            if self.segany.device != 'cpu':
-                self.gpu_resource_thread = GPUResource_Thread()
-                self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
-                self.gpu_resource_thread.start()
+        self.segany = SegAny(model_path)
+        self.use_segment_anything = True
+        self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
+        for name, action in self.pths_actions.items():
+            action.setChecked(model_name==name)
+        if not reload:
+            if self.use_segment_anything:
+                if self.segany.device != 'cpu':
+                    self.gpu_resource_thread = GPUResource_Thread()
+                    self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
+                    self.gpu_resource_thread.start()
+                else:
+                    self.labelGPUResource.setText('cpu')
             else:
-                self.labelGPUResource.setText('cpu')
-        else:
-            self.labelGPUResource.setText('segment anything unused.')
+                self.labelGPUResource.setText('segment anything unused.')
+
+        if reload and self.current_index is not None:
+            self.show_image(self.current_index)
 
     def init_ui(self):
-        #
+        #q
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
         self.categories_dock_widget = CategoriesDockWidget(mainwindow=self)
@@ -144,6 +152,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.labelData)
 
         #
+        model_names = sorted([pth for pth in os.listdir('segment_any') if pth.endswith('.pth')])
+        self.pths_actions = {}
+        for model_name in model_names:
+            action = QtWidgets.QAction(self)
+            action.setObjectName("actionZoom_in")
+            action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
+            action.setText("{}".format(model_name))
+            action.setCheckable(True)
+
+            self.pths_actions[model_name] = action
+            self.menuSAM_model.addAction(action)
 
         self.toolBar.addSeparator()
         self.mask_aplha = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
@@ -212,6 +231,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         mask_alpha = self.cfg.get('mask_alpha', 0.5)
         self.cfg['mask_alpha'] = mask_alpha
         self.mask_aplha.setValue(mask_alpha*10)
+
+        model_name = self.cfg.get('model_name', '')
+        self.init_segment_anything(model_name)
 
         self.categories_dock_widget.update_widget()
 

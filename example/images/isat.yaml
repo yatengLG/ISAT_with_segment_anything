@@ -1,4 +1,4 @@
-contour_mode: external
+contour_mode: all
 label:
 - color: '#000000'
   name: __background__

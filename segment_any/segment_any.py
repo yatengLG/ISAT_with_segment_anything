@@ -16,6 +16,7 @@ class SegAny:
             self.model_type = "vit_h"
         else:
             raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+        torch.cuda.empty_cache()
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)

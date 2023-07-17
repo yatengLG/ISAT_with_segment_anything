@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/label_dock.ui'
+# Form implementation generated from reading ui file 'label_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -27,6 +27,15 @@ class Ui_Form(object):
         self.checkBox_visible = QtWidgets.QCheckBox(self.widget)
         self.checkBox_visible.setObjectName("checkBox_visible")
         self.horizontalLayout.addWidget(self.checkBox_visible)
+        self.comboBox_group_select = QtWidgets.QComboBox(self.widget)
+        self.comboBox_group_select.setObjectName("comboBox_group_select")
+        self.horizontalLayout.addWidget(self.comboBox_group_select)
+        self.button_prev_group = QtWidgets.QPushButton(self.widget)
+        self.button_prev_group.setObjectName("button_prev_group")
+        self.horizontalLayout.addWidget(self.button_prev_group)
+        self.button_next_group = QtWidgets.QPushButton(self.widget)
+        self.button_next_group.setObjectName("button_next_group")
+        self.horizontalLayout.addWidget(self.button_next_group)
         self.verticalLayout.addWidget(self.widget)
         self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName("listWidget")
@@ -39,3 +48,5 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.checkBox_visible.setText(_translate("Form", "Visible"))
+        self.button_prev_group.setText(_translate("Form", "Previous"))
+        self.button_next_group.setText(_translate("Form", "Next"))

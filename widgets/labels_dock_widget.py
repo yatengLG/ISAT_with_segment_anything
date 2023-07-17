@@ -137,16 +137,34 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
             else:
                 check_box.setChecked(False)
 
+    def zoom_to_group(self):
+        selected_group = self.comboBox_group_select.currentText()
+        polygons_in_group = [polygon for polygon, item in self.polygon_item_dict.items() 
+                            if polygon.group == selected_group]
+        if not polygons_in_group:
+            return
+        min_x = min(min(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        min_y = min(min(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        max_x = max(max(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        max_y = max(max(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        margin = 20
+        bounding_rect = QtCore.QRectF(min_x - margin, min_y - margin, max_x - min_x + 2*margin, max_y - min_y + 2*margin)
+        self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.KeepAspectRatio)
+
     def go_to_next_group(self):
         current_index = self.comboBox_group_select.currentIndex()
         max_index = self.comboBox_group_select.count() - 1
         if current_index < max_index:
             self.comboBox_group_select.setCurrentIndex(current_index + 1)
             self.set_group_polygon_visible()
+            self.zoom_to_group()
 
     def go_to_prev_group(self):
         current_index = self.comboBox_group_select.currentIndex()
         if current_index > 0:
             self.comboBox_group_select.setCurrentIndex(current_index - 1)
             self.set_group_polygon_visible()
+            self.zoom_to_group()
+
+
 

@@ -4,7 +4,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ui.label_dock import Ui_Form
 import functools
-
+import re
 
 class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, mainwindow):
@@ -83,7 +83,7 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
         unique_groups = {polygon.group for polygon in self.mainwindow.polygons}
         self.comboBox_group_select.clear()
         self.comboBox_group_select.addItem('All')  # add an option to view all groups
-        self.comboBox_group_select.addItems(sorted(unique_groups))
+        self.comboBox_group_select.addItems(sorted(unique_groups, key=lambda s: [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]))
 
     def set_selected(self, polygon):
         item = self.polygon_item_dict[polygon]

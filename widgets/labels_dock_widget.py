@@ -4,7 +4,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ui.label_dock import Ui_Form
 import functools
-
+import re
 
 class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, mainwindow):
@@ -15,6 +15,11 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
 
         self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
         self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
+
+        # addded group view
+        self.comboBox_group_select.currentIndexChanged.connect(self.set_group_polygon_visible)
+        self.button_next_group.clicked.connect(self.go_to_next_group)
+        self.button_prev_group.clicked.connect(self.go_to_prev_group)
 
         self.listWidget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.listWidget.customContextMenuRequested.connect(
@@ -75,6 +80,11 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
         if self.mainwindow.load_finished:
             self.mainwindow.set_saved_state(False)
 
+        unique_groups = {polygon.group for polygon in self.mainwindow.polygons}
+        self.comboBox_group_select.clear()
+        self.comboBox_group_select.addItem('All')  # add an option to view all groups
+        self.comboBox_group_select.addItems(sorted(unique_groups, key=lambda s: [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]))
+
     def set_selected(self, polygon):
         item = self.polygon_item_dict[polygon]
         if polygon.isSelected():
@@ -114,3 +124,47 @@ class LabelsDockWidget(QtWidgets.QWidget, Ui_Form):
             check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
             check_box.setChecked(visible)
         self.checkBox_visible.setChecked(visible)
+
+    def set_group_polygon_visible(self):
+        selected_group = self.comboBox_group_select.currentText()
+
+        for polygon, item in self.polygon_item_dict.items():
+            widget = self.listWidget.itemWidget(item)
+            check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
+
+            if selected_group == 'All' or polygon.group == selected_group:
+                check_box.setChecked(True)
+            else:
+                check_box.setChecked(False)
+
+    def zoom_to_group(self):
+        selected_group = self.comboBox_group_select.currentText()
+        polygons_in_group = [polygon for polygon, item in self.polygon_item_dict.items() 
+                            if polygon.group == selected_group]
+        if not polygons_in_group:
+            return
+        min_x = min(min(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        min_y = min(min(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        max_x = max(max(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        max_y = max(max(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        margin = 20
+        bounding_rect = QtCore.QRectF(min_x - margin, min_y - margin, max_x - min_x + 2*margin, max_y - min_y + 2*margin)
+        self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.KeepAspectRatio)
+
+    def go_to_next_group(self):
+        current_index = self.comboBox_group_select.currentIndex()
+        max_index = self.comboBox_group_select.count() - 1
+        if current_index < max_index:
+            self.comboBox_group_select.setCurrentIndex(current_index + 1)
+            self.set_group_polygon_visible()
+            self.zoom_to_group()
+
+    def go_to_prev_group(self):
+        current_index = self.comboBox_group_select.currentIndex()
+        if current_index > 0:
+            self.comboBox_group_select.setCurrentIndex(current_index - 1)
+            self.set_group_polygon_visible()
+            self.zoom_to_group()
+
+
+

@@ -84,7 +84,7 @@ class Annotation:
                         if not is_polygon:
                             continue
                         category = shape.get('label', 'unknow')
-                        group = shape.get('group_id', '')
+                        group = shape.get('group_id', 0)
                         if group is None: group = ''
                         segmentation = shape.get('points', [])
                         iscrowd = shape.get('iscrowd', 0)

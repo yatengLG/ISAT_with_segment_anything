@@ -88,7 +88,7 @@ class CategoryChoiceDialog(QtWidgets.QDialog, Ui_Dialog):
         for vertex in self.scene.current_graph.vertexs:
             vertex.setZValue(len(self.mainwindow.polygons))
 
-        self.mainwindow.labels_dock_widget.update_listwidget()
+        self.mainwindow.annos_dock_widget.update_listwidget()
 
         self.scene.current_graph = None
         self.scene.change_mode_to_view()

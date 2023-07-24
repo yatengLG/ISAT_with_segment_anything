@@ -6,7 +6,8 @@ from ui.MainWindow import Ui_MainWindow
 from widgets.setting_dialog import SettingDialog
 from widgets.category_choice_dialog import CategoryChoiceDialog
 from widgets.category_edit_dialog import CategoryEditDialog
-from widgets.labels_dock_widget import LabelsDockWidget
+from widgets.category_dock_widget import CategoriesDockWidget
+from widgets.annos_dock_widget import AnnosDockWidget
 from widgets.files_dock_widget import FilesDockWidget
 from widgets.info_dock_widget import InfoDockWidget
 from widgets.right_button_menu import RightButtonMenu
@@ -33,13 +34,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
-        self.init_ui()
+
         self.image_root: str = None
         self.label_root:str = None
 
         self.files_list: list = []
         self.current_index = None
         self.current_file_index: int = None
+
+        self.current_label = '__background__'
+        self.current_group = 1
 
         self.config_file = CONFIG_FILE if os.path.exists(CONFIG_FILE) else DEFAULT_CONFIG_FILE
         self.saved = True
@@ -52,46 +56,58 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.map_mode = MAPMode.LABEL
         # 标注目标
         self.current_label:Annotation = None
+        self.use_segment_anything = False
 
+        self.init_ui()
         self.reload_cfg()
 
         self.init_connect()
         self.reset_action()
-        self.init_segment_anything()
 
-    def init_segment_anything(self):
-        if os.path.exists('./segment_any/sam_vit_h_4b8939.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_h_4b8939.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_h_4b8939.pth')
-            self.use_segment_anything = True
-        elif os.path.exists('./segment_any/sam_vit_l_0b3195.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_l_0b3195.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_l_0b3195.pth')
-            self.use_segment_anything = True
-        elif os.path.exists('./segment_any/sam_vit_b_01ec64.pth'):
-            self.statusbar.showMessage('Find the checkpoint named {}.'.format('sam_vit_b_01ec64.pth'))
-            self.segany = SegAny('./segment_any/sam_vit_b_01ec64.pth')
-            self.use_segment_anything = True
-        else:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format('https://github.com/facebookresearch/segment-anything#model-checkpoints'))
+    def init_segment_anything(self, model_name, reload=False):
+        if model_name == '':
             self.use_segment_anything = False
+            for name, action in self.pths_actions.items():
+                action.setChecked(model_name == name)
+            return
+        model_path = os.path.join('segment_any', model_name)
+        if not os.path.exists(model_path):
+            QtWidgets.QMessageBox.warning(self, 'Warning',
+                                          'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format(
+                                              'https://github.com/facebookresearch/segment-anything#model-checkpoints'))
+            for name, action in self.pths_actions.items():
+                action.setChecked(model_name == name)
+            self.use_segment_anything = False
+            return
 
-        if self.use_segment_anything:
-            if self.segany.device != 'cpu':
-                self.gpu_resource_thread = GPUResource_Thread()
-                self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
-                self.gpu_resource_thread.start()
+        self.segany = SegAny(model_path)
+        self.use_segment_anything = True
+        self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
+        for name, action in self.pths_actions.items():
+            action.setChecked(model_name==name)
+        if not reload:
+            if self.use_segment_anything:
+                if self.segany.device != 'cpu':
+                    self.gpu_resource_thread = GPUResource_Thread()
+                    self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
+                    self.gpu_resource_thread.start()
+                else:
+                    self.labelGPUResource.setText('cpu')
             else:
-                self.labelGPUResource.setText('cpu')
-        else:
-            self.labelGPUResource.setText('segment anything unused.')
+                self.labelGPUResource.setText('segment anything unused.')
+
+        if reload and self.current_index is not None:
+            self.show_image(self.current_index)
 
     def init_ui(self):
-        #
+        #q
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
-        self.labels_dock_widget = LabelsDockWidget(mainwindow=self)
-        self.labels_dock.setWidget(self.labels_dock_widget)
+        self.categories_dock_widget = CategoriesDockWidget(mainwindow=self)
+        self.categories_dock.setWidget(self.categories_dock_widget)
+
+        self.annos_dock_widget = AnnosDockWidget(mainwindow=self)
+        self.annos_dock.setWidget(self.annos_dock_widget)
 
         self.files_dock_widget = FilesDockWidget(mainwindow=self)
         self.files_dock.setWidget(self.files_dock_widget)
@@ -135,6 +151,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.labelData.setFixedWidth(150)
         self.statusbar.addPermanentWidget(self.labelData)
 
+        #
+        model_names = sorted([pth for pth in os.listdir('segment_any') if pth.endswith('.pth')])
+        self.pths_actions = {}
+        for model_name in model_names:
+            action = QtWidgets.QAction(self)
+            action.setObjectName("actionZoom_in")
+            action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
+            action.setText("{}".format(model_name))
+            action.setCheckable(True)
+
+            self.pths_actions[model_name] = action
+            self.menuSAM_model.addAction(action)
+
+        self.toolBar.addSeparator()
+        self.mask_aplha = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
+        self.mask_aplha.setFixedWidth(50)
+        self.mask_aplha.setStatusTip('Mask alpha.')
+        self.mask_aplha.setToolTip('Mask alpha ')
+        self.mask_aplha.setMaximum(10)
+        self.mask_aplha.setMinimum(3)
+        self.mask_aplha.valueChanged.connect(self.change_mask_aplha)
+        self.toolBar.addWidget(self.mask_aplha)
+
         self.trans = QtCore.QTranslator()
 
     def translate(self, language='zh'):
@@ -148,7 +187,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         _app.installTranslator(self.trans)
         self.retranslateUi(self)
         self.info_dock_widget.retranslateUi(self.info_dock_widget)
-        self.labels_dock_widget.retranslateUi(self.labels_dock_widget)
+        self.annos_dock_widget.retranslateUi(self.annos_dock_widget)
         self.files_dock_widget.retranslateUi(self.files_dock_widget)
         self.category_choice_widget.retranslateUi(self.category_choice_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
@@ -182,7 +221,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
         language = self.cfg.get('language', 'en')
+        self.cfg['language'] = language
         self.translate(language)
+
+        contour_mode = self.cfg.get('contour_mode', 'max_only')
+        self.cfg['contour_mode'] = contour_mode
+        self.change_contour_mode(contour_mode)
+
+        mask_alpha = self.cfg.get('mask_alpha', 0.5)
+        self.cfg['mask_alpha'] = mask_alpha
+        self.mask_aplha.setValue(mask_alpha*10)
+
+        model_name = self.cfg.get('model_name', '')
+        self.init_segment_anything(model_name)
+
+        self.categories_dock_widget.update_widget()
 
     def set_saved_state(self, is_saved:bool):
         self.saved = is_saved
@@ -255,7 +308,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         try:
             self.polygons.clear()
-            self.labels_dock_widget.listWidget.clear()
+            self.annos_dock_widget.listWidget.clear()
             self.scene.cancel_draw()
             file_path = os.path.join(self.image_root, self.files_list[index])
             image_data = Image.open(file_path)
@@ -292,6 +345,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             # load label
             if self.can_be_annotated:
+                self.current_group = 1
                 _, name = os.path.split(file_path)
                 label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
                 self.current_label = Annotation(file_path, label_path)
@@ -299,6 +353,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.current_label.load_annotation()
 
                 for object in self.current_label.objects:
+                    try:
+                        group = int(object.group)
+                        self.current_group = group+1 if group >= self.current_group else self.current_group
+                    except Exception as e:
+                        pass
                     polygon = Polygon()
                     self.scene.addItem(polygon)
                     polygon.load_object(object)
@@ -309,7 +368,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.setWindowTitle('{}'.format(file_path))
 
-            self.labels_dock_widget.update_listwidget()
+            self.annos_dock_widget.update_listwidget()
             self.info_dock_widget.update_widget()
             self.files_dock_widget.set_select(index)
             self.current_index = index
@@ -411,8 +470,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
                 polygon.color.setAlpha(255)
                 polygon.setBrush(polygon.color)
-            self.labels_dock_widget.listWidget.setEnabled(False)
-            self.labels_dock_widget.checkBox_visible.setEnabled(False)
+            self.annos_dock_widget.listWidget.setEnabled(False)
+            self.annos_dock_widget.checkBox_visible.setEnabled(False)
             self.actionSegment_anything.setEnabled(False)
             self.actionPolygon.setEnabled(False)
             self.actionVisible.setEnabled(False)
@@ -428,14 +487,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for vertex in polygon.vertexs:
                     vertex.setVisible(False)
                 if polygon.group != '':
-                    rgb = self.instance_cmap[int(polygon.group)]
+                    index = int(polygon.group)
+                    index = index % self.instance_cmap.shape[0]
+                    rgb = self.instance_cmap[index]
                 else:
                     rgb = self.instance_cmap[0]
                 polygon.change_color(QtGui.QColor(rgb[0], rgb[1], rgb[2], 255))
                 polygon.color.setAlpha(255)
                 polygon.setBrush(polygon.color)
-            self.labels_dock_widget.listWidget.setEnabled(False)
-            self.labels_dock_widget.checkBox_visible.setEnabled(False)
+            self.annos_dock_widget.listWidget.setEnabled(False)
+            self.annos_dock_widget.checkBox_visible.setEnabled(False)
             self.actionSegment_anything.setEnabled(False)
             self.actionPolygon.setEnabled(False)
             self.actionVisible.setEnabled(False)
@@ -454,8 +515,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
                 polygon.color.setAlpha(polygon.nohover_alpha)
                 polygon.setBrush(polygon.color)
-            self.labels_dock_widget.listWidget.setEnabled(True)
-            self.labels_dock_widget.checkBox_visible.setEnabled(True)
+            self.annos_dock_widget.listWidget.setEnabled(True)
+            self.annos_dock_widget.checkBox_visible.setEnabled(True)
             self.actionSegment_anything.setEnabled(self.use_segment_anything)
             self.actionPolygon.setEnabled(True)
             self.actionVisible.setEnabled(True)
@@ -468,9 +529,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_labels_visible(self, visible=None):
         if visible is None:
-            visible = not self.labels_dock_widget.checkBox_visible.isChecked()
-        self.labels_dock_widget.checkBox_visible.setChecked(visible)
-        self.labels_dock_widget.set_all_polygon_visible(visible)
+            visible = not self.annos_dock_widget.checkBox_visible.isChecked()
+        self.annos_dock_widget.checkBox_visible.setChecked(visible)
+        self.annos_dock_widget.set_all_polygon_visible(visible)
+
+    def change_contour_mode(self, contour_mode='max_only'):
+        if contour_mode == 'max_only':
+            self.scene.change_contour_mode_to_save_max_only()
+        elif contour_mode == 'external':
+            self.scene.change_contour_mode_to_save_external()
+            self.statusbar.showMessage('Save all external contours will bring some noise.', 3000)
+        elif contour_mode == 'all':
+            self.scene.change_contour_mode_to_save_all()
+            self.statusbar.showMessage('Category of inner contour will be set _background__.', 3000)
+        else:
+            self.scene.change_contour_mode_to_save_max_only()
+            self.statusbar.showMessage('The contour mode [{}] not support.'.format(contour_mode), 3000)
+
+        self.actionContour_Max_only.setChecked(contour_mode == 'max_only')
+        self.actionContour_External.setChecked(contour_mode == 'external')
+        self.actionContour_All.setChecked(contour_mode == 'all')
+        self.cfg['contour_mode'] = contour_mode
+
+    def change_mask_aplha(self):
+        value = self.mask_aplha.value() / 10
+        self.scene.mask_alpha = value
+        self.scene.update_mask()
+        self.cfg['mask_alpha'] = value
 
     def ISAT_to_VOC(self):
         self.ISAT_to_VOC_dialog.reset_gui()
@@ -529,6 +614,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionBit_map.triggered.connect(self.change_bit_map)
         self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
 
+        self.actionContour_Max_only.triggered.connect(functools.partial(self.change_contour_mode, 'max_only'))
+        self.actionContour_External.triggered.connect(functools.partial(self.change_contour_mode, 'external'))
+        self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
+
         self.actionToVOC.triggered.connect(self.ISAT_to_VOC)
         self.actionToCOCO.triggered.connect(self.ISAT_to_COCO)
         self.actionTo_LabelMe.triggered.connect(self.ISAT_to_LABELME)
@@ -540,7 +629,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionChinese.triggered.connect(self.translate_to_chinese)
         self.actionEnglish.triggered.connect(self.translate_to_english)
 
-        self.labels_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
+        self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
 
     def reset_action(self):
         self.actionPrev.setEnabled(False)

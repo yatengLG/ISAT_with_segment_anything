@@ -14,6 +14,8 @@ class SegAny:
             self.model_type = "vit_l"
         elif 'vit_h' in checkpoint:
             self.model_type = "vit_h"
+        elif 'vit_tiny' in checkpoint:
+            self.model_type = "vit_tiny"
         else:
             raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
         torch.cuda.empty_cache()

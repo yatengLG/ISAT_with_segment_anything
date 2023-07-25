@@ -144,7 +144,6 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             else:
                 check_box.setChecked(False)
 
-        self.zoom_to_group()
 
     def zoom_to_group(self):
         selected_group = self.comboBox_group_select.currentText()
@@ -171,12 +170,14 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         if current_index < max_index:
             self.comboBox_group_select.setCurrentIndex(current_index + 1)
             self.set_group_polygon_visible()
+            self.zoom_to_group()
 
     def go_to_prev_group(self):
         current_index = self.comboBox_group_select.currentIndex()
         if current_index > 0:
             self.comboBox_group_select.setCurrentIndex(current_index - 1)
             self.set_group_polygon_visible()
+            self.zoom_to_group()
 
 
 

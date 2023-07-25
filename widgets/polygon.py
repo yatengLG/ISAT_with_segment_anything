@@ -191,6 +191,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
     def set_drawed(self, category, group, iscrowd, note, color:QtGui.QColor, layer=None):
         self.is_drawing = False
         self.category = category
+        if isinstance(group, str):
+            group = 0 if group == '' else int(group)
         self.group = group
         self.iscrowd = iscrowd
         self.note = note

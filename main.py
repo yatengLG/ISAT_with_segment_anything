@@ -12,5 +12,5 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication([''])
     mainwindow = MainWindow()
     mainwindow.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
 

@@ -1,4 +1,4 @@
-contour_mode: all
+contour_mode: external
 label:
 - color: '#000000'
   name: __background__
@@ -21,4 +21,4 @@ label:
 - color: '#5c3566'
   name: fence
 language: en
-mask_alpha: 0.5
+mask_alpha: 0.6

@@ -515,8 +515,8 @@ class AnnotationView(QtWidgets.QGraphicsView):
         # 缩放比例
 
         pix_widget = self.transform().scale(factor, factor).mapRect(QtCore.QRectF(0, 0, 1, 1)).width()
-        if pix_widget > 3 or pix_widget < 0.01:
-            return
+        if pix_widget > 30 and factor > 1: return
+        if pix_widget < 0.01 and factor < 1: return
 
         self.scale(factor, factor)
         if point is not None:

@@ -803,10 +803,10 @@
     <string>Max only</string>
    </property>
    <property name="statusTip">
-    <string>Contour save max only.</string>
+    <string>Max contour save only.</string>
    </property>
    <property name="whatsThis">
-    <string>Contour save max only.</string>
+    <string>Max contour save only.</string>
    </property>
    <property name="font">
     <font>
@@ -823,10 +823,10 @@
     <string>External</string>
    </property>
    <property name="statusTip">
-    <string>Contour save external only.</string>
+    <string>External contour save only.</string>
    </property>
    <property name="whatsThis">
-    <string>Contour save external only.</string>
+    <string>External contour save only.</string>
    </property>
    <property name="font">
     <font>
@@ -843,10 +843,10 @@
     <string>All</string>
    </property>
    <property name="statusTip">
-    <string>Contour save all.</string>
+    <string>All contour save.</string>
    </property>
    <property name="whatsThis">
-    <string>Contour save all.</string>
+    <string>All contour save.</string>
    </property>
    <property name="font">
     <font>

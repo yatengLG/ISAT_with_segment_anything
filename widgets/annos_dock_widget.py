@@ -20,6 +20,9 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.comboBox_group_select.currentIndexChanged.connect(self.set_group_polygon_visible)
         self.button_next_group.clicked.connect(self.go_to_next_group)
         self.button_prev_group.clicked.connect(self.go_to_prev_group)
+        self.comboBox_group_select.setStatusTip('Select polygons by group.')
+        self.button_prev_group.setStatusTip('Prev group.')
+        self.button_next_group.setStatusTip('Next group.')
 
         self.listWidget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.listWidget.customContextMenuRequested.connect(
@@ -50,8 +53,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         category = QtWidgets.QLabel(polygon.category)
 
         group = QtWidgets.QLabel('{}'.format(polygon.group))
-
+        group.setFixedWidth(50)
         note = QtWidgets.QLabel('{}'.format(polygon.note))
+        note.setToolTip(polygon.note)
+        note.setFixedWidth(46)
 
         label_iscrowd = QtWidgets.QLabel()
         label_iscrowd.setFixedWidth(3)
@@ -61,7 +66,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         layout.addWidget(category)
         layout.addWidget(group)
         layout.addWidget(note)
-        layout.addWidget(label_iscrowd, alignment=QtCore.Qt.AlignmentFlag.AlignRight)
+        layout.addWidget(label_iscrowd)
 
         item_widget.setLayout(layout)
         return item, item_widget
@@ -83,7 +88,8 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         unique_groups = {polygon.group for polygon in self.mainwindow.polygons}
         self.comboBox_group_select.clear()
         self.comboBox_group_select.addItem('All')  # add an option to view all groups
-        self.comboBox_group_select.addItems(sorted(unique_groups, key=lambda s: [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]))
+        self.comboBox_group_select.addItems(sorted([str(item) for item in unique_groups],
+            key=lambda s: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', s)]))
 
     def set_selected(self, polygon):
         item = self.polygon_item_dict[polygon]
@@ -131,16 +137,24 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         for polygon, item in self.polygon_item_dict.items():
             widget = self.listWidget.itemWidget(item)
             check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
-
-            if selected_group == 'All' or polygon.group == selected_group:
+            if selected_group == '':
+                return
+            if selected_group == 'All' or polygon.group == int(selected_group):
                 check_box.setChecked(True)
             else:
                 check_box.setChecked(False)
 
+        self.zoom_to_group()
+
     def zoom_to_group(self):
         selected_group = self.comboBox_group_select.currentText()
-        polygons_in_group = [polygon for polygon, item in self.polygon_item_dict.items() 
-                            if polygon.group == selected_group]
+        if selected_group == '':
+            return
+        if selected_group == 'All':
+            polygons_in_group = [polygon for polygon, item in self.polygon_item_dict.items()]
+        else:
+            polygons_in_group = [polygon for polygon, item in self.polygon_item_dict.items()
+                                if polygon.group == int(selected_group)]
         if not polygons_in_group:
             return
         min_x = min(min(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
@@ -157,14 +171,12 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         if current_index < max_index:
             self.comboBox_group_select.setCurrentIndex(current_index + 1)
             self.set_group_polygon_visible()
-            self.zoom_to_group()
 
     def go_to_prev_group(self):
         current_index = self.comboBox_group_select.currentIndex()
         if current_index > 0:
             self.comboBox_group_select.setCurrentIndex(current_index - 1)
             self.set_group_polygon_visible()
-            self.zoom_to_group()
 
 
 

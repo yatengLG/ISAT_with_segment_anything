@@ -57,7 +57,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 标注目标
         self.current_label:Annotation = None
         self.use_segment_anything = False
-
+        self.gpu_resource_thread = None
         self.init_ui()
         self.reload_cfg()
 
@@ -65,6 +65,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.reset_action()
 
     def init_segment_anything(self, model_name, reload=False):
+
         if model_name == '':
             self.use_segment_anything = False
             for name, action in self.pths_actions.items():
@@ -85,18 +86,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
         for name, action in self.pths_actions.items():
             action.setChecked(model_name==name)
-        if not reload:
-            if self.use_segment_anything:
-                if self.segany.device != 'cpu':
+        if self.use_segment_anything:
+            if self.segany.device != 'cpu':
+                if self.gpu_resource_thread is None:
                     self.gpu_resource_thread = GPUResource_Thread()
                     self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
                     self.gpu_resource_thread.start()
-                else:
-                    self.labelGPUResource.setText('cpu')
             else:
-                self.labelGPUResource.setText('segment anything unused.')
+                self.labelGPUResource.setText('cpu')
+        else:
+            self.labelGPUResource.setText('segment anything unused.')
 
-        if reload and self.current_index is not None:
+        if self.current_index is not None:
             self.show_image(self.current_index)
 
     def init_ui(self):

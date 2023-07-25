@@ -71,7 +71,7 @@ class CategoryChoiceDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def apply(self):
         category = self.lineEdit_category.text()
-        group = self.lineEdit_group.text()
+        group = int(self.lineEdit_group.text())
         is_crowd = int(self.checkBox_iscrowded.isChecked())
         note = self.lineEdit_note.text()
         if not category:

@@ -22,7 +22,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持标注**二次修改**。
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
-- 更多信息请见[功能说明](./docs/功能说明.md)
+- 更多功能详见[功能说明](./docs/功能说明.md)
 
 # 安装
 ## 1. 源码运行
@@ -65,10 +65,10 @@ python main.py
 ### (1) 下载打包好的exe文件
 **下载地址后续放出**
 ### (2) 下载Segment anything预训练模型
-同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载Segment anything预训练模型)
+同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
 
 # 使用
-软件具体功能可查看：[软件功能说明](./docs/功能说明.md)
+软件具体功能可查看：[功能说明](./docs/功能说明.md)
 ## 1.标注
 ```text
 1. 软件左侧选择类别（工具栏-文件-设置中，进行类别添加或修改）

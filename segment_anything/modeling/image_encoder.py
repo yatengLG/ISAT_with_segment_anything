@@ -108,15 +108,12 @@ class ImageEncoderViT(nn.Module):
         if self.pos_embed is not None:
             x = x + self.pos_embed
 
-        interm_embeddings=[]
         for blk in self.blocks:
             x = blk(x)
-            if blk.window_size == 0:
-                interm_embeddings.append(x)
 
         x = self.neck(x.permute(0, 3, 1, 2))
 
-        return x, interm_embeddings
+        return x
 
 
 class Block(nn.Module):

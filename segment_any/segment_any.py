@@ -1,29 +1,52 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from segment_anything import sam_model_registry, SamPredictor, SamAutomaticMaskGenerator
+# from segment_anything import sam_model_registry, SamPredictor
+# from segment_anything_hq import sam_model_registry, SamPredictor
+# from mobile_sam import sam_model_registry, SamPredictor
 import torch
 import numpy as np
 
 
 class SegAny:
     def __init__(self, checkpoint):
-        if 'vit_b' in checkpoint:
-            self.model_type = "vit_b"
-        elif 'vit_l' in checkpoint:
-            self.model_type = "vit_l"
-        elif 'vit_h' in checkpoint:
-            self.model_type = "vit_h"
-        elif 'vit_tiny' in checkpoint:
-            self.model_type = "vit_tiny"
-        else:
-            raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+        if 'mobile_sam' in checkpoint:
+            # mobile sam
+            from mobile_sam import sam_model_registry, SamPredictor
+            print('- mobile sam!')
+            self.model_type = "vit_t"
+        elif 'sam_hq_vit' in checkpoint:
+            # sam hq
+            from segment_anything_hq import sam_model_registry, SamPredictor
+            print('- sam hq!')
+            if 'vit_b' in checkpoint:
+                self.model_type = "vit_b"
+            elif 'vit_l' in checkpoint:
+                self.model_type = "vit_l"
+            elif 'vit_h' in checkpoint:
+                self.model_type = "vit_h"
+            elif 'vit_tiny' in checkpoint:
+                self.model_type = "vit_tiny"
+            else:
+                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+        elif 'sam_vit' in checkpoint:
+            # sam
+            from segment_anything import sam_model_registry, SamPredictor
+            print('- sam!')
+            if 'vit_b' in checkpoint:
+                self.model_type = "vit_b"
+            elif 'vit_l' in checkpoint:
+                self.model_type = "vit_l"
+            elif 'vit_h' in checkpoint:
+                self.model_type = "vit_h"
+            else:
+                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+
         torch.cuda.empty_cache()
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
         sam.to(device=self.device)
-        self.predictor = SamAutomaticMaskGenerator(sam)
         self.predictor_with_point_prompt = SamPredictor(sam)
         self.image = None
 
@@ -54,28 +77,3 @@ class SegAny:
         )
         torch.cuda.empty_cache()
         return masks
-
-    def predict(self, image):
-        self.image = image
-        masks = self.predictor.generate(image)
-        torch.cuda.empty_cache()
-        return masks
-
-
-if __name__ == '__main__':
-    from PIL import Image
-    import time
-    import matplotlib.pyplot as plt
-    time1 = time.time()
-    seg = SegAny('sam_vit_h_4b8939.pth')
-    image = np.array(Image.open('../example/images/000000000113.jpg'))
-    time2 = time.time()
-    print(time2-time1)
-    # seg.set_image()
-    masks = seg.predict(image)
-    print(time.time() - time2)
-    print(masks)
-    for mask in masks:
-        mask = mask['segmentation']
-        plt.imshow(mask)
-        plt.show()

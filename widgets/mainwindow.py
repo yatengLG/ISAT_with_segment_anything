@@ -153,7 +153,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.statusbar.addPermanentWidget(self.labelData)
 
         #
-        model_names = sorted([pth for pth in os.listdir('segment_any') if pth.endswith('.pth')])
+        model_names = sorted([pth for pth in os.listdir('segment_any') if pth.endswith('.pth') or pth.endswith('.pt')])
         self.pths_actions = {}
         for model_name in model_names:
             action = QtWidgets.QAction(self)

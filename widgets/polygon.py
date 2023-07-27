@@ -235,7 +235,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         segmentation = []
         for point in self.points:
             point = point + self.pos()
-            segmentation.append((round(point.x()), round(point.y())))
+            segmentation.append((round(point.x(), 2), round(point.y(), 2)))
         xmin = self.boundingRect().x() + self.pos().x()
         ymin = self.boundingRect().y() + self.pos().y()
         xmax = xmin + self.boundingRect().width()

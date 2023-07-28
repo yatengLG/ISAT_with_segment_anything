@@ -7,7 +7,6 @@ from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
 import cv2
-from PyQt5.QtCore import QTimer # 拖动鼠标描点
 import time # 拖动鼠标描点
 
 class AnnotationScene(QtWidgets.QGraphicsScene):

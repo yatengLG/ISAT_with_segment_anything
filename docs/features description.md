@@ -50,12 +50,15 @@ Input image name or index to jump the image.
 # 6.Statusbar information
 Get position and value of pixel. 
 If use SAM also show cuda memory in statusbar.
+
 ![状态栏信息.gif](../display/状态栏信息.gif)
 
 # 7.Preview annotation result
 Click **Bit map** button to preview semantic and instance annotation result.
+
 ![实时预览.gif](../display/实时预览.gif)
 
 # 8.Import/export config file
 Use config file save categories and other args.
+
 ![配置文件导入导出.gif](../display/配置文件导入导出.gif)

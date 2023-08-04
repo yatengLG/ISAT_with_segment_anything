@@ -7,7 +7,7 @@ from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
 import cv2
-
+import time # 拖动鼠标描点
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
     def __init__(self, mainwindow):
@@ -28,6 +28,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.guide_line_x:QtWidgets.QGraphicsLineItem = None
         self.guide_line_y:QtWidgets.QGraphicsLineItem = None
+
+        # 拖动鼠标描点     
+        self.just_pressed = False
+        self.last_draw_time = time.time()
+        self.draw_interval = 0.15
+        self.drawing = False
+
 
     def load_image(self, image_path:str):
         self.clear()
@@ -384,9 +391,39 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     raise ValueError('The draw mode named {} not supported.')
             if self.draw_mode == DRAWMode.SEGMENTANYTHING:
                 self.update_mask()
+            
+            # 拖动鼠标描点
+            self.drawing = True
+            self.just_pressed = True
+            self.last_draw_time = time.time()             
         super(AnnotationScene, self).mousePressEvent(event)
 
+    # 拖动鼠标描点 
+    def mouseReleaseEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):       
+        self.drawing = False  
+        super(AnnotationScene, self).mouseReleaseEvent(event)
+
     def mouseMoveEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
+        # 拖动鼠标描点 
+        if self.drawing: 
+            current_time = time.time()
+            if self.last_draw_time is not None and current_time - self.last_draw_time < self.draw_interval:
+                return  # 时间小于给定值不画点
+            self.last_draw_time = current_time
+            sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
+            sceneX = 0 if sceneX < 0 else sceneX
+            sceneX = self.width()-1 if sceneX > self.width()-1 else sceneX
+            sceneY = 0 if sceneY < 0 else sceneY
+            sceneY = self.height()-1 if sceneY > self.height()-1 else sceneY
+            
+            if self.current_graph is not None:
+                if self.draw_mode == DRAWMode.POLYGON:
+                    if not self.just_pressed:
+                        self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    else:
+                        self.current_graph.movePoint(len(self.current_graph.points)-1, QtCore.QPointF(sceneX, sceneY))
+                    self.just_pressed = False        
+
         # 辅助线
         if self.guide_line_x is not None and self.guide_line_y is not None:
             if self.guide_line_x in self.items():

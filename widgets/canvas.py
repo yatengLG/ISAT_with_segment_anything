@@ -18,10 +18,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.current_graph:Polygon = None
         self.mode = STATUSMode.VIEW
         self.click = CLICKMode.POSITIVE
-        self.draw_mode = DRAWMode.SEGMENTANYTHING   # 默认使用segment anything进行快速标注
+        self.draw_mode = DRAWMode.SEGMENTANYTHING           # 默认使用segment anything进行快速标注
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL       # 默认SAM只保留外轮廓
-        self.click_points = []
-        self.click_points_mode = []
+        self.click_points = []                              # SAM point prompt
+        self.click_points_mode = []                         # SAM point prompt
         self.masks:np.ndarray = None
         self.mask_alpha = 0.5
         self.top_layer = 1
@@ -30,11 +30,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.guide_line_y:QtWidgets.QGraphicsLineItem = None
 
         # 拖动鼠标描点     
-        self.just_pressed = False
         self.last_draw_time = time.time()
         self.draw_interval = 0.15
-        self.drawing = False
-
+        self.pressd = False
 
     def load_image(self, image_path:str):
         self.clear()
@@ -393,19 +391,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.update_mask()
             
             # 拖动鼠标描点
-            self.drawing = True
-            self.just_pressed = True
-            self.last_draw_time = time.time()             
+            self.last_draw_time = time.time()
+            self.pressd = True
         super(AnnotationScene, self).mousePressEvent(event)
 
     # 拖动鼠标描点 
     def mouseReleaseEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):       
-        self.drawing = False  
+        self.pressd = False
         super(AnnotationScene, self).mouseReleaseEvent(event)
 
     def mouseMoveEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
         # 拖动鼠标描点 
-        if self.drawing: 
+        if self.pressd: # 拖动鼠标
             current_time = time.time()
             if self.last_draw_time is not None and current_time - self.last_draw_time < self.draw_interval:
                 return  # 时间小于给定值不画点
@@ -418,11 +415,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             
             if self.current_graph is not None:
                 if self.draw_mode == DRAWMode.POLYGON:
-                    if not self.just_pressed:
-                        self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
-                    else:
-                        self.current_graph.movePoint(len(self.current_graph.points)-1, QtCore.QPointF(sceneX, sceneY))
-                    self.just_pressed = False        
+                    # 移除随鼠标移动的点
+                    self.current_graph.removePoint(len(self.current_graph.points) - 1)
+                    # 添加当前点
+                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    # 添加随鼠标移动的点
+                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
 
         # 辅助线
         if self.guide_line_x is not None and self.guide_line_y is not None:

@@ -307,8 +307,16 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 deleted_layer = item.zValue()
                 del item
             elif isinstance(item, Vertex):
-                index = item.polygon.vertexs.index(item)
+                polygon = item.polygon
+                index = polygon.vertexs.index(item)
                 item.polygon.removePoint(index)
+                # 如果剩余顶点少于三个，删除多边形
+                if len(polygon.vertexs) < 3:
+                    self.mainwindow.polygons.remove(polygon)
+                    polygon.delete()
+                    self.removeItem(polygon)
+                    deleted_layer = polygon.zValue()
+                    del polygon
 
         if deleted_layer is not None:
             for p in self.mainwindow.polygons:

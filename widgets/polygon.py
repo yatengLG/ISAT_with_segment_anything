@@ -6,14 +6,13 @@ from annotation import Object
 import typing
 
 class Vertex(QtWidgets.QGraphicsPathItem):
-    def __init__(self, polygon, index, color):
+    def __init__(self, polygon, color, nohover_size=2):
         super(Vertex, self).__init__()
         self.polygon = polygon
-        self.index = index
         self.color = color
 
-        self.hover_size = 3
-        self.nohover_size = 2
+        self.nohover_size = nohover_size
+        self.hover_size = self.nohover_size + 2
         self.line_width = 0
 
         self.nohover = QtGui.QPainterPath()
@@ -32,7 +31,8 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         self.setZValue(1e5)
 
     def itemChange(self, change: 'QtWidgets.QGraphicsItem.GraphicsItemChange', value: typing.Any):
-
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged:
+            self.scene().mainwindow.actionDelete.setEnabled(self.isSelected())
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange and self.isEnabled():
             # 限制顶点移动到图外
             if value.x() < 0:
@@ -43,8 +43,8 @@ class Vertex(QtWidgets.QGraphicsPathItem):
                 value.setY(0)
             if value.y() > self.scene().height()-1:
                 value.setY(self.scene().height()-1)
-
-            self.polygon.movePoint(self.index, value)
+            index = self.polygon.vertexs.index(self)
+            self.polygon.movePoint(index, value)
 
         return super(Vertex, self).itemChange(change, value)
     
@@ -85,7 +85,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def addPoint(self, point):
         self.points.append(point)
-        vertex = Vertex(self, len(self.points)-1, self.color)
+        vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['vertex_size'])
         # 添加路径点
         self.scene().addItem(vertex)
         self.vertexs.append(vertex)

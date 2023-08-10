@@ -102,7 +102,6 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def set_polygon_selected(self):
         items = self.listWidget.selectedItems()
-
         have_selected = True if items else False
         if have_selected:
             self.mainwindow.scene.change_mode_to_edit()

@@ -165,15 +165,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pths_actions[model_name] = action
             self.menuSAM_model.addAction(action)
 
+        # mask alpha
         self.toolBar.addSeparator()
         self.mask_aplha = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
         self.mask_aplha.setFixedWidth(50)
         self.mask_aplha.setStatusTip('Mask alpha.')
-        self.mask_aplha.setToolTip('Mask alpha ')
+        self.mask_aplha.setToolTip('Mask alpha')
         self.mask_aplha.setMaximum(10)
         self.mask_aplha.setMinimum(3)
         self.mask_aplha.valueChanged.connect(self.change_mask_aplha)
         self.toolBar.addWidget(self.mask_aplha)
+
+        # vertex size
+        self.toolBar.addSeparator()
+        self.vertex_size = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
+        self.vertex_size.setFixedWidth(50)
+        self.vertex_size.setStatusTip('Vertex size.')
+        self.vertex_size.setToolTip('Vertex size')
+        self.vertex_size.setMaximum(10)
+        self.vertex_size.setMinimum(2)
+        self.vertex_size.valueChanged.connect(self.change_vertex_size)
+        self.toolBar.addWidget(self.vertex_size)
 
         self.trans = QtCore.QTranslator()
 
@@ -232,6 +244,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         mask_alpha = self.cfg.get('mask_alpha', 0.5)
         self.cfg['mask_alpha'] = mask_alpha
         self.mask_aplha.setValue(mask_alpha*10)
+
+        vertex_size = self.cfg.get('vertex_size', 2)
+        self.cfg['vertex_size'] = int(vertex_size)
 
         model_name = self.cfg.get('model_name', '')
         self.init_segment_anything(model_name)
@@ -557,6 +572,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scene.mask_alpha = value
         self.scene.update_mask()
         self.cfg['mask_alpha'] = value
+
+    def change_vertex_size(self):
+        value = self.vertex_size.value()
+        self.cfg['vertex_size'] = value
+        if self.current_index is not None:
+            self.show_image(self.current_index)
 
     def ISAT_to_VOC(self):
         self.ISAT_to_VOC_dialog.reset_gui()

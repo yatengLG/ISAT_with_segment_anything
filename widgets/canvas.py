@@ -2,7 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtGui, QtCore
-from widgets.polygon import Polygon
+from widgets.polygon import Polygon, Vertex
 from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
@@ -300,12 +300,16 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
     def delete_selected_graph(self):
         deleted_layer = None
         for item in self.selectedItems():
-            if item in self.mainwindow.polygons:
+            if isinstance(item, Polygon) and (item in self.mainwindow.polygons):
                 self.mainwindow.polygons.remove(item)
                 item.delete()
                 self.removeItem(item)
                 deleted_layer = item.zValue()
                 del item
+            elif isinstance(item, Vertex):
+                index = item.polygon.vertexs.index(item)
+                item.polygon.removePoint(index)
+
         if deleted_layer is not None:
             for p in self.mainwindow.polygons:
                 if p.zValue() > deleted_layer:

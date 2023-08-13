@@ -63,9 +63,22 @@ python main.py
 
 ## 2. windows下exe运行
 ### (1) 下载打包好的exe文件
-**下载地址后续放出**
+
+需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。
+
+打开ISAT_with_segment_anything文件夹，双击main.exe运行。
+
+|        | 下载链接                                                      |
+|--------|-----------------------------------------------------------|
+| 百度网盘   | 链接：https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg 提取码：ISAT |
+
 ### (2) 下载Segment anything预训练模型
-同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
+
+打包后的软件，附带了sam_hq_vit_tiny.pth模型，便于直接使用。
+
+如需使用精度更高的模型，请自行下载，并放置于ISAT_with_segment_anything/segment_any文件夹下。
+
+下载地址同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
 
 # 使用
 软件具体功能可查看：[功能说明](./docs/功能说明.md)

@@ -6,6 +6,7 @@
 # from mobile_sam import sam_model_registry, SamPredictor
 import torch
 import numpy as np
+import timm
 
 
 class SegAny:

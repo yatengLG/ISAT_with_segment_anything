@@ -331,6 +331,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label = None
         self.load_finished = False
         self.saved = True
+        self.categories_dock_widget.lineEdit_currentGroup.setText('1')  # reset current group to 1
         if not -1 < index < len(self.files_list):
             self.scene.clear()
             self.scene.setSceneRect(QtCore.QRectF())

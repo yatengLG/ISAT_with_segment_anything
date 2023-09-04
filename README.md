@@ -12,7 +12,7 @@
 
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 
-演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
+演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
 
 Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 

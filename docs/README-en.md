@@ -1,7 +1,7 @@
 # ISAT with segment anything
 # Interactive semi-automatic annotation tool for image segmentation.
 
-![annotate.gif](./display/标注.gif)
+![annotate.gif](../display/标注.gif)
 
 **If this project brings convenience to your work and life, please provide a Star; If you want to contribute code to this project, please send Pull requests**
 

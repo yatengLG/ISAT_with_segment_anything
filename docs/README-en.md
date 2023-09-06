@@ -3,6 +3,8 @@
 
 ![annotate.gif](../display/标注.gif)
 
+The software provides two interfaces, **Chinese** and **English**, which can be switched at any time.
+
 **If this project brings convenience to your work and life, please provide a Star; If you want to contribute code to this project, please send Pull requests**
 
 ![](https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything?style=social)

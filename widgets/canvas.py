@@ -230,7 +230,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     for vertex in self.current_graph.vertexs:
                         vertex.setZValue(len(self.mainwindow.polygons))
                     self.current_graph = None
-                self.mainwindow.current_group += 1
+                if self.mainwindow.group_select_mode == 'auto':
+                    self.mainwindow.current_group += 1
 
         elif self.draw_mode == DRAWMode.POLYGON:
             if len(self.current_graph.points) < 1:
@@ -262,7 +263,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                           note,
                                           QtGui.QColor(self.mainwindow.category_color_dict[category]),
                                           self.top_layer)
-            self.mainwindow.current_group += 1
+            if self.mainwindow.group_select_mode == 'auto':
+                self.mainwindow.current_group += 1
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)
             # 设置为最高图层

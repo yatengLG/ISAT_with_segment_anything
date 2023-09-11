@@ -12,6 +12,13 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow = mainwindow
         self.listWidget.itemClicked.connect(self.item_choice)
 
+        # 新增 手动/自动 group 选择
+        self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
+        self.lineEdit_currentGroup.textChanged.connect(self.update_current_group)
+        self.pushButton_increase.clicked.connect(self.increase_current_group)
+        self.pushButton_decrease.clicked.connect(self.decrease_current_group)
+        self.pushButton_group_mode.clicked.connect(self.toggle_group_mode)
+
     def update_widget(self):
         self.listWidget.clear()
         btngroup = QtWidgets.QButtonGroup(self)
@@ -57,3 +64,29 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             widget = self.listWidget.itemWidget(item)
             label_radio = widget.findChild(QtWidgets.QRadioButton, 'label_radio')
             label_radio.setChecked(item==item_now)
+
+    def update_current_group(self, text):
+        # Update the current_group variable when the text in the QLineEdit changes
+        try:
+            self.mainwindow.current_group = int(text)
+        except ValueError:
+            pass
+
+    def increase_current_group(self):
+        # Increase the current_group variable and update the QLineEdit text
+        self.mainwindow.current_group += 1
+        self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
+
+    def decrease_current_group(self):
+        # Decrease the current_group variable and update the QLineEdit text
+        if self.mainwindow.current_group > 1:
+            self.mainwindow.current_group -= 1
+            self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
+
+    def toggle_group_mode(self):
+        if self.mainwindow.group_select_mode == 'auto':
+            self.mainwindow.group_select_mode = 'manual'
+            self.pushButton_group_mode.setText("Manual")
+        elif self.mainwindow.group_select_mode == 'manual':
+            self.mainwindow.group_select_mode = 'auto'
+            self.pushButton_group_mode.setText("Auto")

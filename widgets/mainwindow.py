@@ -58,6 +58,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label:Annotation = None
         self.use_segment_anything = False
         self.gpu_resource_thread = None
+
+        # 新增 手动/自动 group选择
+        self.group_select_mode = 'auto'
+
         self.init_ui()
         self.reload_cfg()
 
@@ -115,6 +119,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.info_dock_widget = InfoDockWidget(mainwindow=self)
         self.info_dock.setWidget(self.info_dock_widget)
+
+        # 新增 group 选择 快捷键
+        self.next_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("X"), self)
+        self.prev_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Z"), self)
+        self.next_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
+        self.prev_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
+        # 新增手动/自动 选择group
+        self.next_group_shortcut.activated.connect(self.annos_dock_widget.go_to_next_group)
+        self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)
 
         self.scene = AnnotationScene(mainwindow=self)
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
@@ -371,7 +384,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 for object in self.current_label.objects:
                     try:
                         group = int(object.group)
-                        self.current_group = group+1 if group >= self.current_group else self.current_group
+                        # 新增 手动/自动 group选择
+                        if self.group_select_mode == 'auto':
+                            self.current_group = group + 1 if group >= self.current_group else self.current_group
+                        elif self.group_select_mode == 'manual':
+                            self.current_group = 1
+                        self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
                     except Exception as e:
                         pass
                     polygon = Polygon()

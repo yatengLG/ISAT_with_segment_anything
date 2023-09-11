@@ -232,7 +232,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = None
                 if self.mainwindow.group_select_mode == 'auto':
                     self.mainwindow.current_group += 1
-
+                    self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
         elif self.draw_mode == DRAWMode.POLYGON:
             if len(self.current_graph.points) < 1:
                 return
@@ -265,6 +265,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                           self.top_layer)
             if self.mainwindow.group_select_mode == 'auto':
                 self.mainwindow.current_group += 1
+                self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)
             # 设置为最高图层

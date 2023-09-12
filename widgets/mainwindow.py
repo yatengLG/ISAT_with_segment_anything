@@ -256,7 +256,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         mask_alpha = self.cfg.get('mask_alpha', 0.5)
         self.cfg['mask_alpha'] = mask_alpha
-        self.mask_aplha.setValue(mask_alpha*10)
+        self.mask_aplha.setValue(int(mask_alpha*10))
 
         vertex_size = self.cfg.get('vertex_size', 2)
         self.cfg['vertex_size'] = int(vertex_size)

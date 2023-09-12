@@ -6,10 +6,8 @@ from ui.MainWindow import Ui_MainWindow
 from widgets.setting_dialog import SettingDialog
 from widgets.category_choice_dialog import CategoryChoiceDialog
 from widgets.category_edit_dialog import CategoryEditDialog
-
 from widgets.category_dock_widget import CategoriesDockWidget
 from widgets.annos_dock_widget import AnnosDockWidget
-
 from widgets.files_dock_widget import FilesDockWidget
 from widgets.info_dock_widget import InfoDockWidget
 from widgets.right_button_menu import RightButtonMenu
@@ -30,131 +28,7 @@ import imgviz
 from segment_any.segment_any import SegAny
 from segment_any.gpu_resource import GPUResource_Thread, osplatform
 import icons_rc
-import sys
-import nibabel as nib
-import numpy as np
-import matplotlib.pyplot as plt
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QVBoxLayout, QSlider, QLabel, QLineEdit, QWidget
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import nibabel as nib
-import numpy as np
-import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton,QFileDialog
 
-from PyQt5.QtWidgets import QGraphicsView
-
-
-def apply_window_level(image, window, level):
-    """
-    应用窗宽窗位调整到图像上
-    """
-    return np.clip((image - (level - 0.5)) / window + 0.5, 0, 1)
-
-class NiiSliceViewer(QDialog):
-    def __init__(self, nii_file_path):
-        super().__init__()
-
-        self.nii_file_path = nii_file_path
-        self.nii_image = nib.load(nii_file_path)
-        self.nii_data = self.nii_image.get_fdata()
-        self.num_slices = self.nii_data.shape[2]
-        self.current_slice = self.num_slices // 2  # 初始化当前横切面为中间切面
-        self.window_width = 1500  # 默认窗宽
-        self.window_level = -500  # 默认窗位
-
-        layout = QVBoxLayout(self)
-
-        # 创建滚动条
-        self.slider = QSlider()
-        self.slider.setOrientation(1)  # 设置为垂直方向
-        self.slider.setMinimum(0)
-        self.slider.setMaximum(self.num_slices - 1)
-        self.slider.setValue(self.current_slice)
-        self.slider.valueChanged.connect(self.on_slider_value_changed)
-        layout.addWidget(self.slider)
-
-        # 创建窗宽和窗位标签
-        self.window_width_label = QLabel(f"窗宽： {self.window_width}")
-        self.window_level_label = QLabel(f"窗位： {self.window_level}")
-        layout.addWidget(self.window_width_label)
-        layout.addWidget(self.window_level_label)
-
-        # 创建 Matplotlib 图形绘制部件
-        self.fig, self.ax = plt.subplots(figsize=(6, 6))
-        self.canvas = FigureCanvas(self.fig)
-        layout.addWidget(self.canvas)
-
-        # 显示初始横切面
-        self.update_display()
-
-        # 添加保存按钮
-        self.save_button = QPushButton("保存当前横切面为PNG")
-        self.save_button.clicked.connect(self.save_current_slice_as_png)
-        layout.addWidget(self.save_button)
-
-    def update_display(self):
-        self.ax.clear()
-        slice_image = np.rot90(self.nii_data[:, :, self.current_slice])
-        adjusted_image = apply_window_level(slice_image, self.window_width, self.window_level)
-        self.ax.imshow(adjusted_image, cmap='gray')
-        self.ax.axis('off')
-        self.ax.set_title(f"Axial Slice {self.current_slice + 1}")
-
-        # 更新窗宽和窗位标签
-        self.window_width_label.setText(f"窗宽： {self.window_width}")
-        self.window_level_label.setText(f"窗位： {self.window_level}")
-
-        self.canvas.draw()
-
-    def on_slider_value_changed(self, value):
-        # 滚动条值改变事件处理，切换横切面
-        self.current_slice = value
-        self.update_display()
-
-    def wheelEvent(self, event):
-        # 鼠标滚轮事件处理，调整窗宽和窗位
-        if event.modifiers() == Qt.ControlModifier:  # 按下了 Ctrl 键，调整窗位
-            if event.angleDelta().y() > 0:  # 滚轮向上滚动
-                self.window_level += 50
-            else:  # 滚轮向下滚动
-                self.window_level -= 50
-        else:  # 没有按下 Ctrl 键，调整窗宽
-            if event.angleDelta().y() > 0:  # 滚轮向上滚动
-                self.window_width += 50
-            else:  # 滚轮向下滚动
-                self.window_width -= 50
-        self.update_display()
-    
-    def save_current_slice_as_png(self):
-        # 获取当前浏览的横切面数据
-        slice_data = self.nii_data[:, :, self.current_slice]
-
-        # 使用窗宽窗位调整切片
-        adjusted_image = apply_window_level(slice_data, self.window_width, self.window_level)
-
-        # 逆时针旋转90度
-        rotated_image = np.rot90(adjusted_image, k=1)
-
-        # 将像素值缩放到0-255范围并转换为8位无符号整数类型
-        scaled_image = (rotated_image * 255).astype(np.uint8)
-
-        # 创建保存文件对话框
-        options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getSaveFileName(self, "保存当前横切面为PNG", "", "PNG Files (*.png);;All Files (*)", options=options)
-
-        if file_path:
-            # 将NumPy数组转换为PIL图像对象
-            img = Image.fromarray(scaled_image)
-
-            # 如果图像是4通道（RGBA），则进行转换为3通道（RGB）
-            if img.mode == 'RGBA':
-                img = img.convert('RGB')
-
-            # 保存图像到指定的输出文件夹
-            img.save(file_path)
-
-            print("当前横切面已保存为：", file_path)
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -408,9 +282,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.files_dock_widget.listWidget.clear()
 
             files = []
-            # suffixs = tuple(['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
-            supported_formats = [fmt.data().decode('ascii').lower() for fmt in QtGui.QImageReader.supportedImageFormats()]
-            suffixs = tuple(supported_formats + ['.nii', '.nii.gz'])  # 添加新的后缀
+            suffixs = tuple(['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
             for f in os.listdir(dir):
                 if f.lower().endswith(suffixs):
                     # f = os.path.join(dir, f)
@@ -468,35 +340,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.annos_dock_widget.listWidget.clear()
             self.scene.cancel_draw()
             file_path = os.path.join(self.image_root, self.files_list[index])
-            # image_data = Image.open(file_path)
-            # 尝试使用 PIL.Image 打开图片
-            try:
-                image_data = Image.open(file_path)
-                print(file_path)
-                self.can_be_annotated = True
-                self.png_palette = image_data.getpalette()
-                if self.png_palette is not None and file_path.endswith('.png'):
-                    self.statusbar.showMessage('This is a label file.')
-                    self.can_be_annotated = False
-            except Exception as e:
-                # 使用 nibabel 打开图片
-                print(e)
-                try:
-                    nii_image = nib.load(file_path)
-                    print(file_path)
-                    image_data = nii_image.get_fdata()
-                    # 在这里处理 nibabel 打开的图像数据
-                    # 在这里添加NIfTI横切面弹窗逻辑
-                    # 创建并显示NiiSliceViewer弹窗
-                    nii_viewer = NiiSliceViewer(file_path)
-                    nii_viewer.exec_()
+            image_data = Image.open(file_path)
 
-                    self.can_be_annotated = True  # 根据实际情况判断是否可以进行标注
-
-                except Exception as ne:
-                    # 如果无法打开图片，则显示错误消息
-                    # print(file_path)
-                    print(ne)
+            self.png_palette = image_data.getpalette()
+            if self.png_palette is not None and file_path.endswith('.png'):
+                self.statusbar.showMessage('This is a label file.')
+                self.can_be_annotated = False
 
             else:
                 self.can_be_annotated = True

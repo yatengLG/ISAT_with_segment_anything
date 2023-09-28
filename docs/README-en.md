@@ -16,7 +16,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
 
-[中文](README.md)         [English](README-en.md)
+[中文](README-cn.md)         [English](README-en.md)
 
 # Feature
 

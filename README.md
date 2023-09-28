@@ -1,5 +1,6 @@
 # ISAT with segment anything
 # Interactive semi-automatic annotation tool for image segmentation.
+[[中文]](./docs/README-cn.md)         [[English]](README.md)
 
 ![annotate.gif](./display/标注.gif)
 
@@ -14,7 +15,6 @@ Quick annotate for image segmentation by [segment anything](https://github.com/f
 
 Demo Video：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
 
-[中文](./docs/README-cn.md)         [English](README.md)
 
 # Feature
 

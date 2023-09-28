@@ -1,7 +1,7 @@
 # ISAT with segment anything
 # 交互式半自动图像分割标注工具
 
-![标注.gif](./display/标注.gif)
+![标注.gif](../display/标注.gif)
 
 **如果这个项目给您的工作生活带来了便捷，请给一个Star；如果想对该项目贡献代码，请发Pull requests**
 

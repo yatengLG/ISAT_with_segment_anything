@@ -1,7 +1,7 @@
 # ISAT with segment anything
 # Interactive semi-automatic annotation tool for image segmentation.
 
-![annotate.gif](../display/标注.gif)
+![annotate.gif](./display/标注.gif)
 
 The software provides two interfaces, **Chinese** and **English**, which can be switched at any time.
 

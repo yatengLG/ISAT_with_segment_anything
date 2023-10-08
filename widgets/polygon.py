@@ -4,6 +4,7 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 from annotation import Object
 import typing
+from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 
 class Vertex(QtWidgets.QGraphicsPathItem):
     def __init__(self, polygon, color, nohover_size=2):
@@ -18,11 +19,10 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         self.nohover = QtGui.QPainterPath()
         self.nohover.addEllipse(QtCore.QRectF(-self.nohover_size//2, -self.nohover_size//2, self.nohover_size, self.nohover_size))
         self.hover = QtGui.QPainterPath()
-        self.hover.addEllipse(QtCore.QRectF(-self.hover_size//2, -self.hover_size//2, self.hover_size, self.hover_size))
+        self.hover.addRect(QtCore.QRectF(-self.nohover_size//2, -self.nohover_size//2, self.nohover_size, self.nohover_size))
 
         self.setPath(self.nohover)
         self.setBrush(self.color)
-        self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.setPen(QtGui.QPen(self.color, self.line_width))
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
@@ -49,11 +49,17 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         return super(Vertex, self).itemChange(change, value)
     
     def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent'):
-        self.setPath(self.hover)
+        if self.scene().mode == STATUSMode.CREATE: # CREATE
+            self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
+        else: # EDIT, VIEW
+            self.setPath(self.hover)
+            self.setBrush(QtGui.QColor(255, 255, 255, 255))
+            self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
         super(Vertex, self).hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent'):
         self.setPath(self.nohover)
+        self.setBrush(self.color)
         super(Vertex, self).hoverLeaveEvent(event)
 
 

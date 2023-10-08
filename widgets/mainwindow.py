@@ -120,15 +120,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.info_dock_widget = InfoDockWidget(mainwindow=self)
         self.info_dock.setWidget(self.info_dock_widget)
 
-        # 新增 group 选择 快捷键
-        self.next_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("X"), self)
-        self.prev_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Z"), self)
-        self.next_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
-        self.prev_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
-        # 新增手动/自动 选择group
-        self.next_group_shortcut.activated.connect(self.annos_dock_widget.go_to_next_group)
-        self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)
-
         self.scene = AnnotationScene(mainwindow=self)
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)

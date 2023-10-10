@@ -6,6 +6,10 @@
 - Statusbar information
 - Preview annotation result
 - Import/export config file
+- Drag to draw
+- Quick browsing
+- Detail inspection
+- Move and delete vertexs
 
 # 1.Language switching
 The software provides two interfaces, Chinese and English, which can be switched at any time.
@@ -62,3 +66,25 @@ Click **Bit map** button to preview semantic and instance annotation result.
 Use config file save categories and other args.
 
 ![配置文件导入导出.gif](../display/配置文件导入导出.gif)
+
+# 9.Drag to draw
+Keep mouse left button and drag, create polygon like drawing.
+You can use click to draw straight line, and use drag to draw curve.
+
+![拖动绘制.gif](../display/拖动绘制.gif)
+
+# 10.Quick browsing
+
+Drop down and select group ID to view the target, also support quickly switch between different groups through the scroll wheel.
+
+![快速浏览.gif](../display/快速浏览.gif)
+
+# 11.Detail inspection
+Switch Annotations one by one with group IDs, and at the same time, adapt to the annotation size for easy inspection details.
+
+![细节检查.gif](../display/细节检查.gif)
+
+# 12.Move and delete vertexs
+Select vertexs through CTRL, and then move or delete them.
+
+![顶点批量移动与删除.gif](../display/顶点批量移动与删除.gif)

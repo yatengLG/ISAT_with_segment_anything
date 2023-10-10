@@ -65,9 +65,21 @@ python main.py
 ```
 ## 2. run exe
 ### (1) download exe
-**Coming soon**
+
+Download three .zip files, total 2.7G
+
+|        | Download link                                                      |
+|--------|-----------------------------------------------------------|
+| Baidu Netdisk | link：https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg code：ISAT |
+
+Click main.exe to run the tool.
+
 ### (2) Download Segment anything pretrained checkpoint.
 
+The download zip files, container sam_hq_vit_tiny.pth, but somebody told the model not support cpu.
+You can download [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt) to test the tool.
+
+If you want use other models, see[Download Segment anything pretrained checkpoint](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint)
 
 # Use
 ## 1.Annotate

@@ -11,7 +11,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         super(Vertex, self).__init__()
         self.polygon = polygon
         self.color = color
-
+        self.color.setAlpha(255)
         self.nohover_size = nohover_size
         self.hover_size = self.nohover_size + 2
         self.line_width = 0
@@ -30,9 +30,21 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         self.setAcceptHoverEvents(True)
         self.setZValue(1e5)
 
+    def setColor(self, color):
+        self.color = QtGui.QColor(color)
+        self.color.setAlpha(255)
+        self.setPen(QtGui.QPen(self.color, self.line_width))
+        self.setBrush(self.color)
+
     def itemChange(self, change: 'QtWidgets.QGraphicsItem.GraphicsItemChange', value: typing.Any):
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged:
             self.scene().mainwindow.actionDelete.setEnabled(self.isSelected())
+            if self.isSelected():
+                selected_color = QtGui.QColor('#00A0FF')
+                self.setBrush(selected_color)
+            else:
+                self.setBrush(self.color)
+
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange and self.isEnabled():
             # 限制顶点移动到图外
             if value.x() < 0:
@@ -52,14 +64,16 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         if self.scene().mode == STATUSMode.CREATE: # CREATE
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
         else: # EDIT, VIEW
-            self.setPath(self.hover)
-            self.setBrush(QtGui.QColor(255, 255, 255, 255))
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
+            if not self.isSelected():
+                self.setBrush(QtGui.QColor(255, 255, 255, 255))
+            self.setPath(self.hover)
         super(Vertex, self).hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent'):
+        if not self.isSelected():
+            self.setBrush(self.color)
         self.setPath(self.nohover)
-        self.setBrush(self.color)
         super(Vertex, self).hoverLeaveEvent(event)
 
 
@@ -158,13 +172,13 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         return super(Polygon, self).itemChange(change, value)
 
     def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent'):
-        if not self.is_drawing:
+        if not self.is_drawing and not self.isSelected():
             self.color.setAlpha(self.hover_alpha)
             self.setBrush(self.color)
         super(Polygon, self).hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent'):
-        if not self.is_drawing:
+        if not self.is_drawing and not self.isSelected():
             self.color.setAlpha(self.nohover_alpha)
             self.setBrush(self.color)
         super(Polygon, self).hoverEnterEvent(event)
@@ -210,12 +224,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         if layer is not None:
             self.setZValue(layer)
         for vertex in self.vertexs:
-            vertex_color = self.color
-            vertex_color.setAlpha(255)
-            vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
-            vertex.setBrush(vertex_color)
-            if layer is not None:
-                vertex.setZValue(layer)
+            vertex.setColor(color)
 
     def calculate_area(self):
         area = 0

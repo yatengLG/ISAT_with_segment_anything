@@ -311,13 +311,19 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 del item
             elif isinstance(item, Vertex):
                 polygon = item.polygon
-                index = polygon.vertexs.index(item)
-                item.polygon.removePoint(index)
+                if polygon.vertexs:
+                    index = polygon.vertexs.index(item)
+                    item.polygon.removePoint(index)
+                else:
+                    self.removeItem(item)
+                    del item
                 # 如果剩余顶点少于三个，删除多边形
                 if len(polygon.vertexs) < 3:
-                    self.mainwindow.polygons.remove(polygon)
-                    polygon.delete()
-                    self.removeItem(polygon)
+                    if polygon in self.mainwindow.polygons:
+                        self.mainwindow.polygons.remove(polygon)
+                        polygon.delete()
+                    if polygon in self.items():
+                        self.removeItem(polygon)
                     deleted_layer = polygon.zValue()
                     del polygon
 

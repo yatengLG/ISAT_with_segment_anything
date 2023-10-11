@@ -141,6 +141,11 @@ python main.py
     转换COCO格式json为ISAT格式json。
 ```
 
+## Star History
+
+**请给该项目一个star，您的点赞就是对我最大的支持与鼓励**
+[![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
+
 # 引用
 ```text
 @misc{ISAT with segment anything,

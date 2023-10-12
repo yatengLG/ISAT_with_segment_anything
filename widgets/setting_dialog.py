@@ -107,7 +107,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.load_cfg()
 
     def apply(self):
-        cfg = {}
+        cfg = load_config(self.mainwindow.config_file)
         cfg['label'] = []
         for index in range(self.category_list_widget.count()):
             item = self.category_list_widget.item(index)

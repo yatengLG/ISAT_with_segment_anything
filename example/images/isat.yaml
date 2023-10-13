@@ -1,4 +1,4 @@
-contour_mode: external
+contour_mode: max_only
 label:
 - color: '#000000'
   name: __background__
@@ -20,6 +20,8 @@ label:
   name: cake
 - color: '#5c3566'
   name: fence
-language: zh
-mask_alpha: 0.4
+- color: '#204a87'
+  name: hat
+language: en
+mask_alpha: 0.5
 vertex_size: 2

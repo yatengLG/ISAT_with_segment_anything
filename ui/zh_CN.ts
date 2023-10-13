@@ -89,7 +89,7 @@
         <translation>转换</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="262"/>
+        <location filename="shortcut_dialog.py" line="288"/>
         <source>help</source>
         <translation>帮助</translation>
     </message>
@@ -109,7 +109,7 @@
         <translation type="obsolete">多边形置于底层</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="285"/>
+        <location filename="shortcut_dialog.py" line="310"/>
         <source>E</source>
         <translation></translation>
     </message>
@@ -124,27 +124,27 @@
         <translation type="obsolete">多边形置于顶层</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="280"/>
+        <location filename="shortcut_dialog.py" line="305"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="265"/>
+        <location filename="shortcut_dialog.py" line="304"/>
         <source>S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="270"/>
+        <location filename="shortcut_dialog.py" line="302"/>
         <source>Save annotation</source>
         <translation>保存标注文件</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="267"/>
+        <location filename="shortcut_dialog.py" line="292"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="279"/>
+        <location filename="shortcut_dialog.py" line="301"/>
         <source>Delete polygon</source>
         <translation>删除多边形</translation>
     </message>
@@ -154,7 +154,7 @@
         <translation type="obsolete">编辑多边形</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="264"/>
+        <location filename="shortcut_dialog.py" line="317"/>
         <source>B</source>
         <translation></translation>
     </message>
@@ -164,22 +164,22 @@
         <translation type="obsolete">文件</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="282"/>
+        <location filename="shortcut_dialog.py" line="307"/>
         <source>Next image</source>
         <translation>下一张图片</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="266"/>
+        <location filename="shortcut_dialog.py" line="293"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="504"/>
+        <location filename="shortcut_dialog.py" line="291"/>
         <source>Prev image</source>
-        <translation type="obsolete">上一张图片</translation>
+        <translation>上一张图片</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="268"/>
+        <location filename="shortcut_dialog.py" line="290"/>
         <source>A</source>
         <translation></translation>
     </message>
@@ -204,17 +204,17 @@
         <translation type="obsolete">视图</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="273"/>
+        <location filename="shortcut_dialog.py" line="294"/>
         <source>Bit map</source>
         <translation>位图</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="274"/>
+        <location filename="shortcut_dialog.py" line="295"/>
         <source>Space</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="276"/>
+        <location filename="shortcut_dialog.py" line="297"/>
         <source>F</source>
         <translation></translation>
     </message>
@@ -340,82 +340,82 @@ http://www.yatenglg.cn/isat</source>
         <translation>添加新类别</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="263"/>
+        <location filename="shortcut_dialog.py" line="289"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
     <message>
         <location filename="shortcut_dialog.py" line="269"/>
         <source>Prior image</source>
-        <translation>上一张图片</translation>
+        <translation type="obsolete">上一张图片</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="289"/>
+        <location filename="shortcut_dialog.py" line="314"/>
         <source>To top</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="278"/>
+        <location filename="shortcut_dialog.py" line="300"/>
         <source>To bottom</source>
         <translation>置底</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="275"/>
+        <location filename="shortcut_dialog.py" line="296"/>
         <source>Zoom fit</source>
         <translation>适应窗口</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="272"/>
+        <location filename="shortcut_dialog.py" line="298"/>
         <source>Draw polygon</source>
         <translation>绘制多边形</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="277"/>
+        <location filename="shortcut_dialog.py" line="299"/>
         <source>Segment anything</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="281"/>
+        <location filename="shortcut_dialog.py" line="306"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="283"/>
+        <location filename="shortcut_dialog.py" line="308"/>
         <source>Backspace</source>
         <translation>回退</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="284"/>
+        <location filename="shortcut_dialog.py" line="309"/>
         <source>Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="286"/>
+        <location filename="shortcut_dialog.py" line="311"/>
         <source>Annotate finish</source>
         <translation>标注完成</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="287"/>
+        <location filename="shortcut_dialog.py" line="312"/>
         <source>Annotate cancel</source>
         <translation>标注取消</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="288"/>
+        <location filename="shortcut_dialog.py" line="313"/>
         <source>Esc</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="271"/>
+        <location filename="shortcut_dialog.py" line="303"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="290"/>
+        <location filename="shortcut_dialog.py" line="315"/>
         <source>Polygons Visible</source>
         <translation>多边形显示/隐藏</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="291"/>
+        <location filename="shortcut_dialog.py" line="316"/>
         <source>V</source>
         <translation></translation>
     </message>
@@ -474,8 +474,8 @@ http://www.yatenglg.cn/isat</source>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Times New Roman';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;宋体&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Times New Roman&apos;;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
@@ -498,7 +498,7 @@ p, li { white-space: pre-wrap; }
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'宋体'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;宋体&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
@@ -521,6 +521,26 @@ p, li { white-space: pre-wrap; }
         <location filename="ISAT_to_LABELME_dialog.py" line="105"/>
         <source>Convert ISAT annotations to LabelMe json.</source>
         <translation>将ISAT格式json转换为LabelMe格式json。</translation>
+    </message>
+    <message>
+        <location filename="shortcut_dialog.py" line="318"/>
+        <source>Prev group</source>
+        <translation>上一组</translation>
+    </message>
+    <message>
+        <location filename="shortcut_dialog.py" line="319"/>
+        <source>Tab</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="shortcut_dialog.py" line="320"/>
+        <source>Next group</source>
+        <translation>下一组</translation>
+    </message>
+    <message>
+        <location filename="shortcut_dialog.py" line="321"/>
+        <source>`</source>
+        <translation></translation>
     </message>
 </context>
 <context>

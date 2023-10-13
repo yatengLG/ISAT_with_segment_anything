@@ -29,7 +29,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ## 1. 源码运行
 ### (1) 创建虚拟环境
 ```shell
-conda create -n ISAT_with_segment_anything python==3.8
+conda create -n ISAT_with_segment_anything python=3.8
 conda activate ISAT_with_segment_anything
 ```
 

@@ -1,15 +1,17 @@
-- Language switching
-- Model switching
-- Contour mode
-- Occlusion adjustment
-- Quick jump to image
-- Statusbar information
-- Preview annotation result
-- Import/export config file
-- Drag to draw
-- Quick browsing
-- Detail inspection
-- Move and delete vertexs
+# Menu
+
+1. [Language switching](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#1language-switching)
+2. [Model switching](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#2model-switching)
+3. [Contour mode](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#3contour-mode)
+4. [Occlusion adjustment](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#4occlusion-adjustment)
+5. [Quick jump to image](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#5quick-jump-to-image)
+6. [Statusbar information](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#6statusbar-information)
+7. [Preview annotation result](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#7preview-annotation-result)
+8. [Import/export config file](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#8importexport-config-file)
+9. [Drag to draw](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#9drag-to-draw)
+10. [Quick browsing](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#10quick-browsing)
+11. [Detail inspection](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#11detail-inspection)
+12. [Move and delete vertexs](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#12move-and-delete-vertexs)
 
 # 1.Language switching
 The software provides two interfaces, Chinese and English, which can be switched at any time.

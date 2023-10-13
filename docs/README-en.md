@@ -31,7 +31,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ## 1. Run with source code
 ### (1) Create environment
 ```shell
-conda create -n ISAT_with_segment_anything python==3.8
+conda create -n ISAT_with_segment_anything python=3.8
 conda activate ISAT_with_segment_anything
 ```
 

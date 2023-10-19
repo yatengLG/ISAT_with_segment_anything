@@ -23,6 +23,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持标注**二次修改**。
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
+- 单独线程进行sam encoder计算，降低切换图片的卡顿感
 - 更多功能详见[功能说明](./docs/功能说明.md)
 
 # 安装

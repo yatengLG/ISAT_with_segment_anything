@@ -139,6 +139,22 @@ ISAT have specific format with json.You can use convert tools or convert to othe
 4. COCO to ISAT
     Convert COCO json to ISAT jsons.
 ```
+# Contributors
+
+<table border="0">
+<tr>
+    <td><img alt="yatengLG" src="https://avatars.githubusercontent.com/u/31759824?v=4" width="60" height="60" href="">
+    <td><img alt="Alias-z" src="https://avatars.githubusercontent.com/u/66273343?v=4" width="60" height="60" href="">
+    <td>...
+</td>
+</tr>
+<tr>
+  <td><a href="https://github.com/yatengLG">yatengLG</a>
+  <td><a href="https://github.com/Alias-z">Alias-z</a>
+    <td><a href="https://github.com/yatengLG/ISAT_with_segment_anything/graphs/contributors">...</a>
+</tr>
+</table>
+
 
 # Citation
 ```text

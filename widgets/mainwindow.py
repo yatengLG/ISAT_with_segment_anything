@@ -28,6 +28,69 @@ import imgviz
 from segment_any.segment_any import SegAny
 from segment_any.gpu_resource import GPUResource_Thread, osplatform
 import icons_rc
+from PyQt5.QtCore import QThread, pyqtSignal
+import numpy as np
+import torch
+
+
+class SegAnyThread(QThread):
+    tag = pyqtSignal(int, int)
+    def __init__(self, mainwindow):
+        super(SegAnyThread, self).__init__()
+        self.mainwindow = mainwindow
+        self.results_dict = {}
+        self.index = None
+
+    @torch.no_grad()
+    def sam_encoder(self, image):
+        torch.cuda.empty_cache()
+
+        input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
+        input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
+        input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
+
+        original_size = image.shape[:2]
+        input_size = tuple(input_image_torch.shape[-2:])
+
+        input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
+        features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
+        return features, original_size, input_size
+
+    def run(self):
+        if self.index is not None:
+
+            # 需要缓存特征的图像索引，可以自行更改缓存策略
+            indexs = [self.index]
+            if self.index + 1 < len(self.mainwindow.files_list):
+                indexs += [self.index + 1]
+            if self.index - 1 > -1:
+                indexs += [self.index - 1]
+
+            # 先删除不需要的旧特征
+            features_ks = list(self.results_dict.keys())
+            for k in features_ks:
+                if k not in indexs:
+                    try:
+                        del self.results_dict[k]
+                        self.tag.emit(k, 0)  # 删除
+                    except:
+                        pass
+
+            for index in indexs:
+                if index not in self.results_dict:
+                    self.tag.emit(index, 2)    # 进行
+
+                    image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
+                    self.results_dict[index] = {}
+                    image_data = np.array(Image.open(image_path))
+                    features, original_size, input_size = self.sam_encoder(image_data)
+                    self.results_dict[index]['features'] = features
+                    self.results_dict[index]['original_size'] = original_size
+                    self.results_dict[index]['input_size'] = input_size
+
+                    self.tag.emit(index, 1)    # 完成
+
+                    torch.cuda.empty_cache()
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -101,8 +164,54 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.labelGPUResource.setText('segment anything unused.')
 
+        self.seganythread = SegAnyThread(self)
+        self.seganythread.tag.connect(self.sam_encoder_finish)
+        self.seganythread.start()
+
         if self.current_index is not None:
             self.show_image(self.current_index)
+
+    def sam_encoder_finish(self, index:int, state:int):
+        if state == 1:  # 识别完
+            # 如果当前图片刚识别完，需刷新segany状态
+            if self.current_index == index:
+                self.SeganyEnabled()
+
+        # 图片识别状态刷新
+        if state == 1: color = '#00FF00'
+        elif state == 0: color = '#999999'
+        elif state == 2: color = '#FFFF00'
+        else: color = '#999999'
+
+        item = self.files_dock_widget.listWidget.item(index)
+        widget = self.files_dock_widget.listWidget.itemWidget(item)
+        state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
+        state_color.setStyleSheet("background-color: {};".format(color))
+
+    def SeganyEnabled(self):
+        """
+        segany激活
+        判断当前图片是否缓存特征图，如果存在特征图，设置segany参数，并开放半自动标注
+        :return:
+        """
+        if not self.use_segment_anything:
+            self.actionSegment_anything.setEnabled(False)
+            return
+
+        results = self.seganythread.results_dict.get(self.current_index, {})
+        features = results.get('features', None)
+        original_size = results.get('original_size', None)
+        input_size = results.get('input_size', None)
+
+        if features is not None and original_size is not None and input_size is not None:
+            self.segany.predictor_with_point_prompt.features = features
+            self.segany.predictor_with_point_prompt.original_size = original_size
+            self.segany.predictor_with_point_prompt.input_size = input_size
+            self.segany.predictor_with_point_prompt.is_image_set = True
+            self.actionSegment_anything.setEnabled(True)
+        else:
+            self.segany.predictor_with_point_prompt.reset_image()
+            self.actionSegment_anything.setEnabled(False)
 
     def init_ui(self):
         #q
@@ -351,7 +460,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.can_be_annotated = True
 
             if self.can_be_annotated:
-                self.actionSegment_anything.setEnabled(self.use_segment_anything)
                 self.actionPolygon.setEnabled(True)
                 self.actionSave.setEnabled(True)
                 self.actionBit_map.setEnabled(True)
@@ -360,7 +468,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.actionCancel.setEnabled(True)
                 self.actionVisible.setEnabled(True)
             else:
-                self.actionSegment_anything.setEnabled(False)
                 self.actionPolygon.setEnabled(False)
                 self.actionSave.setEnabled(False)
                 self.actionBit_map.setEnabled(False)
@@ -370,6 +477,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.actionVisible.setEnabled(False)
 
             self.scene.load_image(file_path)
+
+            if self.use_segment_anything and self.can_be_annotated:
+                self.segany.reset_image()
+                self.seganythread.index = index
+                self.seganythread.start()
+                self.SeganyEnabled()
+
             self.view.zoomfit()
 
             # load label
@@ -551,7 +665,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 polygon.setBrush(polygon.color)
             self.annos_dock_widget.listWidget.setEnabled(True)
             self.annos_dock_widget.checkBox_visible.setEnabled(True)
-            self.actionSegment_anything.setEnabled(self.use_segment_anything)
+            self.SeganyEnabled()
             self.actionPolygon.setEnabled(True)
             self.actionVisible.setEnabled(True)
             self.map_mode = MAPMode.LABEL

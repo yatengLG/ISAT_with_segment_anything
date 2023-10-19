@@ -40,15 +40,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mainwindow.segany.reset_image()
 
         self.image_data = np.array(Image.open(image_path))
-        if self.mainwindow.use_segment_anything and self.mainwindow.can_be_annotated:
-            if self.image_data.ndim == 3 and self.image_data.shape[-1] == 3: # 三通道图
-                self.mainwindow.segany.set_image(self.image_data)
-            elif self.image_data.ndim == 2: # 单通道图
-                self.image_data = self.image_data[:, :, np.newaxis]
-                self.image_data = np.repeat(self.image_data, 3, axis=2) # 转换为三通道
-                self.mainwindow.segany.set_image(self.image_data)
-            else:
-                self.mainwindow.statusbar.showMessage("Segment anything don't support the image with shape {} .".format(self.image_data.shape))
                 
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
@@ -90,11 +81,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.actionPrev.setEnabled(True)
         self.mainwindow.actionNext.setEnabled(True)
-
-        self.mainwindow.actionSegment_anything.setEnabled(self.mainwindow.use_segment_anything and self.mainwindow.can_be_annotated)
-        if self.mainwindow.use_segment_anything and self.mainwindow.segany.image is None:
-            self.mainwindow.actionSegment_anything.setEnabled(False)
-
+        self.mainwindow.SeganyEnabled()
         self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)

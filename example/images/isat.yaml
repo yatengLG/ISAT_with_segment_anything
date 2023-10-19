@@ -22,6 +22,6 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
-language: en
+language: zh
 mask_alpha: 0.5
 vertex_size: 2

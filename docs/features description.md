@@ -12,6 +12,7 @@
 10. [Quick browsing](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#10quick-browsing)
 11. [Detail inspection](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#11detail-inspection)
 12. [Move and delete vertexs](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#12move-and-delete-vertexs)
+13. [Sam features cache](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#13Sam-features-cache)
 
 # 1.Language switching
 The software provides two interfaces, Chinese and English, which can be switched at any time.
@@ -90,3 +91,18 @@ Switch Annotations one by one with group IDs, and at the same time, adapt to the
 Select vertexs through CTRL, and then move or delete them.
 
 ![顶点批量移动与删除.gif](../display/顶点批量移动与删除.gif)
+
+# 13.Sam features cache
+
+Now sam encode features by qthread, so switching images faster when use large model.
+
+Will auto encode features for current image and the prior and the next.(You can adjust it in widgets/mainwindow.py > SegAnyThread > run() )
+
+Add encoding state before file list.
+- yello: encoding features
+- green: features encoded
+- gray:  no features
+
+![sam缓存.gif](../display/sam缓存.gif)
+
+**The features of image will not be encoded, when the speed switch images faster than the speed of sam encoding. It`s easy to solve, click the image or switch image for sam encoding** 

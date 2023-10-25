@@ -20,7 +20,7 @@ from widgets.COCO_to_ISAT_dialog import COCOtoISATDialog
 from widgets.canvas import AnnotationScene, AnnotationView
 from configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE
 from annotation import Object, Annotation
-from widgets.polygon import Polygon
+from widgets.polygon import Polygon, PromptPoint
 import os
 from PIL import Image
 import functools
@@ -309,6 +309,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.vertex_size.valueChanged.connect(self.change_vertex_size)
         self.toolBar.addWidget(self.vertex_size)
 
+        # show prompt
+        from widgets.switch_button import SwitchBtn
+        self.toolBar.addSeparator()
+        self.show_prompt = SwitchBtn(self)
+        self.show_prompt.setFixedSize(50, 20)
+        self.show_prompt.setStatusTip('Show Prompt.')
+        self.show_prompt.setToolTip('Show Prompt')
+        self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
+        self.toolBar.addWidget(self.show_prompt)
+
         self.trans = QtCore.QTranslator()
 
     def translate(self, language='zh'):
@@ -369,6 +379,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         vertex_size = self.cfg.get('vertex_size', 2)
         self.cfg['vertex_size'] = int(vertex_size)
+        self.vertex_size.setValue(vertex_size)
+
+        show_prompt = self.cfg.get('show_prompt', False)
+        self.cfg['show_prompt'] = bool(show_prompt)
+        self.show_prompt.setChecked(show_prompt)
 
         model_name = self.cfg.get('model_name', '')
         self.init_segment_anything(model_name)
@@ -710,6 +725,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['vertex_size'] = value
         if self.current_index is not None:
             self.show_image(self.current_index)
+
+    def change_prompt_visiable(self):
+        visible = self.show_prompt.checked
+        self.cfg['show_prompt'] = visible
+        for item in self.scene.items():
+            if isinstance(item, PromptPoint):
+                item.setVisible(visible)
+        # if self.current_index is not None:
+        #     self.show_image(self.current_index)
 
     def ISAT_to_VOC(self):
         self.ISAT_to_VOC_dialog.reset_gui()

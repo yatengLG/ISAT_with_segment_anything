@@ -2,7 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtGui, QtCore
-from widgets.polygon import Polygon, Vertex
+from widgets.polygon import Polygon, Vertex, PromptPoint
 from configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
@@ -22,6 +22,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL       # 默认SAM只保留外轮廓
         self.click_points = []                              # SAM point prompt
         self.click_points_mode = []                         # SAM point prompt
+        self.prompt_points = []
         self.masks:np.ndarray = None
         self.mask_alpha = 0.5
         self.top_layer = 1
@@ -271,6 +272,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # mask清空
         self.click_points.clear()
         self.click_points_mode.clear()
+        for prompt_point in self.prompt_points:
+            try:
+                self.removeItem(prompt_point)
+            finally:
+                del prompt_point
+        self.prompt_points.clear()
         self.update_mask()
 
     def cancel_draw(self):
@@ -285,6 +292,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.click_points.clear()
         self.click_points_mode.clear()
+        for prompt_point in self.prompt_points:
+            try:
+                self.removeItem(prompt_point)
+            finally:
+                del prompt_point
+        self.prompt_points.clear()
+
         self.update_mask()
 
     def delete_selected_graph(self):
@@ -378,6 +392,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(1)
+                    prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 1)
+                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    self.prompt_points.append(prompt_point)
+                    self.addItem(prompt_point)
+
                 elif self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
                     self.current_graph.removePoint(len(self.current_graph.points) - 1)
@@ -391,6 +410,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(0)
+                    prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 0)
+                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    self.prompt_points.append(prompt_point)
+                    self.addItem(prompt_point)
+
                 elif self.draw_mode == DRAWMode.POLYGON:
                     pass
                 else:
@@ -518,6 +542,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.click_points.pop()
             if len(self.click_points_mode) > 0:
                 self.click_points_mode.pop()
+            if len(self.prompt_points) > 0:
+                prompt_point = self.prompt_points.pop()
+                self.removeItem(prompt_point)
+                del prompt_point
             self.update_mask()
         elif self.draw_mode == DRAWMode.POLYGON:
             if len(self.current_graph.points) < 2:

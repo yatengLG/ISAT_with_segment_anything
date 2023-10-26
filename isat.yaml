@@ -23,6 +23,6 @@ label:
 - color: '#204a87'
   name: hat
 language: en
-mask_alpha: 0.5
-show_prompt: true
+mask_alpha: 0.3
+show_prompt: false
 vertex_size: 2

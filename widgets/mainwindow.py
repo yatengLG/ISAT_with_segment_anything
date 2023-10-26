@@ -204,6 +204,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         input_size = results.get('input_size', None)
 
         if features is not None and original_size is not None and input_size is not None:
+            if self.segany.model_source == 'sam_hq':
+                features, interm_features = features
+                self.segany.predictor_with_point_prompt.interm_features = interm_features
             self.segany.predictor_with_point_prompt.features = features
             self.segany.predictor_with_point_prompt.original_size = original_size
             self.segany.predictor_with_point_prompt.input_size = input_size

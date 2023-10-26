@@ -11,11 +11,13 @@ import timm
 
 class SegAny:
     def __init__(self, checkpoint):
+        self.model_source = None
         if 'mobile_sam' in checkpoint:
             # mobile sam
             from mobile_sam import sam_model_registry, SamPredictor
             print('- mobile sam!')
             self.model_type = "vit_t"
+            self.model_source = 'mobile_sam'
         elif 'sam_hq_vit' in checkpoint:
             # sam hq
             from segment_anything_hq import sam_model_registry, SamPredictor
@@ -30,6 +32,8 @@ class SegAny:
                 self.model_type = "vit_tiny"
             else:
                 raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+            self.model_source = 'sam_hq'
+
         elif 'sam_vit' in checkpoint:
             # sam
             from segment_anything import sam_model_registry, SamPredictor
@@ -42,6 +46,7 @@ class SegAny:
                 self.model_type = "vit_h"
             else:
                 raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+            self.model_source = 'sam'
 
         torch.cuda.empty_cache()
 

@@ -183,10 +183,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif state == 2: color = '#FFFF00'
         else: color = '#999999'
 
-        item = self.files_dock_widget.listWidget.item(index)
+        item = self.files_dock_widget.listWidget.item(10000)
         widget = self.files_dock_widget.listWidget.itemWidget(item)
-        state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
-        state_color.setStyleSheet("background-color: {};".format(color))
+        if widget is not None:
+            state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
+            state_color.setStyleSheet("background-color: {};".format(color))
 
     def SeganyEnabled(self):
         """

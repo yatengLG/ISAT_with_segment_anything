@@ -1,0 +1,8 @@
+include ISAT/checkpoints/mobile_sam.pt
+include CHANGELOG.md
+recursive-include ISAT/segment_any *.py
+recursive-include ISAT/widgets *
+recursive-include ISAT/ui *
+recursive-include ISAT/tools *
+recursive-include ISAT/ icons.qrc
+recursive-include ISAT *.yaml

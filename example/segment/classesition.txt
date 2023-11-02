@@ -8,3 +8,4 @@ plate 6
 table 7
 cake 8
 fence 9
+hat 10

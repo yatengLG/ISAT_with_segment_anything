@@ -30,18 +30,18 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ## 1. 源码运行
 ### (1) 创建虚拟环境
 ```shell
-conda create -n ISAT_with_segment_anything python=3.8
-conda activate ISAT_with_segment_anything
+conda create -n isat_env python=3.8
+conda activate isat_env
 ```
 
-### (2) 安装ISAT_with_segment_anything
+### (2) 获取ISAT_with_segment_anything源码并安装依赖
 ```shell
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
 ### (3) 下载Segment anything预训练模型
-下载预训练模型，并将模型存放于ISAT_with_segment_anything/segment_any目录下
+下载预训练模型，并将模型存放于ISAT_with_segment_anything/ISAT/checkpoints目录下
 
 当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列。
 
@@ -56,15 +56,32 @@ pip install -r requirements.txt
 |            | [sam_hq_vit_tiny.pth](https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth)     | 1463M |  43M |
 | mobile-sam | [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt)| 1375M |  40M |
 
-下载好模型后，通过SAM-下拉列表，选择要用的模型。（切换模型需要一定时间，切换h模型大概需要5秒左右，视硬件情况而定。）
+下载好模型后，重新启动软件，通过SAM-下拉列表，选择要用的模型。（切换模型需要一定时间，切换h模型大概需要5秒左右，视硬件情况而定。）
 
 ### (4) 运行软件
 ```shell
 python main.py
 ```
 
-## 2. windows下exe运行
+## 2. pip安装
+### (1) 创建虚拟环境
+```shell
+conda create -n isat_env python=3.8
+conda activate isat_env
+```
+### (2) pip安装ISAT_with_segment_anything
+**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
+```shell
+pip install isat-sam
+```
+### (3) 运行软件
+```shell
+isat-sam
+```
+
+## 3. windows下exe运行
 ### (1) 下载打包好的exe文件
+**打包的exe版本会落后于git源码，建议运行源码或pip安装**
 
 需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。
 
@@ -78,7 +95,7 @@ python main.py
 
 打包后的软件，附带了sam_hq_vit_tiny.pth模型，便于直接使用。 ( **近期有朋友反馈，sam_hq_vit_tiny.pth无法在CPU环境下运行，这是由于sam-hq模型权重保存的问题。请下载mobile-sam.pt权重后选择mobile-sam模型** )
 
-如需使用精度更高的模型，请自行下载，并放置于ISAT_with_segment_anything/segment_any文件夹下。
+如需使用精度更高的模型，请自行下载，并放置于ISAT/checkpoints文件夹下。
 
 下载地址同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
 

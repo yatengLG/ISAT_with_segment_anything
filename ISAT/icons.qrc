@@ -1,0 +1,41 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>../icons/VOC_32x32.png</file>
+    <file>../icons/semantic.png</file>
+    <file>../icons/M_Favicon.ico</file>
+    <file>../icons/labelme_32x32.png</file>
+    <file>../icons/instance.png</file>
+    <file>../icons/coco.ico</file>
+    <file>../icons/转换文件夹1_folder-conversion-one.svg</file>
+    <file>../icons/转换文件1_file-conversion-one.svg</file>
+    <file>../icons/照片_pic.svg</file>
+    <file>../icons/一对一_one-to-one.svg</file>
+    <file>../icons/眼睛_eyes.svg</file>
+    <file>../icons/校验_check-one.svg</file>
+    <file>../icons/下一步_next.svg</file>
+    <file>../icons/我的_me.svg</file>
+    <file>../icons/文件夹-开_folder-open.svg</file>
+    <file>../icons/缩小_zoom-out.svg</file>
+    <file>../icons/设置_setting-two.svg</file>
+    <file>../icons/上一步_back.svg</file>
+    <file>../icons/删除_delete.svg</file>
+    <file>../icons/删除_delete-two.svg</file>
+    <file>../icons/全宽_fullwidth.svg</file>
+    <file>../icons/去顶部_to-top.svg</file>
+    <file>../icons/去底部_to-bottom.svg</file>
+    <file>../icons/锚点_anchor.svg</file>
+    <file>../icons/列表_list.svg</file>
+    <file>../icons/列表_list-middle.svg</file>
+    <file>../icons/开关_power.svg</file>
+    <file>../icons/键盘_keyboard-one.svg</file>
+    <file>../icons/关闭_close-one.svg</file>
+    <file>../icons/放大_zoom-in.svg</file>
+    <file>../icons/翻译_translate.svg</file>
+    <file>../icons/传入3_afferent-three.svg</file>
+    <file>../icons/传出3_efferent-three.svg</file>
+    <file>../icons/编辑文件_file-editing.svg</file>
+    <file>../icons/编辑_edit.svg</file>
+    <file>../icons/保存硬盘_save-one.svg</file>
+    <file>../icons/保存_save.svg</file>
+  </qresource>
+</RCC>

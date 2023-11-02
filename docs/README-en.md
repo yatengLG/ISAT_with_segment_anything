@@ -31,8 +31,8 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ## 1. Run with source code
 ### (1) Create environment
 ```shell
-conda create -n ISAT_with_segment_anything python=3.8
-conda activate ISAT_with_segment_anything
+conda create -n isat_env python=3.8
+conda activate isat_env
 ```
 
 ### (2) Install ISAT_with_segment_anything
@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 ### (3) Download Segment anything pretrained checkpoint.
 
-Download the checkpoint，and save in the path: ISAT_with_segment_anything/segment_any
+Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
 
 Now support [SAM](https://github.com/facebookresearch/segment-anything)，[sam-hq](https://github.com/SysCV/sam-hq)，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)。
 
@@ -59,12 +59,30 @@ Now support [SAM](https://github.com/facebookresearch/segment-anything)，[sam-h
 |            | [sam_hq_vit_tiny.pth](https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth)     | 1463M |  43M |
 | mobile-sam | [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt)| 1375M |  40M |
 
-### (5) Run
+### (4) Run
 ```shell
 python main.py
 ```
-## 2. run exe
+
+## 2. pip install
+### (1) Create environment
+```shell
+conda create -n isat_env python=3.8
+conda activate isat_env
+```
+### (2) pip install isat-sam
+**pytorch-gpu need install by [pytorch](https://pytorch.org/) in Windows OS.**
+```shell
+pip install isat-sam
+```
+### (3) Run
+```shell
+isat-sam
+```
+
+## 3. run exe
 ### (1) download exe
+**The version of exe maybe older than source code.**
 
 Download three .zip files, total 2.7G
 

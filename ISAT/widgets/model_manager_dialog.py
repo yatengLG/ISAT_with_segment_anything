@@ -76,8 +76,8 @@ class DownloadThread(QThread):
                     f.write(buffer)
                     downloaded_size += len(buffer)
                     self.tag.emit(downloaded_size, total_size)
-                # 下载完成
-                self.move_from_tmp(download_tmp, os.path.join(CHECKPOINT_PATH, self.name))
+            # 下载完成
+            self.move_from_tmp(download_tmp, os.path.join(CHECKPOINT_PATH, self.name))
 
     def move_from_tmp(self, from_path, to_path):
         try:

@@ -17,6 +17,7 @@ from ISAT.widgets.ISAT_to_VOC_dialog import ISATtoVOCDialog
 from ISAT.widgets.ISAT_to_COCO_dialog import ISATtoCOCODialog
 from ISAT.widgets.ISAT_to_LABELME_dialog import ISATtoLabelMeDialog
 from ISAT.widgets.COCO_to_ISAT_dialog import COCOtoISATDialog
+from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
 from ISAT.annotation import Object, Annotation
@@ -147,8 +148,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 action.setChecked(model_name == name)
             self.use_segment_anything = False
             return
-
-        self.segany = SegAny(model_path)
+        try:
+            self.segany = SegAny(model_path)
+        except Exception as e:
+            QtWidgets.QMessageBox.warning(
+                self,
+                'Load model error',
+                'Error {}, when load sam model: {}'.format(e, model_path)
+            )
+            return
         self.use_segment_anything = True
         self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
         for name, action in self.pths_actions.items():
@@ -183,7 +191,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif state == 2: color = '#FFFF00'
         else: color = '#999999'
 
-        item = self.files_dock_widget.listWidget.item(10000)
+        item = self.files_dock_widget.listWidget.item(index)
         widget = self.files_dock_widget.listWidget.itemWidget(item)
         if widget is not None:
             state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
@@ -233,6 +241,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.info_dock_widget = InfoDockWidget(mainwindow=self)
         self.info_dock.setWidget(self.info_dock_widget)
 
+        self.model_manager_dialog = ModelManagerDialog(self, self)
+
         # 新增 group 选择 快捷键
         self.next_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Tab"), self)
         self.prev_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("`"), self)
@@ -278,18 +288,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.labelData.setFixedWidth(150)
         self.statusbar.addPermanentWidget(self.labelData)
 
-        #
-        model_names = sorted([pth for pth in os.listdir(CHECKPOINT_PATH) if pth.endswith('.pth') or pth.endswith('.pt')])
-        self.pths_actions = {}
-        for model_name in model_names:
-            action = QtWidgets.QAction(self)
-            action.setObjectName("actionZoom_in")
-            action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
-            action.setText("{}".format(model_name))
-            action.setCheckable(True)
-
-            self.pths_actions[model_name] = action
-            self.menuSAM_model.addAction(action)
+        self.update_menuSAM()
 
         # mask alpha
         self.toolBar.addSeparator()
@@ -325,6 +324,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.trans = QtCore.QTranslator()
 
+    def update_menuSAM(self):
+        #
+        self.menuSAM_model.clear()
+        self.menuSAM_model.addAction(self.actionModel_manage)
+        model_names = sorted(
+            [pth for pth in os.listdir(CHECKPOINT_PATH) if pth.endswith('.pth') or pth.endswith('.pt')])
+        self.pths_actions = {}
+        for model_name in model_names:
+            action = QtWidgets.QAction(self)
+            action.setObjectName("actionZoom_in")
+            action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
+            action.setText("{}".format(model_name))
+            action.setCheckable(True)
+
+            self.pths_actions[model_name] = action
+            self.menuSAM_model.addAction(action)
+
     def translate(self, language='zh'):
         if language == 'zh':
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/zh_CN'))
@@ -341,6 +357,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_choice_widget.retranslateUi(self.category_choice_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
         self.setting_dialog.retranslateUi(self.setting_dialog)
+        self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.ISAT_to_VOC_dialog.retranslateUi(self.ISAT_to_VOC_dialog)
@@ -700,8 +717,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.checkBox_visible.setChecked(visible)
         self.annos_dock_widget.set_all_polygon_visible(visible)
 
-    def open_checkpoint_dir(self):
-        QtWidgets.QMessageBox.information(self, 'Checkpoint Dir', CHECKPOINT_PATH)
+    def model_manage(self):
+        self.model_manager_dialog.show()
 
     def change_contour_mode(self, contour_mode='max_only'):
         if contour_mode == 'max_only':
@@ -799,8 +816,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionBit_map.triggered.connect(self.change_bit_map)
         self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
 
-        self.actionCheckpoint_dir.triggered.connect(self.open_checkpoint_dir)
-        self.actionCheckpoint_dir.setStatusTip(CHECKPOINT_PATH)
+        self.actionModel_manage.triggered.connect(self.model_manage)
+        self.actionModel_manage.setStatusTip(CHECKPOINT_PATH)
 
         self.actionContour_Max_only.triggered.connect(functools.partial(self.change_contour_mode, 'max_only'))
         self.actionContour_External.triggered.connect(functools.partial(self.change_contour_mode, 'external'))

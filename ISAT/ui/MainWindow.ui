@@ -206,7 +206,7 @@
     <property name="title">
      <string>SAM</string>
     </property>
-    <addaction name="actionCheckpoint_dir"/>
+    <addaction name="actionModel_manage"/>
     <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
@@ -857,19 +857,19 @@
     </font>
    </property>
   </action>
-  <action name="actionCheckpoint_dir">
+  <action name="actionModel_manage">
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/文件夹-开_folder-open.svg</normaloff>:/icon/icons/文件夹-开_folder-open.svg</iconset>
+     <normaloff>:/icon/icons/列表_list-middle.svg</normaloff>:/icon/icons/列表_list-middle.svg</iconset>
    </property>
    <property name="text">
-    <string>Checkpoint dir</string>
+    <string>Model manage</string>
    </property>
    <property name="statusTip">
-    <string>Checkpoint dir.</string>
+    <string>Model manage.</string>
    </property>
    <property name="whatsThis">
-    <string>Checkpoint dir.</string>
+    <string>Model manage.</string>
    </property>
    <property name="font">
     <font>

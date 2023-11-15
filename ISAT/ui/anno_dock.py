@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT_with_segment_anything/ui/anno_dock.ui'
+# Form implementation generated from reading ui file '/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/anno_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -58,6 +58,7 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.label)
         self.verticalLayout.addWidget(self.widget)
         self.listWidget = QtWidgets.QListWidget(Form)
+        self.listWidget.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
 
@@ -68,4 +69,3 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.checkBox_visible.setText(_translate("Form", "Visible"))
-# import icons_rc

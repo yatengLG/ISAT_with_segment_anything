@@ -13,6 +13,7 @@
 11. [Detail inspection](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#11detail-inspection)
 12. [Move and delete vertexs](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#12move-and-delete-vertexs)
 13. [Sam features cache](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#13Sam-features-cache)
+14. [Model manager](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#14Model-manager)
 
 # 1.Language switching
 The software provides two interfaces, Chinese and English, which can be switched at any time.
@@ -106,3 +107,9 @@ Add encoding state before file list.
 ![sam缓存.gif](../display/sam缓存.gif)
 
 **The features of image will not be encoded, when the speed switch images faster than the speed of sam encoding. It`s easy to solve, click the image or switch image for sam encoding** 
+
+# 14.Model manager
+
+![模型下载.gif](../display/模型下载.gif)
+- support multithread download.
+- support pause and breakpoint transmission.

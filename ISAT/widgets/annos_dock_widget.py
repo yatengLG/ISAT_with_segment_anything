@@ -105,6 +105,11 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         have_selected = True if items else False
         if have_selected:
             self.mainwindow.scene.change_mode_to_edit()
+            # 编辑，置顶等功能只针对单个多边形
+            if len(items) > 1:
+                self.mainwindow.actionTo_top.setEnabled(False)
+                self.mainwindow.actionTo_bottom.setEnabled(False)
+                self.mainwindow.actionEdit.setEnabled(False)
         else:
             self.mainwindow.scene.change_mode_to_view()
 

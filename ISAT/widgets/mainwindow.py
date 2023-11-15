@@ -714,7 +714,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_labels_visible(self, visible=None):
         if visible is None:
             visible = not self.annos_dock_widget.checkBox_visible.isChecked()
-        self.annos_dock_widget.checkBox_visible.setChecked(visible)
         self.annos_dock_widget.set_all_polygon_visible(visible)
 
     def model_manage(self):

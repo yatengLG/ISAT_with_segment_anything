@@ -58,8 +58,6 @@ class FROMCOCO(QThread):
                     width = images[annotation_image_id].get('width')
                     iscrowd = annotation["iscrowd"]
 
-                    if file_name == '000000279278.jpg':
-                        continue
                     if annotation_image_id not in annos:
                         annos[annotation_image_id] = {}
 

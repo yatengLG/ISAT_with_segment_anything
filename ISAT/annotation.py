@@ -94,6 +94,7 @@ class Annotation:
                         bbox = shape.get('bbox', [])
                         obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
                         self.objects.append(obj)
+        return self
 
     def save_annotation(self):
         dataset = {}

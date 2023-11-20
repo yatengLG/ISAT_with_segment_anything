@@ -336,6 +336,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def edit_polygon(self):
         selectd_items = self.selectedItems()
+        selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
         if len(selectd_items) < 1:
             return
         item = selectd_items[0]
@@ -347,6 +348,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def move_polygon_to_top(self):
         selectd_items = self.selectedItems()
+        selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
         if len(selectd_items) < 1:
             return
         current_polygon = selectd_items[0]
@@ -364,6 +366,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def move_polygon_to_bottom(self):
         selectd_items = self.selectedItems()
+        selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
+
         if len(selectd_items) < 1:
             return
         current_polygon = selectd_items[0]

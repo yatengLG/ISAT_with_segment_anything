@@ -473,6 +473,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_image(self, index:int):
         self.reset_action()
+        self.change_bit_map_to_label()
+
         self.current_label = None
         self.load_finished = False
         self.saved = True
@@ -641,73 +643,82 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if 0 <= index < len(self.current_label.objects):
             del self.current_label.objects[index]
 
+    def change_bit_map_to_semantic(self):
+        # to semantic
+        for polygon in self.polygons:
+            polygon.setEnabled(False)
+            for vertex in polygon.vertexs:
+                vertex.setVisible(False)
+            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
+            polygon.color.setAlpha(255)
+            polygon.setBrush(polygon.color)
+        self.annos_dock_widget.listWidget.setEnabled(False)
+        self.annos_dock_widget.checkBox_visible.setEnabled(False)
+        self.actionSegment_anything.setEnabled(False)
+        self.actionPolygon.setEnabled(False)
+        self.actionVisible.setEnabled(False)
+        self.map_mode = MAPMode.SEMANTIC
+        semantic_icon = QtGui.QIcon()
+        semantic_icon.addPixmap(QtGui.QPixmap(":/icon/icons/semantic.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionBit_map.setIcon(semantic_icon)
+
+    def change_bit_map_to_instance(self):
+        # to instance
+        for polygon in self.polygons:
+            polygon.setEnabled(False)
+            for vertex in polygon.vertexs:
+                vertex.setVisible(False)
+            if polygon.group != '':
+                index = int(polygon.group)
+                index = index % self.instance_cmap.shape[0]
+                rgb = self.instance_cmap[index]
+            else:
+                rgb = self.instance_cmap[0]
+            polygon.change_color(QtGui.QColor(rgb[0], rgb[1], rgb[2], 255))
+            polygon.color.setAlpha(255)
+            polygon.setBrush(polygon.color)
+        self.annos_dock_widget.listWidget.setEnabled(False)
+        self.annos_dock_widget.checkBox_visible.setEnabled(False)
+        self.actionSegment_anything.setEnabled(False)
+        self.actionPolygon.setEnabled(False)
+        self.actionVisible.setEnabled(False)
+        self.map_mode = MAPMode.INSTANCE
+        instance_icon = QtGui.QIcon()
+        instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionBit_map.setIcon(instance_icon)
+
+    def change_bit_map_to_label(self):
+        # to label
+        for polygon in self.polygons:
+            polygon.setEnabled(True)
+            for vertex in polygon.vertexs:
+                # vertex.setEnabled(True)
+                vertex.setVisible(polygon.isVisible())
+            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
+            polygon.color.setAlpha(polygon.nohover_alpha)
+            polygon.setBrush(polygon.color)
+        self.annos_dock_widget.listWidget.setEnabled(True)
+        self.annos_dock_widget.checkBox_visible.setEnabled(True)
+        self.SeganyEnabled()
+        self.actionPolygon.setEnabled(True)
+        self.actionVisible.setEnabled(True)
+        self.map_mode = MAPMode.LABEL
+        label_icon = QtGui.QIcon()
+        label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionBit_map.setIcon(label_icon)
+
     def change_bit_map(self):
         self.set_labels_visible(True)
         if self.scene.mode == STATUSMode.CREATE:
             self.scene.cancel_draw()
         if self.map_mode == MAPMode.LABEL:
-            # to semantic
-            for polygon in self.polygons:
-                polygon.setEnabled(False)
-                for vertex in polygon.vertexs:
-                    vertex.setVisible(False)
-                polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
-                polygon.color.setAlpha(255)
-                polygon.setBrush(polygon.color)
-            self.annos_dock_widget.listWidget.setEnabled(False)
-            self.annos_dock_widget.checkBox_visible.setEnabled(False)
-            self.actionSegment_anything.setEnabled(False)
-            self.actionPolygon.setEnabled(False)
-            self.actionVisible.setEnabled(False)
-            self.map_mode = MAPMode.SEMANTIC
-            semantic_icon = QtGui.QIcon()
-            semantic_icon.addPixmap(QtGui.QPixmap(":/icon/icons/semantic.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.actionBit_map.setIcon(semantic_icon)
+            self.change_bit_map_to_semantic()
 
         elif self.map_mode == MAPMode.SEMANTIC:
-            # to instance
-            for polygon in self.polygons:
-                polygon.setEnabled(False)
-                for vertex in polygon.vertexs:
-                    vertex.setVisible(False)
-                if polygon.group != '':
-                    index = int(polygon.group)
-                    index = index % self.instance_cmap.shape[0]
-                    rgb = self.instance_cmap[index]
-                else:
-                    rgb = self.instance_cmap[0]
-                polygon.change_color(QtGui.QColor(rgb[0], rgb[1], rgb[2], 255))
-                polygon.color.setAlpha(255)
-                polygon.setBrush(polygon.color)
-            self.annos_dock_widget.listWidget.setEnabled(False)
-            self.annos_dock_widget.checkBox_visible.setEnabled(False)
-            self.actionSegment_anything.setEnabled(False)
-            self.actionPolygon.setEnabled(False)
-            self.actionVisible.setEnabled(False)
-            self.map_mode = MAPMode.INSTANCE
-            instance_icon = QtGui.QIcon()
-            instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.actionBit_map.setIcon(instance_icon)
+            self.change_bit_map_to_instance()
 
         elif self.map_mode == MAPMode.INSTANCE:
-            # to label
-            for polygon in self.polygons:
-                polygon.setEnabled(True)
-                for vertex in polygon.vertexs:
-                    # vertex.setEnabled(True)
-                    vertex.setVisible(polygon.isVisible())
-                polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
-                polygon.color.setAlpha(polygon.nohover_alpha)
-                polygon.setBrush(polygon.color)
-            self.annos_dock_widget.listWidget.setEnabled(True)
-            self.annos_dock_widget.checkBox_visible.setEnabled(True)
-            self.SeganyEnabled()
-            self.actionPolygon.setEnabled(True)
-            self.actionVisible.setEnabled(True)
-            self.map_mode = MAPMode.LABEL
-            label_icon = QtGui.QIcon()
-            label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.actionBit_map.setIcon(label_icon)
+            self.change_bit_map_to_label()
         else:
             pass
 

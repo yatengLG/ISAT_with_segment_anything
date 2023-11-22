@@ -226,7 +226,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 return
 
             # 移除鼠标移动点
-            # self.current_graph.removePoint(len(self.current_graph.points) - 1)
+            self.current_graph.removePoint(len(self.current_graph.points) - 1)
 
             # 单点，删除
             if len(self.current_graph.points) < 2:

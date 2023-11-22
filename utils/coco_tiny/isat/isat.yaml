@@ -1,0 +1,38 @@
+contour_mode: max_only
+label:
+- color: '#000000'
+  name: __background__
+- color: '#ef2929'
+  name: backpack
+- color: '#fcaf3e'
+  name: bird
+- color: '#fce94f'
+  name: bottle
+- color: '#8ae234'
+  name: bowl
+- color: '#729fcf'
+  name: chair
+- color: '#ad7fa8'
+  name: couch
+- color: '#e9b96e'
+  name: dining table
+- color: '#a40000'
+  name: handbag
+- color: '#ce5c00'
+  name: person
+- color: '#c4a000'
+  name: potted plant
+- color: '#4e9a06'
+  name: skis
+- color: '#204a87'
+  name: stop sign
+- color: '#5c3566'
+  name: tv
+- color: '#8f5902'
+  name: umbrella
+- color: '#2e3436'
+  name: vase
+language: en
+mask_alpha: 0.5
+show_prompt: false
+vertex_size: 2

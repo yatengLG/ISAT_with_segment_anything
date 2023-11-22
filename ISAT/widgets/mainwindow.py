@@ -422,37 +422,50 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def open_dir(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self)
-        if dir:
-            self.files_list.clear()
-            self.files_dock_widget.listWidget.clear()
+        if not dir:
+            return
 
-            files = []
-            suffixs = tuple(['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
-            for f in os.listdir(dir):
-                if f.lower().endswith(suffixs):
-                    # f = os.path.join(dir, f)
-                    files.append(f)
-            files = sorted(files)
-            self.files_list = files
+        self.files_list.clear()
+        self.files_dock_widget.listWidget.clear()
 
-            self.files_dock_widget.update_widget()
+        files = []
+        suffixs = tuple(['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+        for f in os.listdir(dir):
+            if f.lower().endswith(suffixs):
+                # f = os.path.join(dir, f)
+                files.append(f)
+        files = sorted(files)
+        self.files_list = files
+
+        self.files_dock_widget.update_widget()
 
         self.current_index = 0
 
         self.image_root = dir
         self.actionOpen_dir.setStatusTip("Image root: {}".format(self.image_root))
+
         if self.label_root is None:
             self.label_root = dir
             self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+
+            # load setting yaml
+            if os.path.exists(os.path.join(dir, 'isat.yaml')):
+                self.config_file = os.path.join(dir, 'isat.yaml')
+                self.reload_cfg()
 
         self.show_image(self.current_index)
 
     def save_dir(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self)
-        if dir:
-            self.label_root = dir
-            self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+        if not dir:
+            return
 
+        self.label_root = dir
+        self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+        # load setting yaml
+        if os.path.exists(os.path.join(dir, 'isat.yaml')):
+            self.config_file = os.path.join(dir, 'isat.yaml')
+            self.reload_cfg()
         # 刷新图片
         if self.current_index is not None:
             self.show_image(self.current_index)

@@ -61,20 +61,12 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def load_cfg(self):
         self.label_config_file.setText(self.mainwindow.config_file)
-        cfg = load_config(self.mainwindow.config_file)
         self.category_list_widget.clear()
-        labels = cfg.get('label', [])
-        labels_key = [l.get('name') for l in labels]
 
-        if '__background__' not in labels_key:
-            print(labels)
-            labels.insert(0, {'name': '__background__', 'color': '#000000'})
-
-        if labels is not None:
-            for label in labels:
-                item, item_widget = self.get_item_and_widget(label.get('name', ''), color=label.get('color', '#00ff00'))
-                self.category_list_widget.addItem(item)
-                self.category_list_widget.setItemWidget(item, item_widget)
+        for name, color in self.mainwindow.category_color_dict.items():
+            item, item_widget = self.get_item_and_widget(name, color=color)
+            self.category_list_widget.addItem(item)
+            self.category_list_widget.setItemWidget(item, item_widget)
 
     def add_new_category(self):
         category = self.category_input.text()

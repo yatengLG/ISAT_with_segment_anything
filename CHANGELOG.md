@@ -9,3 +9,7 @@
 * 支持多选多边形，现在可以批量删除了
 
     按下Ctrl点击多边形；按下Ctrl点击右侧标注栏；按下Shift点击右侧标注栏；点击右侧标注栏，Ctrl+A全选。
+    
+* 添加转换脚本 - utils目录下
+    
+    现支持 ISAT <-> COCO, ISAT <-> YOLO, ISAT -> XML(目标检测) 

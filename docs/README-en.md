@@ -25,6 +25,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - Support modifying polygons.
 - Support for adjusting polygon occlusion.
 - Support preview annotation result.
+- Support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)
 - More features refer to [Features Description](features%20description.md)
 
 # INSTALL
@@ -46,7 +47,7 @@ pip install -r requirements.txt
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
 
-Now support [SAM](https://github.com/facebookresearch/segment-anything)，[sam-hq](https://github.com/SysCV/sam-hq)，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)。
+Now support [SAM](https://github.com/facebookresearch/segment-anything)(support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast))，[sam-hq](https://github.com/SysCV/sam-hq)，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)。
 
 |  | pretrained checkpoint | memory | size |
 |----|----|----|----|

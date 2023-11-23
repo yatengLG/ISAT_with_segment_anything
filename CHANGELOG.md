@@ -13,3 +13,19 @@
 * 添加转换脚本 - utils目录下
     
     现支持 ISAT <-> COCO, ISAT <-> YOLO, ISAT -> XML(目标检测) 
+
+* 添加了对[segment-anything-fast](https://github.com/pytorch-labs/segment-anything-fast)的支持
+    
+    **现支持SAM系列模型，sam-hq以及mobile-sam等后续更新**
+    
+    sam-fast要求torch版本不低于2.1.1;低于版本要求时，默认导入sam
+    
+    sam_vit_h_4b8939.pth encode计算时间缩短大概4倍，显存占用缩小到5.6G
+    
+| | sam | sam-fast |
+|----|----|----|
+| 0 | 0.698307991027832 | 0.19336390495300293 | 
+| 1 | 0.7048919200897217 | 0.21175742149353027 | 
+| 2 | 0.766636848449707 | 0.2573261260986328 | 
+| 3 | 0.8198366165161133 | 0.22284531593322754 | 
+

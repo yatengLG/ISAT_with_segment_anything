@@ -24,6 +24,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
 - 单独线程进行sam encoder计算，降低切换图片的卡顿感
+- 添加对[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)的支持，进一步提升sam编码效率
 - 更多功能详见[功能说明](./docs/功能说明.md)
 
 # 安装
@@ -43,7 +44,7 @@ pip install -r requirements.txt
 ### (3) 下载Segment anything预训练模型
 下载预训练模型，并将模型存放于ISAT_with_segment_anything/ISAT/checkpoints目录下
 
-当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列。
+当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列(支持[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)技术)，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列。
 
 | 系列 | 预训练模型 | 显存占用 | 文件大小 |
 |----|----|----|----|

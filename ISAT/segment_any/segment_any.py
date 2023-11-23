@@ -32,7 +32,13 @@ class SegAny:
 
         elif 'sam_vit' in checkpoint:
             # sam
-            from ISAT.segment_anything import sam_model_registry, SamPredictor
+            if torch.__version__ < '2.1.1':
+                from ISAT.segment_anything import sam_model_registry, SamPredictor
+                print('segment_anything')
+            else:
+                # 暂时只测试了2.1.1环境下的运行;2.0不确定；1.x不可以
+                from ISAT.segment_anything_fast import sam_model_registry, SamPredictor
+                print('segment_anything_fast')
             if 'vit_b' in checkpoint:
                 self.model_type = "vit_b"
             elif 'vit_l' in checkpoint:

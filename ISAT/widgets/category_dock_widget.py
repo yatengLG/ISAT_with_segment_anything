@@ -88,5 +88,8 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.group_select_mode = 'manual'
             self.pushButton_group_mode.setText("Manual")
         elif self.mainwindow.group_select_mode == 'manual':
+            self.mainwindow.group_select_mode = 'track'
+            self.pushButton_group_mode.setText("Track")
+        elif self.mainwindow.group_select_mode == 'track':
             self.mainwindow.group_select_mode = 'auto'
             self.pushButton_group_mode.setText("Auto")

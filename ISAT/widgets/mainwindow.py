@@ -457,10 +457,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 files.append(f)
         files = sorted(files)
         self.files_list = files
-        import time
-        time1 =time.time()
+
         self.files_dock_widget.update_widget()
-        print('cost time: ',time.time()-time1)
 
         self.current_index = 0
 

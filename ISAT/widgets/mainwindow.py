@@ -35,7 +35,7 @@ import torch
 
 
 class SegAnyThread(QThread):
-    tag = pyqtSignal(int, int)
+    tag = pyqtSignal(int, int, str)
     def __init__(self, mainwindow):
         super(SegAnyThread, self).__init__()
         self.mainwindow = mainwindow
@@ -73,26 +73,33 @@ class SegAnyThread(QThread):
                 if k not in indexs:
                     try:
                         del self.results_dict[k]
-                        self.tag.emit(k, 0)  # 删除
+                        self.tag.emit(k, 0, '')  # 删除
                     except:
                         pass
 
             for index in indexs:
                 if index not in self.results_dict:
-                    self.tag.emit(index, 2)    # 进行
+                    self.tag.emit(index, 2, '')    # 进行
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
                     self.results_dict[index] = {}
                     image_data = np.array(Image.open(image_path))
-                    features, original_size, input_size = self.sam_encoder(image_data)
+                    try:
+                        features, original_size, input_size = self.sam_encoder(image_data)
+                    except Exception as e:
+                        self.tag.emit(index, 3, '{}'.format(e))  # error
+                        del self.results_dict[index]
+                        continue
+
                     self.results_dict[index]['features'] = features
                     self.results_dict[index]['original_size'] = original_size
                     self.results_dict[index]['input_size'] = input_size
 
-                    self.tag.emit(index, 1)    # 完成
+                    self.tag.emit(index, 1, '')    # 完成
 
                     torch.cuda.empty_cache()
-
+                else:
+                    self.tag.emit(index, 1, '')
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -179,7 +186,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is not None:
             self.show_image(self.current_index)
 
-    def sam_encoder_finish(self, index:int, state:int):
+    def sam_encoder_finish(self, index:int, state:int, message:str):
         if state == 1:  # 识别完
             # 如果当前图片刚识别完，需刷新segany状态
             if self.current_index == index:
@@ -189,13 +196,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if state == 1: color = '#00FF00'
         elif state == 0: color = '#999999'
         elif state == 2: color = '#FFFF00'
+        elif state == 3:
+            color = '#999999'
+            if index == self.current_index:
+                QtWidgets.QMessageBox.warning(self, 'warning','SAM not support the image: {}\nError: {}'.format(self.files_list[index], message))
+
         else: color = '#999999'
 
-        item = self.files_dock_widget.listWidget.item(index)
-        widget = self.files_dock_widget.listWidget.itemWidget(item)
-        if widget is not None:
-            state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
-            state_color.setStyleSheet("background-color: {};".format(color))
+        if index == self.current_index:
+            self.files_dock_widget.label_current_state.setStyleSheet("background-color: {};".format(color))
+        elif index == self.current_index - 1:
+            self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format(color))
+        elif index == self.current_index + 1:
+            self.files_dock_widget.label_next_state.setStyleSheet("background-color: {};".format(color))
+        else:
+            pass
+
+        # item = self.files_dock_widget.listWidget.item(index)
+        # widget = self.files_dock_widget.listWidget.itemWidget(item)
+        # if widget is not None:
+        #     state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
+        #     state_color.setStyleSheet("background-color: {};".format(color))
 
     def SeganyEnabled(self):
         """
@@ -436,8 +457,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 files.append(f)
         files = sorted(files)
         self.files_list = files
-
+        import time
+        time1 =time.time()
         self.files_dock_widget.update_widget()
+        print('cost time: ',time.time()-time1)
 
         self.current_index = 0
 

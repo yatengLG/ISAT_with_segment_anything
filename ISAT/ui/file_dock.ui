@@ -33,6 +33,96 @@
     <widget class="QListWidget" name="listWidget"/>
    </item>
    <item>
+    <widget class="QWidget" name="widget_state" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_prev_state">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>3</height>
+         </size>
+        </property>
+        <property name="statusTip">
+         <string>Prev image SAM state</string>
+        </property>
+        <property name="whatsThis">
+         <string>Prev image SAM state.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(153, 153, 153);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_current_state">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>3</height>
+         </size>
+        </property>
+        <property name="statusTip">
+         <string>Current image SAM state</string>
+        </property>
+        <property name="whatsThis">
+         <string>Current image SAM state.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(153, 153, 153);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_next_state">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>3</height>
+         </size>
+        </property>
+        <property name="statusTip">
+         <string>Next image SAM state</string>
+        </property>
+        <property name="whatsThis">
+         <string>Next image SAM state.</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(153, 153, 153);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="widget_num" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">

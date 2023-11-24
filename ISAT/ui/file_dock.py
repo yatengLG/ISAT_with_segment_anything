@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/super/PycharmProjects/ISAT/ui/file_dock.ui'
+# Form implementation generated from reading ui file '/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/file_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -22,6 +22,31 @@ class Ui_Form(object):
         self.listWidget = QtWidgets.QListWidget(Form)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
+        self.widget_state = QtWidgets.QWidget(Form)
+        self.widget_state.setObjectName("widget_state")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_state)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_prev_state = QtWidgets.QLabel(self.widget_state)
+        self.label_prev_state.setMaximumSize(QtCore.QSize(16777215, 3))
+        self.label_prev_state.setStyleSheet("background-color: rgb(153, 153, 153);")
+        self.label_prev_state.setText("")
+        self.label_prev_state.setObjectName("label_prev_state")
+        self.horizontalLayout_2.addWidget(self.label_prev_state)
+        self.label_current_state = QtWidgets.QLabel(self.widget_state)
+        self.label_current_state.setMaximumSize(QtCore.QSize(16777215, 3))
+        self.label_current_state.setStyleSheet("background-color: rgb(153, 153, 153);")
+        self.label_current_state.setText("")
+        self.label_current_state.setObjectName("label_current_state")
+        self.horizontalLayout_2.addWidget(self.label_current_state)
+        self.label_next_state = QtWidgets.QLabel(self.widget_state)
+        self.label_next_state.setMinimumSize(QtCore.QSize(50, 0))
+        self.label_next_state.setMaximumSize(QtCore.QSize(16777215, 3))
+        self.label_next_state.setStyleSheet("background-color: rgb(153, 153, 153);")
+        self.label_next_state.setText("")
+        self.label_next_state.setObjectName("label_next_state")
+        self.horizontalLayout_2.addWidget(self.label_next_state)
+        self.verticalLayout.addWidget(self.widget_state)
         self.widget_num = QtWidgets.QWidget(Form)
         self.widget_num.setObjectName("widget_num")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_num)
@@ -49,6 +74,12 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
+        self.label_prev_state.setStatusTip(_translate("Form", "Prev image SAM state"))
+        self.label_prev_state.setWhatsThis(_translate("Form", "Prev image SAM state."))
+        self.label_current_state.setStatusTip(_translate("Form", "Current image SAM state"))
+        self.label_current_state.setWhatsThis(_translate("Form", "Current image SAM state."))
+        self.label_next_state.setStatusTip(_translate("Form", "Next image SAM state"))
+        self.label_next_state.setWhatsThis(_translate("Form", "Next image SAM state."))
         self.lineEdit_jump.setToolTip(_translate("Form", "Jump to the image. Input name or index."))
         self.lineEdit_jump.setPlaceholderText(_translate("Form", "Jump to the image."))
         self.label.setText(_translate("Form", "/"))

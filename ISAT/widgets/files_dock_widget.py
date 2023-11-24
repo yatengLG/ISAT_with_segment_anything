@@ -43,11 +43,11 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             _, file_name = os.path.split(file_path)
             item = QtWidgets.QListWidgetItem()
             item.setSizeHint(QtCore.QSize(200, 30))
-            item, item_widget = self.generate_item_and_itemwidget(file_name)
+            # item, item_widget = self.generate_item_and_itemwidget(file_name)
 
-            # item.setText(file_name)
+            item.setText(file_name)
             self.listWidget.addItem(item)
-            self.listWidget.setItemWidget(item, item_widget)
+            # self.listWidget.setItemWidget(item, item_widget)
 
         self.label_all.setText('{}'.format(len(self.mainwindow.files_list)))
 

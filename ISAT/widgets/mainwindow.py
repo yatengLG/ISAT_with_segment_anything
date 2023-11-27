@@ -271,8 +271,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.prev_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
         # 新增手动/自动 选择group
         self.next_group_shortcut.activated.connect(self.annos_dock_widget.go_to_next_group)
-        self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)
-        
+        self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)           
+               
         self.scene = AnnotationScene(mainwindow=self)
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
@@ -517,6 +517,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_cfg(os.path.join(self.label_root, 'isat.yaml'))
         self.set_saved_state(True)
 
+    def update_group_display(self):
+        self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
+
     def show_image(self, index:int):
         self.reset_action()
         self.change_bit_map_to_label()
@@ -587,7 +590,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.current_group = group + 1 if group >= self.current_group else self.current_group
                         elif self.group_select_mode == 'manual':
                             self.current_group = 1
-                        self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
+                        self.update_group_display()
                     except Exception as e:
                         pass
                     polygon = Polygon()

@@ -32,7 +32,7 @@ import ISAT.icons_rc
 from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 import torch
-
+import cv2  # 调整图像饱和度
 
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
@@ -132,7 +132,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
-
+        
         self.init_ui()
         self.reload_cfg()
 
@@ -342,6 +342,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.show_prompt.setToolTip('Show Prompt')
         self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
         self.toolBar.addWidget(self.show_prompt)
+
+        # image saturation  调整图像饱和度
+        self.toolBar.addSeparator()
+        self.image_saturation = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
+        self.image_saturation.setFixedWidth(50)
+        self.image_saturation.setStatusTip('image saturation.')
+        self.image_saturation.setToolTip('image_saturation')
+        self.image_saturation.setMaximum(500)
+        self.image_saturation.setMinimum(0)
+        self.image_saturation.setTickInterval(10)
+        self.image_saturation.valueChanged.connect(self.change_saturation)
+        self.toolBar.addWidget(self.image_saturation)
 
         self.trans = QtCore.QTranslator()
 
@@ -793,6 +805,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['vertex_size'] = value
         if self.current_index is not None:
             self.show_image(self.current_index)
+
+    def change_saturation(self, value):  # 调整图像饱和度
+        if self.scene.image_data is not None:
+            saturation_scale = value / 100.0
+            hsv_image = cv2.cvtColor(self.scene.image_data, cv2.COLOR_RGB2HSV)
+            hsv_image[:, :, 1] = np.clip(hsv_image[:, :, 1] * saturation_scale, 0, 255)
+            image_hsv = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2RGB)
+            height, width, channels = self.scene.image_data.shape
+            pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(image_hsv.data, width, height, channels * width, QtGui.QImage.Format_RGB888))
+            self.scene.image_item.setPixmap(pixmap)
+        else:
+            print('Image data not loaded in AnnotationScene')
 
     def change_prompt_visiable(self):
         visible = self.show_prompt.checked

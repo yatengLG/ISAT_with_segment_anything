@@ -586,7 +586,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="file_dock.py" line="54"/>
+        <location filename="file_dock.py" line="85"/>
         <source>/</source>
         <translation></translation>
     </message>
@@ -616,17 +616,17 @@ p, li { white-space: pre-wrap; }
         <translation>为图片添加额外注释</translation>
     </message>
     <message>
-        <location filename="file_dock.py" line="52"/>
+        <location filename="file_dock.py" line="83"/>
         <source>Jump to the image. Input name or index.</source>
         <translation>跳转到指定图片,输入图片名或序号.</translation>
     </message>
     <message>
-        <location filename="file_dock.py" line="53"/>
+        <location filename="file_dock.py" line="84"/>
         <source>Jump to the image.</source>
         <translation>跳转到指定图片.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="70"/>
+        <location filename="anno_dock.py" line="71"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
@@ -664,6 +664,36 @@ p, li { white-space: pre-wrap; }
         <location filename="category_dock.py" line="65"/>
         <source>+</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="77"/>
+        <source>Prev image SAM state</source>
+        <translation>上一张图片的sam特征状态</translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="78"/>
+        <source>Prev image SAM state.</source>
+        <translation>上一张图片的sam特征状态.</translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="79"/>
+        <source>Current image SAM state</source>
+        <translation>当前图片的sam特征状态</translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="80"/>
+        <source>Current image SAM state.</source>
+        <translation>当前图片的sam特征状态.</translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="81"/>
+        <source>Next image SAM state</source>
+        <translation>下一张图片的sam特征状态</translation>
+    </message>
+    <message>
+        <location filename="file_dock.py" line="82"/>
+        <source>Next image SAM state.</source>
+        <translation>下一张图片的sam特征状态.</translation>
     </message>
 </context>
 <context>

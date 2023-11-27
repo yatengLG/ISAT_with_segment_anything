@@ -333,27 +333,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.vertex_size.valueChanged.connect(self.change_vertex_size)
         self.toolBar.addWidget(self.vertex_size)
 
-        # show prompt
-        from ISAT.widgets.switch_button import SwitchBtn
-        self.toolBar.addSeparator()
-        self.show_prompt = SwitchBtn(self)
-        self.show_prompt.setFixedSize(50, 20)
-        self.show_prompt.setStatusTip('Show Prompt.')
-        self.show_prompt.setToolTip('Show Prompt')
-        self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
-        self.toolBar.addWidget(self.show_prompt)
-
         # image saturation  调整图像饱和度
         self.toolBar.addSeparator()
         self.image_saturation = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
         self.image_saturation.setFixedWidth(50)
-        self.image_saturation.setStatusTip('image saturation.')
-        self.image_saturation.setToolTip('image_saturation')
+        self.image_saturation.setStatusTip('Image saturation.')
+        self.image_saturation.setToolTip('Image saturation')
         self.image_saturation.setMaximum(500)
         self.image_saturation.setMinimum(0)
         self.image_saturation.setTickInterval(10)
         self.image_saturation.valueChanged.connect(self.change_saturation)
         self.toolBar.addWidget(self.image_saturation)
+
+        # show prompt
+        from ISAT.widgets.switch_button import SwitchBtn
+        self.toolBar.addSeparator()
+        self.show_prompt = SwitchBtn(self)
+        self.show_prompt.setFixedSize(50, 20)
+        self.show_prompt.setStatusTip('Show prompt.')
+        self.show_prompt.setToolTip('Show prompt')
+        self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
+        self.toolBar.addWidget(self.show_prompt)
 
         self.trans = QtCore.QTranslator()
 

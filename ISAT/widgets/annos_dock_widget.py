@@ -176,8 +176,12 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             self.set_group_polygon_visible()
             self.zoom_to_group()
         if self.mainwindow.group_select_mode == 'track':
-            self.mainwindow.current_group = self.comboBox_group_select.currentText()
-            self.mainwindow.update_group_display()
+            try:
+                group = int(self.comboBox_group_select.currentText())
+                self.mainwindow.current_group = group
+                self.mainwindow.update_group_display()
+            except:
+                pass
             
     def go_to_prev_group(self):
         current_index = self.comboBox_group_select.currentIndex()
@@ -186,8 +190,12 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             self.set_group_polygon_visible()
             self.zoom_to_group()
         if self.mainwindow.group_select_mode == 'track':
-            self.mainwindow.current_group = self.comboBox_group_select.currentText()
-            self.mainwindow.update_group_display()
+            try:
+                group = int(self.comboBox_group_select.currentText())
+                self.mainwindow.current_group = group
+                self.mainwindow.update_group_display()
+            except:
+                pass
             
 
 

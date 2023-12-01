@@ -520,6 +520,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_image(self, index:int):
         self.reset_action()
         self.change_bit_map_to_label()
+        # 
+        self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format('#999999'))
+        self.files_dock_widget.label_current_state.setStyleSheet("background-color: {};".format('#999999'))
+        self.files_dock_widget.label_next_state.setStyleSheet("background-color: {};".format('#999999'))
 
         self.current_label = None
         self.load_finished = False

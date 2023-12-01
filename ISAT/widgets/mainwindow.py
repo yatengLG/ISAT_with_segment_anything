@@ -439,9 +439,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['show_prompt'] = bool(show_prompt)
         self.show_prompt.setChecked(show_prompt)
 
-        model_name = self.cfg.get('model_name', '')
-        self.init_segment_anything(model_name)
-
         self.categories_dock_widget.update_widget()
 
     def set_saved_state(self, is_saved:bool):

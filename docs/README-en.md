@@ -42,12 +42,16 @@ git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
+**pytorch-gpu need install by [pytorch](https://pytorch.org/) in Windows OS.**
 
 ### (3) Download Segment anything pretrained checkpoint.
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
 
 Now support [SAM](https://github.com/facebookresearch/segment-anything)(support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast))，[sam-hq](https://github.com/SysCV/sam-hq)，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)。
+
+**In windows OS，segment-anything-fast need torch version==2.2.0+dev and other packages. ISAT will support segment-anything-fast when 2.2.0 is stable version in windows OS.**
+**If you want use segment-anything-fast，you can install environment from [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast) .**
 
 |  | pretrained checkpoint | memory | size |
 |----|----|----|----|

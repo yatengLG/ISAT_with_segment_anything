@@ -41,10 +41,14 @@ git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
+**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
 ### (3) 下载Segment anything预训练模型
 下载预训练模型，并将模型存放于ISAT_with_segment_anything/ISAT/checkpoints目录下
 
 当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列(支持[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)技术)，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列。
+
+**windows下，segment-anything-fast 需torch版本为2.2.0+dev，且需要安装其他依赖项，软件当前默认windows下不使用segment-anything-fast，等稳定版本推出后再进行更新。**
+**如想提前进行使用，可参考[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)手动进行环境配置。**
 
 | 系列 | 预训练模型 | 显存占用 | 文件大小 |
 |----|----|----|----|

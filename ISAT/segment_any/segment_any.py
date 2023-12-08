@@ -5,7 +5,9 @@
 import torch
 import numpy as np
 import timm
+import platform
 
+osplatform = platform.system()
 
 class SegAny:
     def __init__(self, checkpoint):
@@ -32,13 +34,15 @@ class SegAny:
 
         elif 'sam_vit' in checkpoint:
             # sam
-            if torch.__version__ < '2.1.1':
-                from ISAT.segment_anything import sam_model_registry, SamPredictor
-                print('segment_anything')
-            else:
+            if torch.__version__ > '2.1.1' and osplatform == 'Linux':
                 # 暂时只测试了2.1.1环境下的运行;2.0不确定；1.x不可以
                 from ISAT.segment_anything_fast import sam_model_registry, SamPredictor
                 print('segment_anything_fast')
+            else:
+                # windows下，现只支持 2.2.0+dev，且需要其他依赖；等后续正式版本推出后，再进行支持
+                # （如果想提前在windows下试用，可参考https://github.com/pytorch-labs/segment-anything-fast项目进行环境配置）
+                from ISAT.segment_anything import sam_model_registry, SamPredictor
+                print('segment_anything')
             if 'vit_b' in checkpoint:
                 self.model_type = "vit_b"
             elif 'vit_l' in checkpoint:

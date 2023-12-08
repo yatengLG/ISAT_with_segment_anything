@@ -13,10 +13,7 @@ from ISAT.widgets.info_dock_widget import InfoDockWidget
 from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
 from ISAT.widgets.about_dialog import AboutDialog
-from ISAT.widgets.ISAT_to_VOC_dialog import ISATtoVOCDialog
-from ISAT.widgets.ISAT_to_COCO_dialog import ISATtoCOCODialog
-from ISAT.widgets.ISAT_to_LABELME_dialog import ISATtoLabelMeDialog
-from ISAT.widgets.COCO_to_ISAT_dialog import COCOtoISATDialog
+from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
@@ -277,10 +274,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
-        self.ISAT_to_VOC_dialog = ISATtoVOCDialog(self, mainwindow=self)
-        self.ISAT_to_COCO_dialog = ISATtoCOCODialog(self, mainwindow=self)
-        self.ISAT_to_LABELME_dialog = ISATtoLabelMeDialog(self, mainwindow=self)
-        self.COCO_to_ISAT_dialog = COCOtoISATDialog(self, mainwindow=self)
+        self.Converter_dialog = ConverterDialog(self, mainwindow=self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -393,10 +387,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
-        self.ISAT_to_VOC_dialog.retranslateUi(self.ISAT_to_VOC_dialog)
-        self.ISAT_to_COCO_dialog.retranslateUi(self.ISAT_to_COCO_dialog)
-        self.ISAT_to_LABELME_dialog.retranslateUi(self.ISAT_to_LABELME_dialog)
-        self.COCO_to_ISAT_dialog.retranslateUi(self.COCO_to_ISAT_dialog)
+        self.Converter_dialog.retranslateUi(self.Converter_dialog)
 
     def translate_to_chinese(self):
         self.translate('zh')
@@ -409,6 +400,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def reload_cfg(self):
         self.cfg = load_config(self.config_file)
         label_dict_list = self.cfg.get('label', [])
+        if len(label_dict_list) < 1 or label_dict_list[0].get('name','unknow') != '__background__':
+                label_dict_list.insert(0, {'color': '#000000', 'name': '__background__'})
+
         d = {}
         for label_dict in label_dict_list:
             category = label_dict.get('name', 'unknow')
@@ -830,21 +824,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # if self.current_index is not None:
         #     self.show_image(self.current_index)
 
-    def ISAT_to_VOC(self):
-        self.ISAT_to_VOC_dialog.reset_gui()
-        self.ISAT_to_VOC_dialog.show()
-
-    def ISAT_to_COCO(self):
-        self.ISAT_to_COCO_dialog.reset_gui()
-        self.ISAT_to_COCO_dialog.show()
-
-    def ISAT_to_LABELME(self):
-        self.ISAT_to_LABELME_dialog.reset_gui()
-        self.ISAT_to_LABELME_dialog.show()
-
-    def COCO_to_ISAT(self):
-        self.COCO_to_ISAT_dialog.reset_gui()
-        self.COCO_to_ISAT_dialog.show()
+    def converter(self):
+        self.Converter_dialog.show()
 
     def help(self):
         self.shortcut_dialog.show()
@@ -894,10 +875,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionContour_External.triggered.connect(functools.partial(self.change_contour_mode, 'external'))
         self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
 
-        self.actionToVOC.triggered.connect(self.ISAT_to_VOC)
-        self.actionToCOCO.triggered.connect(self.ISAT_to_COCO)
-        self.actionTo_LabelMe.triggered.connect(self.ISAT_to_LABELME)
-        self.actionFromCOCO.triggered.connect(self.COCO_to_ISAT)
+        self.actionConverter.triggered.connect(self.converter)
 
         self.actionShortcut.triggered.connect(self.help)
         self.actionAbout.triggered.connect(self.about)

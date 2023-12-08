@@ -65,55 +65,8 @@ class ISAT:
         pbar = tqdm.tqdm([file for file in os.listdir(json_root) if file.endswith('.json')])
         for file in pbar:
             pbar.set_description('Load ISAT from {}'.format(file))
-            with open(os.path.join(json_root, file), 'r') as f:
-                dataset = load(f)
-                info = dataset.get('info', {})
-                description = info.get('description', '')
-                if description != 'ISAT':
-                    continue
-                folder = info.get('folder', '')
-                img_name = info.get('name', '')
-                width = info.get('width', None)
-                height = info.get('height', None)
-                depth = info.get('depth', None)
-                note = info.get('note', '')
-
-                anno = self.ANNO()
-                anno.info = self.ANNO.INFO()
-                anno.info.description = description
-                anno.info.folder = folder
-                anno.info.name = img_name
-                anno.info.width = width
-                anno.info.height = height
-                anno.info.depth = depth
-                anno.info.note = note
-
-                objs = []
-                objects = dataset.get('objects', [])
-                for obj in objects:
-                    category = obj.get('category', 'UNKNOW')
-                    group = obj.get('group', 0)
-                    if group is None: group = 0
-                    segmentation = obj.get('segmentation', [])
-                    iscrowd = obj.get('iscrowd', 0)
-                    note = obj.get('note', '')
-                    area = obj.get('area', 0)
-                    layer = obj.get('layer', 2)
-                    bbox = obj.get('bbox', [])
-
-                    obj = self.ANNO.OBJ()
-                    obj.category = category
-                    obj.group = group
-                    obj.segmentation = segmentation
-                    obj.area = area
-                    obj.layer = layer
-                    obj.bbox = bbox
-                    obj.iscrowd = iscrowd
-                    obj.note = note
-                    objs.append(obj)
-
-                anno.objs = tuple(objs)
-                self.annos[self.remove_file_suffix(img_name)] = anno
+            anno = self._load_one_isat_json(os.path.join(json_root, file))
+            self.annos[self.remove_file_suffix(file)] = anno
         return self
 
     def save_to_ISAT(self, json_root):
@@ -123,30 +76,7 @@ class ISAT:
         for name_without_suffix, Anno in pbar:
             json_name = name_without_suffix + '.json'
             pbar.set_description('Save ISAT to {}'.format(json_name))
-            Anno.info.description = 'ISAT'
-            dataset = {}
-            dataset['info'] = {}
-            dataset['info']['description'] = Anno.info.description
-            dataset['info']['folder'] = Anno.info.folder
-            dataset['info']['name'] = Anno.info.name
-            dataset['info']['width'] = Anno.info.width
-            dataset['info']['height'] = Anno.info.height
-            dataset['info']['depth'] = Anno.info.depth
-            dataset['info']['note'] = Anno.info.note
-            dataset['objects'] = []
-            for obj in Anno.objs:
-                object = {}
-                object['category'] = obj.category if isinstance(obj.category, str) else str(obj.category)
-                object['group'] = obj.group
-                object['segmentation'] = obj.segmentation
-                object['area'] = obj.area
-                object['layer'] = obj.layer
-                object['bbox'] = obj.bbox
-                object['iscrowd'] = obj.iscrowd
-                object['note'] = obj.note
-                dataset['objects'].append(object)
-            with open(os.path.join(json_root, json_name), 'w') as f:
-                dump(dataset, f, indent=4)
+            self._save_one_isat_json(Anno, os.path.join(json_root, json_name))
 
         # 类别文件
         cmap = imgviz.label_colormap()
@@ -166,3 +96,82 @@ class ISAT:
 
     def remove_file_suffix(self, file_name):
         return os.path.splitext(file_name)[0]
+
+    def _load_one_isat_json(self, json_path) -> ANNO:
+        anno = self.ANNO()
+        with open(json_path, 'r') as f:
+            dataset = load(f)
+            info = dataset.get('info', {})
+            description = info.get('description', '')
+            if description != 'ISAT':
+                raise AttributeError('The json file {} is`t a ISAT json.'.format(json_path))
+            folder = info.get('folder', '')
+            img_name = info.get('name', '')
+            width = info.get('width', None)
+            height = info.get('height', None)
+            depth = info.get('depth', None)
+            note = info.get('note', '')
+
+            anno.info = self.ANNO.INFO()
+            anno.info.description = description
+            anno.info.folder = folder
+            anno.info.name = img_name
+            anno.info.width = width
+            anno.info.height = height
+            anno.info.depth = depth
+            anno.info.note = note
+
+            objs = []
+            objects = dataset.get('objects', [])
+            for obj in objects:
+                category = obj.get('category', 'UNKNOW')
+                group = obj.get('group', 0)
+                if group is None: group = 0
+                segmentation = obj.get('segmentation', [])
+                iscrowd = obj.get('iscrowd', 0)
+                note = obj.get('note', '')
+                area = obj.get('area', 0)
+                layer = obj.get('layer', 2)
+                bbox = obj.get('bbox', [])
+
+                obj = self.ANNO.OBJ()
+                obj.category = category
+                obj.group = group
+                obj.segmentation = segmentation
+                obj.area = area
+                obj.layer = layer
+                obj.bbox = bbox
+                obj.iscrowd = iscrowd
+                obj.note = note
+                objs.append(obj)
+
+            anno.objs = tuple(objs)
+        return anno
+
+    def _save_one_isat_json(self, anno:ANNO, save_path):
+        anno.info.description = 'ISAT'
+        dataset = {}
+        dataset['info'] = {}
+        dataset['info']['description'] = anno.info.description
+        dataset['info']['folder'] = anno.info.folder
+        dataset['info']['name'] = anno.info.name
+        dataset['info']['width'] = anno.info.width
+        dataset['info']['height'] = anno.info.height
+        dataset['info']['depth'] = anno.info.depth
+        dataset['info']['note'] = anno.info.note
+        dataset['objects'] = []
+        for obj in anno.objs:
+            object = {}
+            object['category'] = obj.category if isinstance(obj.category, str) else str(obj.category)
+            object['group'] = obj.group
+            object['segmentation'] = obj.segmentation
+            object['area'] = obj.area
+            object['layer'] = obj.layer
+            object['bbox'] = obj.bbox
+            object['iscrowd'] = obj.iscrowd
+            object['note'] = obj.note
+            dataset['objects'].append(object)
+
+        with open(save_path, 'w') as f:
+            dump(dataset, f, indent=4)
+        return True

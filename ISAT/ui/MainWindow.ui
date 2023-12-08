@@ -150,11 +150,8 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionToVOC"/>
-    <addaction name="actionToCOCO"/>
-    <addaction name="actionTo_LabelMe"/>
     <addaction name="separator"/>
-    <addaction name="actionFromCOCO"/>
+    <addaction name="actionConverter"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -616,24 +613,6 @@
     <string>B</string>
    </property>
   </action>
-  <action name="actionToVOC">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/VOC_32x32.png</normaloff>:/icon/icons/VOC_32x32.png</iconset>
-   </property>
-   <property name="text">
-    <string>To VOC</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert ISAT to VOC</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert ISAT jsons to VOC png images.</string>
-   </property>
-   <property name="whatsThis">
-    <string/>
-   </property>
-  </action>
   <action name="actionChinese">
    <property name="checkable">
     <bool>true</bool>
@@ -752,51 +731,6 @@
     <string>V</string>
    </property>
   </action>
-  <action name="actionToCOCO">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/coco.ico</normaloff>:/icon/icons/coco.ico</iconset>
-   </property>
-   <property name="text">
-    <string>To COCO</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert ISAT to COCO</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert ISAT jsons to COCO json.</string>
-   </property>
-  </action>
-  <action name="actionFromCOCO">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/coco.ico</normaloff>:/icon/icons/coco.ico</iconset>
-   </property>
-   <property name="text">
-    <string>From COCO</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert COCO to ISAT</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert COCO json to ISAT jsons.</string>
-   </property>
-  </action>
-  <action name="actionTo_LabelMe">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/labelme_32x32.png</normaloff>:/icon/icons/labelme_32x32.png</iconset>
-   </property>
-   <property name="text">
-    <string>To LabelMe</string>
-   </property>
-   <property name="toolTip">
-    <string>Convert ISAT to LabelMe</string>
-   </property>
-   <property name="statusTip">
-    <string>Convert ISAT jsons to LabelMe jsons.</string>
-   </property>
-  </action>
   <action name="actionContour_Max_only">
    <property name="checkable">
     <bool>true</bool>
@@ -876,6 +810,15 @@
      <family>Times New Roman</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+  </action>
+  <action name="actionConverter">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Converter</string>
    </property>
   </action>
  </widget>

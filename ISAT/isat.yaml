@@ -1,4 +1,4 @@
-contour_mode: max_only
+contour_mode: external
 label:
 - color: '#000000'
   name: __background__
@@ -22,7 +22,7 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
-language: en
+language: zh
 mask_alpha: 0.5
-show_prompt: false
+show_prompt: true
 vertex_size: 2

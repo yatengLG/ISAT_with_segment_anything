@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from isat import ISAT
+from ISAT.scripts.isat import ISAT
 from pycocotools import coco as mscoco
 from pycocotools import mask as mscoco_mask
 from json import dump
@@ -243,3 +243,10 @@ class COCO(ISAT):
 
         return self
 
+if __name__ == '__main__':
+    cc = COCO()
+    # cc.read_from_ISAT('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/isat')
+    # cc.save_to_coco('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/isat2coco.json')
+
+    cc.read_from_coco('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/coco_tiny.json')
+    cc.save_to_ISAT('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/coco2isat')

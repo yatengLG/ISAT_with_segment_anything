@@ -75,25 +75,8 @@ class Annotation:
                         obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
                         self.objects.append(obj)
                 else:
-                    # labelme格式json
-                    print('Warning: Load LabelMe formate json.')
-                    shapes = dataset.get('shapes', {})
-                    for shape in shapes:
-                        # 只加载多边形
-                        is_polygon = shape.get('shape_type', '') == 'polygon'
-                        if not is_polygon:
-                            continue
-                        category = shape.get('label', 'unknow')
-                        group = shape.get('group_id', 0)
-                        if group is None: group = ''
-                        segmentation = shape.get('points', [])
-                        iscrowd = shape.get('iscrowd', 0)
-                        note = shape.get('note', '')
-                        area = shape.get('area', 0)
-                        layer = shape.get('layer', 2)
-                        bbox = shape.get('bbox', [])
-                        obj = Object(category, group, segmentation, area, layer, bbox, iscrowd, note)
-                        self.objects.append(obj)
+                    # 不再支持直接打开labelme标注文件（在菜单栏-tool-convert中提供了isat<->labelme相互转换工具）
+                    print('Warning: The file {} is not a ISAT json.'.format(self.label_path))
         return self
 
     def save_annotation(self):

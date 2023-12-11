@@ -22,6 +22,7 @@ class VOCDetect(ISAT):
                 pbar.set_description('Save xml to {}'.format(name_without_suffix + '.xml'))
             except Exception as e:
                 raise '{} {}'.format(name_without_suffix, e)
+        return True
 
     def _save_one_voc_xml(self, anno, xml_path):
         annotation = ET.Element('annotation')

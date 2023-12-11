@@ -3,6 +3,7 @@ include CHANGELOG.md
 recursive-include ISAT/segment_any *.py
 recursive-include ISAT/widgets *
 recursive-include ISAT/ui *
-recursive-include ISAT/tools *
+recursive-include ISAT/scripts *
 recursive-include ISAT/ icons.qrc
 recursive-include ISAT *.yaml
+recursive-include ISAT/segment_anything_fast *.

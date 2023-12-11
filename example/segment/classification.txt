@@ -1,0 +1,11 @@
+__background__
+person
+knife
+fork
+cup
+giraffe
+plate
+table
+cake
+fence
+hat

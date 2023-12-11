@@ -179,13 +179,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
 
                 if self.contour_mode == CONTOURMode.SAVE_MAX_ONLY:
-                    contour = contours[0]
-                    for cont in contours:
-                        if len(cont) > len(contour):
-                            contour = cont
-                    contours = [contour]
+                    largest_contour = max(contours, key=cv2.contourArea)    # 只保留面积最大的轮廓
+                    contours = [largest_contour]
 
                 for index, contour in enumerate(contours):
+                    # polydp
+                    epsilon_factor = 0.001
+                    epsilon = epsilon_factor * cv2.arcLength(contour, True)
+                    contour = cv2.approxPolyDP(contour, epsilon, True)
+
                     if self.current_graph is None:
                         self.current_graph = Polygon()
                         self.addItem(self.current_graph)

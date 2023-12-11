@@ -6,7 +6,7 @@ import tqdm
 import numpy as np
 from PIL import Image
 import imgviz
-import mahotas
+from skimage.draw.draw import polygon
 import os
 
 
@@ -64,12 +64,19 @@ class VOC(ISAT):
             segmentation = [(int(p[1]), int(p[0])) for p in segmentation]
 
             if self.is_instance and group != '':
-                mahotas.polygon.fill_polygon(segmentation, img, color=int(group))
+                self.fill_polygon(segmentation, img, color=int(group))
             else:
-                mahotas.polygon.fill_polygon(segmentation, img, color=category_index_dict.get(category, 0))
+                self.fill_polygon(segmentation, img, color=category_index_dict.get(category, 0))
 
         img = Image.fromarray(img.astype(np.uint8), mode='P')
 
         img.putpalette(cmap.flatten())
         img.save(png_path)
         return True
+
+    @staticmethod
+    def fill_polygon(segmentation, img: np.ndarray, color: int):
+        xs = [x for x, y in segmentation]
+        ys = [y for x, y in segmentation]
+        rr, cc = polygon(xs, ys, img.shape)
+        img[rr, cc] = color

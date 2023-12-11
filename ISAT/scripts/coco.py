@@ -116,7 +116,7 @@ class COCO(ISAT):
                 group += 1
             anno.objs = tuple(objs)
             self.annos[self.remove_file_suffix(file_name)] = anno
-        return self
+        return True
 
     def save_to_coco(self, annotation_file):
 
@@ -241,12 +241,5 @@ class COCO(ISAT):
             except Exception as e:
                 print('Save COCO json error: {}'.format(e))
 
-        return self
+        return True
 
-if __name__ == '__main__':
-    cc = COCO()
-    # cc.read_from_ISAT('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/isat')
-    # cc.save_to_coco('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/isat2coco.json')
-
-    cc.read_from_coco('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/coco_tiny.json')
-    cc.save_to_ISAT('/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/utils/coco_tiny/coco2isat')

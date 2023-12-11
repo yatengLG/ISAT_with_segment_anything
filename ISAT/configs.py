@@ -7,6 +7,9 @@ DEFAULT_CONFIG_FILE = os.path.join(ISAT_ROOT, 'default.yaml')
 CONFIG_FILE = os.path.join(ISAT_ROOT, 'isat.yaml')
 CHECKPOINT_PATH = os.path.join(ISAT_ROOT, 'checkpoints')
 
+os.makedirs(os.path.join(CHECKPOINT_PATH, 'tmp'), exist_ok=True)
+
+
 def load_config(file):
     with open(file, 'rb')as f:
         cfg = yaml.load(f.read(), Loader=yaml.FullLoader)

@@ -3,7 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QThread, pyqtSignal
-from ISAT.ui.Convert_dialog import Ui_Dialog
+from ISAT.ui.Converter_dialog import Ui_Dialog
 from ISAT.scripts.isat import ISAT
 from ISAT.scripts.coco import COCO
 from ISAT.scripts.yolo import YOLO

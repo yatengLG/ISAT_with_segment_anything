@@ -67,7 +67,7 @@ class ISAT:
             pbar.set_description('Load ISAT from {}'.format(file))
             anno = self._load_one_isat_json(os.path.join(json_root, file))
             self.annos[self.remove_file_suffix(file)] = anno
-        return self
+        return True
 
     def save_to_ISAT(self, json_root):
         os.makedirs(json_root, exist_ok=True)
@@ -92,7 +92,7 @@ class ISAT:
         with open(os.path.join(json_root, 'isat.yaml'), 'w') as f:
             f.write(s)
 
-        return self
+        return True
 
     def remove_file_suffix(self, file_name):
         return os.path.splitext(file_name)[0]

@@ -1,6 +1,6 @@
 timm
 imgviz
-mahotas
+scikit-image
 opencv_python_headless
 pillow
 pyqt5

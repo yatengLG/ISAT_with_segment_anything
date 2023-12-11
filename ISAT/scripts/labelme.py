@@ -43,7 +43,7 @@ class LABELME(ISAT):
 
             except Exception as e:
                 raise '{} {}'.format(name_without_suffix, e)
-
+        return True
 
     def _save_one_labelme_json(self, anno:ISAT.ANNO, json_path):
         labelme_anno = {}
@@ -108,7 +108,6 @@ class LABELME(ISAT):
                 obj.category = shape.get('label', 'unknow')
                 obj.group = shape.get('group_id', 0)
                 if obj.group is None: obj.group = 0
-                print(shape.get('group_id', 0))
                 obj.segmentation = shape.get('points', [])
                 obj.area = shape.get('area', 0)
                 obj.layer = shape.get('layer', 1)

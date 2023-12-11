@@ -46,12 +46,13 @@ class YOLO(ISAT):
             class_set = list(class_set)
             class_set.sort()
             self.cates = tuple(class_set)
+        return True
 
     def save_to_YOLO(self, txt_root):
         os.makedirs(txt_root, exist_ok=True)
         cates_index_dict = {cat:index for index, cat in enumerate(self.cates)}
 
-        with open(os.path.join(txt_root, 'classification.txt'), 'r') as f:
+        with open(os.path.join(txt_root, 'classification.txt'), 'w') as f:
             for cat in self.cates:
                 f.write('{}\n'.format(cat))
 
@@ -65,6 +66,7 @@ class YOLO(ISAT):
 
             except Exception as e:
                 raise '{} {}'.format(name_without_suffix, e)
+        return True
 
     @staticmethod
     def merge_multi_segment(segments):

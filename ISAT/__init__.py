@@ -2,4 +2,4 @@
 # @Author  : LG
 
 __author__ = 'yatengLG'
-__version__ = '0.0.1'
+__version__ = '0.0.2'

@@ -16,7 +16,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
 
-[中文](README-cn.md)         [English](README-en.md)
+[[中文](../README.md)]         [[English](README-en.md)]
 
 # Feature
 
@@ -25,8 +25,9 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - Support modifying polygons.
 - Support for adjusting polygon occlusion.
 - Support preview annotation result.
-- Support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)
-- More features refer to [Features Description](features%20description.md)
+- Support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast).
+- Support convert to coco,yolo,labelme and voc for image segment; alse support convert to voc for object detection(xml).
+- More features refer to [Features Description](features%20description.md).
 
 # INSTALL
 ## 1. Run with source code

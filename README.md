@@ -23,9 +23,10 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持标注**二次修改**。
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
-- 单独线程进行sam encoder计算，降低切换图片的卡顿感
-- 添加对[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)的支持，进一步提升sam编码效率
-- 更多功能详见[功能说明](./docs/功能说明.md)
+- 单独线程进行sam encoder计算，降低切换图片的卡顿感。
+- 添加对[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)的支持，进一步提升sam编码效率。
+- 支持导出COCO，YOLO，LABELME，VOC等图像分割数据格式；也支持导出VOC目标检测格式数据(xml)。
+- 更多功能详见[功能说明](./docs/功能说明.md)。
 
 # 安装
 ## 1. 源码运行

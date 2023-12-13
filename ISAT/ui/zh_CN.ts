@@ -64,7 +64,7 @@
         <translation type="obsolete">实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="513"/>
+        <location filename="Converter_dialog.py" line="527"/>
         <source>ISAT jsons root</source>
         <translation>ISAT json文件目录</translation>
     </message>
@@ -415,7 +415,7 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="466"/>
+        <location filename="Converter_dialog.py" line="479"/>
         <source>COCO to ISAT</source>
         <translation>COCO 转 ISAT</translation>
     </message>
@@ -425,12 +425,12 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">Json路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="495"/>
+        <location filename="Converter_dialog.py" line="508"/>
         <source>ISAT jsons save root</source>
         <translation>ISAT json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="463"/>
+        <location filename="Converter_dialog.py" line="476"/>
         <source>COCO json path</source>
         <translation>COCO json文件路径</translation>
     </message>
@@ -445,7 +445,7 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">将COCO格式json转为ISAT格式json,图层默认为1。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="472"/>
+        <location filename="Converter_dialog.py" line="485"/>
         <source>ISAT to COCO</source>
         <translation>ISAT 转 COCO</translation>
     </message>
@@ -460,7 +460,7 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">jsons目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="469"/>
+        <location filename="Converter_dialog.py" line="482"/>
         <source>COCO json save path</source>
         <translation>COCO json文件保存路径</translation>
     </message>
@@ -550,174 +550,179 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation>下载模型，然后在SAM菜单中选择模型并使用。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="461"/>
+        <location filename="Converter_dialog.py" line="474"/>
         <source>json path</source>
         <translation>json路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="516"/>
+        <location filename="Converter_dialog.py" line="530"/>
         <source>save root</source>
         <translation>保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="471"/>
+        <location filename="Converter_dialog.py" line="484"/>
         <source>keep crowd</source>
         <translation>保留拥挤目标</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="514"/>
+        <location filename="Converter_dialog.py" line="528"/>
         <source>json root</source>
         <translation>json目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="470"/>
+        <location filename="Converter_dialog.py" line="483"/>
         <source>save path</source>
         <translation>保存路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="473"/>
+        <location filename="Converter_dialog.py" line="486"/>
         <source>COCO save annotations to a single JSON file.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="474"/>
+        <location filename="Converter_dialog.py" line="487"/>
         <source>COCO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="477"/>
+        <location filename="Converter_dialog.py" line="490"/>
         <source>YOLO txts root</source>
         <translation>YOLO txt文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="478"/>
+        <location filename="Converter_dialog.py" line="491"/>
         <source>txt root</source>
         <translation>txt目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="479"/>
+        <location filename="Converter_dialog.py" line="492"/>
         <source>YOLO images root</source>
         <translation>YOLO图像文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="480"/>
+        <location filename="Converter_dialog.py" line="493"/>
         <source>image root</source>
         <translation>图像目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="481"/>
+        <location filename="Converter_dialog.py" line="494"/>
         <source>YOLO category file path.(Txt file with one line for one category.)  </source>
         <translation>YOLO 类别文件路径。(txt文件，每一行一个类别。)  </translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="482"/>
+        <location filename="Converter_dialog.py" line="495"/>
         <source>category file</source>
         <translation>类别文件</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="485"/>
+        <location filename="Converter_dialog.py" line="498"/>
         <source>*</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="486"/>
+        <location filename="Converter_dialog.py" line="499"/>
         <source>YOLO to ISAT</source>
         <translation>YOLO 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="488"/>
+        <location filename="Converter_dialog.py" line="501"/>
         <source>YOLO txts save root</source>
         <translation>YOLO txt保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="491"/>
+        <location filename="Converter_dialog.py" line="504"/>
         <source>ISAT to YOLO</source>
         <translation>ISAT 转 YOLO</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="492"/>
+        <location filename="Converter_dialog.py" line="505"/>
         <source>YOLO save annotations to multiple TXT files.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="493"/>
+        <location filename="Converter_dialog.py" line="506"/>
         <source>YOLO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="496"/>
+        <location filename="Converter_dialog.py" line="509"/>
         <source>LABELME jsons root</source>
         <translation>LABELME json文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="498"/>
+        <location filename="Converter_dialog.py" line="511"/>
         <source>LABELME to ISAT</source>
         <translation>LABELME 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="501"/>
+        <location filename="Converter_dialog.py" line="514"/>
         <source>LABELME jsons save root</source>
         <translation>LABELME json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="503"/>
+        <location filename="Converter_dialog.py" line="516"/>
         <source>ISAT to LABELME</source>
         <translation>ISAT 转 LABELME</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="504"/>
+        <location filename="Converter_dialog.py" line="517"/>
         <source>LABELME save annotations to multiple JSON files. (When convert LABELME to ISAT for instance segmentation, labelme group id must&gt;0.)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="505"/>
+        <location filename="Converter_dialog.py" line="518"/>
         <source>LABELME</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="507"/>
+        <location filename="Converter_dialog.py" line="520"/>
         <source>VOC pngs save root</source>
         <translation>VOC png文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="510"/>
+        <location filename="Converter_dialog.py" line="523"/>
         <source>is instance</source>
         <translation>实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="511"/>
+        <location filename="Converter_dialog.py" line="524"/>
         <source>VOC save annotations to multiple PNG files.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="512"/>
+        <location filename="Converter_dialog.py" line="526"/>
         <source>VOC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="515"/>
+        <location filename="Converter_dialog.py" line="529"/>
         <source>VOC xmls save root</source>
         <translation>VOC xml文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="517"/>
+        <location filename="Converter_dialog.py" line="531"/>
         <source>VOC save annotations to multiple XML files for object detection.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="518"/>
+        <location filename="Converter_dialog.py" line="532"/>
         <source>VOC for object detection</source>
         <translation>VOC-目标检测</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="520"/>
+        <location filename="Converter_dialog.py" line="534"/>
         <source>Convert</source>
         <translation>转换</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="460"/>
+        <location filename="Converter_dialog.py" line="473"/>
         <source>Converter</source>
         <translation>转换器</translation>
+    </message>
+    <message>
+        <location filename="Converter_dialog.py" line="525"/>
+        <source>**The num of classification and the group must in [0, 255]**</source>
+        <translation>** 类别数量与组id必须在[0, 255]范围内 **</translation>
     </message>
 </context>
 <context>

@@ -64,9 +64,13 @@ class VOC(ISAT):
             segmentation = [(int(p[1]), int(p[0])) for p in segmentation]
 
             if self.is_instance and group != '':
-                self.fill_polygon(segmentation, img, color=int(group))
+                group = int(group)
+                assert 0 <= group < 256, 'When use VOC for segmentation, the group must in [0, 255], but get group={}'.format(group)
+                self.fill_polygon(segmentation, img, color=group)
             else:
-                self.fill_polygon(segmentation, img, color=category_index_dict.get(category, 0))
+                index = category_index_dict.get(category, 0)
+                assert 0 <= index < 256, 'When use VOC for segmentation, the number of classifications must in [0, 255], but get {}'.format(index)
+                self.fill_polygon(segmentation, img, color=index)
 
         img = Image.fromarray(img.astype(np.uint8), mode='P')
 

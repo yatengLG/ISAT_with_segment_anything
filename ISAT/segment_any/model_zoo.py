@@ -49,6 +49,18 @@ model_dict = {'sam_vit_h_4b8939.pth':
                       'memory': '1375M',
                       'params': '40M'
                   },
+              'edge_sam.pth':
+                  {
+                      'url': 'https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth',
+                      'memory': '960M',
+                      'params': '38.8M'
+                  },
+              'edge_sam_3x.pth':
+                  {
+                      'url': 'https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth',
+                      'memory': '960M',
+                      'params': '38.8M'
+                  },
               }
 
 

@@ -152,15 +152,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 action.setChecked(model_name == name)
             self.use_segment_anything = False
             return
-        try:
-            self.segany = SegAny(model_path)
-        except Exception as e:
-            QtWidgets.QMessageBox.warning(
-                self,
-                'Load model error',
-                'Error {}, when load sam model: {}'.format(e, model_path)
-            )
-            return
+        # try:
+        self.segany = SegAny(model_path)
+        # except Exception as e:
+        #     QtWidgets.QMessageBox.warning(
+        #         self,
+        #         'Load model error',
+        #         'Error {}, when load sam model: {}'.format(e, model_path)
+        #     )
+        #     return
         self.use_segment_anything = True
         self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
         for name, action in self.pths_actions.items():

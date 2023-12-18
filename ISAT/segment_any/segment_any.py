@@ -17,6 +17,11 @@ class SegAny:
             from ISAT.mobile_sam import sam_model_registry, SamPredictor
             self.model_type = "vit_t"
             self.model_source = 'mobile_sam'
+        elif 'edge_sam' in checkpoint:
+            # edge_sam
+            from ISAT.edge_sam import sam_model_registry, SamPredictor
+            self.model_type = "edge_sam"
+            self.model_source = 'edge_sam'
         elif 'sam_hq_vit' in checkpoint:
             # sam hq
             from ISAT.segment_anything_hq import sam_model_registry, SamPredictor

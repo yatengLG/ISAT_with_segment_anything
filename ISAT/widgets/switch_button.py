@@ -82,10 +82,10 @@ class SwitchBtn(QWidget):
         painter.save()
         if self.checked:
             painter.setPen(self.textColorOn)
-            painter.drawText(0, 0, self.width() / 2 + self.space * 2, self.height(), Qt.AlignCenter, self.textOn)
+            painter.drawText(0, 0, int(self.width() / 2 + self.space * 2), int(self.height()), Qt.AlignCenter, self.textOn)
         else:
             painter.setPen(self.textColorOff)
-            painter.drawText(self.width() / 2, 0,self.width() / 2 - self.space, self.height(), Qt.AlignCenter, self.textOff)
+            painter.drawText(int(self.width() / 2), 0, int(self.width() / 2 - self.space), int(self.height()), Qt.AlignCenter, self.textOff)
         painter.restore()
 
     def drawBg(self, event, painter):
@@ -95,18 +95,17 @@ class SwitchBtn(QWidget):
             painter.setBrush(self.bgColorOn)
         else:
             painter.setBrush(self.bgColorOff)
-        rect = QRect(0, 0, self.width(), self.height())
         #半径为高度的一半
-        radius = rect.height() / 2
+        radius = self.height() / 2
         #圆的宽度为高度
-        circleWidth = rect.height()
+        circleWidth = self.height()
 
         path = QPainterPath()
-        path.moveTo(radius, rect.left())
-        path.arcTo(QRectF(rect.left(), rect.top(), circleWidth, circleWidth), 90, 180)
-        path.lineTo(rect.width() - radius, rect.height())
-        path.arcTo(QRectF(rect.width() - rect.height(), rect.top(), circleWidth, circleWidth), 270, 180)
-        path.lineTo(radius, rect.top())
+        path.moveTo(radius, 0)
+        path.arcTo(QRectF(0, 0, circleWidth, circleWidth), 90, 180)
+        path.lineTo(self.width() - radius, self.height())
+        path.arcTo(QRectF(self.width() - self.height(), 0, circleWidth, circleWidth), 270, 180)
+        path.lineTo(radius, 0)
 
         painter.drawPath(path)
         painter.restore()
@@ -118,9 +117,8 @@ class SwitchBtn(QWidget):
         else:
             painter.setBrush(self.sliderColorOff)
 
-        rect = QRect(0, 0, self.width(), self.height())
-        sliderWidth = rect.height() - self.space * 2
-        sliderRect = QRect(self.startX + self.space, self.space, sliderWidth, sliderWidth)
+        sliderWidth = self.height() - self.space * 2
+        sliderRect = QRectF(self.startX + self.space, self.space, sliderWidth, sliderWidth)
         painter.drawEllipse(sliderRect)
 
         painter.restore()

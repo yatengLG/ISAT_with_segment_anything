@@ -177,8 +177,8 @@ class COCO(ISAT):
                     # 同category
                     for cat in cats:
                         if cat not in categories_dict:
-                            categories_dict[cat] = len(categories_dict)
-                            uncontained_dict[cat] = len(categories_dict)
+                            categories_dict[cat] = len(categories_dict) + 1
+                            uncontained_dict[cat] = len(categories_dict) + 1
                         category_index = categories_dict.get(cat)
 
                         objs_with_cat = [obj for obj in objs_with_group if obj.category == cat]

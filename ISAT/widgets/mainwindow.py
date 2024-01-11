@@ -449,6 +449,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not dir:
             return
 
+        # 等待sam线程退出，并清空特征缓存
+        self.seganythread.wait()
+        self.seganythread.results_dict.clear()
+
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()
 

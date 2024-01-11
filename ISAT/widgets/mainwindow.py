@@ -468,14 +468,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.image_root = dir
         self.actionOpen_dir.setStatusTip("Image root: {}".format(self.image_root))
 
-        if self.label_root is None:
-            self.label_root = dir
-            self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+        self.label_root = dir
+        self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
 
+        if os.path.exists(os.path.join(dir, 'isat.yaml')):
             # load setting yaml
-            if os.path.exists(os.path.join(dir, 'isat.yaml')):
-                self.config_file = os.path.join(dir, 'isat.yaml')
-                self.reload_cfg()
+            self.config_file = os.path.join(dir, 'isat.yaml')
+            self.reload_cfg()
 
         self.show_image(self.current_index)
 

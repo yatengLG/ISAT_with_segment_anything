@@ -72,6 +72,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         return item, item_widget
 
     def update_listwidget(self):
+        current_group_id = self.comboBox_group_select.currentText()
         self.listWidget.clear()
         self.polygon_item_dict.clear()
         self.checkBox_visible.setChecked(True)
@@ -90,6 +91,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.comboBox_group_select.addItem('All')  # add an option to view all groups
         self.comboBox_group_select.addItems(sorted([str(item) for item in unique_groups],
             key=lambda s: [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', s)]))
+        if any(current_group_id == self.comboBox_group_select.itemText(i) for i in range(self.comboBox_group_select.count())):
+            self.comboBox_group_select.setCurrentText(current_group_id)
+        else:
+            self.comboBox_group_select.setCurrentIndex(0)
 
     def set_selected(self, polygon):
         item = self.polygon_item_dict[polygon]

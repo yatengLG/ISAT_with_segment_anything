@@ -25,7 +25,6 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - Support modifying polygons.
 - Support for adjusting polygon occlusion.
 - Support preview annotation result.
-- Support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast).
 - Support convert to coco,yolo,labelme and voc for image segment; alse support convert to voc for object detection(xml).
 - More features refer to [Features Description](features%20description.md).
 
@@ -49,10 +48,7 @@ pip install -r requirements.txt
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
 
-Now support [SAM](https://github.com/facebookresearch/segment-anything)(support [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)。
-
-**In windows OS，segment-anything-fast need torch version==2.2.0+dev and other packages. ISAT will support segment-anything-fast when 2.2.0 is stable version in windows OS.**
-**If you want use segment-anything-fast，you can install environment from [**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast) .**
+Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)。
 
 |  | pretrained checkpoint | memory | size |
 |----|----|----|----|

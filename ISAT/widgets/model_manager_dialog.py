@@ -9,29 +9,46 @@ from ISAT.segment_any.model_zoo import model_dict
 from urllib import request
 from functools import partial
 import shutil
+import time
 import os
 
 class DownloadThread(QThread):
     tag = pyqtSignal(float, float)
     def __init__(self, parent=None):
         super(DownloadThread, self).__init__(parent)
-        self.url = None
+        self.urls = None
         self.name = None
         self.pause = False
 
         self.block_size = 4096
 
-    def setNameAndUrl(self, name, url):
-        self.url = url
+    def setNameAndUrl(self, name, urls):
+        self.urls = urls
         self.name = name
         self.pause = False
 
     def run(self):
-        if self.name is not None and self.url is not None:
+        if self.name is not None and self.urls is not None:
             tmp_root = os.path.join(CHECKPOINT_PATH, 'tmp')
             if not os.path.exists(tmp_root):
                 os.mkdir(tmp_root)
-            print('Download {} from {}'.format(self.name,  self.url))
+
+            # 寻找最佳下载链接
+            best_time = 1e8
+            best_url = self.urls[0]
+            for url in self.urls:
+                try:
+                    start_time = time.time()
+                    req = request.Request(url, headers={"Range": "bytes=0-10"})
+                    request.urlopen(req, timeout=5)
+                    cost_time = time.time() - start_time
+                except:
+                    cost_time = 1e8
+                if cost_time < best_time:
+                    best_time = cost_time
+                    best_url = url
+
+            print('Download {} from {}'.format(self.name,  best_url))
             # 检查缓存
             downloaded_size = 0
             download_tmp = os.path.join(tmp_root, self.name)
@@ -39,12 +56,12 @@ class DownloadThread(QThread):
                 with open(download_tmp, 'rb') as f:
                     downloaded_size = len(f.read())
 
-            req = request.Request(self.url, headers={"Range": "bytes=0-"})
+            req = request.Request(best_url, headers={"Range": "bytes=0-"})
             try:
                 response = request.urlopen(req, timeout=10)
                 total_size = int(response.headers['Content-Length'])
             except Exception as e:
-                print('When download {} from {}, {}'.format(self.name, self.url, e))
+                print('When download {} from {}, {}'.format(self.name, best_url, e))
                 return
             # 存在缓存
             if downloaded_size != 0:
@@ -55,7 +72,7 @@ class DownloadThread(QThread):
                 # 断点续传
                 content_range = response.headers.get('Content-Range', None)
                 if content_range is not None:
-                    req = request.Request(self.url, headers={"Range": "bytes={}-".format(downloaded_size)})
+                    req = request.Request(best_url, headers={"Range": "bytes={}-".format(downloaded_size)})
                     response = request.urlopen(req)
                     content_range = response.headers.get('Content-Range', None)
                     if content_range is not None:
@@ -140,7 +157,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         name_label = self.tableWidget.cellWidget(row, 0)
         name = name_label.text()
         info_dict = model_dict.get(name, None)
-        url = info_dict.get('url', None)
+        urls = info_dict.get('urls', None)
 
         if name in self.download_thread_dict:
             download_thread = self.download_thread_dict[name]
@@ -148,7 +165,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             download_thread = DownloadThread(self)
             self.download_thread_dict[name] = download_thread
 
-        download_thread.setNameAndUrl(name, url)
+        download_thread.setNameAndUrl(name, urls)
         download_thread.tag.connect(partial(self.download_process, button))
         download_thread.start()
 

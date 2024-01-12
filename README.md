@@ -24,7 +24,6 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
 - 单独线程进行sam encoder计算，降低切换图片的卡顿感。
-- 添加对[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)的支持，进一步提升sam编码效率。
 - 支持导出COCO，YOLO，LABELME，VOC等图像分割数据格式；也支持导出VOC目标检测格式数据(xml)。
 - 更多功能详见[功能说明](./docs/功能说明.md)。
 
@@ -44,12 +43,9 @@ pip install -r requirements.txt
 ```
 **windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
 ### (3) 下载Segment anything预训练模型
-下载预训练模型，并将模型存放于ISAT_with_segment_anything/ISAT/checkpoints目录下
+软件提供了模型管理界面。通过[菜单栏]-[SAM]-[模型管理]打开界面（现已添加模型国内下载链接，点击下载按钮可直接进行下载）。
 
-当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列(支持[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)技术)，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列，[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)系列。
-
-**windows下，segment-anything-fast 需torch版本为2.2.0+dev，且需要安装其他依赖项，软件当前默认windows下不使用segment-anything-fast，等稳定版本推出后再进行更新。**
-**如想提前进行使用，可参考[**segment-anything-fast**](https://github.com/pytorch-labs/segment-anything-fast)手动进行环境配置。**
+当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列，[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)系列。
 
 | 系列 | 预训练模型 | 显存占用 | 文件大小 |
 |----|----|----|----|
@@ -64,16 +60,13 @@ pip install -r requirements.txt
 |  edge-sam  | [edge_sam.pth](https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth)      |  960M |  39M |
 |            | [edge_sam_3x.pth](https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth)|  960M |  39M |
 
-下载好模型后，重新启动软件，通过SAM-下拉列表，选择要用的模型。（切换模型需要一定时间，切换h模型大概需要5秒左右，视硬件情况而定。）
-
-**目前软件提供了模型管理界面，由于sam-hq与mobile-sam的权重链接需要科学上网才可以访问。因而管理界面下载这两类模型会经常失败。有能提供国内比较好用的大文件托管服务，可以与我联系。**
-
 ### (4) 运行软件
 ```shell
 python main.py
 ```
 
 ## 2. pip安装
+**版本略低于源码**
 ### (1) 创建虚拟环境
 ```shell
 conda create -n isat_env python=3.8
@@ -91,7 +84,7 @@ isat-sam
 
 ## 3. windows下exe运行
 ### (1) 下载打包好的exe文件
-**打包的exe版本会落后于git源码，建议运行源码或pip安装**
+**打包的exe版本严重落后于git源码，建议运行源码或pip安装**
 
 需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。
 

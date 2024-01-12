@@ -68,3 +68,6 @@
 
 ## 
 * 添加了对[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)的支持。
+* 修复转coco后，类别ID从0开始的问题。（现在第一类的类别id为1）
+* 修复sam标注过程中，切换图片文件夹后，闪退的问题
+* 添加了模型国内下载链接

@@ -79,15 +79,24 @@ class PromptEncoder(nn.Module):
         """Embeds point prompts."""
         points = points + 0.5  # Shift to center of pixel
         if pad:
-            padding_point = torch.zeros((points.shape[0], 1, 2), device=points.device)
-            padding_label = -torch.ones((labels.shape[0], 1), device=labels.device)
+            padding_point = torch.zeros((points.shape[0], 1, 2), device=points.device, dtype=points.dtype)
+            padding_label = -torch.ones((labels.shape[0], 1), device=labels.device, dtype=points.dtype)
             points = torch.cat([points, padding_point], dim=1)
             labels = torch.cat([labels, padding_label], dim=1)
         point_embedding = self.pe_layer.forward_with_coords(points, self.input_image_size)
-        point_embedding[labels == -1] = 0.0
-        point_embedding[labels == -1] += self.not_a_point_embed.weight
-        point_embedding[labels == 0] += self.point_embeddings[0].weight
-        point_embedding[labels == 1] += self.point_embeddings[1].weight
+        # point_embedding[labels == -1] = 0.0
+        # point_embedding[labels == -1] += self.not_a_point_embed.weight
+        # point_embedding[labels == 0] += self.point_embeddings[0].weight
+        # point_embedding[labels == 1] += self.point_embeddings[1].weight
+        point_embedding = torch.where((labels == -1).unsqueeze(-1).expand_as(point_embedding),
+                                      torch.zeros_like(point_embedding) + self.not_a_point_embed.weight,
+                                      point_embedding)
+        point_embedding = torch.where((labels == 0).unsqueeze(-1).expand_as(point_embedding),
+                                      point_embedding + self.point_embeddings[0].weight,
+                                      point_embedding)
+        point_embedding = torch.where((labels == 1).unsqueeze(-1).expand_as(point_embedding),
+                                      point_embedding + self.point_embeddings[1].weight,
+                                      point_embedding)
         return point_embedding
 
     def _embed_boxes(self, boxes: torch.Tensor) -> torch.Tensor:
@@ -153,6 +162,7 @@ class PromptEncoder(nn.Module):
         if points is not None:
             coords, labels = points
             point_embeddings = self._embed_points(coords, labels, pad=(boxes is None))
+            sparse_embeddings = sparse_embeddings.to(point_embeddings.dtype)
             sparse_embeddings = torch.cat([sparse_embeddings, point_embeddings], dim=1)
         if boxes is not None:
             box_embeddings = self._embed_boxes(boxes)
@@ -186,6 +196,7 @@ class PositionEmbeddingRandom(nn.Module):
         """Positionally encode points that are normalized to [0,1]."""
         # assuming coords are in [0, 1]^2 square and have d_1 x ... x d_n x 2 shape
         coords = 2 * coords - 1
+        coords = coords.to(self.positional_encoding_gaussian_matrix.dtype)
         coords = coords @ self.positional_encoding_gaussian_matrix
         coords = 2 * np.pi * coords
         # outputs d_1 x ... x d_n x C shape

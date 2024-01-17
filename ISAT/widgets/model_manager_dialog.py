@@ -120,18 +120,19 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         for index, (name, info_dict) in enumerate(model_dict.items()):
             url = info_dict.get('url', '')
             memory = info_dict.get('memory', '')
+            bf16_memory = info_dict.get('bf16_memory', '')
             params = info_dict.get('params', '')
             name_label = QtWidgets.QLabel()
             name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             name_label.setText(name)
             # 显存占用
+            memory_label = QtWidgets.QLabel()
+            memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            memory_label.setText(bf16_memory)
+            # 权重大小
             params_label = QtWidgets.QLabel()
             params_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             params_label.setText(params)
-            # 权重大小
-            memory_label = QtWidgets.QLabel()
-            memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            memory_label.setText(memory)
             # 下载/删除按钮
             ops_button = QtWidgets.QPushButton()
             if os.path.exists(os.path.join(CHECKPOINT_PATH, name)):

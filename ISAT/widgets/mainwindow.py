@@ -126,6 +126,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label:Annotation = None
         self.use_segment_anything = False
         self.gpu_resource_thread = None
+        self.model_dtype = torch.bfloat16
 
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
@@ -136,7 +137,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_connect()
         self.reset_action()
 
-    def init_segment_anything(self, model_name, reload=False):
+    def init_segment_anything(self, model_name=None):
+        if model_name is None:
+            if self.use_segment_anything:
+                model_name = os.path.split(self.segany.checkpoint)[-1]
+
+        # 等待sam线程完成
+        try:
+            self.seganythread.wait()
+            self.seganythread.results_dict.clear()
+        except: pass
 
         if model_name == '':
             self.use_segment_anything = False
@@ -152,15 +162,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 action.setChecked(model_name == name)
             self.use_segment_anything = False
             return
-        # try:
-        self.segany = SegAny(model_path)
-        # except Exception as e:
-        #     QtWidgets.QMessageBox.warning(
-        #         self,
-        #         'Load model error',
-        #         'Error {}, when load sam model: {}'.format(e, model_path)
-        #     )
-        #     return
+        try:
+            self.segany = SegAny(model_path, self.model_dtype)
+        except Exception as e:
+            QtWidgets.QMessageBox.warning(
+                self,
+                'Load model error',
+                'Error {}, when load sam model: {}'.format(e, model_path)
+            )
+            self.use_segment_anything = False
+            return
         self.use_segment_anything = True
         self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
         for name, action in self.pths_actions.items():

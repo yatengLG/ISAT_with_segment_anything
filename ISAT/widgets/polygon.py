@@ -97,7 +97,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
 class Polygon(QtWidgets.QGraphicsPolygonItem):
     def __init__(self):
         super(Polygon, self).__init__(parent=None)
-        self.line_width = 0
+        self.line_width = 1
         self.hover_alpha = 150
         self.nohover_alpha = 80
         self.points = []
@@ -216,8 +216,10 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def change_color(self, color):
         self.color = color
+        if not self.scene().mainwindow.cfg['show_edge']:
+            color.setAlpha(0)
+        self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
-        self.setPen(QtGui.QPen(self.color, self.line_width))
         self.setBrush(self.color)
         for vertex in self.vertexs:
             vertex_color = self.color
@@ -235,8 +237,10 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.note = note
 
         self.color = color
+        if not self.scene().mainwindow.cfg['show_edge']:
+            color.setAlpha(0)
+        self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
-        self.setPen(QtGui.QPen(self.color, self.line_width))
         self.setBrush(self.color)
         if layer is not None:
             self.setZValue(layer)

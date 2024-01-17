@@ -24,5 +24,6 @@ label:
   name: hat
 language: en
 mask_alpha: 0.6
+show_edge: true
 show_prompt: false
-vertex_size: 3
+vertex_size: 2

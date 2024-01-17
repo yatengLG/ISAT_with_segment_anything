@@ -360,6 +360,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
         self.toolBar.addWidget(self.show_prompt)
 
+        # show edge
+        self.toolBar.addSeparator()
+        self.show_edge = SwitchBtn(self)
+        self.show_edge.setFixedSize(50, 20)
+        self.show_edge.setStatusTip('Show edge.')
+        self.show_edge.setToolTip('Show edge')
+        self.show_edge.checkedChanged.connect(self.change_edge_state)
+        self.toolBar.addWidget(self.show_edge)
+
         self.trans = QtCore.QTranslator()
 
     def update_menuSAM(self):
@@ -443,6 +452,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         show_prompt = self.cfg.get('show_prompt', False)
         self.cfg['show_prompt'] = bool(show_prompt)
         self.show_prompt.setChecked(show_prompt)
+
+        show_edge = self.cfg.get('show_edge', True)
+        self.cfg['show_edge'] = bool(show_edge)
+        self.show_edge.setChecked(show_edge)
 
         self.categories_dock_widget.update_widget()
 
@@ -816,6 +829,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def change_vertex_size(self):
         value = self.vertex_size.value()
         self.cfg['vertex_size'] = value
+        if self.current_index is not None:
+            self.show_image(self.current_index)
+
+    def change_edge_state(self):
+        visible = self.show_edge.checked
+        self.cfg['show_edge'] = visible
         if self.current_index is not None:
             self.show_image(self.current_index)
 

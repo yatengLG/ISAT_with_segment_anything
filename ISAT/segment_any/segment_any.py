@@ -10,7 +10,9 @@ import platform
 osplatform = platform.system()
 
 class SegAny:
-    def __init__(self, checkpoint):
+    def __init__(self, checkpoint:str, model_dtype:torch.dtype=torch.bfloat16):
+        self.checkpoint = checkpoint
+        self.model_type = model_dtype
         self.model_source = None
         if 'mobile_sam' in checkpoint:
             # mobile sam
@@ -41,8 +43,12 @@ class SegAny:
             # sam
             if torch.__version__ > '2.1.1' and osplatform == 'Linux':
                 # 暂时只测试了2.1.1环境下的运行;2.0不确定；1.x不可以
-                from ISAT.segment_anything_fast import sam_model_registry, SamPredictor
-                print('segment_anything_fast')
+                # 暂时不使用sam-fast
+                # from ISAT.segment_anything_fast import sam_model_registry as sam_model_registry
+                # from ISAT.segment_anything_fast import SamPredictor
+                # print('segment_anything_fast')
+                from ISAT.segment_anything import sam_model_registry, SamPredictor
+                print('segment_anything')
             else:
                 # windows下，现只支持 2.2.0+dev，且需要其他依赖；等后续正式版本推出后，再进行支持
                 # （如果想提前在windows下试用，可参考https://github.com/pytorch-labs/segment-anything-fast项目进行环境配置）
@@ -64,6 +70,9 @@ class SegAny:
         print('- device {}'.format(self.device))
         print('- loading {}'.format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
+
+        sam = sam.eval().to(model_dtype)
+
         sam.to(device=self.device)
         self.predictor_with_point_prompt = SamPredictor(sam)
         print('- loaded')

@@ -124,5 +124,5 @@ class SwitchBtn(QWidget):
         painter.restore()
 
     def setChecked(self, checked=False):
-        self.checked = checked
-        self.update()
+        if self.checked != checked:
+            self.mousePressEvent(None)

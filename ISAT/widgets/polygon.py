@@ -122,7 +122,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def addPoint(self, point):
         self.points.append(point)
-        vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['vertex_size'])
+        vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'])
         # 添加路径点
         self.scene().addItem(vertex)
         self.vertexs.append(vertex)
@@ -216,7 +216,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def change_color(self, color):
         self.color = color
-        if not self.scene().mainwindow.cfg['show_edge']:
+        if not self.scene().mainwindow.cfg['software']['show_edge']:
             color.setAlpha(0)
         self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
@@ -237,7 +237,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.note = note
 
         self.color = color
-        if not self.scene().mainwindow.cfg['show_edge']:
+        if not self.scene().mainwindow.cfg['software']['show_edge']:
             color.setAlpha(0)
         self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)

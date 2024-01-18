@@ -1,4 +1,3 @@
-contour_mode: max_only
 label:
 - color: '#000000'
   name: __background__
@@ -32,7 +31,3 @@ label:
   name: umbrella
 - color: '#2e3436'
   name: vase
-language: en
-mask_alpha: 0.5
-show_prompt: false
-vertex_size: 2

@@ -1,4 +1,3 @@
-contour_mode: external
 label:
 - color: '#000000'
   name: __background__
@@ -22,8 +21,3 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
-language: en
-mask_alpha: 0.6
-show_edge: true
-show_prompt: false
-vertex_size: 2

@@ -3,8 +3,6 @@
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ISAT.ui.category_choice import Ui_Dialog
-from ISAT.configs import load_config, CONFIG_FILE, DEFAULT_CONFIG_FILE
-import os
 
 
 class CategoryChoiceDialog(QtWidgets.QDialog, Ui_Dialog):

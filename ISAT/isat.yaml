@@ -24,6 +24,6 @@ label:
   name: hat
 language: zh
 mask_alpha: 0.6
-show_edge: false
+show_edge: true
 show_prompt: true
 vertex_size: 10

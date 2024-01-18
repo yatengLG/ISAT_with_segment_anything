@@ -16,7 +16,7 @@ from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
-from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, DEFAULT_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
+from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
 from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
 import os
@@ -113,7 +113,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label = '__background__'
         self.current_group = 1
 
-        self.config_file = CONFIG_FILE if os.path.exists(CONFIG_FILE) else DEFAULT_CONFIG_FILE
+        self.config_file = CONFIG_FILE
+        self.software_config_file = SOFTWARE_CONFIG_FILE
+
         self.saved = True
         self.can_be_annotated = True
         self.load_finished = False
@@ -360,6 +362,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
         self.toolBar.addWidget(self.show_prompt)
 
+        # show edge
+        self.toolBar.addSeparator()
+        self.show_edge = SwitchBtn(self)
+        self.show_edge.setFixedSize(50, 20)
+        self.show_edge.setStatusTip('Show edge.')
+        self.show_edge.setToolTip('Show edge')
+        self.show_edge.checkedChanged.connect(self.change_edge_state)
+        self.toolBar.addWidget(self.show_edge)
+
+        # use polydp
+        self.toolBar.addSeparator()
+        self.use_polydp = SwitchBtn(self)
+        self.use_polydp.setFixedSize(50, 20)
+        self.use_polydp.setStatusTip('approx polygon.')
+        self.use_polydp.setToolTip('approx polygon')
+        self.use_polydp.checkedChanged.connect(self.change_approx_polygon_state)
+        self.toolBar.addWidget(self.use_polydp)
+
         self.trans = QtCore.QTranslator()
 
     def update_menuSAM(self):
@@ -402,17 +422,55 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def translate_to_chinese(self):
         self.translate('zh')
-        self.cfg['language'] = 'zh'
+        self.cfg['software']['language'] = 'zh'
+        self.save_software_cfg()
 
     def translate_to_english(self):
         self.translate('en')
-        self.cfg['language'] = 'en'
+        self.cfg['software']['language'] = 'en'
+        self.save_software_cfg()
 
     def reload_cfg(self):
-        self.cfg = load_config(self.config_file)
+        # 软件配置
+        self.cfg = load_config(self.software_config_file)
+        if self.cfg is None:
+            self.cfg = {}
+        software_cfg = self.cfg.get('software', {})
+        self.cfg['software'] = software_cfg
+
+        language = software_cfg.get('language', 'en')
+        self.cfg['software']['language'] = language
+        self.translate(language)
+
+        contour_mode = software_cfg.get('contour_mode', 'max_only')
+        self.cfg['software']['contour_mode'] = contour_mode
+        self.change_contour_mode(contour_mode)
+
+        mask_alpha = software_cfg.get('mask_alpha', 0.5)
+        self.cfg['software']['mask_alpha'] = mask_alpha
+        self.mask_aplha.setValue(int(mask_alpha*10))
+
+        vertex_size = software_cfg.get('vertex_size', 2)
+        self.cfg['software']['vertex_size'] = int(vertex_size)
+        self.vertex_size.setValue(vertex_size)
+
+        show_prompt = software_cfg.get('show_prompt', False)
+        self.cfg['software']['show_prompt'] = bool(show_prompt)
+        self.show_prompt.setChecked(show_prompt)
+
+        show_edge = software_cfg.get('show_edge', True)
+        self.cfg['software']['show_edge'] = bool(show_edge)
+        self.show_edge.setChecked(show_edge)
+
+        use_polydp = software_cfg.get('use_polydp', True)
+        self.cfg['software']['use_polydp'] = bool(use_polydp)
+        self.use_polydp.setChecked(use_polydp)
+
+        # 类别
+        self.cfg.update(load_config(self.config_file))
         label_dict_list = self.cfg.get('label', [])
-        if len(label_dict_list) < 1 or label_dict_list[0].get('name','unknow') != '__background__':
-                label_dict_list.insert(0, {'color': '#000000', 'name': '__background__'})
+        if len(label_dict_list) < 1 or label_dict_list[0].get('name', 'unknow') != '__background__':
+            label_dict_list.insert(0, {'color': '#000000', 'name': '__background__'})
 
         d = {}
         for label_dict in label_dict_list:
@@ -421,30 +479,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             d[category] = color
         self.category_color_dict = d
 
+        self.categories_dock_widget.update_widget()
+
         if self.current_index is not None:
             self.show_image(self.current_index)
-
-        language = self.cfg.get('language', 'en')
-        self.cfg['language'] = language
-        self.translate(language)
-
-        contour_mode = self.cfg.get('contour_mode', 'max_only')
-        self.cfg['contour_mode'] = contour_mode
-        self.change_contour_mode(contour_mode)
-
-        mask_alpha = self.cfg.get('mask_alpha', 0.5)
-        self.cfg['mask_alpha'] = mask_alpha
-        self.mask_aplha.setValue(int(mask_alpha*10))
-
-        vertex_size = self.cfg.get('vertex_size', 2)
-        self.cfg['vertex_size'] = int(vertex_size)
-        self.vertex_size.setValue(vertex_size)
-
-        show_prompt = self.cfg.get('show_prompt', False)
-        self.cfg['show_prompt'] = bool(show_prompt)
-        self.show_prompt.setChecked(show_prompt)
-
-        self.categories_dock_widget.update_widget()
+        print(self.cfg)
 
     def set_saved_state(self, is_saved:bool):
         self.saved = is_saved
@@ -805,17 +844,34 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionContour_Max_only.setChecked(contour_mode == 'max_only')
         self.actionContour_External.setChecked(contour_mode == 'external')
         self.actionContour_All.setChecked(contour_mode == 'all')
-        self.cfg['contour_mode'] = contour_mode
+        self.cfg['software']['contour_mode'] = contour_mode
+        self.save_software_cfg()
 
     def change_mask_aplha(self):
         value = self.mask_aplha.value() / 10
         self.scene.mask_alpha = value
         self.scene.update_mask()
-        self.cfg['mask_alpha'] = value
+        self.cfg['software']['mask_alpha'] = value
+        self.save_software_cfg()
 
     def change_vertex_size(self):
         value = self.vertex_size.value()
-        self.cfg['vertex_size'] = value
+        self.cfg['software']['vertex_size'] = value
+        self.save_software_cfg()
+        if self.current_index is not None:
+            self.show_image(self.current_index)
+
+    def change_edge_state(self):
+        visible = self.show_edge.checked
+        self.cfg['software']['show_edge'] = visible
+        self.save_software_cfg()
+        if self.current_index is not None:
+            self.show_image(self.current_index)
+
+    def change_approx_polygon_state(self):  # 是否使用多边形拟合，来减少多边形顶点
+        checked = self.use_polydp.checked
+        self.cfg['software']['use_polydp'] = checked
+        self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index)
 
@@ -833,7 +889,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def change_prompt_visiable(self):
         visible = self.show_prompt.checked
-        self.cfg['show_prompt'] = visible
+        self.cfg['software']['show_prompt'] = visible
+        self.save_software_cfg()
         for item in self.scene.items():
             if isinstance(item, PromptPoint):
                 item.setVisible(visible)
@@ -850,10 +907,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.show()
 
     def save_cfg(self, config_file):
-        save_config(self.cfg, config_file)
+        # 只保存类别配置
+        cfg = {'label': self.cfg.get('label', [])}
+        save_config(cfg, config_file)
+
+    def save_software_cfg(self):
+        save_config(self.cfg, self.software_config_file)
 
     def exit(self):
+        # 保存类别配置
         self.save_cfg(self.config_file)
+        # 保存软件配置
+        self.save_software_cfg()
         self.close()
 
     def closeEvent(self, a0: QtGui.QCloseEvent):

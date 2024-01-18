@@ -21,3 +21,11 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
+software:
+  contour_mode: max_only
+  language: en
+  mask_alpha: 0.6
+  show_edge: true
+  show_prompt: false
+  use_polydp: true
+  vertex_size: 5

@@ -184,9 +184,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                 for index, contour in enumerate(contours):
                     # polydp
-                    epsilon_factor = 0.001
-                    epsilon = epsilon_factor * cv2.arcLength(contour, True)
-                    contour = cv2.approxPolyDP(contour, epsilon, True)
+                    if self.mainwindow.cfg['software']['use_polydp']:
+                        epsilon_factor = 0.001
+                        epsilon = epsilon_factor * cv2.arcLength(contour, True)
+                        contour = cv2.approxPolyDP(contour, epsilon, True)
 
                     if self.current_graph is None:
                         self.current_graph = Polygon()

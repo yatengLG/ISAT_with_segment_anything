@@ -462,6 +462,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['show_edge'] = bool(show_edge)
         self.show_edge.setChecked(show_edge)
 
+        use_polydp = software_cfg.get('use_polydp', True)
+        self.cfg['software']['use_polydp'] = bool(use_polydp)
+        self.use_polydp.setChecked(use_polydp)
+
         # 类别
         self.cfg.update(load_config(self.config_file))
         label_dict_list = self.cfg.get('label', [])

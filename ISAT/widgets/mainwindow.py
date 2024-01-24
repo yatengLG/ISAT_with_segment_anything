@@ -128,7 +128,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label:Annotation = None
         self.use_segment_anything = False
         self.gpu_resource_thread = None
-        self.model_dtype = torch.bfloat16
 
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
@@ -143,7 +142,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if model_name is None:
             if self.use_segment_anything:
                 model_name = os.path.split(self.segany.checkpoint)[-1]
-
+            else:
+                return
         # 等待sam线程完成
         try:
             self.seganythread.wait()
@@ -165,7 +165,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.use_segment_anything = False
             return
         try:
-            self.segany = SegAny(model_path, self.model_dtype)
+            self.segany = SegAny(model_path, self.cfg['software']['use_bfloat16'])
         except Exception as e:
             QtWidgets.QMessageBox.warning(
                 self,
@@ -465,6 +465,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         use_polydp = software_cfg.get('use_polydp', True)
         self.cfg['software']['use_polydp'] = bool(use_polydp)
         self.use_polydp.setChecked(use_polydp)
+
+        use_bfloat16 = software_cfg.get('use_bfloat16', False)
+        self.cfg['software']['use_bfloat16'] = bool(use_bfloat16)
+        self.model_manager_dialog.update_gui()
 
         # 类别
         self.cfg.update(load_config(self.config_file))
@@ -827,6 +831,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def model_manage(self):
         self.model_manager_dialog.show()
+
+    def change_bfloat16_state(self, use: bool):
+        self.cfg['software']['use_bfloat16'] = use
+        self.init_segment_anything()
+        self.model_manager_dialog.update_gui()
+        self.save_software_cfg()
 
     def change_contour_mode(self, contour_mode='max_only'):
         if contour_mode == 'max_only':

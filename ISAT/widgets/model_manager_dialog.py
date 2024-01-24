@@ -111,12 +111,13 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.download_thread_dict = {}
-        self.update_gui()
+        self.init_gui()
 
         self.tableWidget.setColumnWidth(0, 200)
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
+        self.checkBox_use_bfloat16.stateChanged.connect(self.use_bfloat16)
 
-    def update_gui(self):
+    def init_gui(self):
         for index, (name, info_dict) in enumerate(model_dict.items()):
             url = info_dict.get('url', '')
             memory = info_dict.get('memory', '')
@@ -240,3 +241,21 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             'Remove tmp: [' + '],['.join(remove_list) + ']'
         )
 
+    def update_gui(self):
+        self.checkBox_use_bfloat16.setChecked(self.mainwindow.cfg['software']['use_bfloat16'])
+
+        for index, (name, info_dict) in enumerate(model_dict.items()):
+            memory = info_dict.get('memory', '')
+            bf16_memory = info_dict.get('bf16_memory', '')
+            # 显存占用
+            memory_label = QtWidgets.QLabel()
+            memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            if self.mainwindow.cfg['software']['use_bfloat16']:
+                memory_label.setText(bf16_memory)
+            else:
+                memory_label.setText(memory)
+            self.tableWidget.setCellWidget(index, 1, memory_label)
+
+    def use_bfloat16(self):
+        use = self.checkBox_use_bfloat16.isChecked()
+        self.mainwindow.change_bfloat16_state(use)

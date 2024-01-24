@@ -10,9 +10,9 @@ import platform
 osplatform = platform.system()
 
 class SegAny:
-    def __init__(self, checkpoint:str, model_dtype:torch.dtype=torch.bfloat16):
+    def __init__(self, checkpoint:str, use_bfloat16:torch.dtype=torch.bfloat16):
         self.checkpoint = checkpoint
-        self.model_type = model_dtype
+        self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
         self.model_source = None
         if 'mobile_sam' in checkpoint:
             # mobile sam
@@ -67,11 +67,12 @@ class SegAny:
         torch.cuda.empty_cache()
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        print('- device {}'.format(self.device))
-        print('- loading {}'.format(checkpoint))
+        print('- device  : {}'.format(self.device))
+        print('- dtype   : {}'.format(self.model_dtype))
+        print('- loading : {}'.format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
-        sam = sam.eval().to(model_dtype)
+        sam = sam.eval().to(self.model_dtype)
 
         sam.to(device=self.device)
         self.predictor_with_point_prompt = SamPredictor(sam)

@@ -10,7 +10,7 @@ import platform
 osplatform = platform.system()
 
 class SegAny:
-    def __init__(self, checkpoint:str, use_bfloat16:torch.dtype=torch.bfloat16):
+    def __init__(self, checkpoint:str, use_bfloat16:bool=True):
         self.checkpoint = checkpoint
         self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
         self.model_source = None

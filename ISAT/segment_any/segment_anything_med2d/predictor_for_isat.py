@@ -6,8 +6,6 @@ import torch
 from typing import Optional, Tuple
 from torch.nn import functional as F
 from copy import deepcopy
-from albumentations.pytorch import ToTensorV2
-import albumentations as A
 import cv2
 from .utils.transforms_med2d import Med2dTransforms
 
@@ -236,13 +234,6 @@ class Predictor:
             )
         assert self.features is not None, "Features must exist if an image has been set."
         return self.features
-
-    def transforms(self, new_size):
-        Transforms = []
-        new_h, new_w = new_size
-        Transforms.append(A.Resize(int(new_h), int(new_w), interpolation=cv2.INTER_NEAREST))
-        Transforms.append(ToTensorV2(p=1.0))
-        return A.Compose(Transforms, p=1.)
 
     @property
     def device(self) -> torch.device:

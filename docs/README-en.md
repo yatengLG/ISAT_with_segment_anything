@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
 
-Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)。
+Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)et.
 
 |  | pretrained checkpoint | memory | size |
 |----|----|----|----|
@@ -62,6 +62,8 @@ Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq]
 | mobile-sam | [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt)          | 1375M |  40M |
 |  edge-sam  | [edge_sam.pth](https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth)      |  960M |  39M |
 |            | [edge_sam_3x.pth](https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth)|  960M |  39M |
+|   sam-med  | [sam-med2d_b.pth](https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link)|1500M |  2.4G |
+
 ### (4) Run
 ```shell
 python main.py

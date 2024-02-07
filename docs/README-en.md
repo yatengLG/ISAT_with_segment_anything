@@ -1,22 +1,27 @@
-# ISAT with segment anything
-# Interactive semi-automatic annotation tool for image segmentation.
+<h1 align='center'>ISAT_with_segment_anything</h1>
+<h2 align='center'>Interactive semi-automatic annotation tool for image segmentation.</h2>
 
-![annotate.gif](../display/标注.gif)
+<p align='center'>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything"></a>
+    <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/isat-sam"></a>
+    <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/isat-sam"></a>
+</p>
+<p align='center'>
+    <a href='../README.md'><b>[中文]</b></a>
+    <a href='README-en.md'><b>[English]</b></a>
+</p>
+
+<p align='center'><img src="../display/标注.gif" alt="标注.gif"'></p>
 
 The software provides two interfaces, **Chinese** and **English**, which can be switched at any time.
 
 **If this project brings convenience to your work and life, please provide a Star; If you want to contribute code to this project, please send Pull requests**
 
-![](https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything?style=social)
-![](https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything?style=social)
-
-Quick annotate for image segmentation by [segment anything](https://github.com/facebookresearch/segment-anything)
-
 Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
 
-[[中文](../README.md)]         [[English](README-en.md)]
 
 # Feature
 
@@ -42,11 +47,13 @@ git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
-**pytorch-gpu need install by [pytorch](https://pytorch.org/) in Windows OS.**
+**pytorch-gpu needs to be installed by [pytorch](https://pytorch.org/) on Windows OS.**
 
 ### (3) Download Segment anything pretrained checkpoint.
 
 Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
+
+**After version 0.0.3, you can manage checkpoints in th GUI, [menubar]-[SAM]-[Model manage] to open the GUI.**
 
 Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)et.
 
@@ -76,7 +83,7 @@ conda create -n isat_env python=3.8
 conda activate isat_env
 ```
 ### (2) pip install isat-sam
-**pytorch-gpu need install by [pytorch](https://pytorch.org/) in Windows OS.**
+**pytorch-gpu needs to be installed by [pytorch](https://pytorch.org/) on Windows OS.**
 ```shell
 pip install isat-sam
 ```

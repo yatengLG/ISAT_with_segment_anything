@@ -23,9 +23,10 @@ label:
   name: hat
 software:
   contour_mode: max_only
-  language: en
+  language: zh
   mask_alpha: 0.6
   show_edge: true
   show_prompt: false
-  use_polydp: true
-  vertex_size: 5
+  use_bfloat16: false
+  use_polydp: false
+  vertex_size: 2

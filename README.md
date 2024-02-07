@@ -1,14 +1,16 @@
-# ISAT with segment anything
-# 交互式半自动图像分割标注工具
-
-![标注.gif](./display/标注.gif)
-
-**如果这个项目给您的工作生活带来了便捷，请给一个Star；如果想对该项目贡献代码，请发Pull requests**
-
-![](https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything?style=social)
-![](https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything?style=social)
-
-[[中文](README.md)]         [[English](./docs/README-en.md)]
+<h1 align='center'>ISAT_with_segment_anything</h1>
+<h2 align='center'>一款基于SAM的交互式半自动图像分割标注工具</h2>
+<p align='center'>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
+    <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything"></a>
+    <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/isat-sam"></a>
+    <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/isat-sam"></a>
+</p>
+<p align='center'>
+    <a href='README.md'><b>[中文]</b></a>
+    <a href='./docs/README-en.md'><b>[English]</b></a>
+</p>
+<p align='center'><img src="./display/标注.gif" alt="标注.gif"'></p>
 
 集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
 

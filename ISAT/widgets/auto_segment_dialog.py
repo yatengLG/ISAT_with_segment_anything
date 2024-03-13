@@ -9,7 +9,8 @@ from xml.etree import ElementTree as ET
 from PIL import Image
 import numpy as np
 from json import dump
-import torch
+import imgviz
+import yaml
 import cv2
 import os
 
@@ -25,6 +26,7 @@ class AutoSegmentThread(QThread):
 
     def run(self):
         image_names = []
+        cates = set()
         suffixs = tuple(
             ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
         for f in os.listdir(self.image_dir):
@@ -87,6 +89,8 @@ class AutoSegmentThread(QThread):
                 xmax = float(bndbox.find('xmax').text)
                 ymax = float(bndbox.find('ymax').text)
 
+                cates.add(name)
+
                 masks = self.mainwindow.segany.predict_with_box_prompt(box=np.array([xmin, ymin, xmax, ymax]))
 
                 masks = masks.astype('uint8') * 255
@@ -129,6 +133,26 @@ class AutoSegmentThread(QThread):
                 self.message.emit(-1, -1, '{}'.format('Save finished!'))
             except Exception as e:
                 self.message.emit(-1, -1, 'Save ISAT json error: {}'.format(e))
+
+        # 类别文件
+        try:
+            cmap = imgviz.label_colormap()
+            cates = list(cates)
+            cates = sorted(cates)
+            categories = []
+            for index, cat in enumerate(cates):
+                r, g, b = cmap[index + 1]
+                categories.append({
+                    'name': cat if isinstance(cat, str) else str(cat),
+                    'color': "#{:02x}{:02x}{:02x}".format(r, g, b)
+                })
+            s = yaml.dump({'label': categories})
+            with open(os.path.join(self.save_dir, 'isat.yaml'), 'w') as f:
+                f.write(s)
+            self.message.emit(-1, -1, 'Save ISAT yaml finished!')
+
+        except Exception as e:
+            self.message.emit(-1, -1, 'Save ISAT yaml error: {}'.format(e))
 
 
 class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):

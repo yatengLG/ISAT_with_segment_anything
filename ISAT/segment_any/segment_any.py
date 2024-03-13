@@ -114,3 +114,11 @@ class SegAny:
         )
         torch.cuda.empty_cache()
         return masks
+
+    def predict_with_box_prompt(self, box):
+        masks, scores, logits = self.predictor_with_point_prompt.predict(
+            box = box,
+            multimask_output=False,
+        )
+        torch.cuda.empty_cache()
+        return masks

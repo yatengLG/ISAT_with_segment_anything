@@ -515,37 +515,37 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="74"/>
+        <location filename="model_manager_dialog.py" line="85"/>
         <source>Model Manage</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="77"/>
+        <location filename="model_manager_dialog.py" line="89"/>
         <source>model</source>
         <translation>模型</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="79"/>
+        <location filename="model_manager_dialog.py" line="91"/>
         <source>memory(GPU)</source>
         <translation>显存</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="81"/>
+        <location filename="model_manager_dialog.py" line="93"/>
         <source>params</source>
         <translation>硬盘</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="83"/>
+        <location filename="model_manager_dialog.py" line="95"/>
         <source>operate</source>
         <translation>操作</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="84"/>
+        <location filename="model_manager_dialog.py" line="96"/>
         <source>clear tmp</source>
         <translation>清除临时文件</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="85"/>
+        <location filename="model_manager_dialog.py" line="97"/>
         <source>Download model, and select it in SAM menu to use.</source>
         <translation>下载模型，然后在SAM菜单中选择模型并使用。</translation>
     </message>
@@ -724,6 +724,46 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <source>**The num of classification and the group must in [0, 255]**</source>
         <translation>** 类别数量与组id必须在[0, 255]范围内 **</translation>
     </message>
+    <message>
+        <location filename="auto_segment.py" line="94"/>
+        <source>Auto segment</source>
+        <translation>自动分割</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="95"/>
+        <source>Image dir</source>
+        <translation>图片文件夹</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="97"/>
+        <source>VOC xmls dir (for object detection)</source>
+        <translation>xml文件夹（voc目标检测格式）</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="98"/>
+        <source>xml root</source>
+        <translation>xml文件夹</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="99"/>
+        <source>ISAT jsons save dir</source>
+        <translation>ISAT格式json文件夹</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="101"/>
+        <source>Auto segment with bounding box.(&apos;contour_mode&apos; and &apos;use_polydp&apos; also effect the results.)</source>
+        <translation>使用[voc目标检测标注框]自动分割。(轮廓模式建议使用[只保存最大轮廓]或[只保存外轮廓])</translation>
+    </message>
+    <message>
+        <location filename="auto_segment.py" line="103"/>
+        <source>Start</source>
+        <translation>开始</translation>
+    </message>
+    <message>
+        <location filename="model_manager_dialog.py" line="86"/>
+        <source>use bfloat16</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Form</name>
@@ -846,42 +886,42 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="382"/>
+        <location filename="MainWindow.py" line="386"/>
         <source>ISAT</source>
         <translation>ISAT 图片分割标注工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="383"/>
+        <location filename="MainWindow.py" line="387"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="384"/>
+        <location filename="MainWindow.py" line="388"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="385"/>
+        <location filename="MainWindow.py" line="389"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="387"/>
+        <location filename="MainWindow.py" line="391"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="438"/>
+        <location filename="MainWindow.py" line="442"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="392"/>
+        <location filename="MainWindow.py" line="396"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="393"/>
+        <location filename="MainWindow.py" line="397"/>
         <source>Info</source>
         <translation>图片信息</translation>
     </message>
@@ -891,7 +931,7 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">标签列表</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="395"/>
+        <location filename="MainWindow.py" line="399"/>
         <source>Files</source>
         <translation>文件列表</translation>
     </message>
@@ -906,32 +946,32 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">打开图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="399"/>
+        <location filename="MainWindow.py" line="403"/>
         <source>Zoom in</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="401"/>
+        <location filename="MainWindow.py" line="405"/>
         <source>Zoom out</source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="404"/>
+        <location filename="MainWindow.py" line="408"/>
         <source>Fit window</source>
         <translation>适应窗口</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="406"/>
+        <location filename="MainWindow.py" line="410"/>
         <source>F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="407"/>
+        <location filename="MainWindow.py" line="411"/>
         <source>Setting</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="410"/>
+        <location filename="MainWindow.py" line="414"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -941,12 +981,12 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">标签保存位置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="414"/>
+        <location filename="MainWindow.py" line="418"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="416"/>
+        <location filename="MainWindow.py" line="420"/>
         <source>S</source>
         <translation></translation>
     </message>
@@ -956,12 +996,12 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">上一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="418"/>
+        <location filename="MainWindow.py" line="422"/>
         <source>Prev image</source>
         <translation>上一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="420"/>
+        <location filename="MainWindow.py" line="424"/>
         <source>A</source>
         <translation></translation>
     </message>
@@ -971,17 +1011,17 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">下一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="422"/>
+        <location filename="MainWindow.py" line="426"/>
         <source>Next image</source>
         <translation>下一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="424"/>
+        <location filename="MainWindow.py" line="428"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="426"/>
+        <location filename="MainWindow.py" line="430"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -996,72 +1036,72 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">创建多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="466"/>
+        <location filename="MainWindow.py" line="470"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="431"/>
+        <location filename="MainWindow.py" line="435"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="432"/>
+        <location filename="MainWindow.py" line="436"/>
         <source>Delete polygon</source>
         <translation>删除多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="434"/>
+        <location filename="MainWindow.py" line="438"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="435"/>
+        <location filename="MainWindow.py" line="439"/>
         <source>Bit map</source>
         <translation>位图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="437"/>
+        <location filename="MainWindow.py" line="441"/>
         <source>Space</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="439"/>
+        <location filename="MainWindow.py" line="443"/>
         <source>Edit polygon</source>
         <translation>编辑多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="462"/>
+        <location filename="MainWindow.py" line="466"/>
         <source>E</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="441"/>
+        <location filename="MainWindow.py" line="445"/>
         <source>To top</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="442"/>
+        <location filename="MainWindow.py" line="446"/>
         <source>Move polygon to top layer</source>
         <translation>移动多边形到顶层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="444"/>
+        <location filename="MainWindow.py" line="448"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="445"/>
+        <location filename="MainWindow.py" line="449"/>
         <source>To bottom</source>
         <translation>置底</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="446"/>
+        <location filename="MainWindow.py" line="450"/>
         <source>Move polygon to bottom layer</source>
         <translation>移动多边形到底层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="448"/>
+        <location filename="MainWindow.py" line="452"/>
         <source>B</source>
         <translation></translation>
     </message>
@@ -1076,12 +1116,12 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">将ISAT标注文件转换为png图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="386"/>
+        <location filename="MainWindow.py" line="390"/>
         <source>Laguage</source>
         <translation>语言</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="425"/>
+        <location filename="MainWindow.py" line="429"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
@@ -1091,52 +1131,52 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">中文</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="450"/>
+        <location filename="MainWindow.py" line="454"/>
         <source>English</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="449"/>
+        <location filename="MainWindow.py" line="453"/>
         <source>中文</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="397"/>
+        <location filename="MainWindow.py" line="401"/>
         <source>Images dir</source>
         <translation>图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="398"/>
+        <location filename="MainWindow.py" line="402"/>
         <source>Open images dir.</source>
         <translation>打开图片文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="400"/>
+        <location filename="MainWindow.py" line="404"/>
         <source>Zoom in.</source>
         <translation>放大.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="402"/>
+        <location filename="MainWindow.py" line="406"/>
         <source>Zoom out.</source>
         <translation>缩小.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="405"/>
+        <location filename="MainWindow.py" line="409"/>
         <source>Fit window.</source>
         <translation>适应窗口.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="412"/>
+        <location filename="MainWindow.py" line="416"/>
         <source>Label dir</source>
         <translation>标签文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="413"/>
+        <location filename="MainWindow.py" line="417"/>
         <source>Open label dir.</source>
         <translation>打开标签文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="415"/>
+        <location filename="MainWindow.py" line="419"/>
         <source>Save annotation.</source>
         <translation>保存.</translation>
     </message>
@@ -1151,7 +1191,7 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">打开上一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="423"/>
+        <location filename="MainWindow.py" line="427"/>
         <source>Next image.</source>
         <translation>下一张图片.</translation>
     </message>
@@ -1161,132 +1201,132 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">打开下一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="433"/>
+        <location filename="MainWindow.py" line="437"/>
         <source>Delete polygon.</source>
         <translation>删除多边形.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="436"/>
+        <location filename="MainWindow.py" line="440"/>
         <source>Show instance or segmeent state.</source>
         <translation>显示语义与实例结果.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="440"/>
+        <location filename="MainWindow.py" line="444"/>
         <source>Edit polygon attribute.</source>
         <translation>编辑多边形属性.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="443"/>
+        <location filename="MainWindow.py" line="447"/>
         <source>Move polygon to top layer.</source>
         <translation>将多边形移动到最上层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="447"/>
+        <location filename="MainWindow.py" line="451"/>
         <source>Move polygon to bottom layer.</source>
         <translation>将多边形移动到最下层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="408"/>
+        <location filename="MainWindow.py" line="412"/>
         <source>Setting.</source>
         <translation>设置.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="411"/>
+        <location filename="MainWindow.py" line="415"/>
         <source>Exit.</source>
         <translation>退出.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="419"/>
+        <location filename="MainWindow.py" line="423"/>
         <source>Prev image.</source>
         <translation>前一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="428"/>
+        <location filename="MainWindow.py" line="432"/>
         <source>Segment anything</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="429"/>
+        <location filename="MainWindow.py" line="433"/>
         <source>Quick annotate using Segment anything.</source>
         <translation>使用Segment anything进行快速标注.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="430"/>
+        <location filename="MainWindow.py" line="434"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="452"/>
+        <location filename="MainWindow.py" line="456"/>
         <source>Backspace</source>
         <translation>回退</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="453"/>
+        <location filename="MainWindow.py" line="457"/>
         <source>Backspace.</source>
         <translation>回退.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="454"/>
+        <location filename="MainWindow.py" line="458"/>
         <source>Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="455"/>
+        <location filename="MainWindow.py" line="459"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="456"/>
+        <location filename="MainWindow.py" line="460"/>
         <source>Annotate canceled</source>
         <translation>标注取消</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="457"/>
+        <location filename="MainWindow.py" line="461"/>
         <source>Annotate canceled.</source>
         <translation>标注取消.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="458"/>
+        <location filename="MainWindow.py" line="462"/>
         <source>Esc</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="459"/>
+        <location filename="MainWindow.py" line="463"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="460"/>
+        <location filename="MainWindow.py" line="464"/>
         <source>Annotate finished</source>
         <translation>标注完成</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="461"/>
+        <location filename="MainWindow.py" line="465"/>
         <source>Annotate finished.</source>
         <translation>标注完成.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="463"/>
+        <location filename="MainWindow.py" line="467"/>
         <source>Polygon</source>
         <translation>多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="464"/>
+        <location filename="MainWindow.py" line="468"/>
         <source>Draw polygon</source>
         <translation>绘制多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="465"/>
+        <location filename="MainWindow.py" line="469"/>
         <source>Accurately annotate by drawing polygon. </source>
         <translation>通过手动绘制多边形,进行精细标注. </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="468"/>
+        <location filename="MainWindow.py" line="472"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="470"/>
+        <location filename="MainWindow.py" line="474"/>
         <source>V</source>
         <translation></translation>
     </message>
@@ -1336,79 +1376,84 @@ https://github.com/yatengLG/ISAT_with_segment_anything</source>
         <translation type="obsolete">将ISAT格式json转换为LabelMe格式json。</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="389"/>
+        <location filename="MainWindow.py" line="393"/>
         <source>Mode</source>
         <translation>模式</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="390"/>
+        <location filename="MainWindow.py" line="394"/>
         <source>Contour mode</source>
         <translation>轮廓模式</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="391"/>
+        <location filename="MainWindow.py" line="395"/>
         <source>SAM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="394"/>
+        <location filename="MainWindow.py" line="398"/>
         <source>Annos</source>
         <translation>标注</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="396"/>
+        <location filename="MainWindow.py" line="400"/>
         <source>Categories</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="469"/>
+        <location filename="MainWindow.py" line="473"/>
         <source>Visible.</source>
         <translation>显示/隐藏.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="471"/>
+        <location filename="MainWindow.py" line="475"/>
         <source>Max only</source>
         <translation>只保存最大轮廓</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="473"/>
+        <location filename="MainWindow.py" line="477"/>
         <source>Max contour save only.</source>
         <translation>只保存最大轮廓.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="474"/>
+        <location filename="MainWindow.py" line="478"/>
         <source>External</source>
         <translation>只保存外轮廓</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="476"/>
+        <location filename="MainWindow.py" line="480"/>
         <source>External contour save only.</source>
         <translation>只保存外轮廓.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="477"/>
+        <location filename="MainWindow.py" line="481"/>
         <source>All</source>
         <translation>保存所有轮廓</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="479"/>
+        <location filename="MainWindow.py" line="483"/>
         <source>All contour save.</source>
         <translation>保存所有轮廓.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="480"/>
+        <location filename="MainWindow.py" line="484"/>
         <source>Model manage</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="482"/>
+        <location filename="MainWindow.py" line="486"/>
         <source>Model manage.</source>
         <translation>模型管理.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="483"/>
+        <location filename="MainWindow.py" line="487"/>
         <source>Converter</source>
         <translation>数据转换</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="488"/>
+        <source>Auto segment with bounding box</source>
+        <translation>自动分割[基于标注框]</translation>
     </message>
 </context>
 </TS>

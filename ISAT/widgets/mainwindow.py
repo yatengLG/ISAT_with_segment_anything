@@ -14,6 +14,7 @@ from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
 from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
+from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
@@ -288,6 +289,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
+        self.auto_segment_dialog = AutoSegmentDialog(self, self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -419,6 +421,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
+        self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
 
     def translate_to_chinese(self):
         self.translate('zh')
@@ -487,7 +490,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if self.current_index is not None:
             self.show_image(self.current_index)
-        print(self.cfg)
 
     def set_saved_state(self, is_saved:bool):
         self.saved = is_saved
@@ -910,6 +912,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def converter(self):
         self.Converter_dialog.show()
 
+    def auto_segment(self):
+        if self.use_segment_anything:
+            self.auto_segment_dialog.show()
+        else:
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Choice a sam model before auto segment.')
+
     def help(self):
         self.shortcut_dialog.show()
 
@@ -967,6 +975,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
 
         self.actionConverter.triggered.connect(self.converter)
+        self.actionAuto_segment.triggered.connect(self.auto_segment)
 
         self.actionShortcut.triggered.connect(self.help)
         self.actionAbout.triggered.connect(self.about)

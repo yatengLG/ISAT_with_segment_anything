@@ -22,11 +22,11 @@ label:
 - color: '#204a87'
   name: hat
 software:
-  contour_mode: max_only
+  contour_mode: external
   language: zh
   mask_alpha: 0.6
   show_edge: true
-  show_prompt: false
-  use_bfloat16: false
-  use_polydp: false
+  show_prompt: true
+  use_bfloat16: true
+  use_polydp: true
   vertex_size: 2

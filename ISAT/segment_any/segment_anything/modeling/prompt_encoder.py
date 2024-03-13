@@ -166,6 +166,7 @@ class PromptEncoder(nn.Module):
             sparse_embeddings = torch.cat([sparse_embeddings, point_embeddings], dim=1)
         if boxes is not None:
             box_embeddings = self._embed_boxes(boxes)
+            sparse_embeddings = sparse_embeddings.to(box_embeddings.dtype)
             sparse_embeddings = torch.cat([sparse_embeddings, box_embeddings], dim=1)
 
         if masks is not None:

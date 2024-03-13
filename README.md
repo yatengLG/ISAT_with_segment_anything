@@ -26,6 +26,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - 支持重叠目标**调整遮挡**关系。
 - 支持标注**结果预览**。
 - 单独线程进行sam encoder计算，降低切换图片的卡顿感。
+- 支持基于bounding box的自动分割。
 - 支持导出COCO，YOLO，LABELME，VOC等图像分割数据格式；也支持导出VOC目标检测格式数据(xml)。
 - 更多功能详见[功能说明](./docs/功能说明.md)。
 

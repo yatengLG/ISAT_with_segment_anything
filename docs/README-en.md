@@ -30,6 +30,7 @@ Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 - Support modifying polygons.
 - Support for adjusting polygon occlusion.
 - Support preview annotation result.
+- Support auto segment base on bounding box.
 - Support convert to coco,yolo,labelme and voc for image segment; alse support convert to voc for object detection(xml).
 - More features refer to [Features Description](features%20description.md).
 

@@ -1,3 +1,11 @@
+# 基于原版的生成纯白遮罩和去除背景图的工作流
+具体参考：[workflow.ipynb](workflow.ipynb)
+
+---
+## 以下是原版readme
+
+---
+
 <h1 align='center'>ISAT_with_segment_anything</h1>
 <h2 align='center'>一款基于SAM的交互式半自动图像分割标注工具</h2>
 <p align='center'>

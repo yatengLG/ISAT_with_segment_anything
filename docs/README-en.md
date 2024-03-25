@@ -36,6 +36,11 @@ For more features, see the [Features Description](features%20description.md).
 ---
 
 # Installation
+There are three ways to install ISAT-SAM:
+1. from source code (recommended)
+2. pip install
+3. from .exe
+
 ## Option 1: from source code
 ### (1) Create environment
 ```shell

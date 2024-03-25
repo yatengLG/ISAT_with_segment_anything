@@ -168,7 +168,7 @@ If you want use other models, see[Download Segment anything pretrained checkpoin
 4. Mask aplha (only effective when using SAM)
     Drag the [mask aplha] bar to adjust the mask transparency.
 ```
-## 4. Convet annitations
+## 4. Convet annotations
 ISAT has a specific format with .json. You can use export it to other formarts.
 ```text
 1. ISAT to VOC

@@ -1,5 +1,5 @@
 <h1 align='center'>ISAT_with_segment_anything</h1>
-<h2 align='center'>一款基于SAM的交互式半自动图像分割标注工具</h2>
+<h2 align='center'>A Interactive Semi-automatic Annotation Tool based Segment Anything</h2>
 <p align='center'>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything"></a>
@@ -7,61 +7,63 @@
     <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/isat-sam"></a>
 </p>
 <p align='center'>
-    <a href='README.md'><b>[中文]</b></a>
-    <a href='./docs/README-en.md'><b>[English]</b></a>
+    <a href='README-cn.md'><b>[中文]</b></a>
+    <a href='README.md'><b>[English]</b></a>
 </p>
 <p align='center'><img src="./display/标注.gif" alt="标注.gif"'></p>
 
-集成[segment anything](https://github.com/facebookresearch/segment-anything)及bf16模式，实现低显存图片分割快速标注。
+Our tool enables interactive use of [segment anything](https://github.com/facebookresearch/segment-anything) for rapid image segmentation with low RAM requirements (optional bf16 mode).
 
-演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
-
----
-
-# 特点
-## 标注模式
-- **交互式半自动标注**: 基于SAM的点击或者bbox提示。
-- **手动标注**: 单击或者按住鼠标连点绘制（每隔0.15s添加一个点）。
-
-## 标注二次调整
-- **多边形调整**: 支持删除多边形上的点；支持调整重叠目标遮挡关系。
-- **多边形预览**: 支持按组查看多边形；支持预览实例分割或者语义分割的掩码图。
-
-## 导出格式
-- 支持导出COCO，YOLO，LABELME，VOC等图像分割数据格式；也支持导出VOC目标检测格式数据(xml)。
-
-更多功能详见[功能说明](./docs/功能说明.md)。
+Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 ---
 
+# Features
+## Annotaion modes
+- **Semi-automatic Annotation**: utilizes SAM with point and bbox prompts.
+- **Manual Annotation**:  click or drag to draw polygons (0.15s per point).
 
-# 安装
-目前有三种安装方式：
-1. 源码运行（推荐）
-2. 通过pip安装
-3. 通过exe安装
+## Annotation adjustments
+- **Polygon Adjustments**: delete points and adjust object occlusions.
+- **Polygon Visualization**: Preview groups and semantic/instance segmentation masks.
 
-## 方式1： 源码运行
-### (1) 创建虚拟环境
+## Export annotations
+- Supported formats: **MSCOCO**, **YOLO**, **LabelMe**, and **VOC** (also xml)
+
+For more features, see the [Features Description](./docs/features%20description.md).
+
+---
+
+# Installation
+There are three ways to install ISAT-SAM:
+1. from source code (recommended)
+2. pip install
+3. from .exe
+
+## Option 1: from source code
+### (1) Create environment
 ```shell
 conda create -n isat_env python=3.8
 conda activate isat_env
 ```
 
-### (2) 获取ISAT_with_segment_anything源码并安装依赖
-**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
+### (2) Install ISAT_with_segment_anything and its dependencies
+**To use GPU, please install [Pytorch-GPU](https://pytorch.org/) on Windows OS frist.**
 ```shell
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
 
-### (3) 下载Segment anything预训练模型
-软件提供了模型管理界面。通过[菜单栏]-[SAM]-[模型管理]打开界面（现已添加模型国内下载链接，点击下载按钮可直接进行下载）。
+### (3) Download Segment anything pretrained checkpoint.
 
-当前支持的模型有[SAM](https://github.com/facebookresearch/segment-anything)系列，[sam-hq](https://github.com/SysCV/sam-hq)系列，[MobileSAM](https://github.com/ChaoningZhang/MobileSAM)系列，[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)系列等。
+Download the checkpoint, and save in under: ISAT_with_segment_anything/ISAT/checkpoints
 
-| 系列 | 预训练模型 | 显存占用 | 文件大小 |
+**After version 0.0.3, you can manage checkpoints within GUI, click [menubar]-[SAM]-[Model manage] to open the GUI.**
+
+Now support [SAM](https://github.com/facebookresearch/segment-anything), [sam-hq](https://github.com/SysCV/sam-hq), [MobileSAM](https://github.com/ChaoningZhang/MobileSAM), and [EdgeSAM](https://github.com/chongzhou96/EdgeSAM) etc.
+
+|  | pretrained checkpoint | memory | size |
 |----|----|----|----|
 |    SAM     | [sam_vit_h_4b8939.pth](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth)           | 7305M | 2.6G |
 |            | [sam_vit_l_0b3195.pth](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth)           | 5855M | 2.6G |
@@ -75,120 +77,118 @@ pip install -r requirements.txt
 |            | [edge_sam_3x.pth](https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth)|  960M |  39M |
 |   sam-med  | [sam-med2d_b.pth](https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link)|1500M |  2.4G |
 
-### (4) 运行软件
+### (4) Run
 ```shell
 python main.py
 ```
 <br>
 
-## 方式2：pip安装
-**版本略低于源码**
-### (1) 创建虚拟环境
+## Option 2: pip install
+**Note that the version may be lower than source code version if installed with pip**
+### (1) Create environment
 ```shell
 conda create -n isat_env python=3.8
 conda activate isat_env
 ```
-### (2) pip安装ISAT_with_segment_anything
-**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
+### (2) pip install isat-sam
+**To use GPU, please install [Pytorch-GPU](https://pytorch.org/) on Windows OS frist.**
 ```shell
 pip install isat-sam
 ```
-### (3) 运行软件
+### (3) Run
 ```shell
 isat-sam
 ```
+
 <br>
 
-## 方式3： windows下exe运行
-### (1) 下载打包好的exe文件
-**打包的exe版本严重落后于git源码，建议运行源码或pip安装**
+## Option 3: install with .exe
+### (1) download the .exe
+**The version of exe maybe older than source code.**
 
-需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。
+Download three .zip files, total 2.7G
 
-打开ISAT_with_segment_anything文件夹，双击main.exe运行。
-
-|        | 下载链接                                                      |
+|        | Download link                                                      |
 |--------|-----------------------------------------------------------|
-| 百度网盘   | 链接：https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg 提取码：ISAT |
+| Baidu Netdisk | link：https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg code：ISAT |
 
-### (2) 下载Segment anything预训练模型
+Click main.exe to run the tool.
 
-打包后的软件，附带了sam_hq_vit_tiny.pth模型，便于直接使用。 ( **近期有朋友反馈，sam_hq_vit_tiny.pth无法在CPU环境下运行，这是由于sam-hq模型权重保存的问题。请下载mobile-sam.pt权重后选择mobile-sam模型** )
+### (2) Download Segment anything pretrained checkpoint.
 
-如需使用精度更高的模型，请自行下载，并放置于ISAT/segment_any下(打包的exe为旧版本，还未更新)。
+The download zip files, container sam_hq_vit_tiny.pth, but somebody told the model not support cpu.
+You can download [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt) to test the tool.
 
-下载地址同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
+If you want use other models, see[Download Segment anything pretrained checkpoint](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint)
+
 
 ---
 
-# 使用说明
-软件具体功能可查看：[功能说明](./docs/功能说明.md)
-## 1.标注
+# Usage
+## 1. Annotation
 ```text
-1. 软件左侧选择类别（工具栏-文件-设置中，进行类别添加或修改）
-2. 开始标注
-    2.1 半自动标注
-        点击工具栏[Segment anything]开始半自动标注（快捷键Q）
-        通过鼠标左键（或右键）提示感兴趣区域（或不感兴趣区域），调整目标分割掩码。
-    2.2 手动标注
-        点击工具栏[绘制多边形]开始手动标注（快捷键C）
-        通过鼠标左键添加多边形顶点。
-        鼠标左键按下并拖动，持续添加顶点，时间间隔0.15s。
-    2.3 退上一个状态
-        工具栏点击工具栏[回退]按钮（快捷键Z），回退到标注的上一个状态。
-        半自动标注时，删除上一个添加的点提示；手动标注时，删除上一个添加的顶点。
-3. 点击工具栏[标注完成]按钮，完成标注（快捷键E）。
-4. 点击工具栏[保存]按钮（快捷键S），写入json文件。
+1. Choose the categories in left window of software.
+    Edit the category in Toolbar-File-Setting.
+    
+2. Start annotating
+    2.1 semi-automatic annotate with SAM.
+        Click button named [Segment anything] start annotate(shortcut Q).
+        Click interested area with left button of mouse, click uninterested area with right button of mouse, SAM will calcute masks.
+    2.2 draw polygons manually.
+        Click the button [Draw polygon] to start annotation (shortcut C).
+        Left click to add point into the polygon.
+        Hold the left click and drag will automaticly add point into the polygon (time interval of 0.15 seconds).
+    2.3 Undo
+        Click the button [Backspace] to return to the previous state (shortcut Z).
+3. Finish the annotation with [Annotate finished] or shortcut E.
+4. Save the annotation with [Save] or shortcut S
 ```
-## 2.修改
+## 2. Polygon Modification
 ```text
-1. 多边形修改
-    拖拽多边形顶点，修改多边形形状。
-    拖拽多边形，调整多边形位置。
-2. 类别修改
-    选定目标，点击工具栏[编辑]按钮（快捷键E），在跳出的编辑框中修改类别或添加信息。
-3. 遮挡修改
-    对于存在重叠部分的目标，选定目标多边形后，点击工具栏[置顶]（快捷键T）或[置底]（快捷键B）按钮，调整目标遮挡关系。
-4. 删除目标
-    选定目标，点击工具栏[删除]按钮（快捷键DEL），删除选定目标。
+1. Modify polygons coordinates
+    Drag and drop polygon vertices to modify the shape of the polygon.
+    Drag the polygon to adjust its position.
+2. Modify polygons category
+    Choose the polygon and click [Edit] or double click the polygon, and choose the new category in editing window. 
+3. Occlusion modification
+    Choose the polygon and click [To top] (shortcut T) or [To bottom] (shortcut B).
+4. Delete polygon
+    Choose the polygon and click [Delete] to delete the polygon.
 ```
-## 3.查看
+## 3. Visualization
 ```text
-1. 结果预览
-    点击工具栏[位图]按钮（快捷键SPACE），预览标注结果。
-    点击时，以 ‘标注-语义-实例’ 的顺序进行切换。
-2. 窗口调整
-    点击工具栏[放大]，[缩小]，[适应窗口]（快捷键F）调整图片大小。
-3. 显示/隐藏目标
-    点击工具栏[显示/隐藏]按钮（快捷键V），显示或隐藏当前已标注目标。
-    也可以在右侧标注栏中，通过勾选框显示/隐藏单个目标。
-4. 背景清晰度调整（仅半自动标注时）
-    半自动标注时，会调暗背景，凸显mask。
-    通过工具栏[mask alpha]数值条，调整背景与mask混合比例。
+1. Preview annotations
+    Click the [Bit map] to preview semantic and instance annotation masks (shortcut space).
+    The order of swithing is polygons-semantic-instance.
+2. Image window
+    Click [Zoom in], [Zoom out], [Fit window] (shortcut F) to adjust the zooming distances.
+3. Show / hide polygons
+    Click [Visible] to show / hide polygons (shortcut V).
+4. Mask aplha (only effective when using SAM)
+    Drag the [mask aplha] bar to adjust the mask transparency.
 ```
-## 4.数据转换
-本软件用json文件保存标注结果。
-使用时，可以手动解析json文件，或转换为其他数据格式。
+## 4. Convet annotations
+ISAT has a specific format with .json. You can use export it to other formarts.
 ```text
-软件内置了转换工具
-1. ISAT转VOC
-    转换ISAT格式json为png单通道图片。语义分割中，像素值为类别index；实例分割中，像素值为实例id（软件中的group id）。
-2. ISAT转COCO
-    转换ISAT格式json为COCO格式json。（转换后，会丢失图层信息，如最终使用coco格式，标注时尽可能避免目标重叠）
-3. ISAT转LABELME
-    转换ISAT格式json为labelme格式json。（转换后，会丢失图层信息）
-4. COCO转ISAT
-    转换COCO格式json为ISAT格式json。
+1. ISAT to VOC
+    Convert ISAT jsons to PNG images.
+2. ISAT to COCO
+    Convert ISAT jsons to COCO json.
+3. ISAT to LABELME
+    Convert ISAT jsons to LABELME jsons.
+4. COCO to ISAT
+    Convert COCO json to ISAT jsons.
 ```
 
 ---
 
 # Star History
 
-**请给该项目一个star，您的点赞就是对我最大的支持与鼓励**
+**Please support us with a star—it's like a virtual coffee!**
 [![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
 
-# 核心贡献者
+
+# Contributors
 
 <table border="0">
 <tr>
@@ -205,8 +205,7 @@ isat-sam
 </table>
 
 
-
-# 引用
+# Citation
 ```text
 @misc{ISAT with segment anything,
   title={{ISAT with segment anything}: A Interactive Semi-automatic Annotation Tool based Segment Anything},

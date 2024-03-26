@@ -1,6 +1,5 @@
 <h1 align='center'>ISAT_with_segment_anything</h1>
-<h2 align='center'>Interactive semi-automatic annotation tool for image segmentation.</h2>
-
+<h2 align='center'>A Interactive Semi-automatic Annotation Tool based Segment Anything</h2>
 <p align='center'>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything"></a>
@@ -14,49 +13,56 @@
 
 <p align='center'><img src="../display/标注.gif" alt="标注.gif"'></p>
 
-The software provides two interfaces, **Chinese** and **English**, which can be switched at any time.
+Our tool enables interactive use of [segment anything](https://github.com/facebookresearch/segment-anything) for rapid image segmentation with low RAM requirements (optional bf16 mode).
 
-**If this project brings convenience to your work and life, please provide a Star; If you want to contribute code to this project, please send Pull requests**
+Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
-Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
+---
 
-演示视频：[bilibili](https://www.bilibili.com/video/BV1Lk4y1J7uB/)
+# Features
+## Annotaion modes
+- **Semi-automatic Annotation**: utilizes SAM with point and bbox prompts.
+- **Manual Annotation**:  click or drag to draw polygons (0.15s per point).
 
+## Annotation adjustments
+- **Polygon Adjustments**: delete points and adjust object occlusions.
+- **Polygon Visualization**: Preview groups and semantic/instance segmentation masks.
 
-# Feature
+## Export annotations
+- Supported formats: **MSCOCO**, **YOLO**, **LabelMe**, and **VOC** (also xml)
 
-- Support interactive semi-automatic annotation based on SAM.
-- Support manual creation of polygons.
-- Support modifying polygons.
-- Support for adjusting polygon occlusion.
-- Support preview annotation result.
-- Support auto segment base on bounding box.
-- Support convert to coco,yolo,labelme and voc for image segment; alse support convert to voc for object detection(xml).
-- More features refer to [Features Description](features%20description.md).
+For more features, see the [Features Description](features%20description.md).
 
-# INSTALL
-## 1. Run with source code
+---
+
+# Installation
+There are three ways to install ISAT-SAM:
+1. from source code (recommended)
+2. pip install
+3. from .exe
+
+## Option 1: from source code
 ### (1) Create environment
 ```shell
 conda create -n isat_env python=3.8
 conda activate isat_env
 ```
 
-### (2) Install ISAT_with_segment_anything
+### (2) Install ISAT_with_segment_anything and its dependencies
+**To use GPU, please install [Pytorch-GPU](https://pytorch.org/) on Windows OS frist.**
 ```shell
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
-**pytorch-gpu needs to be installed by [pytorch](https://pytorch.org/) on Windows OS.**
 
 ### (3) Download Segment anything pretrained checkpoint.
 
-Download the checkpoint，and save in the path: ISAT_with_segment_anything/ISAT/checkpoints
+Download the checkpoint, and save in under: ISAT_with_segment_anything/ISAT/checkpoints
 
-**After version 0.0.3, you can manage checkpoints in th GUI, [menubar]-[SAM]-[Model manage] to open the GUI.**
+**After version 0.0.3, you can manage checkpoints within GUI, click [menubar]-[SAM]-[Model manage] to open the GUI.**
 
-Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq](https://github.com/SysCV/sam-hq),[MobileSAM](https://github.com/ChaoningZhang/MobileSAM),[EdgeSAM](https://github.com/chongzhou96/EdgeSAM)et.
+Now support [SAM](https://github.com/facebookresearch/segment-anything), [sam-hq](https://github.com/SysCV/sam-hq), [MobileSAM](https://github.com/ChaoningZhang/MobileSAM), and [EdgeSAM](https://github.com/chongzhou96/EdgeSAM) etc.
 
 |  | pretrained checkpoint | memory | size |
 |----|----|----|----|
@@ -76,15 +82,17 @@ Now support [SAM](https://github.com/facebookresearch/segment-anything),[sam-hq]
 ```shell
 python main.py
 ```
+<br>
 
-## 2. pip install
+## Option 2: pip install
+**Note that the version may be lower than source code version if installed with pip**
 ### (1) Create environment
 ```shell
 conda create -n isat_env python=3.8
 conda activate isat_env
 ```
 ### (2) pip install isat-sam
-**pytorch-gpu needs to be installed by [pytorch](https://pytorch.org/) on Windows OS.**
+**To use GPU, please install [Pytorch-GPU](https://pytorch.org/) on Windows OS frist.**
 ```shell
 pip install isat-sam
 ```
@@ -93,8 +101,10 @@ pip install isat-sam
 isat-sam
 ```
 
-## 3. run exe
-### (1) download exe
+<br>
+
+## Option 3: install with .exe
+### (1) download the .exe
 **The version of exe maybe older than source code.**
 
 Download three .zip files, total 2.7G
@@ -112,54 +122,54 @@ You can download [mobile_sam.pt](https://github.com/ChaoningZhang/MobileSAM/blob
 
 If you want use other models, see[Download Segment anything pretrained checkpoint](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint)
 
-# Use
-## 1.Annotate
+
+---
+
+# Usage
+## 1. Annotation
 ```text
-1. Choice the category in left window of software.
-    Edit category in Toolbar-File-Setting.
+1. Choose the categories in left window of software.
+    Edit the category in Toolbar-File-Setting.
     
-2. Start annotate
+2. Start annotating
     2.1 semi-automatic annotate with SAM.
         Click button named [Segment anything] start annotate(shortcut Q).
         Click interested area with left button of mouse, click uninterested area with right button of mouse, SAM will calcute masks.
-    2.2 manual creation of polygons.
-        Click button named [Draw polygon] start annotate(shortcut C).
-        Click with left button of mouse add point into the polygon.
-        Press left button of mouse and drag will auto add point into the polygon, time interval of 0.15 seconds
-    2.3 backspace
-        Click button named [Backspace] return previous state
-(shortcut Z).
-3. Click button named [Annotate finished] finish annotate.
-(shortcut E).
-4. Click button named [Save] write annotations to json file.
-(shortcut S).
+    2.2 draw polygons manually.
+        Click the button [Draw polygon] to start annotation (shortcut C).
+        Left click to add point into the polygon.
+        Hold the left click and drag will automaticly add point into the polygon (time interval of 0.15 seconds).
+    2.3 Undo
+        Click the button [Backspace] to return to the previous state (shortcut Z).
+3. Finish the annotation with [Annotate finished] or shortcut E.
+4. Save the annotation with [Save] or shortcut S
 ```
-## 2.Modify
+## 2. Polygon Modification
 ```text
-1. Polygon modify
+1. Modify polygons coordinates
     Drag and drop polygon vertices to modify the shape of the polygon.
     Drag the polygon to adjust its position.
-2. Category modify
-    Chioce the polygon and click button named [Edit] or double click polygon, choice new category in edit window. 
-3. Occlusion modify
-    Chioce the polygon and click button named [To top](shortcut T) or [To bottom](shortcut B).
+2. Modify polygons category
+    Choose the polygon and click [Edit] or double click the polygon, and choose the new category in editing window. 
+3. Occlusion modification
+    Choose the polygon and click [To top] (shortcut T) or [To bottom] (shortcut B).
 4. Delete polygon
-    Chioce the polygon and click button named [Delete] to delete the polygon.
+    Choose the polygon and click [Delete] to delete the polygon.
 ```
-## 3.View
+## 3. Visualization
 ```text
-1. Preview annotation
-    Click button named [Bit map], preview semantic and instance annotation result.(shortcut space)
+1. Preview annotations
+    Click the [Bit map] to preview semantic and instance annotation masks (shortcut space).
     The order of swithing is polygons-semantic-instance.
 2. Image window
-    Click Buttons named [Zoom in],[Zoom out],[Fit window](shortcut F)Adjust the size of image.
-3. show/hide polygons
-    Click button named [Visible] ,show/hide polygons.(shortcut V)
-4. mask aplha(only effective when using SAM)
-    Drag mask aplha bar to adjust the mask contrast ratio.
+    Click [Zoom in], [Zoom out], [Fit window] (shortcut F) to adjust the zooming distances.
+3. Show / hide polygons
+    Click [Visible] to show / hide polygons (shortcut V).
+4. Mask aplha (only effective when using SAM)
+    Drag the [mask aplha] bar to adjust the mask transparency.
 ```
-## 4.Data convert
-ISAT have specific format with json.You can use convert tools or convert to other format by yourself.
+## 4. Convet annotations
+ISAT has a specific format with .json. You can use export it to other formarts.
 ```text
 1. ISAT to VOC
     Convert ISAT jsons to PNG images.
@@ -170,6 +180,15 @@ ISAT have specific format with json.You can use convert tools or convert to othe
 4. COCO to ISAT
     Convert COCO json to ISAT jsons.
 ```
+
+---
+
+# Star History
+
+**Please support us with a star—it's like a virtual coffee!**
+[![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
+
+
 # Contributors
 
 <table border="0">
@@ -190,7 +209,7 @@ ISAT have specific format with json.You can use convert tools or convert to othe
 # Citation
 ```text
 @misc{ISAT with segment anything,
-  title={{ISAT with segment anything}: Image segmentation annotation tool with segment anything},
+  title={{ISAT with segment anything}: A Interactive Semi-automatic Annotation Tool based Segment Anything},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
   note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
   author={yatengLG, Alias-z and horffmanwang},

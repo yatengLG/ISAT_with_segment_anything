@@ -12,26 +12,36 @@
 </p>
 <p align='center'><img src="./display/标注.gif" alt="标注.gif"'></p>
 
-集成[segment anything](https://github.com/facebookresearch/segment-anything)，实现图片分割快速标注。
+集成[segment anything](https://github.com/facebookresearch/segment-anything)及bf16模式，实现低显存图片分割快速标注。
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
 
-Demo Video：[youtube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
+---
 
 # 特点
-- 支持基于SAM的**交互式半自动标注**。
-- 支持**手动标注**多边形。
-- 支持连点绘制，连点模式下每隔0.15s添加一个点，便于绘制曲线。
-- 支持标注**二次修改**。
-- 支持重叠目标**调整遮挡**关系。
-- 支持标注**结果预览**。
-- 单独线程进行sam encoder计算，降低切换图片的卡顿感。
-- 支持基于bounding box的自动分割。
+## 标注模式
+- **交互式半自动标注**: 基于SAM的点击或者bbox提示。
+- **手动标注**: 单击或者按住鼠标连点绘制（每隔0.15s添加一个点）。
+
+## 标注二次调整
+- **多边形调整**: 支持删除多边形上的点；支持调整重叠目标遮挡关系。
+- **多边形预览**: 支持按组查看多边形；支持预览实例分割或者语义分割的掩码图。
+
+## 导出格式
 - 支持导出COCO，YOLO，LABELME，VOC等图像分割数据格式；也支持导出VOC目标检测格式数据(xml)。
-- 更多功能详见[功能说明](./docs/功能说明.md)。
+
+更多功能详见[功能说明](./docs/功能说明.md)。
+
+---
+
 
 # 安装
-## 1. 源码运行
+目前有三种安装方式：
+1. 源码运行（推荐）
+2. 通过pip安装
+3. 通过exe安装
+
+## 方式1： 源码运行
 ### (1) 创建虚拟环境
 ```shell
 conda create -n isat_env python=3.8
@@ -39,12 +49,13 @@ conda activate isat_env
 ```
 
 ### (2) 获取ISAT_with_segment_anything源码并安装依赖
+**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
 ```shell
 git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
 cd ISAT_with_segment_anything
 pip install -r requirements.txt
 ```
-**windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去[pytorch官网](https://pytorch.org/)手段安装。**
+
 ### (3) 下载Segment anything预训练模型
 软件提供了模型管理界面。通过[菜单栏]-[SAM]-[模型管理]打开界面（现已添加模型国内下载链接，点击下载按钮可直接进行下载）。
 
@@ -68,8 +79,9 @@ pip install -r requirements.txt
 ```shell
 python main.py
 ```
+<br>
 
-## 2. pip安装
+## 方式2：pip安装
 **版本略低于源码**
 ### (1) 创建虚拟环境
 ```shell
@@ -85,8 +97,9 @@ pip install isat-sam
 ```shell
 isat-sam
 ```
+<br>
 
-## 3. windows下exe运行
+## 方式3： windows下exe运行
 ### (1) 下载打包好的exe文件
 **打包的exe版本严重落后于git源码，建议运行源码或pip安装**
 
@@ -106,7 +119,9 @@ isat-sam
 
 下载地址同上[下载预训练模型](https://github.com/yatengLG/ISAT_with_segment_anything/#3-下载segment-anything预训练模型)
 
-# 使用
+---
+
+# 使用说明
 软件具体功能可查看：[功能说明](./docs/功能说明.md)
 ## 1.标注
 ```text
@@ -166,6 +181,8 @@ isat-sam
     转换COCO格式json为ISAT格式json。
 ```
 
+---
+
 # Star History
 
 **请给该项目一个star，您的点赞就是对我最大的支持与鼓励**
@@ -192,7 +209,7 @@ isat-sam
 # 引用
 ```text
 @misc{ISAT with segment anything,
-  title={{ISAT with segment anything}: Image segmentation annotation tool with segment anything},
+  title={{ISAT with segment anything}: A Interactive Semi-automatic Annotation Tool based Segment Anything},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
   note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
   author={yatengLG, Alias-z and horffmanwang},

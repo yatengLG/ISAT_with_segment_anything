@@ -54,6 +54,9 @@ class ISAT:
     cates:Tuple[str] = ()
 
     def read_from_ISAT(self, json_root):
+        self.annos.clear()
+        self.cates = ()
+
         if os.path.exists(os.path.join(json_root, 'isat.yaml')):
             cates = []
             with open(os.path.join(json_root, 'isat.yaml'), 'rb')as f:

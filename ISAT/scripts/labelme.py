@@ -12,6 +12,9 @@ class LABELME(ISAT):
         self.keep_crowd = True
 
     def read_from_LABELME(self, json_root):
+        self.annos.clear()
+        self.cates = ()
+
         json_files = [file for file in os.listdir(json_root) if file.endswith('.json')]
         pbar = tqdm.tqdm(json_files)
 

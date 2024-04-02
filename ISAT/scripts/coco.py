@@ -15,6 +15,9 @@ class COCO(ISAT):
         self.keep_crowd = True
 
     def read_from_coco(self, annotation_file):
+        self.annos.clear()
+        self.cates = ()
+
         dataset = mscoco.COCO(annotation_file)
         cats = dataset.cats
         self.cates = [cat.get('name', 'UNKNOW') for _, cat in cats.items()]

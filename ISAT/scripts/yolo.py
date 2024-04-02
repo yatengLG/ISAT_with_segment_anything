@@ -21,6 +21,9 @@ class YOLO(ISAT):
         self.keep_crowd = True
 
     def read_from_YOLO(self, img_root, txt_root, class_dict=None):
+        self.annos.clear()
+        self.cates = ()
+
         img_files = os.listdir(img_root)
 
         pbar = tqdm.tqdm(img_files)

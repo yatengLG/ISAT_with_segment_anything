@@ -1,48 +1,32 @@
 label:
 - color: '#000000'
   name: __background__
-- color: '#800000'
-  name: aeroplane
-- color: '#008000'
-  name: bicycle
-- color: '#808000'
-  name: bird
-- color: '#000080'
-  name: bottle
-- color: '#800080'
-  name: bus
-- color: '#008080'
-  name: car
-- color: '#808080'
-  name: cat
-- color: '#400000'
-  name: chair
-- color: '#c00000'
-  name: cow
-- color: '#408000'
-  name: diningtable
-- color: '#c08000'
-  name: dog
-- color: '#400080'
-  name: horse
-- color: '#c00080'
-  name: motorbike
-- color: '#408080'
+- color: '#ef2929'
   name: person
-- color: '#c08080'
-  name: pottedplant
-- color: '#004000'
-  name: sofa
-- color: '#804000'
-  name: train
-- color: '#00c000'
-  name: tvmonitor
+- color: '#fcaf3e'
+  name: knife
+- color: '#fce94f'
+  name: fork
+- color: '#8ae234'
+  name: cup
+- color: '#729fcf'
+  name: giraffe
+- color: '#ad7fa8'
+  name: plate
+- color: '#e9b96e'
+  name: table
+- color: '#a40000'
+  name: cake
+- color: '#5c3566'
+  name: fence
+- color: '#204a87'
+  name: hat
 software:
   contour_mode: external
   language: zh
   mask_alpha: 0.3
   show_edge: true
   show_prompt: true
-  use_bfloat16: true
+  use_bfloat16: false
   use_polydp: true
   vertex_size: 2

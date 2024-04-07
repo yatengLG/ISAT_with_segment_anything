@@ -140,6 +140,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.reset_action()
 
     def init_segment_anything(self, model_name=None):
+        if not self.saved:
+            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                if isinstance(self.sender(), QtWidgets.QAction):
+                    self.sender().setChecked(False)
+                return
         if model_name is None:
             if self.use_segment_anything:
                 model_name = os.path.split(self.segany.checkpoint)[-1]
@@ -149,7 +155,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
-        except: pass
+        except:
+            if isinstance(self.sender(), QtWidgets.QAction):
+                self.sender().setChecked(False)
 
         if model_name == '':
             self.use_segment_anything = False

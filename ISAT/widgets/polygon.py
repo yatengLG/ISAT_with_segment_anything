@@ -162,7 +162,9 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         vertex.setEnabled(True)
 
     def itemChange(self, change: 'QGraphicsItem.GraphicsItemChange', value: typing.Any):
-        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged and not self.is_drawing: # 选中改变
+        if (change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged
+                and not self.is_drawing
+                and self.scene().mode!=STATUSMode.CREATE): # 选中改变
             if self.isSelected():
                 color = QtGui.QColor('#00A0FF')
                 color.setAlpha(self.hover_alpha)

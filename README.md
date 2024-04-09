@@ -1,5 +1,5 @@
 <h1 align='center'>ISAT_with_segment_anything</h1>
-<h2 align='center'>A Interactive Semi-automatic Annotation Tool based Segment Anything</h2>
+<h2 align='center'>An Interactive Semi-Automatic Annotation Tool Based on Segment Anything</h2>
 <p align='center'>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/forks/yatengLG/ISAT_with_segment_anything"></a>
@@ -208,7 +208,7 @@ ISAT has a specific format with .json. You can use export it to other formarts.
 # Citation
 ```text
 @misc{ISAT with segment anything,
-  title={{ISAT with segment anything}: A Interactive Semi-automatic Annotation Tool based Segment Anything},
+  title={{ISAT with segment anything}: An Interactive Semi-Automatic Annotation Tool Based on Segment Anything},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
   note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
   author={yatengLG, Alias-z and horffmanwang},

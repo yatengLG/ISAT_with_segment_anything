@@ -39,13 +39,13 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         if self.mainwindow.files_list is None:
             return
 
-        for file_path in self.mainwindow.files_list:
+        for idx, file_path in enumerate(self.mainwindow.files_list):
             _, file_name = os.path.split(file_path)
             item = QtWidgets.QListWidgetItem()
             item.setSizeHint(QtCore.QSize(200, 30))
             # item, item_widget = self.generate_item_and_itemwidget(file_name)
 
-            item.setText(file_name)
+            item.setText(f'[{idx + 1}] {file_name}')
             self.listWidget.addItem(item)
             # self.listWidget.setItemWidget(item, item_widget)
 

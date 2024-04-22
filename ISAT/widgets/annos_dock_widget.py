@@ -100,7 +100,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         item = self.polygon_item_dict[polygon]
         if polygon.isSelected():
             if not item.isSelected():
-                self.listWidget.setCurrentItem(item)
+                item.setSelected(True)
         if not polygon.isSelected():
             if item.isSelected():
                 item.setSelected(False)

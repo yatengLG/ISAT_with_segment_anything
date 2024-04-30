@@ -87,6 +87,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         if file:
             self.mainwindow.config_file = file
             self.mainwindow.actionSetting.setStatusTip("Config yaml: {}".format(file))
+            self.mainwindow.pushButton_Settingg.setStatusTip("Config yaml: {}".format(file))
             self.mainwindow.reload_cfg()
         self.load_cfg()
 

@@ -113,9 +113,23 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.download_thread_dict = {}
         self.init_gui()
 
-        self.tableWidget.setColumnWidth(0, 200)
+        self.tableWidget.setColumnWidth(0, 20)
+        self.tableWidget.setColumnWidth(1, 200)
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
         self.checkBox_use_bfloat16.stateChanged.connect(self.use_bfloat16)
+
+        movie = QtGui.QMovie("./ISAT/ui/icons/loading.gif")
+
+        self.waiting_icon = QtWidgets.QLabel('WAITING......')
+        self.waiting_icon.setMovie(movie)
+        self.waiting_icon.setScaledContents(True)
+        self.waiting_icon.setFixedSize(QtCore.QSize(30, 30))
+        self.waiting_icon.setStyleSheet(
+            'QLabel{background-color: rgba(90,93,107,70%);border-radius: 4px; color: white; }')
+        self.horizontalLayout.addWidget(self.waiting_icon)
+        movie.start()
+        self.waiting_icon.setVisible(False)
+
 
     def init_gui(self):
         for index, (name, info_dict) in enumerate(model_dict.items()):
@@ -123,6 +137,10 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             memory = info_dict.get('memory', '')
             bf16_memory = info_dict.get('bf16_memory', '')
             params = info_dict.get('params', '')
+            #
+            used_checkbox = QtWidgets.QCheckBox()
+            used_checkbox.clicked.connect(self.use_sam_model)
+            #
             name_label = QtWidgets.QLabel()
             name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             name_label.setText(name)
@@ -141,22 +159,57 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
                 ops_button.setStyleSheet('QWidget {color: %s}' % 'red')
                 ops_button.setText('delete')
                 ops_button.clicked.connect(self.delete)
+                used_checkbox.setEnabled(True)
             else:
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'green')
                 ops_button.setStyleSheet('QWidget {color: %s}' % 'green')
                 ops_button.setText('download')
                 ops_button.clicked.connect(self.download)
+                used_checkbox.setEnabled(False)
 
             self.tableWidget.insertRow(index)
-            self.tableWidget.setCellWidget(index, 0, name_label)
-            self.tableWidget.setCellWidget(index, 1, memory_label)
-            self.tableWidget.setCellWidget(index, 2, params_label)
-            self.tableWidget.setCellWidget(index, 3, ops_button)
+            self.tableWidget.setCellWidget(index, 0, used_checkbox)
+            self.tableWidget.setCellWidget(index, 1, name_label)
+            self.tableWidget.setCellWidget(index, 2, memory_label)
+            self.tableWidget.setCellWidget(index, 3, params_label)
+            self.tableWidget.setCellWidget(index, 4, ops_button)
+
+    def use_sam_model(self):
+        used_checkbox = self.sender()
+        row = self.tableWidget.indexAt(used_checkbox.pos()).row()
+        name_label = self.tableWidget.cellWidget(row, 1)
+        name = name_label.text()
+
+        if used_checkbox.isChecked():
+            self.mainwindow.init_segment_anything(model_name=name)
+            # self.mainwindow.pushButton_Model_manage.setStatusTip(name)
+            # for index in range(self.tableWidget.rowCount()):
+            #     if index == row:
+            #         continue
+            #
+            #     other_used_checkbox = self.tableWidget.cellWidget(index, 0)
+            #     if not other_used_checkbox.isEnabled():
+            #         continue
+            #     other_used_checkbox.setEnabled(False)
+            #     other_used_checkbox.setChecked(False)
+            #     other_used_checkbox.setEnabled(True)
+        else:
+            try:
+                self.mainwindow.seganythread.wait()
+                self.mainwindow.seganythread.results_dict.clear()
+            except:
+                # if isinstance(self.sender(), QtWidgets.QAction):
+                #     self.sender().setChecked(False)
+                pass
+            self.mainwindow.segany = None
+            self.mainwindow.use_segment_anything = False
+            self.mainwindow.pushButton_Model_manage.setStatusTip('')
+            self.mainwindow.pushButton_Segment_anything.setEnabled(False)
 
     def download(self):
         button = self.sender()
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 1)
         name = name_label.text()
         info_dict = model_dict.get(name, None)
         urls = info_dict.get('urls', None)
@@ -188,7 +241,8 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             button.setEnabled(False)
             button.clicked.connect(self.delete)
             button.setEnabled(True)
-            self.mainwindow.update_menuSAM()
+            # self.mainwindow.update_menuSAM()
+            self.update_gui()
         else:
             button.setText('{:.2f}% - {}/{}M'.format(downloaded_size/total_size*100, downloaded_size//1000000, total_size//1000000))
 
@@ -196,7 +250,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def pause(self):
         button = self.sender()
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 1)
         name = name_label.text()
 
         download_thread:DownloadThread = self.download_thread_dict[name]
@@ -205,7 +259,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def delete(self):
         button = self.sender()
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 1)
         name = name_label.text()
         try:
             os.remove(os.path.join(CHECKPOINT_PATH, name))
@@ -217,7 +271,8 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         except Exception as e:
             print('Error when remove {}, {}'.format(
                 os.path.join(CHECKPOINT_PATH, name), e))
-        self.mainwindow.update_menuSAM()
+        # self.mainwindow.update_menuSAM()
+        self.update_gui()
 
     def clear_tmp(self):
         remove_list = []
@@ -242,19 +297,45 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         )
 
     def update_gui(self):
-        self.checkBox_use_bfloat16.setChecked(self.mainwindow.cfg['software']['use_bfloat16'])
 
-        for index, (name, info_dict) in enumerate(model_dict.items()):
-            memory = info_dict.get('memory', '')
-            bf16_memory = info_dict.get('bf16_memory', '')
-            # 显存占用
-            memory_label = QtWidgets.QLabel()
-            memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        if self.mainwindow.use_segment_anything:
+            current_model = os.path.split(self.mainwindow.segany.checkpoint)[-1]
+            self.mainwindow.pushButton_Model_manage.setStatusTip(current_model)
+        else:
+            current_model = None
+            self.mainwindow.pushButton_Model_manage.setStatusTip('')
+
+        self.checkBox_use_bfloat16.setChecked(self.mainwindow.cfg['software']['use_bfloat16'])
+        for row in range(self.tableWidget.rowCount()):
+            used_checkbox = self.tableWidget.cellWidget(row, 0)
+            name_label = self.tableWidget.cellWidget(row, 1)
+            memory_label = self.tableWidget.cellWidget(row, 2)
+            ops_button = self.tableWidget.cellWidget(row, 4)
+
+            name = name_label.text()
+            memory = model_dict[name].get('memory', '')
+            bf16_memory = model_dict[name].get('bf16_memory', '')
+
             if self.mainwindow.cfg['software']['use_bfloat16']:
                 memory_label.setText(bf16_memory)
             else:
                 memory_label.setText(memory)
-            self.tableWidget.setCellWidget(index, 1, memory_label)
+
+            used_checkbox.setChecked(current_model == name)
+
+            if os.path.exists(os.path.join(CHECKPOINT_PATH, name)):
+                # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'red')
+                ops_button.setStyleSheet('QWidget {color: %s}' % 'red')
+                ops_button.setText('delete')
+                ops_button.clicked.connect(self.delete)
+                used_checkbox.setEnabled(True)
+
+            else:
+                # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'green')
+                ops_button.setStyleSheet('QWidget {color: %s}' % 'green')
+                ops_button.setText('download')
+                ops_button.clicked.connect(self.download)
+                used_checkbox.setEnabled(False)
 
     def use_bfloat16(self):
         use = self.checkBox_use_bfloat16.isChecked()

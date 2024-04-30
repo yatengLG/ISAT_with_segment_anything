@@ -2,11 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1271</width>
     <height>764</height>
    </rect>
   </property>
@@ -26,8 +29,113 @@
    <string>ISAT</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/icons/isat_bg_50x25.png</normaloff>:/icons/icons/isat_bg_50x25.png</iconset>
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/icons/ISAT13_100.svg</normaloff>:/icons/icons/ISAT13_100.svg</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#widget_header{
+	background-color: rgb(247, 248, 250);
+}
+#widget_header QPushButton{
+	border: none;
+}
+#widget_header QPushButton:hover {
+	background-color: #DFE1E5;
+} 
+
+
+#widget_left{
+	background-color: rgb(247, 248, 250);
+}
+#widget_left QPushButton{
+	border: none;
+}
+#widget_left QPushButton:hover {
+	background-color: #DFE1E5;
+} 
+
+#listWidget_category::item{
+	border: none;
+	background-color: #FFFFFF;
+}
+#listWidget_category::item:hover{
+	border: none;
+	background-color: #FFFFFF;
+}
+#listWidget_category::item:selected{
+	border: none;
+	background-color: #FFFFFF;
+}
+
+#listWidget_category QRadioButton:selected{
+	border: none;
+	background-color: #FFFFFF;
+}
+
+
+
+#widget_right{
+	background-color: rgb(247, 248, 250);
+}
+#widget_right QPushButton{
+	border: none;
+}
+#widget_right QPushButton:hover {
+	background-color: #DFE1E5;
+}
+
+#widget_center{
+	background-color: #FFFFFF;
+}
+
+/*info*/
+#widget_info_content{
+	background-color: #FFFFFF;
+}
+
+/*anno*/
+#listWidget_annos::item:hover{
+	background-color: #C5E5CC;
+}
+
+#listWidget_annos::item:selected{
+	background-color: #55A76A;
+} 
+
+/*file*/
+#listWidget_files::item:hover{
+	background-color: #C5E5CC;
+}
+
+#listWidget_files::item:selected{
+	background-color: #55A76A;
+} 
+
+/**/
+#widget_center QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#widget_center QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+#widget_center QLineEdit:focus{
+	border: 2px solid #3574F0;
+} 
+
+#widget_center QPushButton{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+}
+#widget_center QPushButton:hover{
+	border: 1px solid #3574F0;
+} 
+#widget_center QPushButton:pressed{
+	border: 2px solid #3574F0;
+	/*background-color: #3574F0;*/
+} </string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -46,290 +154,1635 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item>
+     <widget class="QWidget" name="widget_header" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_Icon">
+            <property name="minimumSize">
+             <size>
+              <width>36</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>36</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="whatsThis">
+             <string/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="icons.qrc">:/icons/icons/ISAT11_100.svg</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_Title">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>996</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Setting">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="icons.qrc">
+           <normaloff>:/icons/icons/setting_32.svg</normaloff>:/icons/icons/setting_32.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Minimized">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="icons.qrc">
+           <normaloff>:/icons/icons/minimize_32.svg</normaloff>:/icons/icons/minimize_32.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Maximized">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="icons.qrc">
+           <normaloff>:/icons/icons/maximize_32.svg</normaloff>:/icons/icons/maximize_32.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_Exit">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="icons.qrc">
+           <normaloff>:/icons/icons/close_32.svg</normaloff>:/icons/icons/close_32.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="widget_left" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>3</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton_Open_dir">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Image dir</string>
+            </property>
+            <property name="whatsThis">
+             <string/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/folder_32.svg</normaloff>:/icons/icons/folder_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Save_dir">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Label dir</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/folder_32.svg</normaloff>:/icons/icons/folder_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Prev">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Prev image</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/left_32.svg</normaloff>:/icons/icons/left_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Next">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Next image</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/right_32.svg</normaloff>:/icons/icons/right_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>D</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Segment_anything">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Segment anything</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/SegmentAnything_32.svg</normaloff>:/icons/icons/SegmentAnything_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Q</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Polygon">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Draw polygon</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/polygon_32.svg</normaloff>:/icons/icons/polygon_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>C</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Backspace">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Backspace</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/undo_32.svg</normaloff>:/icons/icons/undo_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Z</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Finish">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Annotate finished</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/finish_32.svg</normaloff>:/icons/icons/finish_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>E</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Cancel">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Annotate canceled</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/cancel_32.svg</normaloff>:/icons/icons/cancel_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Esc</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_To_top">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Move polygon to top layer</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/toTop_32.svg</normaloff>:/icons/icons/toTop_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>T</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_To_bottom">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Move polygon to bottom layer</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/toBottom_32.svg</normaloff>:/icons/icons/toBottom_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>B</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Edit">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Edit polygon</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/edit_32.svg</normaloff>:/icons/icons/edit_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Delete">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Delete polygon</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/delete_32.svg</normaloff>:/icons/icons/delete_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Del</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Save">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Save</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/save_32.svg</normaloff>:/icons/icons/save_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>S</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Zoom_in">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Zoom in</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/zoonIn_32.svg</normaloff>:/icons/icons/zoonIn_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Zoom_out">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Zoom out</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/zoomOut_32.svg</normaloff>:/icons/icons/zoomOut_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Fit_wiondow">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Fit window</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/fitWindow_32.svg</normaloff>:/icons/icons/fitWindow_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>F</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Bit_map">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Bit map</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/bitMap_image_32.svg</normaloff>:/icons/icons/bitMap_image_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Space</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Visible">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Visible</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/visible_32.svg</normaloff>:/icons/icons/visible_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>V</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_center" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QSplitter" name="splitter">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_right" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>3</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>3</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_edge">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Show edge</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/edge_solid_32.svg</normaloff>:/icons/icons/edge_solid_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="autoRepeat">
+             <bool>false</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_show_prompt">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Show prompt</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/circular_solid_32.svg</normaloff>:/icons/icons/circular_solid_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_use_polydp">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>approx polygon</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/circular_with_four_point_32.svg</normaloff>:/icons/icons/circular_with_four_point_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Contour_mode">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Contour mode</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/contour_only_max_32.svg</normaloff>:/icons/icons/contour_only_max_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="slider_mask_aplha">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Mask alpha</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="slider_vertex_size">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Vertex size</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="slider_image_saturation">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Image saturation</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Converter">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Converter</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/folder_convert_32.svg</normaloff>:/icons/icons/folder_convert_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Auto_segment">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Auto segment with bounding box</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/SegmentAnything_32.svg</normaloff>:/icons/icons/SegmentAnything_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Model_manage">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="statusTip">
+             <string>Model manage</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/modelManager_32.svg</normaloff>:/icons/icons/modelManager_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Shortcut">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/keyboard_32.svg</normaloff>:/icons/icons/keyboard_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_Translate">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Language</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/chinese_32.svg</normaloff>:/icons/icons/chinese_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_About">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>About</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="icons.qrc">
+              <normaloff>:/icons/icons/infomation_32.svg</normaloff>:/icons/icons/infomation_32.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="defaultUp">
-    <bool>false</bool>
-   </property>
-   <property name="nativeMenuBar">
-    <bool>true</bool>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionOpen_dir"/>
-    <addaction name="actionSave_dir"/>
-    <addaction name="separator"/>
-    <addaction name="actionPrev"/>
-    <addaction name="actionNext"/>
-    <addaction name="separator"/>
-    <addaction name="actionSetting"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>View</string>
-    </property>
-    <addaction name="separator"/>
-    <addaction name="actionZoom_in"/>
-    <addaction name="actionZoom_out"/>
-    <addaction name="actionFit_wiondow"/>
-    <addaction name="separator"/>
-    <addaction name="actionBit_map"/>
-    <addaction name="separator"/>
-   </widget>
-   <widget class="QMenu" name="menuAbout">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <widget class="QMenu" name="menuLaguage">
-     <property name="title">
-      <string>Laguage</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../icons.qrc">
-       <normaloff>:/icon/icons/翻译_translate.svg</normaloff>:/icon/icons/翻译_translate.svg</iconset>
-     </property>
-     <addaction name="actionChinese"/>
-     <addaction name="actionEnglish"/>
-    </widget>
-    <addaction name="menuLaguage"/>
-    <addaction name="actionShortcut"/>
-    <addaction name="actionAbout"/>
-   </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="separator"/>
-    <addaction name="actionConverter"/>
-    <addaction name="actionAuto_segment"/>
-   </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionSegment_anything"/>
-    <addaction name="actionPolygon"/>
-    <addaction name="actionBackspace"/>
-    <addaction name="actionFinish"/>
-    <addaction name="actionCancel"/>
-    <addaction name="separator"/>
-    <addaction name="actionTo_top"/>
-    <addaction name="actionTo_bottom"/>
-    <addaction name="separator"/>
-    <addaction name="actionEdit"/>
-    <addaction name="actionDelete"/>
-    <addaction name="actionSave"/>
-   </widget>
-   <widget class="QMenu" name="menuMode">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>Mode</string>
-    </property>
-    <widget class="QMenu" name="menuContour_mode">
-     <property name="title">
-      <string>Contour mode</string>
-     </property>
-     <addaction name="actionContour_Max_only"/>
-     <addaction name="actionContour_External"/>
-     <addaction name="actionContour_All"/>
-    </widget>
-    <addaction name="menuContour_mode"/>
-   </widget>
-   <widget class="QMenu" name="menuSAM_model">
-    <property name="title">
-     <string>SAM</string>
-    </property>
-    <addaction name="actionModel_manage"/>
-    <addaction name="separator"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuEdit"/>
-   <addaction name="menuView"/>
-   <addaction name="menuSAM_model"/>
-   <addaction name="menuMode"/>
-   <addaction name="menuTools"/>
-   <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
-  </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(247, 248, 250);
+</string>
    </property>
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>24</width>
-     <height>24</height>
-    </size>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonIconOnly</enum>
-   </property>
-   <property name="floatable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionPrev"/>
-   <addaction name="actionNext"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
-   <addaction name="actionSegment_anything"/>
-   <addaction name="actionPolygon"/>
-   <addaction name="actionBackspace"/>
-   <addaction name="actionFinish"/>
-   <addaction name="actionCancel"/>
-   <addaction name="separator"/>
-   <addaction name="actionTo_top"/>
-   <addaction name="actionTo_bottom"/>
-   <addaction name="actionEdit"/>
-   <addaction name="actionDelete"/>
-   <addaction name="actionSave"/>
-   <addaction name="separator"/>
-   <addaction name="actionZoom_in"/>
-   <addaction name="actionZoom_out"/>
-   <addaction name="actionFit_wiondow"/>
-   <addaction name="actionBit_map"/>
-   <addaction name="actionVisible"/>
-  </widget>
-  <widget class="QDockWidget" name="info_dock">
-   <property name="minimumSize">
-    <size>
-     <width>85</width>
-     <height>43</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>Info</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2"/>
-  </widget>
-  <widget class="QDockWidget" name="annos_dock">
-   <property name="minimumSize">
-    <size>
-     <width>85</width>
-     <height>43</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>Annos</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3"/>
-  </widget>
-  <widget class="QDockWidget" name="files_dock">
-   <property name="windowTitle">
-    <string>Files</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents"/>
-  </widget>
-  <widget class="QDockWidget" name="categories_dock">
-   <property name="windowTitle">
-    <string>Categories</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
-    <layout class="QVBoxLayout" name="verticalLayout_2"/>
-   </widget>
   </widget>
   <action name="actionOpen_dir">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/照片_pic.svg</normaloff>:/icon/icons/照片_pic.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/folder_32.svg</normaloff>:/icons/icons/folder_32.svg</iconset>
    </property>
    <property name="text">
     <string>Images dir</string>
@@ -340,8 +1793,8 @@
   </action>
   <action name="actionZoom_in">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/放大_zoom-in.svg</normaloff>:/icon/icons/放大_zoom-in.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/zoonIn_32.svg</normaloff>:/icons/icons/zoonIn_32.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom in</string>
@@ -352,8 +1805,8 @@
   </action>
   <action name="actionZoom_out">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/缩小_zoom-out.svg</normaloff>:/icon/icons/缩小_zoom-out.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/zoomOut_32.svg</normaloff>:/icons/icons/zoomOut_32.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom out</string>
@@ -364,8 +1817,8 @@
   </action>
   <action name="actionFit_wiondow">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/全宽_fullwidth.svg</normaloff>:/icon/icons/全宽_fullwidth.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/fitWindow_32.svg</normaloff>:/icons/icons/fitWindow_32.svg</iconset>
    </property>
    <property name="text">
     <string>Fit window</string>
@@ -382,8 +1835,8 @@
   </action>
   <action name="actionSetting">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/设置_setting-two.svg</normaloff>:/icon/icons/设置_setting-two.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/setting_32.svg</normaloff>:/icons/icons/setting_32.svg</iconset>
    </property>
    <property name="text">
     <string>Setting</string>
@@ -394,8 +1847,8 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/开关_power.svg</normaloff>:/icon/icons/开关_power.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/close_32.svg</normaloff>:/icons/icons/close_32.svg</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -409,8 +1862,8 @@
   </action>
   <action name="actionSave_dir">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/文件夹-开_folder-open.svg</normaloff>:/icon/icons/文件夹-开_folder-open.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/folder_32.svg</normaloff>:/icons/icons/folder_32.svg</iconset>
    </property>
    <property name="text">
     <string>Label dir</string>
@@ -421,8 +1874,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/保存_save.svg</normaloff>:/icon/icons/保存_save.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/save_32.svg</normaloff>:/icons/icons/save_32.svg</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -439,8 +1892,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/上一步_back.svg</normaloff>:/icon/icons/上一步_back.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/left_32.svg</normaloff>:/icons/icons/left_32.svg</iconset>
    </property>
    <property name="text">
     <string>Prev image</string>
@@ -463,8 +1916,8 @@
   </action>
   <action name="actionNext">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/下一步_next.svg</normaloff>:/icon/icons/下一步_next.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/right_32.svg</normaloff>:/icons/icons/right_32.svg</iconset>
    </property>
    <property name="text">
     <string>Next image</string>
@@ -481,8 +1934,8 @@
   </action>
   <action name="actionShortcut">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/键盘_keyboard-one.svg</normaloff>:/icon/icons/键盘_keyboard-one.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/keyboard_32.svg</normaloff>:/icons/icons/keyboard_32.svg</iconset>
    </property>
    <property name="text">
     <string>Shortcut</string>
@@ -490,8 +1943,8 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/我的_me.svg</normaloff>:/icon/icons/我的_me.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/infomation_32.svg</normaloff>:/icons/icons/infomation_32.svg</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -499,8 +1952,8 @@
   </action>
   <action name="actionSegment_anything">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/M_Favicon.ico</normaloff>:/icon/icons/M_Favicon.ico</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/SegmentAnything_32.svg</normaloff>:/icons/icons/SegmentAnything_32.svg</iconset>
    </property>
    <property name="text">
     <string>Segment anything</string>
@@ -520,8 +1973,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/删除_delete.svg</normaloff>:/icon/icons/删除_delete.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/delete_32.svg</normaloff>:/icons/icons/delete_32.svg</iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -541,8 +1994,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/照片_pic.svg</normaloff>:/icon/icons/照片_pic.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/bitMap_image_32.svg</normaloff>:/icons/icons/bitMap_image_32.svg</iconset>
    </property>
    <property name="text">
     <string>Bit map</string>
@@ -559,8 +2012,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/编辑_edit.svg</normaloff>:/icon/icons/编辑_edit.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/edit_32.svg</normaloff>:/icons/icons/edit_32.svg</iconset>
    </property>
    <property name="text">
     <string>Edit</string>
@@ -577,8 +2030,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/去顶部_to-top.svg</normaloff>:/icon/icons/去顶部_to-top.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/toTop_32.svg</normaloff>:/icons/icons/toTop_32.svg</iconset>
    </property>
    <property name="text">
     <string>To top</string>
@@ -598,8 +2051,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/去底部_to-bottom.svg</normaloff>:/icon/icons/去底部_to-bottom.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/toBottom_32.svg</normaloff>:/icons/icons/toBottom_32.svg</iconset>
    </property>
    <property name="text">
     <string>To bottom</string>
@@ -618,6 +2071,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/chinese_32.svg</normaloff>:/icons/icons/chinese_32.svg</iconset>
+   </property>
    <property name="text">
     <string>中文</string>
    </property>
@@ -632,6 +2089,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/english_32.svg</normaloff>:/icons/icons/english_32.svg</iconset>
+   </property>
    <property name="text">
     <string>English</string>
    </property>
@@ -644,8 +2105,8 @@
   </action>
   <action name="actionBackspace">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/删除_delete-two.svg</normaloff>:/icon/icons/删除_delete-two.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/undo_32.svg</normaloff>:/icons/icons/undo_32.svg</iconset>
    </property>
    <property name="text">
     <string>Backspace</string>
@@ -662,8 +2123,8 @@
   </action>
   <action name="actionCancel">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/关闭_close-one.svg</normaloff>:/icon/icons/关闭_close-one.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/cancel_32.svg</normaloff>:/icons/icons/cancel_32.svg</iconset>
    </property>
    <property name="text">
     <string>Cancel</string>
@@ -680,8 +2141,8 @@
   </action>
   <action name="actionFinish">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/校验_check-one.svg</normaloff>:/icon/icons/校验_check-one.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/finish_32.svg</normaloff>:/icons/icons/finish_32.svg</iconset>
    </property>
    <property name="text">
     <string>Finish</string>
@@ -698,8 +2159,8 @@
   </action>
   <action name="actionPolygon">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/锚点_anchor.svg</normaloff>:/icon/icons/锚点_anchor.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/polygon_32.svg</normaloff>:/icons/icons/polygon_32.svg</iconset>
    </property>
    <property name="text">
     <string>Polygon</string>
@@ -716,8 +2177,8 @@
   </action>
   <action name="actionVisible">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/眼睛_eyes.svg</normaloff>:/icon/icons/眼睛_eyes.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/visible_32.svg</normaloff>:/icons/icons/visible_32.svg</iconset>
    </property>
    <property name="text">
     <string>Visible</string>
@@ -735,6 +2196,10 @@
   <action name="actionContour_Max_only">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/contour_only_max_32.svg</normaloff>:/icons/icons/contour_only_max_32.svg</iconset>
    </property>
    <property name="text">
     <string>Max only</string>
@@ -756,6 +2221,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/contour_external_32.svg</normaloff>:/icons/icons/contour_external_32.svg</iconset>
+   </property>
    <property name="text">
     <string>External</string>
    </property>
@@ -776,6 +2245,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/contour_all_32.svg</normaloff>:/icons/icons/contour_all_32.svg</iconset>
+   </property>
    <property name="text">
     <string>All</string>
    </property>
@@ -794,8 +2267,8 @@
   </action>
   <action name="actionModel_manage">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/列表_list-middle.svg</normaloff>:/icon/icons/列表_list-middle.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/modelManager_32.svg</normaloff>:/icons/icons/modelManager_32.svg</iconset>
    </property>
    <property name="text">
     <string>Model manage</string>
@@ -815,8 +2288,8 @@
   </action>
   <action name="actionConverter">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</normaloff>:/icon/icons/转换文件夹1_folder-conversion-one.svg</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/folder_convert_32.svg</normaloff>:/icons/icons/folder_convert_32.svg</iconset>
    </property>
    <property name="text">
     <string>Converter</string>
@@ -824,8 +2297,8 @@
   </action>
   <action name="actionAuto_segment">
    <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/M_Favicon.ico</normaloff>:/icon/icons/M_Favicon.ico</iconset>
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/icons/SegmentAnything_32.svg</normaloff>:/icons/icons/SegmentAnything_32.svg</iconset>
    </property>
    <property name="text">
     <string>Auto segment with bounding box</string>
@@ -833,7 +2306,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>

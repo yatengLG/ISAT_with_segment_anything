@@ -13,7 +13,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow = mainwindow
         self.polygon_item_dict = {}
 
-        self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
+        self.listWidget_annos.itemSelectionChanged.connect(self.set_polygon_selected)
         self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
 
         # addded group view
@@ -24,12 +24,12 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.button_prev_group.setStatusTip('Prev group.')
         self.button_next_group.setStatusTip('Next group.')
 
-        self.listWidget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-        self.listWidget.customContextMenuRequested.connect(
+        self.listWidget_annos.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.listWidget_annos.customContextMenuRequested.connect(
             self.right_button_menu)
 
     def right_button_menu(self, point):
-        self.mainwindow.right_button_menu.exec_(self.listWidget.mapToGlobal(point))
+        self.mainwindow.right_button_menu.exec_(self.listWidget_annos.mapToGlobal(point))
 
     def generate_item_and_itemwidget(self, polygon):
         color = self.mainwindow.category_color_dict.get(polygon.category, '#000000')
@@ -73,14 +73,14 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def update_listwidget(self):
         current_group_id = self.comboBox_group_select.currentText()
-        self.listWidget.clear()
+        self.listWidget_annos.clear()
         self.polygon_item_dict.clear()
         self.checkBox_visible.setChecked(True)
 
         for polygon in self.mainwindow.polygons:
             item, item_widget = self.generate_item_and_itemwidget(polygon)
-            self.listWidget.addItem(item)
-            self.listWidget.setItemWidget(item, item_widget)
+            self.listWidget_annos.addItem(item)
+            self.listWidget_annos.setItemWidget(item, item_widget)
             self.polygon_item_dict[polygon] = item
 
         if self.mainwindow.load_finished:
@@ -100,21 +100,24 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         item = self.polygon_item_dict[polygon]
         if polygon.isSelected():
             if not item.isSelected():
-                self.listWidget.setCurrentItem(item)
+                item.setSelected(True)
         if not polygon.isSelected():
             if item.isSelected():
                 item.setSelected(False)
 
     def set_polygon_selected(self):
-        items = self.listWidget.selectedItems()
+        items = self.listWidget_annos.selectedItems()
         have_selected = True if items else False
         if have_selected:
             self.mainwindow.scene.change_mode_to_edit()
             # 编辑，置顶等功能只针对单个多边形
             if len(items) > 1:
                 self.mainwindow.actionTo_top.setEnabled(False)
+                self.mainwindow.pushButton_To_top.setEnabled(False)
                 self.mainwindow.actionTo_bottom.setEnabled(False)
+                self.mainwindow.pushButton_To_bottom.setEnabled(False)
                 self.mainwindow.actionEdit.setEnabled(False)
+                self.mainwindow.pushButton_Edit.setEnabled(False)
         else:
             self.mainwindow.scene.change_mode_to_view()
 
@@ -133,9 +136,9 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def set_all_polygon_visible(self, visible:bool=None):
         visible = self.checkBox_visible.isChecked() if visible is None else visible
-        for index in range(self.listWidget.count()):
-            item = self.listWidget.item(index)
-            widget = self.listWidget.itemWidget(item)
+        for index in range(self.listWidget_annos.count()):
+            item = self.listWidget_annos.item(index)
+            widget = self.listWidget_annos.itemWidget(item)
             check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
             check_box.setChecked(visible)
         self.checkBox_visible.setChecked(visible)
@@ -144,7 +147,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         selected_group = self.comboBox_group_select.currentText()
 
         for polygon, item in self.polygon_item_dict.items():
-            widget = self.listWidget.itemWidget(item)
+            widget = self.listWidget_annos.itemWidget(item)
             check_box = widget.findChild(QtWidgets.QCheckBox, 'check_box')
             if selected_group == '':
                 return

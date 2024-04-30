@@ -11,7 +11,7 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         super(FilesDockWidget, self).__init__()
         self.setupUi(self)
         self.mainwindow = mainwindow
-        self.listWidget.clicked.connect(self.listwidget_doubleclick)
+        self.listWidget_files.clicked.connect(self.listwidget_doubleclick)
         self.lineEdit_jump.returnPressed.connect(self.mainwindow.jump_to)
 
     def generate_item_and_itemwidget(self, file_name):
@@ -35,7 +35,7 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         return item, item_widget
 
     def update_widget(self):
-        self.listWidget.clear()
+        self.listWidget_files.clear()
         if self.mainwindow.files_list is None:
             return
 
@@ -46,15 +46,15 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             # item, item_widget = self.generate_item_and_itemwidget(file_name)
 
             item.setText(file_name)
-            self.listWidget.addItem(item)
-            # self.listWidget.setItemWidget(item, item_widget)
+            self.listWidget_files.addItem(item)
+            # self.listWidget_files.setItemWidget(item, item_widget)
 
         self.label_all.setText('{}'.format(len(self.mainwindow.files_list)))
 
     def set_select(self, row):
-        self.listWidget.setCurrentRow(row)
+        self.listWidget_files.setCurrentRow(row)
 
     def listwidget_doubleclick(self):
-        row = self.listWidget.currentRow()
+        row = self.listWidget_files.currentRow()
         self.mainwindow.current_index = row
         self.mainwindow.show_image(row)

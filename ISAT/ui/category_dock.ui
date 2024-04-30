@@ -14,10 +14,28 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QListWidget" name="listWidget">
+    <widget class="QListWidget" name="listWidget_category">
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
      <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
+      <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
@@ -37,10 +55,16 @@
      </property>
      <item>
       <widget class="QPushButton" name="pushButton_group_mode">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
-         <height>16777215</height>
+         <width>80</width>
+         <height>25</height>
         </size>
        </property>
        <property name="statusTip">
@@ -56,10 +80,16 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_decrease">
+       <property name="minimumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>20</width>
-         <height>16777215</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="statusTip">
@@ -75,10 +105,16 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_currentGroup">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>16777215</height>
+         <height>25</height>
         </size>
        </property>
        <property name="statusTip">
@@ -100,10 +136,16 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_increase">
+       <property name="minimumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>20</width>
-         <height>16777215</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
        <property name="statusTip">

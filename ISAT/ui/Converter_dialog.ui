@@ -19,11 +19,42 @@
   <property name="windowTitle">
    <string>Converter</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	min-height: 25px;
+
+}
+QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+QLineEdit:focus{
+	border: 2px solid #3574F0;
+} 
+
+QPushButton{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	min-height: 25px;
+	min-width: 80px;
+}
+QPushButton:hover{
+	border: 1px solid #3574F0;
+} 
+QPushButton:pressed{
+	border: 2px solid #3574F0;
+} 
+
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_13">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab_COCO">
       <attribute name="title">
@@ -54,15 +85,15 @@
              <enum>QFrame::Plain</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="toolbox_item_coco2isat">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>138</width>
-               <height>109</height>
+               <width>960</width>
+               <height>178</height>
               </rect>
              </property>
              <attribute name="label">
@@ -197,7 +228,7 @@
                <x>0</x>
                <y>0</y>
                <width>960</width>
-               <height>153</height>
+               <height>178</height>
               </rect>
              </property>
              <attribute name="label">
@@ -373,8 +404,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>161</width>
-               <height>144</height>
+               <width>960</width>
+               <height>178</height>
               </rect>
              </property>
              <attribute name="label">
@@ -563,7 +594,7 @@
                <x>0</x>
                <y>0</y>
                <width>960</width>
-               <height>153</height>
+               <height>178</height>
               </rect>
              </property>
              <attribute name="label">
@@ -694,7 +725,7 @@
              <enum>QFrame::Plain</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="toolbox_item_labelme2isat">
              <property name="geometry">
@@ -702,7 +733,7 @@
                <x>0</x>
                <y>0</y>
                <width>960</width>
-               <height>153</height>
+               <height>185</height>
               </rect>
              </property>
              <attribute name="label">
@@ -798,8 +829,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>138</width>
-               <height>78</height>
+               <width>960</width>
+               <height>185</height>
               </rect>
              </property>
              <attribute name="label">
@@ -934,6 +965,20 @@
           </item>
           <item row="0" column="0">
            <widget class="QLineEdit" name="lineEdit_isat2voc_isat_json_root">
+            <property name="styleSheet">
+             <string notr="true">QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+QLineEdit:focus{
+	border: 2px solid #3574F0;
+} </string>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1152,7 +1197,7 @@
    <item>
     <widget class="QProgressBar" name="progressBar">
      <property name="value">
-      <number>24</number>
+      <number>0</number>
      </property>
     </widget>
    </item>

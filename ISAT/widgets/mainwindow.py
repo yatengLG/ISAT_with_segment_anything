@@ -962,7 +962,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.auto_segment_dialog.show()
         else:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'Choice a sam model before auto segment.')
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Select a sam model before auto segment.')
 
     def help(self):
         self.shortcut_dialog.show()

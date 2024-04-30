@@ -10,7 +10,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         super(CategoriesDockWidget, self).__init__()
         self.setupUi(self)
         self.mainwindow = mainwindow
-        self.listWidget.itemClicked.connect(self.item_choice)
+        self.listWidget_category.itemClicked.connect(self.item_choice)
 
         # 新增 手动/自动 group 选择
         self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
@@ -20,7 +20,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.pushButton_group_mode.clicked.connect(self.toggle_group_mode)
 
     def update_widget(self):
-        self.listWidget.clear()
+        self.listWidget_category.clear()
         btngroup = QtWidgets.QButtonGroup(self)
         labels = self.mainwindow.cfg.get('label', [])
         for index in range(len(labels)):
@@ -50,8 +50,8 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             layout.addWidget(label_radio)
             widget.setLayout(layout)
 
-            self.listWidget.addItem(item)
-            self.listWidget.setItemWidget(item, widget)
+            self.listWidget_category.addItem(item)
+            self.listWidget_category.setItemWidget(item, widget)
 
     def radio_choice(self):
         if isinstance(self.sender(), QtWidgets.QRadioButton):
@@ -59,9 +59,9 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
                 self.mainwindow.current_category = self.sender().text()
 
     def item_choice(self, item_now):
-        for index in range(self.listWidget.count()):
-            item = self.listWidget.item(index)
-            widget = self.listWidget.itemWidget(item)
+        for index in range(self.listWidget_category.count()):
+            item = self.listWidget_category.item(index)
+            widget = self.listWidget_category.itemWidget(item)
             label_radio = widget.findChild(QtWidgets.QRadioButton, 'label_radio')
             label_radio.setChecked(item==item_now)
 

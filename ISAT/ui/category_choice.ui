@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>399</height>
+    <width>400</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="font">
@@ -18,6 +18,42 @@
   </property>
   <property name="windowTitle">
    <string/>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QListWidget::item:hover{
+	background-color: #C5E5CC;
+}
+
+QListWidget::item:selected{
+	background-color: #55A76A;
+} 
+
+
+QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+QLineEdit:focus{
+	border: 2px solid #3574F0;
+} 
+
+QPushButton{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+}
+QPushButton:hover{
+	border: 1px solid #3574F0;
+} 
+QPushButton:pressed{
+	border: 2px solid #3574F0;
+	/*background-color: #3574F0;*/
+} 
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -43,14 +79,20 @@
         <property name="minimumSize">
          <size>
           <width>60</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>60</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>category:</string>
@@ -59,6 +101,18 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit_category">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -72,14 +126,20 @@
         <property name="minimumSize">
          <size>
           <width>50</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>group:</string>
@@ -90,15 +150,21 @@
        <widget class="QLineEdit" name="lineEdit_group">
         <property name="minimumSize">
          <size>
-          <width>60</width>
-          <height>0</height>
+          <width>80</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
-          <height>16777215</height>
+          <width>80</width>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="inputMethodHints">
          <set>Qt::ImhDigitsOnly</set>
@@ -137,14 +203,20 @@
         <property name="minimumSize">
          <size>
           <width>60</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>60</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>note:</string>
@@ -153,6 +225,24 @@
       </item>
       <item>
        <widget class="QLineEdit" name="lineEdit_note">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -166,14 +256,20 @@
         <property name="minimumSize">
          <size>
           <width>50</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>layer:</string>
@@ -184,15 +280,21 @@
        <widget class="QLabel" name="label_layer">
         <property name="minimumSize">
          <size>
-          <width>60</width>
-          <height>0</height>
+          <width>80</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
-          <height>16777215</height>
+          <width>80</width>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string/>
@@ -202,24 +304,6 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
      </layout>
     </widget>
    </item>
@@ -240,6 +324,24 @@
       </property>
       <item>
        <widget class="QCheckBox" name="checkBox_iscrowded">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>is crowded</string>
         </property>
@@ -260,6 +362,24 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_cancel">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>cancel</string>
         </property>
@@ -271,6 +391,24 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_apply">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>apply</string>
         </property>
@@ -286,7 +424,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>

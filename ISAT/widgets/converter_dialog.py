@@ -448,7 +448,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_coco2isat_coco_json_path.text():
+                        error_str += 'coco json path is none\n'
+                    if not self.lineEdit_coco2isat_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
             elif self.toolBox_coco.currentWidget() == self.toolbox_item_isat2coco:
                 # isat2coco
@@ -462,7 +467,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_isat2coco_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    if not self.lineEdit_isat2coco_coco_json_path.text():
+                        error_str += 'coco json path is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
         elif self.tabWidget.currentWidget() == self.tab_YOLO:
             # YOLO
@@ -480,7 +490,14 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_yolo2isat_yolo_image_root.text():
+                        error_str += 'yolo image root is none\n'
+                    if not self.lineEdit_yolo2isat_yolo_txt_root.text():
+                        error_str += 'yolo txt root is none\n'
+                    if not self.lineEdit_yolo2isat_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
             elif self.toolBox_yolo.currentWidget() == self.toolbox_item_isat2yolo:
                 # isat2yolo
@@ -493,7 +510,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_isat2yolo_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    if not self.lineEdit_isat2yolo_yolo_txt_root.text():
+                        error_str += 'yolo txt root is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
         elif self.tabWidget.currentWidget() == self.tab_LABELME:
             # LABELME
@@ -508,7 +530,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_labelme2isat_labelme_json_root.text():
+                        error_str += 'labelme json root is none\n'
+                    if not self.lineEdit_labelme2isat_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
             elif self.toolBox_labelme.currentWidget() == self.toolbox_item_isat2labelme:
                 # isat2labelme
@@ -521,7 +548,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
                     self.converter.run()
                 else:
-                    QtWidgets.QMessageBox.warning(self, '', '')
+                    error_str = ""
+                    if not self.lineEdit_isat2labelme_isat_json_root.text():
+                        error_str += 'isat json root is none\n'
+                    if not self.lineEdit_isat2labelme_labelme_json_root.text():
+                        error_str += 'labelme json root is none\n'
+                    QtWidgets.QMessageBox.warning(self, '', error_str)
 
         elif self.tabWidget.currentWidget() == self.tab_VOC:
             # VOC
@@ -533,7 +565,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.converter.is_instance = self.checkBox_is_instance.isChecked()
                 self.converter.run()
             else:
-                QtWidgets.QMessageBox.warning(self, '', '')
+                error_str = ""
+                if not self.lineEdit_isat2voc_isat_json_root.text():
+                    error_str += 'isat json root is none\n'
+                if not self.lineEdit_isat2voc_voc_png_root.text():
+                    error_str += 'voc png root is none\n'
+                QtWidgets.QMessageBox.warning(self, '', error_str)
 
         elif self.tabWidget.currentWidget() == self.tab_VOC_DETECTION:
             # VOC_DETECTION
@@ -544,7 +581,12 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.converter.voc_xml_root = self.lineEdit_isat2vocod_voc_xml_root.text()
                 self.converter.run()
             else:
-                QtWidgets.QMessageBox.warning(self, '', '')
+                error_str = ""
+                if not self.lineEdit_isat2vocod_isat_json_root.text():
+                    error_str += 'isat json root is none\n'
+                if not self.lineEdit_isat2vocod_voc_xml_root.text():
+                    error_str += 'voc xml root is none\n'
+                QtWidgets.QMessageBox.warning(self, '', error_str)
 
         else:
             pass

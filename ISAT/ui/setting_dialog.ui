@@ -19,10 +19,65 @@
   <property name="windowTitle">
    <string>Setting</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QListWidget::item:hover{
+	background-color: #C5E5CC;
+}
+
+QListWidget::item:selected{
+	background-color: #55A76A;
+} 
+
+
+QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	min-height: 25px;
+	max-height: 25px;
+
+}
+QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+QLineEdit:focus{
+	border: 2px solid #3574F0;
+} 
+
+QPushButton{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	min-height: 25px;
+	max-height: 25px;
+}
+QPushButton:hover{
+	border: 1px solid #3574F0;
+} 
+QPushButton:pressed{
+	/*border: 2px solid #55A76A;*/
+	background-color: #3574F0;
+} </string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -92,7 +147,7 @@
           <property name="minimumSize">
            <size>
             <width>150</width>
-            <height>0</height>
+            <height>27</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -179,7 +234,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>

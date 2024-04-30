@@ -15,33 +15,103 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="leftMargin">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>1</number>
    </property>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Annos</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
       <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>6</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>6</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="checkBox_visible">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>120</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Visible</string>
@@ -63,45 +133,63 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboBox_group_select">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>60</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="button_prev_group">
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>25</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icon/icons/上一步_back.svg</normaloff>:/icon/icons/上一步_back.svg</iconset>
+         <iconset resource="icons.qrc">
+          <normaloff>:/icons/icons/left_32.svg</normaloff>:/icons/icons/left_32.svg</iconset>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="button_next_group">
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>25</width>
-          <height>16777215</height>
+          <height>25</height>
          </size>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icon/icons/下一步_next.svg</normaloff>:/icon/icons/下一步_next.svg</iconset>
+         <iconset resource="icons.qrc">
+          <normaloff>:/icons/icons/right_32.svg</normaloff>:/icons/icons/right_32.svg</iconset>
         </property>
        </widget>
       </item>
@@ -128,7 +216,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidget">
+    <widget class="QListWidget" name="listWidget_annos">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>
@@ -137,7 +228,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>

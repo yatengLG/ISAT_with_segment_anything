@@ -56,6 +56,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
     def itemChange(self, change: 'QtWidgets.QGraphicsItem.GraphicsItemChange', value: typing.Any):
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged:
             self.scene().mainwindow.actionDelete.setEnabled(self.isSelected())
+            self.scene().mainwindow.pushButton_Delete.setEnabled(self.isSelected())
             if self.isSelected():
                 selected_color = QtGui.QColor('#00A0FF')
                 self.setBrush(selected_color)

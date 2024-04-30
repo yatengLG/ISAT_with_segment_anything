@@ -19,6 +19,12 @@
   <property name="windowTitle">
    <string>Model Manage</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+	background-color: rgb(247, 248, 250);
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>9</number>
@@ -125,6 +131,11 @@
      </attribute>
      <column>
       <property name="text">
+       <string/>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>model</string>
       </property>
      </column>
@@ -181,9 +192,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_waiting">
         <property name="text">
-         <string>Download model, and select it in SAM menu to use.</string>
+         <string/>
         </property>
        </widget>
       </item>

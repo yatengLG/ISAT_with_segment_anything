@@ -19,6 +19,37 @@
   <property name="windowTitle">
    <string>Auto segment</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLineEdit{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	min-height: 25px;
+
+}
+QLineEdit:hover{
+	border: 1px solid #3574F0;
+} 
+QLineEdit:focus{
+	border: 2px solid #3574F0;
+} 
+
+QPushButton{
+	border: 1px solid #6C707E;
+	border-radius: 5px;
+	min-height: 25px;
+	min-width: 80px;
+}
+QPushButton:hover{
+	border: 1px solid #3574F0;
+} 
+QPushButton:pressed{
+	border: 2px solid #3574F0;
+} 
+
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -37,6 +68,9 @@
       </property>
       <item>
        <widget class="QLineEdit" name="lineEdit_image_dir">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
         <property name="placeholderText">
          <string>Image dir</string>
         </property>
@@ -69,6 +103,9 @@
       </property>
       <item>
        <widget class="QLineEdit" name="lineEdit_label_dir">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
         <property name="placeholderText">
          <string>VOC xmls dir (for object detection)</string>
         </property>
@@ -101,6 +138,9 @@
       </property>
       <item>
        <widget class="QLineEdit" name="lineEdit_save_dir">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
         <property name="placeholderText">
          <string>ISAT jsons save dir</string>
         </property>

@@ -58,20 +58,25 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             return
         self.mode = STATUSMode.CREATE
         self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
-        self.mainwindow.actionPrev.setEnabled(False)
-        self.mainwindow.actionNext.setEnabled(False)
+        self.mainwindow.pushButton_Prev.setEnabled(False)
+        self.mainwindow.pushButton_Next.setEnabled(False)
 
-        self.mainwindow.actionSegment_anything.setEnabled(False)
-        self.mainwindow.actionPolygon.setEnabled(False)
-        self.mainwindow.actionBackspace.setEnabled(True)
-        self.mainwindow.actionFinish.setEnabled(True)
-        self.mainwindow.actionCancel.setEnabled(True)
+        self.mainwindow.pushButton_Segment_anything.setEnabled(False)
+        self.mainwindow.pushButton_Polygon.setEnabled(False)
+        self.mainwindow.pushButton_Backspace.setEnabled(True)
+        self.mainwindow.pushButton_Finish.setEnabled(True)
+        self.mainwindow.pushButton_Cancel.setEnabled(True)
 
         self.mainwindow.actionTo_top.setEnabled(False)
         self.mainwindow.actionTo_bottom.setEnabled(False)
         self.mainwindow.actionEdit.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
-        self.mainwindow.actionSave.setEnabled(False)
+
+        self.mainwindow.pushButton_To_top.setEnabled(False)
+        self.mainwindow.pushButton_To_bottom.setEnabled(False)
+        self.mainwindow.pushButton_Edit.setEnabled(False)
+        self.mainwindow.pushButton_Delete.setEnabled(False)
+        self.mainwindow.pushButton_Save.setEnabled(False)
 
         self.mainwindow.set_labels_visible(False)
         self.mainwindow.annos_dock_widget.setEnabled(False)
@@ -80,19 +85,24 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.VIEW
         self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
 
-        self.mainwindow.actionPrev.setEnabled(True)
-        self.mainwindow.actionNext.setEnabled(True)
+        self.mainwindow.pushButton_Prev.setEnabled(True)
+        self.mainwindow.pushButton_Next.setEnabled(True)
         self.mainwindow.SeganyEnabled()
-        self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
-        self.mainwindow.actionBackspace.setEnabled(False)
-        self.mainwindow.actionFinish.setEnabled(False)
-        self.mainwindow.actionCancel.setEnabled(False)
+        self.mainwindow.pushButton_Polygon.setEnabled(self.mainwindow.can_be_annotated)
+        self.mainwindow.pushButton_Backspace.setEnabled(False)
+        self.mainwindow.pushButton_Finish.setEnabled(False)
+        self.mainwindow.pushButton_Cancel.setEnabled(False)
 
         self.mainwindow.actionTo_top.setEnabled(False)
         self.mainwindow.actionTo_bottom.setEnabled(False)
         self.mainwindow.actionEdit.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
-        self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
+
+        self.mainwindow.pushButton_To_top.setEnabled(False)
+        self.mainwindow.pushButton_To_bottom.setEnabled(False)
+        self.mainwindow.pushButton_Edit.setEnabled(False)
+        self.mainwindow.pushButton_Delete.setEnabled(False)
+        self.mainwindow.pushButton_Save.setEnabled(self.mainwindow.can_be_annotated)
 
         self.mainwindow.set_labels_visible(True)
         self.mainwindow.annos_dock_widget.setEnabled(True)
@@ -101,20 +111,25 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.EDIT
         self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
 
-        self.mainwindow.actionPrev.setEnabled(False)
-        self.mainwindow.actionNext.setEnabled(False)
+        self.mainwindow.pushButton_Prev.setEnabled(False)
+        self.mainwindow.pushButton_Next.setEnabled(False)
 
-        self.mainwindow.actionSegment_anything.setEnabled(False)
-        self.mainwindow.actionPolygon.setEnabled(False)
-        self.mainwindow.actionBackspace.setEnabled(False)
-        self.mainwindow.actionFinish.setEnabled(False)
-        self.mainwindow.actionCancel.setEnabled(False)
+        self.mainwindow.pushButton_Segment_anything.setEnabled(False)
+        self.mainwindow.pushButton_Polygon.setEnabled(False)
+        self.mainwindow.pushButton_Backspace.setEnabled(False)
+        self.mainwindow.pushButton_Finish.setEnabled(False)
+        self.mainwindow.pushButton_Cancel.setEnabled(False)
 
         self.mainwindow.actionTo_top.setEnabled(True)
         self.mainwindow.actionTo_bottom.setEnabled(True)
         self.mainwindow.actionEdit.setEnabled(True)
         self.mainwindow.actionDelete.setEnabled(True)
-        self.mainwindow.actionSave.setEnabled(True)
+
+        self.mainwindow.pushButton_To_top.setEnabled(True)
+        self.mainwindow.pushButton_To_bottom.setEnabled(True)
+        self.mainwindow.pushButton_Edit.setEnabled(True)
+        self.mainwindow.pushButton_Delete.setEnabled(True)
+        self.mainwindow.pushButton_Save.setEnabled(True)
 
     def change_click_to_positive(self):
         self.click = CLICKMode.POSITIVE
@@ -401,7 +416,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(1)
                     prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 1)
-                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
 
@@ -419,7 +434,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(0)
                     prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 0)
-                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
 

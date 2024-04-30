@@ -188,6 +188,18 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
                 lineEdit.clear()
 
     def start(self):
+        if not (self.lineEdit_image_dir.text() and self.lineEdit_label_dir.text() and self.lineEdit_save_dir.text()):
+            error_str = ""
+            if not self.lineEdit_image_dir.text():
+                error_str += 'image dir is none\n'
+            if not self.lineEdit_label_dir.text():
+                error_str += 'label dir is none\n'
+            if not self.lineEdit_save_dir.text():
+                error_str += 'save dir is none\n'
+            QtWidgets.QMessageBox.warning(self, '', error_str)
+
+            return
+
         self.auto_segment_thread.cancel = False
 
         self.image_dir = self.lineEdit_image_dir.text()

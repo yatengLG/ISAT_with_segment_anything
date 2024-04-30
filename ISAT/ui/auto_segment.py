@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/mnt/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/auto_segment.ui'
+# Form implementation generated from reading ui file 'auto_segment.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -19,6 +19,35 @@ class Ui_Dialog(object):
         font.setFamily("Times New Roman")
         font.setPointSize(12)
         Dialog.setFont(font)
+        Dialog.setStyleSheet("QLineEdit{\n"
+"    border: 1px solid #6C707E;\n"
+"    border-radius: 5px;\n"
+"    padding-left: 5px;\n"
+"    padding-right: 5px;\n"
+"    min-height: 25px;\n"
+"\n"
+"}\n"
+"QLineEdit:hover{\n"
+"    border: 1px solid #3574F0;\n"
+"} \n"
+"QLineEdit:focus{\n"
+"    border: 2px solid #3574F0;\n"
+"} \n"
+"\n"
+"QPushButton{\n"
+"    border: 1px solid #6C707E;\n"
+"    border-radius: 5px;\n"
+"    min-height: 25px;\n"
+"    min-width: 80px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    border: 1px solid #3574F0;\n"
+"} \n"
+"QPushButton:pressed{\n"
+"    border: 2px solid #3574F0;\n"
+"} \n"
+"\n"
+"")
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget = QtWidgets.QWidget(Dialog)
@@ -27,6 +56,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.lineEdit_image_dir = QtWidgets.QLineEdit(self.widget)
+        self.lineEdit_image_dir.setReadOnly(True)
         self.lineEdit_image_dir.setObjectName("lineEdit_image_dir")
         self.horizontalLayout.addWidget(self.lineEdit_image_dir)
         self.pushButton_image_dir = QtWidgets.QPushButton(self.widget)
@@ -39,6 +69,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.lineEdit_label_dir = QtWidgets.QLineEdit(self.widget_2)
+        self.lineEdit_label_dir.setReadOnly(True)
         self.lineEdit_label_dir.setObjectName("lineEdit_label_dir")
         self.horizontalLayout_2.addWidget(self.lineEdit_label_dir)
         self.pushButton_label_dir = QtWidgets.QPushButton(self.widget_2)
@@ -51,6 +82,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.lineEdit_save_dir = QtWidgets.QLineEdit(self.widget_3)
+        self.lineEdit_save_dir.setReadOnly(True)
         self.lineEdit_save_dir.setObjectName("lineEdit_save_dir")
         self.horizontalLayout_3.addWidget(self.lineEdit_save_dir)
         self.pushButton_save_dir = QtWidgets.QPushButton(self.widget_3)

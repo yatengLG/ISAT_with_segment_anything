@@ -879,42 +879,42 @@
     <message>
         <location filename="anno_dock.py" line="98"/>
         <source>Annos</source>
-        <translation type="unfinished">标注</translation>
+        <translation>标注</translation>
     </message>
     <message>
         <location filename="file_dock.py" line="97"/>
         <source>Files</source>
-        <translation type="unfinished">文件列表</translation>
+        <translation>文件列表</translation>
     </message>
     <message>
         <location filename="info_dock.py" line="150"/>
         <source>Info</source>
-        <translation type="unfinished">图片信息</translation>
+        <translation>图片信息</translation>
     </message>
     <message>
         <location filename="info_dock.py" line="151"/>
         <source>width</source>
-        <translation type="unfinished"></translation>
+        <translation>宽</translation>
     </message>
     <message>
         <location filename="info_dock.py" line="158"/>
         <source>:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="info_dock.py" line="153"/>
         <source>height</source>
-        <translation type="unfinished"></translation>
+        <translation>高</translation>
     </message>
     <message>
         <location filename="info_dock.py" line="155"/>
         <source>depth</source>
-        <translation type="unfinished"></translation>
+        <translation>通道</translation>
     </message>
     <message>
         <location filename="info_dock.py" line="157"/>
         <source>note</source>
-        <translation type="unfinished"></translation>
+        <translation>注释</translation>
     </message>
 </context>
 <context>
@@ -1497,32 +1497,32 @@
     <message>
         <location filename="MainWindow.py" line="819"/>
         <source>Show prompt</source>
-        <translation type="unfinished">显示sam提示点</translation>
+        <translation>显示sam提示点</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="820"/>
         <source>approx polygon</source>
-        <translation type="unfinished"></translation>
+        <translation>近似多边形(mask转polygon时，减少多边形顶点数量)</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="822"/>
         <source>Mask alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>mask透明度</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="823"/>
         <source>Vertex size</source>
-        <translation type="unfinished"></translation>
+        <translation>多边形顶点尺寸</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="824"/>
         <source>Image saturation</source>
-        <translation type="unfinished"></translation>
+        <translation>图像饱和度(不作用于sam分割)</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="828"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>语言</translation>
     </message>
 </context>
 </TS>

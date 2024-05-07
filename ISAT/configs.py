@@ -32,6 +32,7 @@ class STATUSMode(Enum):
     VIEW = 0
     CREATE = 1
     EDIT = 2
+    REPAINT = 3
 
 class DRAWMode(Enum):
     POLYGON = 0

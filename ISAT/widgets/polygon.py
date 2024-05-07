@@ -78,6 +78,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         return super(Vertex, self).itemChange(change, value)
     
     def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent'):
+        self.scene().hovered_vertex = self
         if self.scene().mode == STATUSMode.CREATE: # CREATE
             self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
         else: # EDIT, VIEW
@@ -88,6 +89,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
         super(Vertex, self).hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event: 'QGraphicsSceneHoverEvent'):
+        self.scene().hovered_vertex = None
         if not self.isSelected():
             self.setBrush(self.color)
         self.setPath(self.nohover)
@@ -282,3 +284,107 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         object = Object(self.category, group=self.group, segmentation=segmentation,
                         area=self.calculate_area(), layer=self.zValue(), bbox=(xmin, ymin, xmax, ymax), iscrowd=self.iscrowd, note=self.note)
         return object
+
+
+class LineVertex(QtWidgets.QGraphicsPathItem):
+    def __init__(self, polygon, color, nohover_size=2):
+        super(LineVertex, self).__init__()
+        self.polygon = polygon
+        self.color = color
+        self.color.setAlpha(255)
+        self.nohover_size = nohover_size
+        self.hover_size = self.nohover_size + 2
+        self.line_width = 0
+
+        self.nohover = QtGui.QPainterPath()
+        self.nohover.addEllipse(QtCore.QRectF(-self.nohover_size//2, -self.nohover_size//2, self.nohover_size, self.nohover_size))
+        self.hover = QtGui.QPainterPath()
+        self.hover.addRect(QtCore.QRectF(-self.nohover_size//2, -self.nohover_size//2, self.nohover_size, self.nohover_size))
+
+        self.setPath(self.nohover)
+        self.setBrush(self.color)
+        self.setPen(QtGui.QPen(self.color, self.line_width))
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
+        self.setAcceptHoverEvents(True)
+        self.setZValue(1e5)
+
+    def itemChange(self, change: 'QtWidgets.QGraphicsItem.GraphicsItemChange', value: typing.Any):
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged:
+            self.scene().mainwindow.actionDelete.setEnabled(self.isSelected())
+            if self.isSelected():
+                selected_color = QtGui.QColor('#00A0FF')
+                self.setBrush(selected_color)
+            else:
+                self.setBrush(self.color)
+
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange and self.isEnabled():
+            # 限制顶点移动到图外
+            if value.x() < 0:
+                value.setX(0)
+            if value.x() > self.scene().width()-1:
+                value.setX(self.scene().width()-1)
+            if value.y() < 0:
+                value.setY(0)
+            if value.y() > self.scene().height()-1:
+                value.setY(self.scene().height()-1)
+            index = self.polygon.vertexs.index(self)
+            self.polygon.movePoint(index, value)
+
+        return super(LineVertex, self).itemChange(change, value)
+
+class Line(QtWidgets.QGraphicsPathItem):
+    def __init__(self):
+        super().__init__(parent=None)
+        self.line_width = 1
+        # self.hover_alpha = 150
+        # self.nohover_alpha = 80
+        self.points = []
+        self.vertexs = []
+        self.color = QtGui.QColor('#ff0000')
+
+    def addPoint(self, point):
+        self.points.append(point)
+        vertex = LineVertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'])
+        # 添加路径点
+        self.scene().addItem(vertex)
+        self.vertexs.append(vertex)
+        vertex.setPos(point)
+
+    def movePoint(self, index, point):
+        if not 0 <= index < len(self.points):
+            return
+        self.points[index] = self.mapFromScene(point)
+        self.redraw()
+
+    def removePoint(self, index):
+        if not self.points:
+            return
+        self.points.pop(index)
+        vertex = self.vertexs.pop(index)
+        self.scene().removeItem(vertex)
+        del vertex
+        self.redraw()
+
+    def delete(self):
+        self.points.clear()
+        while self.vertexs:
+            vertex = self.vertexs.pop()
+            self.scene().removeItem(vertex)
+            del vertex
+
+    def redraw(self):
+        if len(self.points) < 1:
+            return
+        xs = [p.x() for p in self.points]
+        ys = [p.y() for p in self.points]
+        self.rxmin, self.rymin, self.rxmax, self.rymax = min(xs), min(ys), max(xs), max(ys)
+
+        line_path = QtGui.QPainterPath()
+        if self.points:
+            line_path.moveTo(self.points[0])
+            for point in self.points[1:]:
+                line_path.lineTo(point)
+
+        self.setPath(line_path)

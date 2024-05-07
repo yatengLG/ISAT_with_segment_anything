@@ -297,8 +297,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
         # 批量点修改 (issue 160) 快捷键
-        self.batch_vertexs_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("R"), self)
-        self.batch_vertexs_shortcut.activated.connect(self.scene.switch_batch_vertexes_mode)
+        self.polygon_repaint_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("R"), self)
+        self.polygon_repaint_shortcut.activated.connect(self.scene.change_mode_to_repaint)
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)

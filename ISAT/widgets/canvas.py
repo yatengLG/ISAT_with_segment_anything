@@ -2,7 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtGui, QtCore
-from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint
+from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
@@ -17,6 +17,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.image_item: QtWidgets.QGraphicsPixmapItem = None
         self.image_data = None
         self.current_graph: Polygon = None
+        self.current_line: Line = None
         self.mode = STATUSMode.VIEW
         self.click = CLICKMode.POSITIVE
         self.draw_mode = DRAWMode.SEGMENTANYTHING           # 默认使用segment anything进行快速标注
@@ -36,11 +37,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.draw_interval = 0.15
         self.pressd = False
 
-        # 批量点修改 (issue 160) 需要选定起始点和终点，默认按‘R’开启模式
-        self.batch_vertexes_mode = False
-        self.batch_start_vertex = None
-        self.batch_end_vertex = None
-        self.batch_clicked_point = None
+        self.repaint_start_vertex = None
+        self.repaint_end_vertex = None
+        self.hovered_vertex:Vertex = None
 
     def load_image(self, image_path: str):
         self.clear()
@@ -64,7 +63,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.image_item is None:
             return
         self.mode = STATUSMode.CREATE
-        self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
+        if self.image_item is not None:
+            self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
         self.mainwindow.actionPrev.setEnabled(False)
         self.mainwindow.actionNext.setEnabled(False)
 
@@ -85,7 +85,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def change_mode_to_view(self):
         self.mode = STATUSMode.VIEW
-        self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
+        if self.image_item is not None:
+            self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
 
         self.mainwindow.actionPrev.setEnabled(True)
         self.mainwindow.actionNext.setEnabled(True)
@@ -93,7 +94,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
-        self.mainwindow.actionCancel.setEnabled(False)
+        self.mainwindow.actionCancel.setEnabled(True)
 
         self.mainwindow.actionTo_top.setEnabled(False)
         self.mainwindow.actionTo_bottom.setEnabled(False)
@@ -106,7 +107,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def change_mode_to_edit(self):
         self.mode = STATUSMode.EDIT
-        self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
+        if self.image_item is not None:
+            self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
 
         self.mainwindow.actionPrev.setEnabled(False)
         self.mainwindow.actionNext.setEnabled(False)
@@ -115,7 +117,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
-        self.mainwindow.actionCancel.setEnabled(False)
+        self.mainwindow.actionCancel.setEnabled(True)
 
         self.mainwindow.actionTo_top.setEnabled(True)
         self.mainwindow.actionTo_bottom.setEnabled(True)
@@ -123,12 +125,31 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
 
-    # 批量点修改 (issue 160) 需要选定起始点和终点，默认按‘R’开启模式
-    def switch_batch_vertexes_mode(self):
-        self.batch_vertexes_mode = not self.batch_vertexes_mode  # toggle batch_vertexes_mode
-        self.batch_start_vertex = None  # reset start point on toggle
-        self.batch_end_vertex = None  # reset end point on toggle
-        print('Batch vertexs mode: ', self.batch_vertexes_mode)
+    def change_mode_to_repaint(self):
+        self.mode = STATUSMode.REPAINT
+        self.repaint_start_vertex = None
+        self.repaint_end_vertex = None
+
+        self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
+        self.addItem(self.current_line)
+
+        if self.image_item is not None:
+            self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
+
+        self.mainwindow.actionPrev.setEnabled(False)
+        self.mainwindow.actionNext.setEnabled(False)
+
+        self.mainwindow.actionSegment_anything.setEnabled(False)
+        self.mainwindow.actionPolygon.setEnabled(False)
+        self.mainwindow.actionBackspace.setEnabled(True)
+        self.mainwindow.actionFinish.setEnabled(False)
+        self.mainwindow.actionCancel.setEnabled(True)
+
+        self.mainwindow.actionTo_top.setEnabled(True)
+        self.mainwindow.actionTo_bottom.setEnabled(True)
+        self.mainwindow.actionEdit.setEnabled(True)
+        self.mainwindow.actionDelete.setEnabled(True)
+        self.mainwindow.actionSave.setEnabled(True)
 
     def change_click_to_positive(self):
         self.click = CLICKMode.POSITIVE
@@ -299,12 +320,19 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.update_mask()
 
     def cancel_draw(self):
-        if self.current_graph is None:
-            return
-        self.current_graph.delete()  # 清除所有路径
-        self.removeItem(self.current_graph)
-
-        self.current_graph = None
+        if self.mode == STATUSMode.CREATE:
+            if self.current_graph is not None:
+                self.current_graph.delete()  # 清除所有路径
+                self.removeItem(self.current_graph)
+                self.current_graph = None
+        if self.mode == STATUSMode.REPAINT:
+            if self.current_line is not None:
+                self.current_line.delete()
+                self.removeItem(self.current_line)
+                self.current_line = None
+        if self.mode == STATUSMode.EDIT:
+            for item in self.selectedItems():
+                item.setSelected(False)
 
         self.change_mode_to_view()
 
@@ -351,7 +379,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if p.zValue() > deleted_layer:
                     p.setZValue(p.zValue() - 1)
             self.mainwindow.annos_dock_widget.update_listwidget()
-        self.batch_vertexes_mode = False
 
     def edit_polygon(self):
         selectd_items = self.selectedItems()
@@ -404,12 +431,16 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.set_saved_state(False)
 
     def mousePressEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
+        sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
+        sceneX = 0 if sceneX < 0 else sceneX
+        sceneX = self.width() - 1 if sceneX > self.width() - 1 else sceneX
+        sceneY = 0 if sceneY < 0 else sceneY
+        sceneY = self.height() - 1 if sceneY > self.height() - 1 else sceneY
+
         if self.mode == STATUSMode.CREATE:
-            sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
-            sceneX = 0 if sceneX < 0 else sceneX
-            sceneX = self.width() - 1 if sceneX > self.width() - 1 else sceneX
-            sceneY = 0 if sceneY < 0 else sceneY
-            sceneY = self.height() - 1 if sceneY > self.height() - 1 else sceneY
+            # 拖动鼠标描点
+            self.last_draw_time = time.time()
+            self.pressd = True
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
@@ -445,48 +476,71 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if self.draw_mode == DRAWMode.SEGMENTANYTHING:
                 self.update_mask()
 
+        if self.mode == STATUSMode.REPAINT:
             # 拖动鼠标描点
             self.last_draw_time = time.time()
             self.pressd = True
+
+            if self.repaint_start_vertex is None:
+                # 开始repaint
+                if self.hovered_vertex is not None:
+                    self.repaint_start_vertex = self.hovered_vertex
+                    self.current_line.addPoint(self.repaint_start_vertex.pos()) # 添加当前点
+                    self.current_line.addPoint(self.repaint_start_vertex.pos()) # 添加随鼠标移动的点
+            else:
+                # 结束repaint
+                if self.hovered_vertex is not None and self.hovered_vertex.polygon == self.repaint_start_vertex.polygon:
+                    self.repaint_end_vertex = self.hovered_vertex
+
+                    # 移除随鼠标移动的点
+                    self.current_line.removePoint(len(self.current_line.points) - 1)
+                    # 添加结束点
+                    self.current_line.addPoint(self.repaint_end_vertex.pos())
+
+                    repaint_polygon = self.repaint_start_vertex.polygon
+                    repaint_start_index = repaint_polygon.vertexs.index(self.repaint_start_vertex)
+                    repaint_end_index = repaint_polygon.vertexs.index(self.repaint_end_vertex)
+                    replace_points = [QtCore.QPointF(vertex.pos()) for vertex in self.current_line.vertexs]
+
+                    if repaint_start_index > repaint_end_index:
+                        record = repaint_start_index
+                        repaint_start_index = repaint_end_index
+                        repaint_end_index = record
+                        replace_points = replace_points[::-1]
+
+                    # 这里永远替换数量最少的顶点
+                    distance = abs(repaint_end_index - repaint_start_index)
+                    if len(repaint_polygon.vertexs) - distance < distance:
+                        # 替换两端的点
+                        points = repaint_polygon.points[repaint_start_index+1: repaint_end_index] + replace_points[::-1]
+                    else:
+                        # 替换中间的点
+                        points = repaint_polygon.points[:repaint_start_index] + replace_points + repaint_polygon.points[repaint_end_index+1:]
+                    repaint_polygon.delete()
+                    for point in points:
+                        repaint_polygon.addPoint(point)
+                    repaint_polygon.redraw()
+
+                    self.current_line.delete()  # 清除所有路径
+                    self.removeItem(self.current_line)
+
+                    self.repaint_start_vertex = None
+                    self.repaint_end_vertex = None
+                    self.change_mode_to_view()
+                else:
+                    # 移除随鼠标移动的点
+                    self.current_line.removePoint(len(self.current_line.points) - 1)
+                    # 添加当前点
+                    self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    # 添加随鼠标移动的点
+                    self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+
         super(AnnotationScene, self).mousePressEvent(event)
-        # 批量点修改 (issue 160) 需要选定起始点和终点，默认按‘R’开启模式
-        if self.batch_vertexes_mode:
-            self.batch_clicked_point = (event.scenePos().x(), event.scenePos().y())
 
     # 拖动鼠标描点
     def mouseReleaseEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
         self.pressd = False
         super(AnnotationScene, self).mouseReleaseEvent(event)
-        # 批量点修改 (issue 160) 需要选定起始点和终点，默认按‘R’开启模式
-        if self.batch_vertexes_mode:
-            selected_vertexes = [item for item in self.selectedItems() if isinstance(item, Vertex)]
-            selected_polygons = set([vertex.polygon for vertex in selected_vertexes])
-            if len(selected_polygons) != 1:  # ensure the user selecting the same single polygon
-                self.batch_start_vertex = None
-                self.batch_end_vertex = None
-                for vertex in selected_vertexes:
-                    vertex.setSelected(False)
-            elif len(selected_polygons) == 1:
-                if not self.batch_start_vertex:
-                    self.batch_start_vertex = self.batch_clicked_point
-                    print("batch_vertexes_mode: Start point set at", self.batch_start_vertex)
-                elif not self.batch_end_vertex:
-                    self.batch_end_vertex = self.batch_clicked_point
-                    print("batch_vertexes_mode: End point set at", self.batch_end_vertex)
-                else:
-                    selected_polygon = list(selected_polygons)[0]
-                    start_vertex_index = selected_polygon.vertexs.index(selected_vertexes[0])
-                    end_vertex_index = selected_polygon.vertexs.index(selected_vertexes[1])
-                    start_vertex_index = min((start_vertex_index, end_vertex_index))
-                    end_vertex_index = max((start_vertex_index, end_vertex_index))
-                    direct_path_length = end_vertex_index - start_vertex_index + 1
-                    total_vertexes = len(selected_polygon.vertexs)
-                    if direct_path_length <= (total_vertexes - direct_path_length):
-                        selected_indices = range(start_vertex_index, end_vertex_index + 1)
-                    else:
-                        selected_indices = list(range(end_vertex_index, total_vertexes)) + list(range(0, start_vertex_index))
-                    for idx in selected_indices:
-                        selected_polygon.vertexs[idx].setSelected(True)
 
     def mouseMoveEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
         # 辅助线
@@ -511,6 +565,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if self.draw_mode == DRAWMode.POLYGON:
                 # 随鼠标位置实时更新多边形
                 self.current_graph.movePoint(len(self.current_graph.points) - 1, pos)
+
+        if self.mode == STATUSMode.REPAINT:
+            self.current_line.movePoint(len(self.current_line.points) - 1, pos)
 
         # 辅助线
         if self.guide_line_x is None and self.width() > 0 and self.height() > 0:
@@ -556,6 +613,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
                     # 添加随鼠标移动的点
                     self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+
+            if self.mode == STATUSMode.REPAINT and self.current_line is not None:
+                # 移除随鼠标移动的点
+                self.current_line.removePoint(len(self.current_line.points) - 1)
+                # 添加当前点
+                self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                # 添加随鼠标移动的点
+                self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+
         super(AnnotationScene, self).mouseMoveEvent(event)
 
     def update_mask(self):
@@ -589,24 +655,28 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mask_item.setPixmap(mask_pixmap)
 
     def backspace(self):
-        if self.mode != STATUSMode.CREATE:
-            return
-        # 返回上一步操作
-        if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-            if len(self.click_points) > 0:
-                self.click_points.pop()
-            if len(self.click_points_mode) > 0:
-                self.click_points_mode.pop()
-            if len(self.prompt_points) > 0:
-                prompt_point = self.prompt_points.pop()
-                self.removeItem(prompt_point)
-                del prompt_point
-            self.update_mask()
-        elif self.draw_mode == DRAWMode.POLYGON:
-            if len(self.current_graph.points) < 2:
+        if self.mode == STATUSMode.CREATE:
+            # 返回上一步操作
+            if self.draw_mode == DRAWMode.SEGMENTANYTHING:
+                if len(self.click_points) > 0:
+                    self.click_points.pop()
+                if len(self.click_points_mode) > 0:
+                    self.click_points_mode.pop()
+                if len(self.prompt_points) > 0:
+                    prompt_point = self.prompt_points.pop()
+                    self.removeItem(prompt_point)
+                    del prompt_point
+                self.update_mask()
+            elif self.draw_mode == DRAWMode.POLYGON:
+                if len(self.current_graph.points) < 2:
+                    return
+                # 移除随鼠标移动的点
+                self.current_graph.removePoint(len(self.current_graph.points) - 2)
+
+        if self.mode == STATUSMode.REPAINT:
+            if len(self.current_line.points) < 2:
                 return
-            # 移除随鼠标移动的点
-            self.current_graph.removePoint(len(self.current_graph.points) - 2)
+            self.current_line.removePoint(len(self.current_line.points) - 2)
 
 
 class AnnotationView(QtWidgets.QGraphicsView):

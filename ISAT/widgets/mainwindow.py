@@ -99,6 +99,26 @@ class SegAnyThread(QThread):
                 else:
                     self.tag.emit(index, 1, '')
 
+
+class InitSegAnyThread(QThread):
+    tag = pyqtSignal(bool)
+    def __init__(self, mainwindow):
+        super(InitSegAnyThread, self).__init__()
+        self.mainwindow = mainwindow
+        self.model_path:str = None
+
+    def run(self):
+        if self.model_path is not None:
+            try:
+                self.mainwindow.segany = SegAny(self.model_path, self.mainwindow.cfg['software']['use_bfloat16'])
+                self.tag.emit(True)
+            except Exception as e:
+                print(e)
+                self.tag.emit(False)
+        else:
+            self.tag.emit(False)
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -132,12 +152,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
-        
         self.init_ui()
         self.reload_cfg()
 
         self.init_connect()
         self.reset_action()
+
+        # sam初始化线程，大模型加载较慢
+        self.init_segany_thread = InitSegAnyThread(self)
+        self.init_segany_thread.tag.connect(self.init_sam_finish)
 
     def init_segment_anything(self, model_name=None):
         if not self.saved:
@@ -152,6 +175,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 return
         # 等待sam线程完成
+        self.actionSegment_anything.setEnabled(False)
         try:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
@@ -173,37 +197,40 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 action.setChecked(model_name == name)
             self.use_segment_anything = False
             return
-        try:
-            self.segany = SegAny(model_path, self.cfg['software']['use_bfloat16'])
-        except Exception as e:
-            QtWidgets.QMessageBox.warning(
-                self,
-                'Load model error',
-                'Error {}, when load sam model: {}'.format(e, model_path)
-            )
-            self.use_segment_anything = False
-            return
-        self.use_segment_anything = True
-        self.statusbar.showMessage('Use the checkpoint named {}.'.format(model_name), 3000)
-        for name, action in self.pths_actions.items():
-            action.setChecked(model_name==name)
-        if self.use_segment_anything:
-            if self.segany.device != 'cpu':
-                if self.gpu_resource_thread is None:
-                    self.gpu_resource_thread = GPUResource_Thread()
-                    self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
-                    self.gpu_resource_thread.start()
+
+        self.init_segany_thread.model_path = model_path
+        self.init_segany_thread.start()
+        self.setEnabled(False)
+
+    def init_sam_finish(self, tag:bool):
+        self.setEnabled(True)
+        if tag:
+            self.use_segment_anything = True
+            if self.use_segment_anything:
+                if self.segany.device != 'cpu':
+                    if self.gpu_resource_thread is None:
+                        self.gpu_resource_thread = GPUResource_Thread()
+                        self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
+                        self.gpu_resource_thread.start()
+                else:
+                    self.labelGPUResource.setText('cpu')
             else:
-                self.labelGPUResource.setText('cpu')
+                self.labelGPUResource.setText('segment anything unused.')
+
+            self.seganythread = SegAnyThread(self)
+            self.seganythread.tag.connect(self.sam_encoder_finish)
+            self.seganythread.start()
+
+            if self.current_index is not None:
+                self.show_image(self.current_index)
+
+            checkpoint_name = os.path.split(self.segany.checkpoint)[-1]
+            self.statusbar.showMessage('Use the checkpoint named {}.'.format(checkpoint_name), 3000)
         else:
-            self.labelGPUResource.setText('segment anything unused.')
+            self.use_segment_anything = False
 
-        self.seganythread = SegAnyThread(self)
-        self.seganythread.tag.connect(self.sam_encoder_finish)
-        self.seganythread.start()
-
-        if self.current_index is not None:
-            self.show_image(self.current_index)
+        for name, action in self.pths_actions.items():
+            action.setChecked(checkpoint_name == name)
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
         if state == 1:  # 识别完
@@ -583,9 +610,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def update_group_display(self):
         self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
 
-    def show_image(self, index:int):
+    def show_image(self, index:int, zoomfit:bool=True):
         self.reset_action()
         self.change_bit_map_to_label()
+        self.annos_dock_widget.comboBox_group_select.setCurrentIndex(0)
         # 
         self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format('#999999'))
         self.files_dock_widget.label_current_state.setStyleSheet("background-color: {};".format('#999999'))
@@ -637,8 +665,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.seganythread.index = index
                 self.seganythread.start()
                 self.SeganyEnabled()
-
-            self.view.zoomfit()
+            if zoomfit:
+                self.view.zoomfit()
 
             # load label
             if self.can_be_annotated:
@@ -883,21 +911,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['vertex_size'] = value
         self.save_software_cfg()
         if self.current_index is not None:
-            self.show_image(self.current_index)
+            self.show_image(self.current_index, zoomfit=False)
 
     def change_edge_state(self):
         visible = self.show_edge.checked
         self.cfg['software']['show_edge'] = visible
         self.save_software_cfg()
         if self.current_index is not None:
-            self.show_image(self.current_index)
+            self.show_image(self.current_index, zoomfit=False)
 
     def change_approx_polygon_state(self):  # 是否使用多边形拟合，来减少多边形顶点
         checked = self.use_polydp.checked
         self.cfg['software']['use_polydp'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
-            self.show_image(self.current_index)
+            self.show_image(self.current_index, zoomfit=False)
 
     def change_saturation(self, value):  # 调整图像饱和度
         if self.scene.image_data is not None:
@@ -928,7 +956,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.auto_segment_dialog.show()
         else:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'Choice a sam model before auto segment.')
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Select a sam model before auto segment.')
 
     def help(self):
         self.shortcut_dialog.show()

@@ -366,7 +366,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.mask_aplha.setStatusTip('Mask alpha.')
         self.mask_aplha.setToolTip('Mask alpha')
         self.mask_aplha.setMaximum(10)
-        self.mask_aplha.setMinimum(3)
+        self.mask_aplha.setMinimum(0)
+        self.mask_aplha.setPageStep(1)
         self.mask_aplha.valueChanged.connect(self.change_mask_aplha)
         self.toolBar.addWidget(self.mask_aplha)
 
@@ -376,8 +377,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.vertex_size.setFixedWidth(50)
         self.vertex_size.setStatusTip('Vertex size.')
         self.vertex_size.setToolTip('Vertex size')
-        self.vertex_size.setMaximum(10)
-        self.vertex_size.setMinimum(2)
+        self.vertex_size.setMaximum(5)
+        self.vertex_size.setPageStep(1)
         self.vertex_size.valueChanged.connect(self.change_vertex_size)
         self.toolBar.addWidget(self.vertex_size)
 
@@ -389,6 +390,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.image_saturation.setToolTip('Image saturation')
         self.image_saturation.setMaximum(500)
         self.image_saturation.setMinimum(0)
+        self.image_saturation.setPageStep(10)
         self.image_saturation.setTickInterval(10)
         self.image_saturation.valueChanged.connect(self.change_saturation)
         self.toolBar.addWidget(self.image_saturation)
@@ -492,7 +494,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['mask_alpha'] = mask_alpha
         self.mask_aplha.setValue(int(mask_alpha*10))
 
-        vertex_size = software_cfg.get('vertex_size', 2)
+        vertex_size = software_cfg.get('vertex_size', 1)
         self.cfg['software']['vertex_size'] = int(vertex_size)
         self.vertex_size.setValue(vertex_size)
 

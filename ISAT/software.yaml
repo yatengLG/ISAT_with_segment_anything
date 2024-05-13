@@ -29,4 +29,4 @@ software:
   show_prompt: true
   use_bfloat16: false
   use_polydp: true
-  vertex_size: 2
+  vertex_size: 1

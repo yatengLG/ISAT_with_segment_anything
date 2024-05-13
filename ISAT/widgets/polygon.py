@@ -124,7 +124,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def addPoint(self, point):
         self.points.append(point)
-        vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'])
+        vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
         self.scene().addItem(vertex)
         self.vertexs.append(vertex)
@@ -346,7 +346,7 @@ class Line(QtWidgets.QGraphicsPathItem):
 
     def addPoint(self, point):
         self.points.append(point)
-        vertex = LineVertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'])
+        vertex = LineVertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
         self.scene().addItem(vertex)
         self.vertexs.append(vertex)

@@ -79,9 +79,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionEdit.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(False)
+        self.mainwindow.actionVisible.setEnabled(True)
 
         self.mainwindow.set_labels_visible(False)
         self.mainwindow.annos_dock_widget.setEnabled(False)
+
+        self.mainwindow.modeState.setText('C')
+        self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Create mode.'))
+        self.mainwindow.modeState.setStyleSheet("""
+            background-color: #6CAB74;
+            border-radius : 5px; 
+            color: white;
+        """)
 
     def change_mode_to_view(self):
         self.mode = STATUSMode.VIEW
@@ -101,9 +110,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionEdit.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
+        self.mainwindow.actionVisible.setEnabled(True)
 
         self.mainwindow.set_labels_visible(True)
         self.mainwindow.annos_dock_widget.setEnabled(True)
+
+        self.mainwindow.modeState.setText('V')
+        self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'View mode.'))
+        self.mainwindow.modeState.setStyleSheet("""
+            background-color: #70AEFF;
+            border-radius : 5px; 
+            color: white;
+        """)
 
     def change_mode_to_edit(self):
         self.mode = STATUSMode.EDIT
@@ -124,6 +142,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionEdit.setEnabled(True)
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
+        self.mainwindow.actionVisible.setEnabled(True)
+
+        self.mainwindow.modeState.setText('E')
+        self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Edit mode.'))
+        self.mainwindow.modeState.setStyleSheet("""
+            background-color: #51C0CF;
+            border-radius : 5px; 
+            color: white;
+        """)
 
     def change_mode_to_repaint(self):
         self.mode = STATUSMode.REPAINT
@@ -150,6 +177,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionEdit.setEnabled(True)
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
+        self.mainwindow.actionVisible.setEnabled(False)
+
+        self.mainwindow.modeState.setText('R')
+        self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Repaint mode.'))
+        self.mainwindow.modeState.setStyleSheet("""
+            background-color: #CF84CF;
+            border-radius : 5px; 
+            color: white;
+        """)
 
     def change_click_to_positive(self):
         self.click = CLICKMode.POSITIVE

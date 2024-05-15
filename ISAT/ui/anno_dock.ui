@@ -69,6 +69,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="statusTip">
+         <string>Select polygons by group.</string>
+        </property>
        </widget>
       </item>
       <item>
@@ -78,6 +81,9 @@
           <width>25</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="statusTip">
+         <string>Prev group.</string>
         </property>
         <property name="text">
          <string/>
@@ -95,6 +101,9 @@
           <width>25</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="statusTip">
+         <string>Next group.</string>
         </property>
         <property name="text">
          <string/>

@@ -62,6 +62,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkBox_use_bfloat16">
+        <property name="toolTip">
+         <string>use bfloat16 to reduce GPU memory required</string>
+        </property>
         <property name="text">
          <string>use bfloat16</string>
         </property>

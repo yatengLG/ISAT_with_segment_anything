@@ -31,6 +31,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 import torch
 import cv2  # 调整图像饱和度
+import datetime
+
 
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
@@ -327,6 +329,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.polygon_repaint_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("R"), self)
         self.polygon_repaint_shortcut.activated.connect(self.scene.change_mode_to_repaint)
 
+        # 新增图片保存功能，快捷键。P保存场景(只图片区域)，Ctrl+P保存整个窗口
+        self.scene_shot_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("P"), self)
+        self.scene_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'scene'))
+        self.window_shot_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+P"), self)
+        self.window_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'window'))
+
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
 
@@ -338,6 +346,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.right_button_menu.addAction(self.actionEdit)
         self.right_button_menu.addAction(self.actionTo_top)
         self.right_button_menu.addAction(self.actionTo_bottom)
+        self.right_button_menu.addAction(self.actionDelete)
 
         self.shortcut_dialog = ShortcutDialog(self)
         self.about_dialog = AboutDialog(self)
@@ -356,6 +365,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.labelData.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
         self.labelData.setFixedWidth(150)
         self.statusbar.addPermanentWidget(self.labelData)
+
+        # mode显示, view, create, edit, repaint
+        self.modeState = QtWidgets.QLabel('V')
+        self.modeState.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.modeState.setFixedWidth(50)
+        self.modeState.setStyleSheet("""
+            background-color: #70AEFF;
+            border-radius : 5px; 
+            color: white;
+        """)
+        self.statusbar.addPermanentWidget(self.modeState)
 
         self.update_menuSAM()
 
@@ -457,12 +477,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.files_dock_widget.retranslateUi(self.files_dock_widget)
         self.category_choice_widget.retranslateUi(self.category_choice_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
+        self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
         self.setting_dialog.retranslateUi(self.setting_dialog)
         self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
+
+        # 手动添加翻译 ------
+        _translate = QtCore.QCoreApplication.translate
+        self.mask_aplha.setStatusTip(_translate("MainWindow", "Mask alpha."))
+        self.mask_aplha.setToolTip(_translate("MainWindow", "Mask alpha"))
+        self.vertex_size.setStatusTip(_translate("MainWindow", "Vertex size."))
+        self.vertex_size.setToolTip(_translate("MainWindow", "Vertex size"))
+        self.image_saturation.setStatusTip(_translate("MainWindow", "Image saturation."))
+        self.image_saturation.setToolTip(_translate("MainWindow", "Image saturation"))
+        self.show_prompt.setStatusTip(_translate("MainWindow", "Show prompt."))
+        self.show_prompt.setToolTip(_translate("MainWindow", "Show prompt"))
+        self.show_edge.setStatusTip(_translate("MainWindow", "Show edge."))
+        self.show_edge.setToolTip(_translate("MainWindow", "Show edge"))
+        self.use_polydp.setStatusTip(_translate("MainWindow", "approx polygon."))
+        self.use_polydp.setToolTip(_translate("MainWindow", "approx polygon"))
+
+        self.categories_dock_widget.pushButton_group_mode.setStatusTip(_translate("MainWindow", "Group id auto add 1 when add a new polygon."))
+        self.modeState.setStatusTip(_translate('MainWindow', 'View mode.'))
+
+        # -----------------
 
     def translate_to_chinese(self):
         self.translate('zh')
@@ -615,8 +656,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def show_image(self, index:int, zoomfit:bool=True):
         self.reset_action()
         self.change_bit_map_to_label()
-        self.annos_dock_widget.comboBox_group_select.setCurrentIndex(0)
-        # 
+        #
         self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format('#999999'))
         self.files_dock_widget.label_current_state.setStyleSheet("background-color: {};".format('#999999'))
         self.files_dock_widget.label_next_state.setStyleSheet("background-color: {};".format('#999999'))
@@ -965,6 +1005,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         self.about_dialog.show()
+
+    def screen_shot(self, type='scene'):
+        image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+        save_path = os.path.join(os.getcwd(), image_name)
+
+        if type == 'scene':
+            image = QtGui.QImage(self.scene.sceneRect().size().toSize(), QtGui.QImage.Format_ARGB32)
+            painter = QtGui.QPainter(image)
+            self.scene.render(painter)
+            painter.end()
+            image.save(save_path)
+            self.statusbar.showMessage('Save scene screenshot to {}'.format(save_path), 3000)
+
+        elif type == 'window':
+            image = QtGui.QImage(self.size(), QtGui.QImage.Format_ARGB32)
+            painter = QtGui.QPainter(image)
+            self.render(painter)
+            painter.end()
+            image.save(save_path)
+            self.statusbar.showMessage('Save window screenshot to {}'.format(save_path), 3000)
+
+        else:
+            return
 
     def save_cfg(self, config_file):
         # 只保存类别配置

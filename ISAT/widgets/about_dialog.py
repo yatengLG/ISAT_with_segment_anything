@@ -9,3 +9,7 @@ class AboutDialog(QtWidgets.QDialog, Ui_Dialog):
         super(AboutDialog, self).__init__(parent)
         self.setupUi(self)
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+
+        from ISAT import __version__
+        version_text = 'V{}'.format(__version__)
+        self.label_version.setText(version_text)

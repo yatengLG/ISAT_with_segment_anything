@@ -14,13 +14,13 @@ class SwitchBtn(QWidget):
         super(QWidget, self).__init__(parent)
 
         self.checked = False
-        self.bgColorOff = QColor(255, 255, 255)
-        self.bgColorOn = QColor(0, 0, 0)
+        self.bgColorOff = QColor('#6E798A')
+        self.bgColorOn = QColor('#70AEFF')
 
-        self.sliderColorOff = QColor(100, 100, 100)
-        self.sliderColorOn = QColor(100, 184, 255)
+        self.sliderColorOff = QColor(255, 255, 255)
+        self.sliderColorOn = QColor(255, 255, 255)
 
-        self.textColorOff = QColor(143, 143, 143)
+        self.textColorOff = QColor(255, 255, 255)
         self.textColorOn = QColor(255, 255, 255)
 
         self.textOff = "OFF"
@@ -114,6 +114,7 @@ class SwitchBtn(QWidget):
         painter.save()
         if self.checked:
             painter.setBrush(self.sliderColorOn)
+            painter.setPen(QPen(self.sliderColorOn, 1))
         else:
             painter.setBrush(self.sliderColorOff)
 

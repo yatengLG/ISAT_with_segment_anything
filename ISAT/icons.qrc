@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/ISAT11_100.svg</file>
     <file>../icons/VOC_32x32.png</file>
     <file>../icons/semantic.png</file>
     <file>../icons/M_Favicon.ico</file>
@@ -15,6 +16,22 @@
     <file>../icons/下一步_next.svg</file>
     <file>../icons/我的_me.svg</file>
     <file>../icons/文件夹-开_folder-open.svg</file>
+    <file>../icons/ISAT11_100.svg</file>
+    <file>../icons/ISAT11.svg</file>
+    <file>../icons/ISAT12_100.svg</file>
+    <file>../icons/ISAT12.svg</file>
+    <file>../icons/ISAT13_100.svg</file>
+    <file>../icons/ISAT13.svg</file>
+    <file>../icons/ISAT14_100.svg</file>
+    <file>../icons/ISAT14.svg</file>
+    <file>../icons/ISAT21_100.svg</file>
+    <file>../icons/ISAT21.svg</file>
+    <file>../icons/ISAT22_100.svg</file>
+    <file>../icons/ISAT22.svg</file>
+    <file>../icons/ISAT23_100.svg</file>
+    <file>../icons/ISAT23.svg</file>
+    <file>../icons/ISAT24_100.svg</file>
+    <file>../icons/ISAT24.svg</file>
     <file>../icons/缩小_zoom-out.svg</file>
     <file>../icons/设置_setting-two.svg</file>
     <file>../icons/上一步_back.svg</file>

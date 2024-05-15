@@ -24,7 +24,7 @@ label:
 software:
   contour_mode: max_only
   language: zh
-  mask_alpha: 0.3
+  mask_alpha: 0.6
   show_edge: true
   show_prompt: true
   use_bfloat16: false

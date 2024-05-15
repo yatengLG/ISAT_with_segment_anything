@@ -26,8 +26,8 @@
    <string>ISAT</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/icons/isat_bg_50x25.png</normaloff>:/icons/icons/isat_bg_50x25.png</iconset>
+   <iconset resource="../icons.qrc">
+    <normaloff>:/icon/icons/ISAT13_100.svg</normaloff>:/icon/icons/ISAT13_100.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">

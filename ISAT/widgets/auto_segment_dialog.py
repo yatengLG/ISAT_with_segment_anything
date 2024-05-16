@@ -194,7 +194,7 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
         self.label_dir = self.lineEdit_label_dir.text()
         self.save_dir = self.lineEdit_save_dir.text()
 
-        if self.image_dir is None or self.label_dir is None or self.save_dir is None:
+        if self.image_dir == '' or self.label_dir == '' or self.save_dir == '':
             self.textBrowser.append('不能为空')
             return
 

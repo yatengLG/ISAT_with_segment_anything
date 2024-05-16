@@ -4,7 +4,7 @@
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal, QTimer, QRect, QRectF, Qt
-from PyQt5.QtGui import QColor, QFont, QPainter, QPainterPath
+from PyQt5.QtGui import QColor, QFont, QPainter, QPainterPath, QPen
 
 
 class SwitchBtn(QWidget):
@@ -114,6 +114,7 @@ class SwitchBtn(QWidget):
         painter.save()
         if self.checked:
             painter.setBrush(self.sliderColorOn)
+            painter.setPen(QPen(self.sliderColorOn, 1))
         else:
             painter.setBrush(self.sliderColorOff)
 

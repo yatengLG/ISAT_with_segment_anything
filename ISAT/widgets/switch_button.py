@@ -114,7 +114,6 @@ class SwitchBtn(QWidget):
         painter.save()
         if self.checked:
             painter.setBrush(self.sliderColorOn)
-            painter.setPen(QPen(self.sliderColorOn, 1))
         else:
             painter.setBrush(self.sliderColorOff)
 

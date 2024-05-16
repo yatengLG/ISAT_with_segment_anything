@@ -150,21 +150,6 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             else:
                 check_box.setChecked(False)
 
-        self.zoom_to_group()
-
-        if self.mainwindow.group_select_mode == 'track':
-            try:
-                if self.comboBox_group_select.currentText() == "All":
-                    max_group = self.comboBox_group_select.itemText(len(self.comboBox_group_select)-1)
-                    self.mainwindow.current_group = max_group
-                    self.mainwindow.update_group_display()
-                else:
-                    group = int(self.comboBox_group_select.currentText())
-                    self.mainwindow.current_group = group
-                    self.mainwindow.update_group_display()
-            except:
-                pass
-
     def zoom_to_group(self):
         selected_group = self.comboBox_group_select.currentText()
         if selected_group == '':
@@ -190,10 +175,37 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         if current_index < max_index:
             self.comboBox_group_select.setCurrentIndex(current_index + 1)
             self.set_group_polygon_visible()
-            
+            self.zoom_to_group()
+
+        if self.mainwindow.group_select_mode == 'track':
+            try:
+                if self.comboBox_group_select.currentText() == "All":
+                    max_group = self.comboBox_group_select.itemText(len(self.comboBox_group_select) - 1)
+                    self.mainwindow.current_group = max_group
+                    self.mainwindow.update_group_display()
+                else:
+                    group = int(self.comboBox_group_select.currentText())
+                    self.mainwindow.current_group = group
+                    self.mainwindow.update_group_display()
+            except:
+                pass
+
     def go_to_prev_group(self):
         current_index = self.comboBox_group_select.currentIndex()
         if current_index > 0:
             self.comboBox_group_select.setCurrentIndex(current_index - 1)
             self.set_group_polygon_visible()
+            self.zoom_to_group()
 
+        if self.mainwindow.group_select_mode == 'track':
+            try:
+                if self.comboBox_group_select.currentText() == "All":
+                    max_group = self.comboBox_group_select.itemText(len(self.comboBox_group_select) - 1)
+                    self.mainwindow.current_group = max_group
+                    self.mainwindow.update_group_display()
+                else:
+                    group = int(self.comboBox_group_select.currentText())
+                    self.mainwindow.current_group = group
+                    self.mainwindow.update_group_display()
+            except:
+                pass

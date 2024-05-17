@@ -218,6 +218,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.labelGPUResource.setText('cpu')
             else:
                 self.labelGPUResource.setText('segment anything unused.')
+            tooltip = 'model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
+            tooltip += '\ntorch: {}'.format(torch.__version__)
+            if self.segany.device == 'cuda':
+                try:
+                    tooltip += '\ncuda : {}'.format(torch.version.cuda)
+                except: pass
+            self.labelGPUResource.setToolTip(tooltip)
 
             self.seganythread = SegAnyThread(self)
             self.seganythread.tag.connect(self.sam_encoder_finish)

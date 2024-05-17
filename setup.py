@@ -45,7 +45,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
 
-    python_requires=">=3.7",                            # python 版本要求
+    python_requires=">=3.8",                            # python 版本要求
     install_requires=[
         'imgviz',
         'scikit-image',

@@ -83,6 +83,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.set_labels_visible(False)
         self.mainwindow.annos_dock_widget.setEnabled(False)
+        self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
 
         self.mainwindow.modeState.setText('C')
         self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Create mode.'))
@@ -111,6 +112,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionVisible.setEnabled(True)
+        self.mainwindow.polygon_repaint_shortcut.setEnabled(True)
 
         self.mainwindow.set_labels_visible(True)
         self.mainwindow.annos_dock_widget.setEnabled(True)
@@ -143,6 +145,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
         self.mainwindow.actionVisible.setEnabled(True)
+        self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
 
         self.mainwindow.modeState.setText('E')
         self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Edit mode.'))

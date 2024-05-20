@@ -327,7 +327,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 新增手动/自动 选择group
         self.next_group_shortcut.activated.connect(self.annos_dock_widget.go_to_next_group)
         self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)           
-               
+
         self.scene = AnnotationScene(mainwindow=self)
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)

@@ -1018,13 +1018,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         save_path = os.path.join(os.getcwd(), image_name)
 
         if type == 'scene':
+            try:
+                self.scene.guide_line_x.setVisible(False)
+                self.scene.guide_line_y.setVisible(False)
+            except: pass
             image = QtGui.QImage(self.scene.sceneRect().size().toSize(), QtGui.QImage.Format_ARGB32)
             painter = QtGui.QPainter(image)
             self.scene.render(painter)
             painter.end()
             image.save(save_path)
             self.statusbar.showMessage('Save scene screenshot to {}'.format(save_path), 3000)
-
+            try:
+                self.scene.guide_line_x.setVisible(True)
+                self.scene.guide_line_y.setVisible(True)
+            except: pass
         elif type == 'window':
             image = QtGui.QImage(self.size(), QtGui.QImage.Format_ARGB32)
             painter = QtGui.QPainter(image)

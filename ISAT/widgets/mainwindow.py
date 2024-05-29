@@ -33,7 +33,6 @@ import torch
 import cv2  # 调整图像饱和度
 import datetime
 
-
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
     def __init__(self, mainwindow):
@@ -144,6 +143,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.load_finished = False
         self.polygons:list = []
 
+        self.auto_save_anns = False
+        self.actionAutoSave.toggled.connect(self.toggle_auto_save)
+        self.actionAutoSave.setChecked(self.auto_save_anns)
+
         self.png_palette = None # 图像拥有调色盘，说明是单通道的标注png文件
         self.instance_cmap = imgviz.label_colormap()
         self.map_mode = MAPMode.LABEL
@@ -163,6 +166,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # sam初始化线程，大模型加载较慢
         self.init_segany_thread = InitSegAnyThread(self)
         self.init_segany_thread.tag.connect(self.init_sam_finish)
+
+    def toggle_auto_save(self, checked):
+        self.auto_save_anns = checked
 
     def init_segment_anything(self, model_name=None):
         if not self.saved:
@@ -599,6 +605,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
 
+        # 当开启自动保存时，重新打开文件夹，自动保存之前未保存的标注
+        if not self.saved and self.auto_save_anns:
+            self.save()
+
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()
 
@@ -773,9 +783,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                return
+            if self.auto_save_anns:
+                self.save()
+            else:
+                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.No:
+                    return
         self.current_index = self.current_index - 1
         if self.current_index < 0:
             self.current_index = 0
@@ -789,9 +802,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                return
+            if self.auto_save_anns:
+                self.save()
+            else:
+                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.No:
+                    return
         self.current_index = self.current_index + 1
         if self.current_index > len(self.files_list)-1:
             self.current_index = len(self.files_list)-1
@@ -800,6 +816,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
     def jump_to(self):
+        if self.auto_save_anns:
+            self.save()
         index = self.files_dock_widget.lineEdit_jump.text()
         if index:
             if not index.isdigit():

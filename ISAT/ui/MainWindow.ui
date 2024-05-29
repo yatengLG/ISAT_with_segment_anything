@@ -176,6 +176,7 @@
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
+    <addaction name="actionAutoSave"/>
    </widget>
    <widget class="QMenu" name="menuMode">
     <property name="font">
@@ -432,6 +433,14 @@
    </property>
    <property name="shortcut">
     <string>S</string>
+   </property>
+  </action>
+   <action name="actionAutoSave">
+   <property name="text">
+    <string>Auto save</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionPrev">

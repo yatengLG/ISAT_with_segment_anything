@@ -1015,6 +1015,11 @@
         <translation>保存</translation>
     </message>
     <message>
+        <location filename="MainWindow.py" line="425"/>
+        <source>Auto save</source>
+        <translation>自动保存标注</translation>
+    </message>
+    <message>
         <location filename="MainWindow.py" line="420"/>
         <source>S</source>
         <translation></translation>

@@ -14,6 +14,7 @@
 12. [Move and delete vertexs](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#12move-and-delete-vertexs)
 13. [Sam features cache](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#13Sam-features-cache)
 14. [Model manager](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#14Model-manager)
+15. [Repaint](https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/features%20description.md#15Repaint)
 
 # 1.Language switching
 The software provides two interfaces, Chinese and English, which can be switched at any time.
@@ -113,3 +114,9 @@ Add encoding state before file list.
 ![模型下载.gif](../display/模型下载.gif)
 - support multithread download.
 - support pause and breakpoint transmission.
+
+# 15.Repaint
+Shortcut R change to repaint mode. Select one vertex to start repaint and select another vertex to end repaint. 
+
+![重绘.gif](../display/重绘.gif)
+

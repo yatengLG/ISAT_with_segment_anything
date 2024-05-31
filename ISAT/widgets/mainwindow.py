@@ -16,6 +16,7 @@ from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
+from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
 from ISAT.annotation import Object, Annotation
@@ -344,6 +345,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
+        self.annos_validator_dialog = AnnosValidatorDialog(self, self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -491,6 +493,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
+        self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
 
         # 手动添加翻译 ------
         _translate = QtCore.QCoreApplication.translate
@@ -1007,6 +1010,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'Select a sam model before auto segment.')
 
+    def annos_validator(self):
+        self.annos_validator_dialog.show()
+
     def help(self):
         self.shortcut_dialog.show()
 
@@ -1095,6 +1101,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionConverter.triggered.connect(self.converter)
         self.actionAuto_segment.triggered.connect(self.auto_segment)
+        self.actionAnno_validator.triggered.connect(self.annos_validator)
 
         self.actionShortcut.triggered.connect(self.help)
         self.actionAbout.triggered.connect(self.about)

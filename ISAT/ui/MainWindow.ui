@@ -153,6 +153,7 @@
     <addaction name="separator"/>
     <addaction name="actionConverter"/>
     <addaction name="actionAuto_segment"/>
+    <addaction name="actionAnno_validator"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -829,6 +830,11 @@
    </property>
    <property name="text">
     <string>Auto segment with bounding box</string>
+   </property>
+  </action>
+  <action name="actionAnno_validator">
+   <property name="text">
+    <string>Annos validator</string>
    </property>
   </action>
  </widget>

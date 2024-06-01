@@ -45,7 +45,7 @@ class VOC(ISAT):
         height = info.height
         depth = info.depth
         note = info.note
-        img = np.zeros(shape=(height, width), dtype=np.uint8)
+        img = np.zeros(shape=(int(height), int(width)), dtype=np.uint8)
 
         objects = sorted(objects, key=lambda obj:obj.layer)
 

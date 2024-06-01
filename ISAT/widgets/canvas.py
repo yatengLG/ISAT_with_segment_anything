@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
+from itertools import chain
 from PyQt5 import QtWidgets, QtGui, QtCore
+import shapely.ops
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 from PIL import Image
 import numpy as np
 import cv2
 import time  # 拖动鼠标描点
+import keyboard
+import shapely
+from shapely.geometry import Polygon as PO,MultiPolygon
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
@@ -235,7 +240,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         group = self.mainwindow.current_group
         is_crowd = False
         note = ''
-
+        # 计算用临时变量
+        oldPolygonCount = len(self.mainwindow.polygons)
         if self.draw_mode == DRAWMode.SEGMENTANYTHING:
             # mask to polygon
             # --------------
@@ -338,6 +344,63 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.current_graph.setZValue(len(self.mainwindow.polygons))
             for vertex in self.current_graph.vertexs:
                 vertex.setZValue(len(self.mainwindow.polygons))
+        
+        # 若启用扁平化选区,则可进行选区交互: 并(默认),减(Shift),交(Alt),异或(Shift+Alt)
+        # 仅针对同标签选区进行扁平化
+        # 核心是使用Shapely库进行区域处理
+        if self.isFlattenSelection :
+            shift = keyboard.is_pressed("Shift")
+            alt = keyboard.is_pressed("Alt")
+            secToShapely = lambda it:list(map(lambda it: PO((lambda x: [] if len(x)<3 else x )(list(map(lambda it:[it.x(),it.y()],it.points)))),it))
+            # 对同标签选区,注意 我在前文中加了个临时变量 oldPolygonCount
+            add_count = len(self.mainwindow.polygons) - oldPolygonCount
+            sec = list(it for it in self.mainwindow.polygons if it.category == category)
+            sec_old = sec[0:-add_count]
+            sec_new = sec[-add_count:]
+            secOldShapely = secToShapely(sec_old)
+            secNewShapely = secToShapely(sec_new)
+            # 移除旧多边形
+            for polygon in sec :
+                polygons = self.mainwindow.polygons
+                if polygon in polygons:
+                    polygons.remove(polygon)
+                    polygon.delete()
+                if polygon in self.items():
+                    self.removeItem(polygon)
+                del polygon
+            # 计算合并区域
+            old: MultiPolygon = MultiPolygon(secOldShapely).buffer(0)
+            new: MultiPolygon = MultiPolygon(secNewShapely).buffer(0)
+            union : MultiPolygon = new
+            if not old.is_empty and not new.is_empty :
+                # 增
+                if not shift and not alt :
+                    union = old.union(new) 
+                # 减
+                if shift and not alt :
+                    union = old.difference(new)
+                # 交
+                if not shift and alt :
+                    union = old.intersection(new)
+                # 异或
+                if shift and alt :
+                    union = old.symmetric_difference(new)
+            # 添加处理结果
+            geoms = [union] if isinstance(union, PO) else list(union.geoms) if isinstance(union, MultiPolygon) else [union]
+            geoms = [it for it in geoms if not it.is_empty and it.is_valid and isinstance(it,PO)]
+            for geo in geoms :
+                merge = Polygon()
+                self.addItem(merge) #先挂载其上下文,Polygon内部函数均建立在已挂载的前提上
+                ring = list(chain.from_iterable(map(lambda it:zip(it[::2],it[1::2]),geo.exterior.coords._coords)))
+                list(map(lambda it: merge.addPoint(QtCore.QPointF(it[0], it[1])),ring))
+                merge.set_drawed(category,
+                    group,
+                    is_crowd,
+                    note,
+                    QtGui.QColor(self.mainwindow.category_color_dict[category]),
+                    self.top_layer)
+                self.mainwindow.polygons.append(merge)
+
         # 选择类别
         # self.mainwindow.category_choice_widget.load_cfg()
         # self.mainwindow.category_choice_widget.show()

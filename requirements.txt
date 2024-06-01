@@ -9,3 +9,5 @@ torch>=2.1.1
 torchvision
 numpy
 pycocotools
+shapely
+keyboard

@@ -1415,6 +1415,16 @@
         <translation>轮廓模式</translation>
     </message>
     <message>
+        <location filename="MainWindow.py" line="403"/>
+        <source>Flatten selection</source>
+        <translation>扁平化选区</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="404"/>
+        <source>Flatten selection tips</source>
+        <translation>在完成选区时,默认求并,按Shift求减,按Alt求交,按Shift+Alt求异或</translation>
+    </message>
+    <message>
         <location filename="MainWindow.py" line="395"/>
         <source>SAM</source>
         <translation></translation>

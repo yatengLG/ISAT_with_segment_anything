@@ -541,6 +541,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['contour_mode'] = contour_mode
         self.change_contour_mode(contour_mode)
 
+        flatten_selection = software_cfg.get('flatten_selection', False)
+        self.cfg['software']['flatten_selection'] = flatten_selection
+        self.menuFlatten_selection.setChecked(flatten_selection)
+        self.change_flatten_selection()
+
         mask_alpha = software_cfg.get('mask_alpha', 0.5)
         self.cfg['software']['mask_alpha'] = mask_alpha
         self.mask_aplha.setValue(int(mask_alpha*10))
@@ -1080,6 +1085,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionCancel.triggered.connect(self.scene.cancel_draw)
         self.actionBackspace.triggered.connect(self.scene.backspace)
         self.actionFinish.triggered.connect(self.scene.finish_draw)
+        self.actionFinishShift.triggered.connect(self.scene.finish_draw)
+        self.actionFinishAlt.triggered.connect(self.scene.finish_draw)
+        self.actionFinishShiftAlt.triggered.connect(self.scene.finish_draw)
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)
         self.actionSave.triggered.connect(self.save)
@@ -1109,7 +1117,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionChinese.triggered.connect(self.translate_to_chinese)
         self.actionEnglish.triggered.connect(self.translate_to_english)
 
+        self.menuFlatten_selection.triggered.connect(self.change_flatten_selection)
+
         self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
+    def change_flatten_selection(self):
+        checked = self.menuFlatten_selection.isChecked()
+        self.scene.isFlattenSelection = checked
+        self.cfg['software']['flatten_selection'] = checked
+        self.save_software_cfg()
 
     def reset_action(self):
         self.actionPrev.setEnabled(False)

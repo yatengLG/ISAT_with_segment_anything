@@ -8,6 +8,7 @@ from PIL import Image
 import numpy as np
 import cv2
 import time  # 拖动鼠标描点
+import shapely
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
@@ -36,6 +37,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.last_draw_time = time.time()
         self.draw_interval = 0.15
         self.pressd = False
+
+        #
+        self.selected_polygons_list = list()
 
         self.repaint_start_vertex = None
         self.repaint_end_vertex = None
@@ -77,6 +81,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionTo_top.setEnabled(False)
         self.mainwindow.actionTo_bottom.setEnabled(False)
         self.mainwindow.actionEdit.setEnabled(False)
+        self.mainwindow.actionCopy.setEnabled(False)
+        self.mainwindow.actionUnion.setEnabled(False)
+        self.mainwindow.actionSubtract.setEnabled(False)
+        self.mainwindow.actionIntersect.setEnabled(False)
+        self.mainwindow.actionExclude.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(False)
         self.mainwindow.actionVisible.setEnabled(True)
@@ -109,6 +118,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionTo_top.setEnabled(False)
         self.mainwindow.actionTo_bottom.setEnabled(False)
         self.mainwindow.actionEdit.setEnabled(False)
+        self.mainwindow.actionCopy.setEnabled(False)
+        self.mainwindow.actionUnion.setEnabled(False)
+        self.mainwindow.actionSubtract.setEnabled(False)
+        self.mainwindow.actionIntersect.setEnabled(False)
+        self.mainwindow.actionExclude.setEnabled(False)
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionVisible.setEnabled(True)
@@ -142,6 +156,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionTo_top.setEnabled(True)
         self.mainwindow.actionTo_bottom.setEnabled(True)
         self.mainwindow.actionEdit.setEnabled(True)
+        self.mainwindow.actionCopy.setEnabled(True)
+        self.mainwindow.actionUnion.setEnabled(True)
+        self.mainwindow.actionSubtract.setEnabled(True)
+        self.mainwindow.actionIntersect.setEnabled(True)
+        self.mainwindow.actionExclude.setEnabled(True)
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
         self.mainwindow.actionVisible.setEnabled(True)
@@ -175,10 +194,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
 
-        self.mainwindow.actionTo_top.setEnabled(True)
-        self.mainwindow.actionTo_bottom.setEnabled(True)
-        self.mainwindow.actionEdit.setEnabled(True)
-        self.mainwindow.actionDelete.setEnabled(True)
+        self.mainwindow.actionTo_top.setEnabled(False)
+        self.mainwindow.actionTo_bottom.setEnabled(False)
+        self.mainwindow.actionEdit.setEnabled(False)
+        self.mainwindow.actionCopy.setEnabled(False)
+        self.mainwindow.actionUnion.setEnabled(False)
+        self.mainwindow.actionSubtract.setEnabled(False)
+        self.mainwindow.actionIntersect.setEnabled(False)
+        self.mainwindow.actionExclude.setEnabled(False)
+        self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(True)
         self.mainwindow.actionVisible.setEnabled(False)
 
@@ -390,6 +414,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         deleted_layer = None
         for item in self.selectedItems():
             if isinstance(item, Polygon) and (item in self.mainwindow.polygons):
+                if item in self.selected_polygons_list:
+                    self.selected_polygons_list.remove(item)
                 self.mainwindow.polygons.remove(item)
                 item.delete()
                 self.removeItem(item)
@@ -468,6 +494,244 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for vertex in current_polygon.vertexs:
                 vertex.setZValue(1)
         self.mainwindow.set_saved_state(False)
+
+    def copy_item(self):
+        for item in self.selectedItems():
+            if isinstance(item, Polygon):
+                index = self.mainwindow.polygons.index(item)
+                if self.current_graph is None:
+                    self.current_graph = Polygon()
+                    self.addItem(self.current_graph)
+
+                for point in item.vertexs:
+                    x, y = point.x(), point.y()
+                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                self.current_graph.set_drawed(item.category, item.group, item.iscrowd, item.note, item.color, item.zValue())
+                self.mainwindow.polygons.insert(index, self.current_graph)
+                self.mainwindow.annos_dock_widget.update_listwidget()
+                self.current_graph.setSelected(True)
+                self.current_graph = None
+            elif isinstance(item, Vertex):
+                polygon = item.polygon
+                index = polygon.vertexs.index(item)
+                point = QtCore.QPointF(item.x(), item.y())
+
+                polygon.points.insert(index, point)
+                vertex = Vertex(self, polygon.color, self.mainwindow.cfg['software']['vertex_size'] * 2)
+                self.addItem(vertex)
+                polygon.vertexs.insert(index, vertex)
+                vertex.setPos(point)
+
+    # 感谢[XieDeWu](https://github.com/XieDeWu)提的有关交、并、差、异或的[建议](https://github.com/yatengLG/ISAT_with_segment_anything/issues/167)。
+    def polygons_union(self):
+        if len(self.selected_polygons_list) == 2:
+            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
+
+            category = self.selected_polygons_list[0].category
+            group = self.selected_polygons_list[0].group
+            iscrowd = self.selected_polygons_list[0].iscrowd
+            note = self.selected_polygons_list[0].note
+            layer = self.selected_polygons_list[0].zValue()
+            color = self.selected_polygons_list[0].color
+
+            try:
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                return_shapely = polygon1_shapely.union(polygon2_shapely)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
+                return
+
+            if isinstance(return_shapely, shapely.Polygon):
+
+                # 创建新多边形
+                if self.current_graph is None:
+                    self.current_graph = Polygon()
+                    self.addItem(self.current_graph)
+
+                for point in return_shapely.exterior.coords:
+                    x, y = point[0], point[1]
+                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                self.mainwindow.polygons.insert(index, self.current_graph)
+                self.current_graph = None
+
+                # 删除旧的多边形
+                for polygon_item in self.selected_polygons_list:
+                    self.mainwindow.polygons.remove(polygon_item)
+                    polygon_item.delete()
+                    self.removeItem(polygon_item)
+                    del polygon_item
+                self.selected_polygons_list.clear()
+
+                self.mainwindow.annos_dock_widget.update_listwidget()
+
+    def polygons_difference(self):
+        if len(self.selected_polygons_list) == 2:
+            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
+
+            category = self.selected_polygons_list[0].category
+            group = self.selected_polygons_list[0].group
+            iscrowd = self.selected_polygons_list[0].iscrowd
+            note = self.selected_polygons_list[0].note
+            layer = self.selected_polygons_list[0].zValue()
+            color = self.selected_polygons_list[0].color
+            try:
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                return_shapely = polygon1_shapely.difference(polygon2_shapely)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
+                return
+
+            if isinstance(return_shapely, shapely.Polygon):
+                if self.current_graph is None:
+                    self.current_graph = Polygon()
+                    self.addItem(self.current_graph)
+
+                for point in return_shapely.exterior.coords:
+                    x, y = point[0], point[1]
+                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                self.mainwindow.polygons.insert(index, self.current_graph)
+                self.current_graph = None
+
+            elif isinstance(return_shapely, shapely.MultiPolygon):
+                for return_shapely_polygon in return_shapely.geoms:
+                    if self.current_graph is None:
+                        self.current_graph = Polygon()
+                        self.addItem(self.current_graph)
+
+                    for point in return_shapely_polygon.exterior.coords:
+                        x, y = point[0], point[1]
+                        self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                    self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                    self.mainwindow.polygons.insert(index, self.current_graph)
+                    self.current_graph = None
+
+            # 删除旧的多边形
+            for polygon_item in self.selected_polygons_list:
+                self.mainwindow.polygons.remove(polygon_item)
+                polygon_item.delete()
+                self.removeItem(polygon_item)
+                del polygon_item
+            self.selected_polygons_list.clear()
+
+            self.mainwindow.annos_dock_widget.update_listwidget()
+
+    def polygons_intersection(self):
+        if len(self.selected_polygons_list) == 2:
+            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
+
+            category = self.selected_polygons_list[0].category
+            group = self.selected_polygons_list[0].group
+            iscrowd = self.selected_polygons_list[0].iscrowd
+            note = self.selected_polygons_list[0].note
+            layer = self.selected_polygons_list[0].zValue()
+            color = self.selected_polygons_list[0].color
+            try:
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                return_shapely = polygon1_shapely.intersection(polygon2_shapely)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
+                return
+
+            if isinstance(return_shapely, shapely.Polygon):
+                if self.current_graph is None:
+                    self.current_graph = Polygon()
+                    self.addItem(self.current_graph)
+
+                for point in return_shapely.exterior.coords:
+                    x, y = point[0], point[1]
+                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                self.mainwindow.polygons.insert(index, self.current_graph)
+                self.current_graph = None
+
+            elif isinstance(return_shapely, shapely.MultiPolygon):
+                for return_shapely_polygon in return_shapely.geoms:
+                    if self.current_graph is None:
+                        self.current_graph = Polygon()
+                        self.addItem(self.current_graph)
+
+                    for point in return_shapely_polygon.exterior.coords:
+                        x, y = point[0], point[1]
+                        self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                    self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                    self.mainwindow.polygons.insert(index, self.current_graph)
+                    self.current_graph = None
+
+            # 删除旧的多边形
+            for polygon_item in self.selected_polygons_list:
+                self.mainwindow.polygons.remove(polygon_item)
+                polygon_item.delete()
+                self.removeItem(polygon_item)
+                del polygon_item
+            self.selected_polygons_list.clear()
+
+            self.mainwindow.annos_dock_widget.update_listwidget()
+
+    def polygons_symmetric_difference(self):
+        if len(self.selected_polygons_list) == 2:
+            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
+
+            category = self.selected_polygons_list[0].category
+            group = self.selected_polygons_list[0].group
+            iscrowd = self.selected_polygons_list[0].iscrowd
+            note = self.selected_polygons_list[0].note
+            layer = self.selected_polygons_list[0].zValue()
+            color = self.selected_polygons_list[0].color
+            try:
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                return_shapely = polygon1_shapely.symmetric_difference(polygon2_shapely)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
+                return
+
+            if isinstance(return_shapely, shapely.Polygon):
+                if self.current_graph is None:
+                    self.current_graph = Polygon()
+                    self.addItem(self.current_graph)
+
+                for point in return_shapely.exterior.coords:
+                    x, y = point[0], point[1]
+                    self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                self.mainwindow.polygons.insert(index, self.current_graph)
+                self.current_graph = None
+
+            elif isinstance(return_shapely, shapely.MultiPolygon):
+                for return_shapely_polygon in return_shapely.geoms:
+                    if self.current_graph is None:
+                        self.current_graph = Polygon()
+                        self.addItem(self.current_graph)
+
+                    for point in return_shapely_polygon.exterior.coords:
+                        x, y = point[0], point[1]
+                        self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                    self.current_graph.set_drawed(category, group, iscrowd, note, color, layer)
+                    self.mainwindow.polygons.insert(index, self.current_graph)
+                    self.current_graph = None
+
+            # 删除旧的多边形
+            for polygon_item in self.selected_polygons_list:
+                self.mainwindow.polygons.remove(polygon_item)
+                polygon_item.delete()
+                self.removeItem(polygon_item)
+                del polygon_item
+            self.selected_polygons_list.clear()
+
+            self.mainwindow.annos_dock_widget.update_listwidget()
 
     def mousePressEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
         sceneX, sceneY = event.scenePos().x(), event.scenePos().y()

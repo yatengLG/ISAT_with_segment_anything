@@ -353,6 +353,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.right_button_menu = RightButtonMenu(mainwindow=self)
         self.right_button_menu.addAction(self.actionEdit)
+        self.right_button_menu.addAction(self.actionCopy)
         self.right_button_menu.addAction(self.actionTo_top)
         self.right_button_menu.addAction(self.actionTo_bottom)
         self.right_button_menu.addAction(self.actionDelete)
@@ -1085,6 +1086,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSave.triggered.connect(self.save)
         self.actionTo_top.triggered.connect(self.scene.move_polygon_to_top)
         self.actionTo_bottom.triggered.connect(self.scene.move_polygon_to_bottom)
+        self.actionCopy.triggered.connect(self.scene.copy_item)
+        self.actionUnion.triggered.connect(self.scene.polygons_union)
+        self.actionSubtract.triggered.connect(self.scene.polygons_difference)
+        self.actionIntersect.triggered.connect(self.scene.polygons_intersection)
+        self.actionExclude.triggered.connect(self.scene.polygons_symmetric_difference)
 
         self.actionZoom_in.triggered.connect(self.view.zoom_in)
         self.actionZoom_out.triggered.connect(self.view.zoom_out)
@@ -1123,3 +1129,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionTo_bottom.setEnabled(False)
         self.actionBit_map.setChecked(False)
         self.actionBit_map.setEnabled(False)
+        self.actionCopy.setEnabled(False)
+        self.actionUnion.setEnabled(False)
+        self.actionSubtract.setEnabled(False)
+        self.actionIntersect.setEnabled(False)
+        self.actionExclude.setEnabled(False)

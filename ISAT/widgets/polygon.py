@@ -171,9 +171,11 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
                 color = QtGui.QColor('#00A0FF')
                 color.setAlpha(self.hover_alpha)
                 self.setBrush(color)
+                self.scene().selected_polygons_list.append(self)
             else:
                 self.color.setAlpha(self.nohover_alpha)
                 self.setBrush(self.color)
+                self.scene().selected_polygons_list.remove(self)
             self.scene().mainwindow.annos_dock_widget.set_selected(self) # 更新label面板
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange: # ItemPositionHasChanged
@@ -248,6 +250,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.setBrush(self.color)
         if layer is not None:
             self.setZValue(layer)
+            for vertex in self.vertexs:
+                vertex.setZValue(layer)
         for vertex in self.vertexs:
             vertex.setColor(color)
 

@@ -1,5 +1,13 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/检查_inspection.svg</file>
+    <file>../icons/截屏_screenshot-two.svg</file>
+    <file>../icons/编辑撰写_writing-fluently.svg</file>
+    <file>../icons/相交选择_intersect-selection.svg</file>
+    <file>../icons/排除选择_exclude-selection.svg</file>
+    <file>../icons/合并选择_union-selection.svg</file>
+    <file>../icons/减去上一层_subtract-selection-one.svg</file>
+    <file>../icons/复制_copy.svg</file>
     <file>../icons/ISAT11_100.svg</file>
     <file>../icons/VOC_32x32.png</file>
     <file>../icons/semantic.png</file>

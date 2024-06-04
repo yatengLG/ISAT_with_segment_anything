@@ -58,7 +58,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Annotation file validation"))
+        Dialog.setWindowTitle(_translate("Dialog", "Annos validator"))
         self.lineEdit_json_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
         self.pushButton_json_root.setText(_translate("Dialog", "json root"))
         self.pushButton_start.setText(_translate("Dialog", "Start"))

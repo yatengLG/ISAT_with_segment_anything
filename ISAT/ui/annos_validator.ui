@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Annotation file validation</string>
+   <string>Annos validator</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

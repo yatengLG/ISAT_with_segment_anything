@@ -99,3 +99,14 @@
 * 更新了基于bounding box的自动分割功能
 
 基于标注完成的VOC格式目标检测数据，使用标注框进行sam框提示，自动分割图像并存储为ISAT格式json。
+
+
+## 1.1.0
+
+- 添加了isat 标注检查器，用于检测存在问题的标注文件。
+  
+  [Alias-z](https://github.com/Alias-z)在使用[sahi](https://github.com/obss/sahi)过程中发现了该问题
+  
+- 添加了对多边形的交集、并集、差集、异或计算。
+
+  感谢[XieDeWu](https://github.com/XieDeWu)提的建议。

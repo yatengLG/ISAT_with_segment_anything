@@ -1,13 +1,9 @@
-Welcome to Lumache's documentation!
+Welcome to the documentation of ISAT-SAM!
+
 ===================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with [Segment Anything](https://github.com/facebookresearch/segment-anything)
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
 
 .. note::
 
@@ -18,5 +14,5 @@ Contents
 
 .. toctree::
 
+   installation
    usage
-   api

@@ -1,11 +1,10 @@
 Welcome to ISAT-SAM's documentation!
 ====================================
 
-**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with Segment Anything Model
+**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_
 
 .. image:: ../../../display/标注.gif
-   :alt: alternate text
-
+   :alt: Software demo
 
 | The annotations are stored in ISAT json format, similar to MSCOCO:
 
@@ -34,9 +33,9 @@ Check :doc:`features` for full features demonstration. Or click :doc:`usage` to 
 
    This project is under active development. Feedbacks are Welcome!
 
-
+Contents
+====================================
 .. toctree::
-   :hidden:
    features
    usage
 

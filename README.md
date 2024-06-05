@@ -207,11 +207,12 @@ ISAT has a specific format with .json. You can use export it to other formarts.
 
 # Citation
 ```text
-@misc{ISAT with segment anything,
-  title={{ISAT with segment anything}: An Interactive Semi-Automatic Annotation Tool Based on Segment Anything},
+@misc{ISAT_with_segment_anything,
+  title={{ISAT with Segment Anything: An Interactive Semi-Automatic Annotation Tool}},
+  author={Ji, Shuwei and Zhang, Hongyuan},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
-  note={Open source software available from https://github.com/yatengLG/ISAT_with_segment_anything},
-  author={yatengLG, Alias-z and horffmanwang},
+  note={Updated on 2023-06-03},
   year={2023},
+  version={1.10}
 }
 ```

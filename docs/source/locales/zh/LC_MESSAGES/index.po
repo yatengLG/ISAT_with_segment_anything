@@ -15,7 +15,7 @@ msgstr ""
 
 #: ../../index.rst:2
 msgid "Welcome to ISAT-SAM's documentation!"
-msgstr ""
+msgstr "欢迎查阅ISAT-SAM的文档！"
 
 #: ../../index.rst:4
 msgid ""
@@ -23,14 +23,15 @@ msgid ""
 "`Segment Anything Model <https://github.com/facebookresearch/segment-"
 "anything>`_"
 msgstr ""
+"**ISAT-SAM** 是一款基于 `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_ 的交互式半自动图像分割标注工具 "
 
 #: ../../index.rst:-1
 msgid "Software demo"
-msgstr ""
+msgstr "软件demo"
 
 #: ../../index.rst:9
 msgid "The annotations are stored in ISAT json format, similar to MSCOCO:"
-msgstr ""
+msgstr "标注文件储存在类似MSCOCO格式的json文件里："
 
 #: ../../index.rst:17
 msgid "**info**:"
@@ -53,6 +54,7 @@ msgid ""
 "**width**, **height**, **depth**: The dimensions of the image; depth is 3"
 " for RGB images"
 msgstr ""
+"**width**, **height**, **depth**: 图片的尺寸和深度; RGB图为3通道深度"
 
 #: ../../index.rst:17
 msgid "**note**: An optional field for any additional notes related to the image"
@@ -67,6 +69,7 @@ msgid ""
 "**category**: The class label of the object. If the category_id from "
 "MSCOCO does not have a corresponding entry, 'unknown' is used"
 msgstr ""
+"**category**: 标注的种类 "
 
 #: ../../index.rst:21
 msgid ""
@@ -74,12 +77,16 @@ msgid ""
 "bounding boxes. If an object's bounding box is within another, they share"
 " the same group number. Group numbering starts at 1"
 msgstr ""
+"**group**: 分组， 从1开始计算 "
+
 
 #: ../../index.rst:22
 msgid ""
 "**segmentation**: A list of [x, y] coordinates forming the polygon around"
 " the object, e.g. [[x1, y1], [x2, y2], ..., [xn, yn]]"
 msgstr ""
+"**segmentation**: 分割的坐标点 [[x1, y1], [x2, y2], ..., [xn, yn]]"
+
 
 #: ../../index.rst:23
 msgid "**area**: The area covered by the object in pixels"
@@ -89,23 +96,27 @@ msgstr "**area**：对象覆盖的像素区域"
 msgid ""
 "**layer**: A float indicating the sequence of the object. It increments "
 "within the same group, starting at 1.0"
-msgstr ""
+msgstr "**layer**: 图层， 从1.0开始，每层 + 1"
 
 #: ../../index.rst:25
 msgid ""
 "**bbox**: The bounding box coordinates in the format [x_min, y_min, "
 "x_max, y_max]"
 msgstr ""
+"**bbox**: 边框格式 [x_min, y_min, x_max, y_max] "
 
 #: ../../index.rst:26
 msgid "**iscrowd**: A boolean value indicating if the object is part of a crowd"
-msgstr "**iscrowd**：布尔值，指示对象是否为人群的一部分"
+msgstr "**iscrowd**：布尔值，指示对象是否为群体"
 
 #: ../../index.rst:29
 msgid ""
 "Check :doc:`features` for full features demonstration. Or click "
 ":doc:`usage` to **get started!**"
 msgstr ""
+"点击 :doc:`features` 来查看功能演示。或者点击 "
+":doc:`usage` 来查看使用方法！"
+
 
 #: ../../index.rst:34
 msgid "This project is under active development. Feedbacks are Welcome!"

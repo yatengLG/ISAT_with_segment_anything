@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../usage.rst:2
+msgid "Installation"
+msgstr ""
+
+#: ../../usage.rst:4
+msgid "There are three ways to install ISAT-SAM:"
+msgstr ""
+
+#: ../../usage.rst:6
+msgid "from source code (recommended)"
+msgstr ""
+
+#: ../../usage.rst:7
+msgid "pip install"
+msgstr ""
+
+#: ../../usage.rst:8
+msgid "from .exe"
+msgstr ""
+
+#: ../../usage.rst:13
+msgid "Option 1: From Source Code"
+msgstr ""
+
+#: ../../usage.rst:15
+msgid "**Create environment** Use conda to set up a new environment:"
+msgstr ""
+
+#: ../../usage.rst:23
+msgid "**Install ISAT_with_segment_anything and its dependencies** To use GPU, please install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first."
+msgstr ""
+
+#: ../../usage.rst:32
+msgid "**Download Segment anything pretrained checkpoint** Download the checkpoint, and save it under: ``ISAT_with_segment_anything/ISAT/checkpoints``"
+msgstr ""
+
+#: ../../usage.rst:35
+msgid "After version 0.0.3, you can manage checkpoints within the GUI, click [menubar]-[SAM]-[Model manage] to open the GUI."
+msgstr ""
+
+#: ../../usage.rst:37
+msgid "Now support `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc."
+msgstr ""
+
+#: ../../usage.rst:39
+msgid "Pretrained Checkpoints"
+msgstr ""
+
+#: ../../usage.rst:42
+msgid "Model"
+msgstr ""
+
+#: ../../usage.rst:43
+msgid "Pretrained Checkpoint"
+msgstr ""
+
+#: ../../usage.rst:44
+msgid "Memory"
+msgstr ""
+
+#: ../../usage.rst:45
+msgid "Size"
+msgstr ""
+
+#: ../../usage.rst:46
+msgid "SAM"
+msgstr ""
+
+#: ../../usage.rst:47
+msgid "`sam_vit_h_4b8939.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:48
+msgid "7305M"
+msgstr ""
+
+#: ../../usage.rst:49
+#: ../../usage.rst:53
+#: ../../usage.rst:61
+msgid "2.6G"
+msgstr ""
+
+#: ../../usage.rst:51
+msgid "`sam_vit_l_0b3195.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:52
+msgid "5855M"
+msgstr ""
+
+#: ../../usage.rst:55
+msgid "`sam_vit_b_01ec64.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:56
+msgid "4149M"
+msgstr ""
+
+#: ../../usage.rst:57
+msgid "375M"
+msgstr ""
+
+#: ../../usage.rst:58
+msgid "sam-hq"
+msgstr ""
+
+#: ../../usage.rst:59
+msgid "`sam_hq_vit_h.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_h.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:60
+msgid "7393M"
+msgstr ""
+
+#: ../../usage.rst:63
+msgid "`sam_hq_vit_l.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_l.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:64
+msgid "5939M"
+msgstr ""
+
+#: ../../usage.rst:65
+msgid "1.3G"
+msgstr ""
+
+#: ../../usage.rst:67
+msgid "`sam_hq_vit_b.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_b.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:68
+msgid "4207M"
+msgstr ""
+
+#: ../../usage.rst:69
+msgid "379M"
+msgstr ""
+
+#: ../../usage.rst:71
+msgid "`sam_hq_vit_tiny.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:72
+msgid "1463M"
+msgstr ""
+
+#: ../../usage.rst:73
+msgid "43M"
+msgstr ""
+
+#: ../../usage.rst:74
+msgid "mobile-sam"
+msgstr ""
+
+#: ../../usage.rst:75
+msgid "`mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_"
+msgstr ""
+
+#: ../../usage.rst:76
+msgid "1375M"
+msgstr ""
+
+#: ../../usage.rst:77
+msgid "40M"
+msgstr ""
+
+#: ../../usage.rst:78
+msgid "edge-sam"
+msgstr ""
+
+#: ../../usage.rst:79
+msgid "`edge_sam.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:80
+#: ../../usage.rst:84
+msgid "960M"
+msgstr ""
+
+#: ../../usage.rst:81
+#: ../../usage.rst:85
+msgid "39M"
+msgstr ""
+
+#: ../../usage.rst:83
+msgid "`edge_sam_3x.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth>`_"
+msgstr ""
+
+#: ../../usage.rst:86
+msgid "sam-med"
+msgstr ""
+
+#: ../../usage.rst:87
+msgid "`sam-med2d_b.pth <https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link>`_"
+msgstr ""
+
+#: ../../usage.rst:88
+msgid "1500M"
+msgstr ""
+
+#: ../../usage.rst:89
+msgid "2.4G"
+msgstr ""
+
+#: ../../usage.rst:91
+msgid "**Run** Execute the main application:"
+msgstr ""
+
+#: ../../usage.rst:101
+msgid "Option 2: Pip Install"
+msgstr ""
+
+#: ../../usage.rst:103
+msgid "**Create environment** Use conda to create and activate a new environment:"
+msgstr ""
+
+#: ../../usage.rst:111
+msgid "**Install ISAT-SAM using pip** To use GPU, install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first:"
+msgstr ""
+
+#: ../../usage.rst:118
+msgid "**Run** Start the application via the command line:"
+msgstr ""
+
+#: ../../usage.rst:128
+msgid "Option 3: Install with .exe"
+msgstr ""
+
+#: ../../usage.rst:130
+msgid "**Download the .exe** The .exe version may be older than the source code version."
+msgstr ""
+
+#: ../../usage.rst:133
+msgid "Download three .zip files, total 2.7G"
+msgstr ""
+
+#: ../../usage.rst:134
+msgid "Download link: `Baidu Netdisk <https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ Code: ISAT"
+msgstr ""
+
+#: ../../usage.rst:136
+msgid "Click `main.exe` to run the tool."
+msgstr ""
+
+#: ../../usage.rst:138
+msgid "**Download Segment anything pretrained checkpoint** The download zip files contain `sam_hq_vit_tiny.pth`, but note this model may not support CPU. You can download `mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_ to test the tool."
+msgstr ""
+
+#: ../../usage.rst:142
+msgid "For using other models, refer to `Download Segment anything pretrained checkpoint <https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint>`_."
+msgstr ""

@@ -31,7 +31,7 @@ intersphinx_disabled_domains = ['std']
 templates_path = ['_templates']
 exclude_patterns = []
 
-language = 'en'
+language = 'zh'
 locale_dirs = ['locales/']
 gettext_compact = False
 

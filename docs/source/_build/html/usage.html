@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安装 &mdash; ISAT-SAM  文档</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2ccfc426"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="功能" href="features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ISAT-SAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="features.html">功能</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#option-1-from-source-code">方式1：源码运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#option-2-pip-install">方式2：pip安装 （版本略低于源码）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#option-3-install-with-exe">方式3：windows下exe运行 （版本严重落后于源码）</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ISAT-SAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">安装</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>安装<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>目前有三种安装方式</p>
+<ol class="arabic simple">
+<li><p>源码运行（推荐）</p></li>
+<li><p>通过pip安装</p></li>
+<li><p>通过exe安装</p></li>
+</ol>
+<hr class="docutils" />
+<section id="option-1-from-source-code">
+<h2>方式1：源码运行<a class="headerlink" href="#option-1-from-source-code" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>创建虚拟环境</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>isat_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
+conda<span class="w"> </span>activate<span class="w"> </span>isat_env
+</pre></div>
+</div>
+</li>
+<li><p>获取ISAT_with_segment_anything源码并安装依赖windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去  <a class="reference external" href="https://pytorch.org/">pytorch</a>  官网手动安装。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yatengLG/ISAT_with_segment_anything.git
+<span class="nb">cd</span><span class="w"> </span>ISAT_with_segment_anything
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p>下载Segment anything预训练模型： 保存到以下目录``ISAT_with_segment_anything/ISAT/checkpoints``</p>
+<p>软件提供了模型管理界面。通过[菜单栏]-[SAM]-[模型管理]打开界面（现已添加模型国内下载链接，点击下载按钮可直接进行下载）</p>
+<p>现在支持 <a class="reference external" href="https://github.com/facebookresearch/segment-anything">SAM</a>, <a class="reference external" href="https://github.com/SysCV/sam-hq">Sam-HQ</a>, <a class="reference external" href="https://github.com/ChaoningZhang/MobileSAM">MobileSAM</a>, 及 <a class="reference external" href="https://github.com/chongzhou96/EdgeSAM">EdgeSAM</a> 等模型</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">预训练模型权重</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>模型</p></th>
+<th class="head"><p>预训练模型权重</p></th>
+<th class="head"><p>内存</p></th>
+<th class="head"><p>大小</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SAM</p></td>
+<td><p><a class="reference external" href="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth">sam_vit_h_4b8939.pth</a></p></td>
+<td><p>7305M</p></td>
+<td><p>2.6G</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><a class="reference external" href="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth">sam_vit_l_0b3195.pth</a></p></td>
+<td><p>5855M</p></td>
+<td><p>2.6G</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><a class="reference external" href="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth">sam_vit_b_01ec64.pth</a></p></td>
+<td><p>4149M</p></td>
+<td><p>375M</p></td>
+</tr>
+<tr class="row-odd"><td><p>sam-hq</p></td>
+<td><p><a class="reference external" href="https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_h.pth">sam_hq_vit_h.pth</a></p></td>
+<td><p>7393M</p></td>
+<td><p>2.6G</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><a class="reference external" href="https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_l.pth">sam_hq_vit_l.pth</a></p></td>
+<td><p>5939M</p></td>
+<td><p>1.3G</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><a class="reference external" href="https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_b.pth">sam_hq_vit_b.pth</a></p></td>
+<td><p>4207M</p></td>
+<td><p>379M</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><a class="reference external" href="https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth">sam_hq_vit_tiny.pth</a></p></td>
+<td><p>1463M</p></td>
+<td><p>43M</p></td>
+</tr>
+<tr class="row-odd"><td><p>mobile-sam</p></td>
+<td><p><a class="reference external" href="https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt">mobile_sam.pt</a></p></td>
+<td><p>1375M</p></td>
+<td><p>40M</p></td>
+</tr>
+<tr class="row-even"><td><p>edge-sam</p></td>
+<td><p><a class="reference external" href="https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth">edge_sam.pth</a></p></td>
+<td><p>960M</p></td>
+<td><p>39M</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><a class="reference external" href="https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth">edge_sam_3x.pth</a></p></td>
+<td><p>960M</p></td>
+<td><p>39M</p></td>
+</tr>
+<tr class="row-even"><td><p>sam-med</p></td>
+<td><p><a class="reference external" href="https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link">sam-med2d_b.pth</a></p></td>
+<td><p>1500M</p></td>
+<td><p>2.4G</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>运行软件</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="option-2-pip-install">
+<h2>方式2：pip安装 （版本略低于源码）<a class="headerlink" href="#option-2-pip-install" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>创建虚拟环境</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>isat_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
+conda<span class="w"> </span>activate<span class="w"> </span>isat_env
+</pre></div>
+</div>
+</li>
+<li><p>windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去  <a class="reference external" href="https://pytorch.org/">pytorch</a>  官网手动安装。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>isat-sam
+</pre></div>
+</div>
+</li>
+<li><p>运行软件</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>isat-sam
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="option-3-install-with-exe">
+<h2>方式3：windows下exe运行 （版本严重落后于源码）<a class="headerlink" href="#option-3-install-with-exe" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>下载打包好的exe文件</p>
+<ul class="simple">
+<li><p>需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。</p></li>
+<li><p>下载链接: <a class="reference external" href="https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg">百度网盘</a> 密码: ISAT</p></li>
+</ul>
+<p>双击main.exe运行</p>
+</li>
+<li><p>下载Segment anything预训练模型打包后的软件，附带了 <cite>sam_hq_vit_tiny.pth</cite> ，便于直接使用 ( 近期有朋友反馈，sam_hq_vit_tiny.pth无法在CPU环境下运行，这是由于sam-hq模型权重保存的问题。请下载 <a class="reference external" href="https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt">mobile-sam.pt</a>  权重后选择mobile-sam模型 )</p>
+<p>如需使用精度更高的模型，请自行下载，并放置于ISAT/segment_any下(打包的exe为旧版本，还未更新)。下载地址同上</p>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="features.html" class="btn btn-neutral float-left" title="功能" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Shuwei Ji and Hongyuan Zhang。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

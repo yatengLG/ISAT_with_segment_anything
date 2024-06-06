@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>欢迎查阅ISAT-SAM的文档！ &mdash; ISAT-SAM  文档</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2ccfc426"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="功能" href="features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ISAT-SAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">功能</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">安装</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ISAT-SAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">欢迎查阅ISAT-SAM的文档！</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-isat-sam-s-documentation">
+<h1>欢迎查阅ISAT-SAM的文档！<a class="headerlink" href="#welcome-to-isat-sam-s-documentation" title="Link to this heading"></a></h1>
+<p><strong>ISAT-SAM</strong> 是一款基于 <a class="reference external" href="https://github.com/facebookresearch/segment-anything">Segment Anything Model</a> 的交互式半自动图像分割标注工具</p>
+<img alt="软件demo" src="_images/%E6%A0%87%E6%B3%A8.gif" />
+<div class="line-block">
+<div class="line">标注文件储存在类似MSCOCO格式的json文件里：</div>
+</div>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>info</strong>:</dt><dd><ul>
+<li><p><strong>description</strong>：始终为 'ISAT'</p></li>
+<li><p><strong>folder</strong>：存储图像的目录</p></li>
+<li><p><strong>name</strong>：图像文件的名称</p></li>
+<li><p><strong>width</strong>, <strong>height</strong>, <strong>depth</strong>: 图片的尺寸和深度; RGB图为3通道深度</p></li>
+<li><p><strong>note</strong>：注释, 与图像相关的任何附加说明的可选字段</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>objects</strong>：</dt><dd><ul>
+<li><p><strong>category</strong>: 标注的种类</p></li>
+<li><p><strong>group</strong>: 分组， 从1开始计算</p></li>
+<li><p><strong>segmentation</strong>: 分割的坐标点 [[x1, y1], [x2, y2], ..., [xn, yn]]</p></li>
+<li><p><strong>area</strong>：对象覆盖的像素区域</p></li>
+<li><p><strong>layer</strong>: 图层， 从1.0开始，每层 + 1</p></li>
+<li><p><strong>bbox</strong>: 边框格式 [x_min, y_min, x_max, y_max]</p></li>
+<li><p><strong>iscrowd</strong>：布尔值，指示对象是否为群体</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>点击 <a class="reference internal" href="features.html"><span class="doc">功能</span></a> 来查看功能演示。或者点击 <a class="reference internal" href="usage.html"><span class="doc">安装</span></a> 来查看使用方法！</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>该项目正在积极开发中。欢迎反馈！</p>
+</div>
+</section>
+<section id="contents">
+<h1>内容<a class="headerlink" href="#contents" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">功能</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features.html#annotation-modes">标注模式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#semi-automatic-annotation">半自动图像分割标注</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#manual-annotation">手动标注</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#annotation-adjustments">标注调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#polygon-adjustments">多边形调整</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#polygon-visualization">多边形可视化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#export-annotations">标注导出</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#supported-formats">支持的转换格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#language-switching">界面语言切换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#model-switching">模型切换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#contour-mode">轮廓保存模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#occlusion-adjustment">遮挡关系调整</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#quick-jump-to-image">图片快速跳转</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#statusbar-information">状态栏信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#preview-annotation-result">预览当前标注结果</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#import-export-config-file">配置文件导入导出</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#drag-to-draw">拖动鼠标描点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#quick-browsing">快速浏览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#detail-inspection">细节检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#move-and-delete-vertices">顶点批量移动与删除</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#sam-features-cache">SAM特性缓存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#model-manager">模型管理器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#repaint">重绘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#intersection-union-difference-and-xor">交集、并集、差集和异或</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#intersection">交集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#union">并集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#difference">差集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#xor-symmetric-difference">异或（对称差异）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-1-from-source-code">方式1：源码运行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-2-pip-install">方式2：pip安装 （版本略低于源码）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-3-install-with-exe">方式3：windows下exe运行 （版本严重落后于源码）</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="features.html" class="btn btn-neutral float-right" title="功能" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Shuwei Ji and Hongyuan Zhang。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

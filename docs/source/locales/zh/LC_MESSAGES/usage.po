@@ -20,37 +20,39 @@ msgstr ""
 
 #: ../../usage.rst:2
 msgid "Installation"
-msgstr ""
+msgstr "安装"
 
 #: ../../usage.rst:4
 msgid "There are three ways to install ISAT-SAM:"
-msgstr ""
+msgstr "目前有三种安装方式"
 
 #: ../../usage.rst:6
 msgid "from source code (recommended)"
-msgstr ""
+msgstr "源码运行（推荐）"
 
 #: ../../usage.rst:7
 msgid "pip install"
-msgstr ""
+msgstr "通过pip安装"
 
 #: ../../usage.rst:8
 msgid "from .exe"
-msgstr ""
+msgstr "通过exe安装"
 
 #: ../../usage.rst:13
 msgid "Option 1: From Source Code"
-msgstr ""
+msgstr "方式1：源码运行"
 
 #: ../../usage.rst:15
 msgid "**Create environment** Use conda to set up a new environment:"
-msgstr ""
+msgstr "创建虚拟环境 "
 
 #: ../../usage.rst:23
 msgid ""
 "**Install ISAT_with_segment_anything and its dependencies** To use GPU, "
 "please install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first."
 msgstr ""
+"获取ISAT_with_segment_anything源码并安装依赖"
+"windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去  `pytorch <https://pytorch.org/>`_  官网手动安装。"
 
 #: ../../usage.rst:32
 msgid ""
@@ -58,12 +60,15 @@ msgid ""
 "checkpoint, and save it under: "
 "``ISAT_with_segment_anything/ISAT/checkpoints``"
 msgstr ""
+"下载Segment anything预训练模型： 保存到以下目录"
+"``ISAT_with_segment_anything/ISAT/checkpoints``"
 
 #: ../../usage.rst:35
 msgid ""
 "After version 0.0.3, you can manage checkpoints within the GUI, click "
 "[menubar]-[SAM]-[Model manage] to open the GUI."
 msgstr ""
+"软件提供了模型管理界面。通过[菜单栏]-[SAM]-[模型管理]打开界面（现已添加模型国内下载链接，点击下载按钮可直接进行下载）"
 
 #: ../../usage.rst:37
 msgid ""
@@ -72,26 +77,30 @@ msgid ""
 "<https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM "
 "<https://github.com/chongzhou96/EdgeSAM>`_ etc."
 msgstr ""
+"现在支持 `SAM <https://github.com/facebookresearch/segment-"
+"anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM "
+"<https://github.com/ChaoningZhang/MobileSAM>`_, 及 `EdgeSAM "
+"<https://github.com/chongzhou96/EdgeSAM>`_ 等模型"
 
 #: ../../usage.rst:39
 msgid "Pretrained Checkpoints"
-msgstr ""
+msgstr "预训练模型权重"
 
 #: ../../usage.rst:42
 msgid "Model"
-msgstr ""
+msgstr "模型"
 
 #: ../../usage.rst:43
 msgid "Pretrained Checkpoint"
-msgstr ""
+msgstr "预训练模型权重"
 
 #: ../../usage.rst:44
 msgid "Memory"
-msgstr ""
+msgstr "内存"
 
 #: ../../usage.rst:45
 msgid "Size"
-msgstr ""
+msgstr "大小"
 
 #: ../../usage.rst:46
 msgid "SAM"
@@ -253,49 +262,53 @@ msgstr ""
 
 #: ../../usage.rst:91
 msgid "**Run** Execute the main application:"
-msgstr ""
+msgstr "运行软件"
 
 #: ../../usage.rst:101
 msgid "Option 2: Pip Install"
-msgstr ""
+msgstr "方式2：pip安装 （版本略低于源码）"
 
 #: ../../usage.rst:103
 msgid "**Create environment** Use conda to create and activate a new environment:"
-msgstr ""
+msgstr "创建虚拟环境 "
 
 #: ../../usage.rst:111
 msgid ""
 "**Install ISAT-SAM using pip** To use GPU, install `Pytorch-GPU "
 "<https://pytorch.org/>`_ on Windows OS first:"
 msgstr ""
+"windows系统下，通过pip安装的pytorch默认是cpu版本，gpu版本的pytorch需去  `pytorch <https://pytorch.org/>`_  官网手动安装。"
 
 #: ../../usage.rst:118
 msgid "**Run** Start the application via the command line:"
-msgstr ""
+msgstr "运行软件"
 
 #: ../../usage.rst:128
 msgid "Option 3: Install with .exe"
-msgstr ""
+msgstr "方式3：windows下exe运行 （版本严重落后于源码）"
 
 #: ../../usage.rst:130
 msgid ""
 "**Download the .exe** The .exe version may be older than the source code "
 "version."
-msgstr ""
+msgstr "下载打包好的exe文件"
 
 #: ../../usage.rst:133
 msgid "Download three .zip files, total 2.7G"
-msgstr ""
+msgstr "需下载三个.zip文件，总体大小2.7G，解压缩后4.9G。"
 
 #: ../../usage.rst:134
 msgid ""
 "Download link: `Baidu Netdisk "
 "<https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ Code: ISAT"
 msgstr ""
+"下载链接: `百度网盘 "
+"<https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ 密码: ISAT"
+
 
 #: ../../usage.rst:136
 msgid "Click `main.exe` to run the tool."
-msgstr ""
+msgstr "双击main.exe运行"
 
 #: ../../usage.rst:138
 msgid ""
@@ -305,6 +318,10 @@ msgid ""
 "<https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_"
 " to test the tool."
 msgstr ""
+"下载Segment anything预训练模型"
+"打包后的软件，附带了 `sam_hq_vit_tiny.pth` ，便于直接使用 "
+"( 近期有朋友反馈，sam_hq_vit_tiny.pth无法在CPU环境下运行，这是由于sam-hq模型权重保存的问题。请下载 `mobile-sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_  权重后选择mobile-sam模型 )"
+
 
 #: ../../usage.rst:142
 msgid ""
@@ -313,4 +330,5 @@ msgid ""
 "<https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs"
 "/README-en.md#3-download-segment-anything-pretrained-checkpoint>`_."
 msgstr ""
-
+"如需使用精度更高的模型，请自行下载，并放置于ISAT/segment_any下(打包的exe为旧版本，还未更新)。"
+"下载地址同上"

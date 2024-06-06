@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../index.rst:2
+msgid "Welcome to ISAT-SAM's documentation!"
+msgstr ""
+
+#: ../../index.rst:4
+msgid "**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_"
+msgstr ""
+
+#: ../../index.rst:-1
+msgid "Software demo"
+msgstr ""
+
+#: ../../index.rst:9
+msgid "The annotations are stored in ISAT json format, similar to MSCOCO:"
+msgstr ""
+
+#: ../../index.rst:17
+msgid "**info**:"
+msgstr ""
+
+#: ../../index.rst:13
+msgid "**description**: Always 'ISAT'"
+msgstr ""
+
+#: ../../index.rst:14
+msgid "**folder**: The directory where the images are stored"
+msgstr ""
+
+#: ../../index.rst:15
+msgid "**name**: The name of the image file"
+msgstr ""
+
+#: ../../index.rst:16
+msgid "**width**, **height**, **depth**: The dimensions of the image; depth is 3 for RGB images"
+msgstr ""
+
+#: ../../index.rst:17
+msgid "**note**: An optional field for any additional notes related to the image"
+msgstr ""
+
+#: ../../index.rst:27
+msgid "**objects**:"
+msgstr ""
+
+#: ../../index.rst:20
+msgid "**category**: The class label of the object. If the category_id from MSCOCO does not have a corresponding entry, 'unknown' is used"
+msgstr ""
+
+#: ../../index.rst:21
+msgid "**group**: An identifier that groups objects based on overlapping bounding boxes. If an object's bounding box is within another, they share the same group number. Group numbering starts at 1"
+msgstr ""
+
+#: ../../index.rst:22
+msgid "**segmentation**: A list of [x, y] coordinates forming the polygon around the object, e.g. [[x1, y1], [x2, y2], ..., [xn, yn]]"
+msgstr ""
+
+#: ../../index.rst:23
+msgid "**area**: The area covered by the object in pixels"
+msgstr ""
+
+#: ../../index.rst:24
+msgid "**layer**: A float indicating the sequence of the object. It increments within the same group, starting at 1.0"
+msgstr ""
+
+#: ../../index.rst:25
+msgid "**bbox**: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]"
+msgstr ""
+
+#: ../../index.rst:26
+msgid "**iscrowd**: A boolean value indicating if the object is part of a crowd"
+msgstr ""
+
+#: ../../index.rst:29
+msgid "Check :doc:`features` for full features demonstration. Or click :doc:`usage` to **get started!**"
+msgstr ""
+
+#: ../../index.rst:34
+msgid "This project is under active development. Feedbacks are Welcome!"
+msgstr ""
+
+#: ../../index.rst:37
+msgid "Contents"
+msgstr ""

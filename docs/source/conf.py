@@ -6,6 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+
 project = 'ISAT-SAM'
 copyright = '2023, Shuwei Ji and Hongyuan Zhang'
 author = 'Shuwei Ji and Hongyuan Zhang'
@@ -29,6 +30,10 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+language = 'en'
+locale_dirs = ['locales/']
+gettext_compact = False
 
 
 # -- Options for HTML output -------------------------------------------------

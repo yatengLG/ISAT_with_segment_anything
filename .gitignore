@@ -1,0 +1,4 @@
+
+*.pyc
+ISAT/checkpoints/sam_hq_vit_h.pth
+ISAT/checkpoints/mobile_sam.pt

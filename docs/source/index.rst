@@ -3,7 +3,7 @@ Welcome to ISAT-SAM's documentation!
 
 **ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_
 
-.. image:: ../../../display/标注.gif
+.. image:: ../../display/标注.gif
    :alt: Software demo
 
 | The annotations are stored in ISAT json format, similar to MSCOCO:

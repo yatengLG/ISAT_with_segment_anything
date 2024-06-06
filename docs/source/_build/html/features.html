@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>功能 &mdash; ISAT-SAM  文档</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2ccfc426"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="安装" href="usage.html" />
+    <link rel="prev" title="欢迎查阅ISAT-SAM的文档！" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ISAT-SAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">功能</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#annotation-modes">标注模式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#semi-automatic-annotation">半自动图像分割标注</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-annotation">手动标注</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#annotation-adjustments">标注调整</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#polygon-adjustments">多边形调整</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polygon-visualization">多边形可视化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#export-annotations">标注导出</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-formats">支持的转换格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#language-switching">界面语言切换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-switching">模型切换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contour-mode">轮廓保存模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#occlusion-adjustment">遮挡关系调整</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-jump-to-image">图片快速跳转</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statusbar-information">状态栏信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preview-annotation-result">预览当前标注结果</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-export-config-file">配置文件导入导出</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#drag-to-draw">拖动鼠标描点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-browsing">快速浏览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detail-inspection">细节检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#move-and-delete-vertices">顶点批量移动与删除</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sam-features-cache">SAM特性缓存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-manager">模型管理器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repaint">重绘</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#intersection-union-difference-and-xor">交集、并集、差集和异或</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#intersection">交集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#union">并集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#difference">差集</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xor-symmetric-difference">异或（对称差异）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">安装</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ISAT-SAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">功能</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/features.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="features">
+<h1>功能<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
+<section id="annotation-modes">
+<h2>标注模式<a class="headerlink" href="#annotation-modes" title="Link to this heading"></a></h2>
+<section id="semi-automatic-annotation">
+<h3>半自动图像分割标注<a class="headerlink" href="#semi-automatic-annotation" title="Link to this heading"></a></h3>
+<p>用点击与边框做为SAM的提示</p>
+</section>
+<section id="manual-annotation">
+<h3>手动标注<a class="headerlink" href="#manual-annotation" title="Link to this heading"></a></h3>
+<p>按住左键拖动鼠标，像绘图一样标注多边形 （每隔0.15 s 一个点）</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="annotation-adjustments">
+<h2>标注调整<a class="headerlink" href="#annotation-adjustments" title="Link to this heading"></a></h2>
+<section id="polygon-adjustments">
+<h3>多边形调整<a class="headerlink" href="#polygon-adjustments" title="Link to this heading"></a></h3>
+<p>删除点或者调整多边形的遮挡关系</p>
+</section>
+<section id="polygon-visualization">
+<h3>多边形可视化<a class="headerlink" href="#polygon-visualization" title="Link to this heading"></a></h3>
+<p>预览语义分割/实例分割的掩膜</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="export-annotations">
+<h2>标注导出<a class="headerlink" href="#export-annotations" title="Link to this heading"></a></h2>
+<section id="supported-formats">
+<h3>支持的转换格式<a class="headerlink" href="#supported-formats" title="Link to this heading"></a></h3>
+<p>ISAT标注导出为MSCOCO、 YOLO、 LabelMe及VOC (包含 XML)格式</p>
+<p>更多详细功能，见下文。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="language-switching">
+<h2>界面语言切换<a class="headerlink" href="#language-switching" title="Link to this heading"></a></h2>
+<p>软件提供了中文与英文两种界面，可以随时切换。</p>
+<img alt="界面语言切换" src="_images/%E5%8F%8C%E8%AF%AD%E7%95%8C%E9%9D%A2.gif" />
+</section>
+<hr class="docutils" />
+<section id="model-switching">
+<h2>模型切换<a class="headerlink" href="#model-switching" title="Link to this heading"></a></h2>
+<p>同时下载了多个模型，可以通过界面随时进行切换。</p>
+<img alt="模型切换" src="_images/%E6%A8%A1%E5%9E%8B%E5%88%87%E6%8D%A2.gif" />
+</section>
+<hr class="docutils" />
+<section id="contour-mode">
+<h2>轮廓保存模式<a class="headerlink" href="#contour-mode" title="Link to this heading"></a></h2>
+<p>使用SAM进行半自动标注时，具体流程是：mask -&gt; 轮廓 -&gt; polygon。</p>
+<ol class="arabic simple">
+<li><p>只保存最大轮廓。 针对存在多个轮廓的情况，只保留拥有最多顶点的轮廓。（通常是内包含面积最大的轮廓，此处节省了计算面积的步骤。如果半自动标注时存在很多干扰，可以通过此模式，减少干扰，提升标注效率。</p></li>
+<li><p>保存所有外轮廓。 对于不需要进行镂空处理的数据时，用此模式。</p></li>
+<li><p>保存所有轮廓，包含内轮廓与外轮廓。内轮廓类别类别自动设置为背景类。 对于需要镂空的目标，可以使用此模式</p></li>
+</ol>
+<img alt="轮廓保存模式" src="_images/%E8%BD%AE%E5%BB%93%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%BC%8F.gif" />
+</section>
+<hr class="docutils" />
+<section id="occlusion-adjustment">
+<h2>遮挡关系调整<a class="headerlink" href="#occlusion-adjustment" title="Link to this heading"></a></h2>
+<p>对于存在重叠部分的目标，通过 <strong>置顶</strong> 或 <strong>置底</strong> 调整遮挡关系。</p>
+<img alt="遮挡关系调整" src="_images/%E5%9B%BE%E5%B1%82%E8%B0%83%E6%95%B4%E9%81%AE%E6%8C%A1%E5%85%B3%E7%B3%BB.gif" />
+</section>
+<hr class="docutils" />
+<section id="quick-jump-to-image">
+<h2>图片快速跳转<a class="headerlink" href="#quick-jump-to-image" title="Link to this heading"></a></h2>
+<p>在文件下方输入框中，输入 <strong>图片名</strong> 或 <strong>序号</strong> ，可快速跳转到指定图片。</p>
+<img alt="图片快速跳转" src="_images/%E5%9B%BE%E7%89%87%E5%BF%AB%E9%80%9F%E8%B7%B3%E8%BD%AC.gif" />
+</section>
+<hr class="docutils" />
+<section id="statusbar-information">
+<h2>状态栏信息<a class="headerlink" href="#statusbar-information" title="Link to this heading"></a></h2>
+<p>在状态栏中，展示了鼠标所指像素在图片中的位置与像素值。 如果使用了半自动标注，也会实时显示显存占用。（显存整体的占用情况。 cuda:显存占用。[当前显存占用]/[显存最大值]； xy: 像素位置。[x, y]； rgb: 像素值。三通道图片显示[r,g,b]；单通道显示[v]</p>
+<img alt="状态栏信息" src="_images/%E7%8A%B6%E6%80%81%E6%A0%8F%E4%BF%A1%E6%81%AF.gif" />
+</section>
+<hr class="docutils" />
+<section id="preview-annotation-result">
+<h2>预览当前标注结果<a class="headerlink" href="#preview-annotation-result" title="Link to this heading"></a></h2>
+<p>点击位图按钮，实时预览当前标注结果。 切换顺序为[标注结果]-[语义预览]-[实例预览]。 语义预览时，相同类别目标具有相同的颜色。具体颜色与类别颜色相对应。 实例预览时，同一个目标具有相同颜色。（软件内置了255种差异较大颜色，group为256的实例与group为1的实例会具有相同颜色。）</p>
+<img alt="实时预览" src="_images/%E5%AE%9E%E6%97%B6%E9%A2%84%E8%A7%88.gif" />
+</section>
+<hr class="docutils" />
+<section id="import-export-config-file">
+<h2>配置文件导入导出<a class="headerlink" href="#import-export-config-file" title="Link to this heading"></a></h2>
+<p>配置文件中保存了 <strong>类别</strong> 、<strong>界面语言</strong> 、<strong>轮廓模式</strong> 等信息，可以通过导入配置文件来快速配置类别；也可以导出当前配置文件。</p>
+<img alt="配置文件导入导出" src="_images/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA.gif" />
+</section>
+<hr class="docutils" />
+<section id="drag-to-draw">
+<h2>拖动鼠标描点<a class="headerlink" href="#drag-to-draw" title="Link to this heading"></a></h2>
+<p>按住左键拖动鼠标，像绘图一样标注多边形，便于绘制曲线。</p>
+<img alt="拖动鼠标描点" src="_images/%E6%8B%96%E5%8A%A8%E7%BB%98%E5%88%B6.gif" />
+</section>
+<hr class="docutils" />
+<section id="quick-browsing">
+<h2>快速浏览<a class="headerlink" href="#quick-browsing" title="Link to this heading"></a></h2>
+<p>下拉选择，查看指定组id的目标，也可以通过滚轮，快速在不同组之间切换.</p>
+<img alt="快速浏览" src="_images/%E5%BF%AB%E9%80%9F%E6%B5%8F%E8%A7%88.gif" />
+</section>
+<hr class="docutils" />
+<section id="detail-inspection">
+<h2>细节检查<a class="headerlink" href="#detail-inspection" title="Link to this heading"></a></h2>
+<p>以组id逐个切换目标，切换的同时，会自适应到目标大小，便于检查标注细节</p>
+<img alt="细节检查" src="_images/%E7%BB%86%E8%8A%82%E6%A3%80%E6%9F%A5.gif" />
+</section>
+<hr class="docutils" />
+<section id="move-and-delete-vertices">
+<h2>顶点批量移动与删除<a class="headerlink" href="#move-and-delete-vertices" title="Link to this heading"></a></h2>
+<p>通过ctrl多选顶点，可以同时移动或删除多个顶点，即使他们不属于同一个多边形。</p>
+<img alt="顶点批量移动与删除" src="_images/%E9%A1%B6%E7%82%B9%E6%89%B9%E9%87%8F%E7%A7%BB%E5%8A%A8%E4%B8%8E%E5%88%A0%E9%99%A4.gif" />
+</section>
+<hr class="docutils" />
+<section id="sam-features-cache">
+<h2>SAM特性缓存<a class="headerlink" href="#sam-features-cache" title="Link to this heading"></a></h2>
+<p>现在sam会在独立的线程中，进行encoder特征计算。所以切换图片没有卡顿感了ヾ(o◕∀◕)ﾉヾ
+在文件列表前端，添加了特征缓存提示。黄色:正在对该图片计算特征；
+绿色:该图片特征已计算并存储，可进行半自动分割；
+灰色:该图片没有计算特征图
+当快速大量切换图片时，sam线程的计算速度可能会低于切换速度，导致当前图片特征并没有计算完成。
+这种情况只需重新点击图片或切换图片即可开始当前图片特征计算。</p>
+<img alt="SAM特性缓存" src="_images/sam%E7%BC%93%E5%AD%98.gif" />
+</section>
+<hr class="docutils" />
+<section id="model-manager">
+<h2>模型管理器<a class="headerlink" href="#model-manager" title="Link to this heading"></a></h2>
+<p>支持多线程同时下载多个模型； 支持暂停与断点续传； 添加模型国内下载链接(部分链接不支持断点续传)</p>
+<img alt="模型管理器" src="_images/%E6%A8%A1%E5%9E%8B%E4%B8%8B%E8%BD%BD.gif" />
+</section>
+<hr class="docutils" />
+<section id="repaint">
+<h2>重绘<a class="headerlink" href="#repaint" title="Link to this heading"></a></h2>
+<p>点击快捷键R开启重绘模式，选择一个顶点开始重绘，选择同一个多边形的另一个顶点结束重绘。</p>
+<img alt="重绘" src="_images/%E9%87%8D%E7%BB%98.gif" />
+</section>
+<hr class="docutils" />
+<section id="intersection-union-difference-and-xor">
+<h2>交集、并集、差集和异或<a class="headerlink" href="#intersection-union-difference-and-xor" title="Link to this heading"></a></h2>
+<p>提供多边形交集、并集、差集和异或计算功能</p>
+<section id="intersection">
+<h3>交集<a class="headerlink" href="#intersection" title="Link to this heading"></a></h3>
+<p>计算并显示两个多边形的交集。</p>
+<img alt="交集" src="_images/%E4%BA%A4%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="union">
+<h3>并集<a class="headerlink" href="#union" title="Link to this heading"></a></h3>
+<p>计算并显示两个多边形的并集。</p>
+<img alt="并集" src="_images/%E5%B9%B6%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="difference">
+<h3>差集<a class="headerlink" href="#difference" title="Link to this heading"></a></h3>
+<p>计算并显示两个多边形之间的差异。</p>
+<img alt="差集" src="_images/%E5%B7%AE%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="xor-symmetric-difference">
+<h3>异或（对称差异）<a class="headerlink" href="#xor-symmetric-difference" title="Link to this heading"></a></h3>
+<p>计算并显示两个多边形之间的对称差异（异或）。</p>
+<img alt="XOR" src="_images/%E5%BC%82%E6%88%96.gif" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="欢迎查阅ISAT-SAM的文档！" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="安装" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Shuwei Ji and Hongyuan Zhang。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

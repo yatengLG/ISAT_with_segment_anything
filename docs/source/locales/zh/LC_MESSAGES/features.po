@@ -1,0 +1,374 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: cn\n"
+"Language-Team: cn <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../features.rst:2
+msgid "Features"
+msgstr "功能"
+
+#: ../../features.rst:5
+msgid "Annotation Modes"
+msgstr "标注模式"
+
+#: ../../features.rst:7
+msgid "Semi-automatic Annotation"
+msgstr "半自动图像分割标注"
+
+#: ../../features.rst:8
+msgid "Utilizes SAM with point and bounding box prompts."
+msgstr "用点击与边框做为SAM的提示"
+
+#: ../../features.rst:11
+msgid "Manual Annotation"
+msgstr "手动标注"
+
+#: ../../features.rst:12
+msgid "Click or drag to draw polygons (0.15s per point)."
+msgstr "按住左键拖动鼠标，像绘图一样标注多边形 （每隔0.15 s 一个点）"
+
+#: ../../features.rst:17
+msgid "Annotation Adjustments"
+msgstr "标注调整"
+
+#: ../../features.rst:19
+msgid "Polygon Adjustments"
+msgstr "多边形调整"
+
+#: ../../features.rst:20
+msgid "Delete points and adjust object occlusions to refine the annotation."
+msgstr "删除点或者调整多边形的遮挡关系"
+
+#: ../../features.rst:23
+msgid "Polygon Visualization"
+msgstr "多边形可视化"
+
+#: ../../features.rst:24
+msgid "Preview groups and semantic/instance segmentation masks."
+msgstr "预览语义分割/实例分割的掩膜"
+
+#: ../../features.rst:29
+msgid "Export Annotations"
+msgstr "标注导出"
+
+#: ../../features.rst:31
+msgid "Supported Formats"
+msgstr "支持的转换格式"
+
+#: ../../features.rst:32
+msgid ""
+"Export annotations in multiple formats including MSCOCO, YOLO, LabelMe, "
+"and VOC (also XML)."
+msgstr "ISAT标注导出为MSCOCO、 YOLO、 LabelMe及VOC (包含 XML)格式"
+
+#: ../../features.rst:34
+msgid "For more features, see the below"
+msgstr "更多详细功能，见下文。"
+
+#: ../../features.rst:40
+msgid "Language switching"
+msgstr "界面语言切换"
+
+#: ../../features.rst:41
+msgid ""
+"The software provides two interfaces, Chinese and English, which can be "
+"switched at any time."
+msgstr "软件提供了中文与英文两种界面，可以随时切换。"
+
+#: ../../features.rst:-1
+msgid "Bilingual Interface"
+msgstr "界面语言切换"
+
+#: ../../features.rst:-1 ../../features.rst:49
+msgid "Model switching"
+msgstr "模型切换"
+
+#: ../../features.rst:50
+msgid "Switch model among your downloaded models."
+msgstr "同时下载了多个模型，可以通过界面随时进行切换。"
+
+#: ../../features.rst:58
+msgid "Contour mode"
+msgstr "轮廓保存模式"
+
+#: ../../features.rst:59
+msgid ""
+"When using SAM for semi-automatic annotation, convert SAM mask to "
+"contours using OpenCV, then convert contours to polygons."
+msgstr "使用SAM进行半自动标注时，具体流程是：mask -> 轮廓 -> polygon。"
+
+#: ../../features.rst:61
+msgid ""
+"**Max only**: Usually, the contour with the highest number of vertices "
+"also has the largest area. Other contours are deleted as noise."
+msgstr ""
+"只保存最大轮廓。 "
+"针对存在多个轮廓的情况，只保留拥有最多顶点的轮廓。（通常是内包含面积最大的轮廓，此处节省了计算面积的步骤。如果半自动标注时存在很多干扰，可以通过此模式，减少干扰，提升标注效率。"
+" "
+
+#: ../../features.rst:62
+msgid ""
+"**External**: Saves external contours; internal holes in masks will be "
+"filled."
+msgstr "保存所有外轮廓。 对于不需要进行镂空处理的数据时，用此模式。"
+
+#: ../../features.rst:63
+msgid ""
+"**All**: Saves all contours; will add polygons with category "
+"__background__ for holes."
+msgstr "保存所有轮廓，包含内轮廓与外轮廓。内轮廓类别类别自动设置为背景类。 对于需要镂空的目标，可以使用此模式"
+
+#: ../../features.rst:-1
+msgid "Contour saving modes"
+msgstr "轮廓保存模式"
+
+#: ../../features.rst:71
+msgid "Occlusion adjustment"
+msgstr "遮挡关系调整"
+
+#: ../../features.rst:72
+msgid ""
+"Adjust occlusion for polygons with overlapping parts, choosing either "
+"**to top** or **to bottom** adjustment."
+msgstr "对于存在重叠部分的目标，通过 **置顶** 或 **置底** 调整遮挡关系。"
+
+#: ../../features.rst:-1
+msgid "Adjusting layer occlusion"
+msgstr "遮挡关系调整"
+
+#: ../../features.rst:80
+msgid "Quick jump to image"
+msgstr "图片快速跳转"
+
+#: ../../features.rst:81
+msgid "Input an image name or index to quickly navigate to it."
+msgstr "在文件下方输入框中，输入 **图片名** 或 **序号** ，可快速跳转到指定图片。"
+
+#: ../../features.rst:-1
+msgid "Quick image jump"
+msgstr "图片快速跳转"
+
+#: ../../features.rst:89
+msgid "Statusbar information"
+msgstr "状态栏信息"
+
+#: ../../features.rst:90
+msgid ""
+"Obtain position and pixel value information. If using SAM, CUDA memory "
+"usage is also displayed on the status bar."
+msgstr ""
+"在状态栏中，展示了鼠标所指像素在图片中的位置与像素值。 如果使用了半自动标注，也会实时显示显存占用。（显存整体的占用情况。 "
+"cuda:显存占用。[当前显存占用]/[显存最大值]； xy: 像素位置。[x, y]； rgb: "
+"像素值。三通道图片显示[r,g,b]；单通道显示[v] "
+
+#: ../../features.rst:-1
+msgid "Statusbar Information"
+msgstr "状态栏信息"
+
+#: ../../features.rst:98
+msgid "Preview annotation result"
+msgstr "预览当前标注结果"
+
+#: ../../features.rst:99
+msgid ""
+"Click the **Bit map** button to preview semantic and instance annotation "
+"results."
+msgstr ""
+"点击位图按钮，实时预览当前标注结果。 切换顺序为[标注结果]-[语义预览]-[实例预览]。 "
+"语义预览时，相同类别目标具有相同的颜色。具体颜色与类别颜色相对应。 "
+"实例预览时，同一个目标具有相同颜色。（软件内置了255种差异较大颜色，group为256的实例与group为1的实例会具有相同颜色。）"
+
+#: ../../features.rst:-1
+msgid "Real-time preview"
+msgstr "实时预览"
+
+#: ../../features.rst:107
+msgid "Import/export config file"
+msgstr "配置文件导入导出"
+
+#: ../../features.rst:108
+msgid "Save categories and other parameters using a configuration file."
+msgstr "配置文件中保存了 **类别** 、**界面语言** 、**轮廓模式** 等信息，可以通过导入配置文件来快速配置类别；也可以导出当前配置文件。"
+
+#: ../../features.rst:-1
+msgid "Config file import/export"
+msgstr "配置文件导入导出"
+
+#: ../../features.rst:-1 ../../features.rst:116
+msgid "Drag to draw"
+msgstr "拖动鼠标描点"
+
+#: ../../features.rst:117
+msgid ""
+"Create polygons by keeping the mouse left button pressed and dragging. "
+"Use a click for straight lines and dragging for curves."
+msgstr "按住左键拖动鼠标，像绘图一样标注多边形，便于绘制曲线。"
+
+#: ../../features.rst:125
+msgid "Quick browsing"
+msgstr "快速浏览"
+
+#: ../../features.rst:126
+msgid ""
+"Select a group ID from a dropdown to view the target, supporting quick "
+"switching between different groups via the scroll wheel."
+msgstr "下拉选择，查看指定组id的目标，也可以通过滚轮，快速在不同组之间切换."
+
+#: ../../features.rst:-1
+msgid "快速浏览"
+msgstr ""
+
+#: ../../features.rst:134
+msgid "Detail inspection"
+msgstr "细节检查"
+
+#: ../../features.rst:135
+msgid ""
+"Switch annotations one by one using group IDs, adapting the view to the "
+"size of the annotation for detailed inspection."
+msgstr "以组id逐个切换目标，切换的同时，会自适应到目标大小，便于检查标注细节"
+
+#: ../../features.rst:-1
+msgid "细节检查"
+msgstr ""
+
+#: ../../features.rst:143
+msgid "Move and delete vertices"
+msgstr "顶点批量移动与删除"
+
+#: ../../features.rst:144
+msgid "Select vertices using CTRL and move or delete them."
+msgstr "通过ctrl多选顶点，可以同时移动或删除多个顶点，即使他们不属于同一个多边形。"
+
+#: ../../features.rst:-1
+msgid "移动和删除顶点"
+msgstr ""
+
+#: ../../features.rst:152
+msgid "SAM features cache"
+msgstr "SAM特性缓存"
+
+#: ../../features.rst:153
+msgid ""
+"Features are encoded using QThread to speed up image switching when using"
+" large models. Automatically encodes features for the current, previous, "
+"and next images."
+msgstr ""
+"现在sam会在独立的线程中，进行encoder特征计算。所以切换图片没有卡顿感了ヾ(o◕∀◕)ﾉヾ\n"
+"在文件列表前端，添加了特征缓存提示。黄色:正在对该图片计算特征；\n"
+"绿色:该图片特征已计算并存储，可进行半自动分割；\n"
+"灰色:该图片没有计算特征图\n"
+"当快速大量切换图片时，sam线程的计算速度可能会低于切换速度，导致当前图片特征并没有计算完成。\n"
+"这种情况只需重新点击图片或切换图片即可开始当前图片特征计算。"
+
+#: ../../features.rst:-1
+msgid "SAM特性缓存"
+msgstr ""
+
+#: ../../features.rst:161
+msgid "Model manager"
+msgstr "模型管理器"
+
+#: ../../features.rst:162
+msgid ""
+"Supports multithreaded downloading with options to pause and resume "
+"transfers."
+msgstr "支持多线程同时下载多个模型； 支持暂停与断点续传； 添加模型国内下载链接(部分链接不支持断点续传)"
+
+#: ../../features.rst:-1
+msgid "模型管理器"
+msgstr ""
+
+#: ../../features.rst:170
+msgid "Repaint"
+msgstr "重绘"
+
+#: ../../features.rst:171
+msgid ""
+"Use the shortcut 'R' to switch to repaint mode. Start by selecting one "
+"vertex and end by selecting another vertex."
+msgstr "点击快捷键R开启重绘模式，选择一个顶点开始重绘，选择同一个多边形的另一个顶点结束重绘。"
+
+#: ../../features.rst:-1
+msgid "重绘"
+msgstr ""
+
+#: ../../features.rst:179
+msgid "Intersection, Union, Difference, and XOR"
+msgstr "交集、并集、差集和异或"
+
+#: ../../features.rst:181
+msgid ""
+"Provides operations for the intersection, union, difference, and XOR of "
+"two polygons."
+msgstr "提供多边形交集、并集、差集和异或计算功能"
+
+#: ../../features.rst:184
+msgid "Intersection"
+msgstr "交集"
+
+#: ../../features.rst:185
+msgid "Calculate and display the intersection of two polygons."
+msgstr "计算并显示两个多边形的交集。"
+
+#: ../../features.rst:-1
+msgid "交集"
+msgstr ""
+
+#: ../../features.rst:193
+msgid "Union"
+msgstr "并集"
+
+#: ../../features.rst:194
+msgid "Calculate and display the union of two polygons."
+msgstr "计算并显示两个多边形的并集。"
+
+#: ../../features.rst:-1
+msgid "并集"
+msgstr ""
+
+#: ../../features.rst:202
+msgid "Difference"
+msgstr "差集"
+
+#: ../../features.rst:203
+msgid "Calculate and display the difference between two polygons."
+msgstr "计算并显示两个多边形之间的差异。"
+
+#: ../../features.rst:-1
+msgid "差集"
+msgstr ""
+
+#: ../../features.rst:211
+msgid "XOR (Symmetric Difference)"
+msgstr "异或（对称差异）"
+
+#: ../../features.rst:212
+msgid "Calculate and display the symmetric difference (XOR) between two polygons."
+msgstr "计算并显示两个多边形之间的对称差异（异或）。"
+
+#: ../../features.rst:-1
+msgid "异或"
+msgstr ""
+
+#~ msgid "XOR"
+#~ msgstr "异或"
+
+#~ msgid "顶点批量移动与删除"
+#~ msgstr ""
+

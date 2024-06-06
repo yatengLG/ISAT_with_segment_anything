@@ -19,7 +19,7 @@
 ---
 
 # 软件特点及安装
-请查阅我们最新的[文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
+请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
 
 # Star History
 

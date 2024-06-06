@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features &mdash; ISAT-SAM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Welcome to ISAT-SAM’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ISAT-SAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#annotation-modes">Annotation Modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#semi-automatic-annotation">Semi-automatic Annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-annotation">Manual Annotation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#annotation-adjustments">Annotation Adjustments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#polygon-adjustments">Polygon Adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polygon-visualization">Polygon Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#export-annotations">Export Annotations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-formats">Supported Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#language-switching">Language switching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-switching">Model switching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contour-mode">Contour mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#occlusion-adjustment">Occlusion adjustment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-jump-to-image">Quick jump to image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statusbar-information">Statusbar information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preview-annotation-result">Preview annotation result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-export-config-file">Import/export config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#drag-to-draw">Drag to draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-browsing">Quick browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detail-inspection">Detail inspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#move-and-delete-vertices">Move and delete vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sam-features-cache">SAM features cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-manager">Model manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repaint">Repaint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#intersection-union-difference-and-xor">Intersection, Union, Difference, and XOR</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#intersection">Intersection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#union">Union</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#difference">Difference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xor-symmetric-difference">XOR (Symmetric Difference)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ISAT-SAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Features</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/features.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h1>
+<section id="annotation-modes">
+<h2>Annotation Modes<a class="headerlink" href="#annotation-modes" title="Link to this heading"></a></h2>
+<section id="semi-automatic-annotation">
+<h3>Semi-automatic Annotation<a class="headerlink" href="#semi-automatic-annotation" title="Link to this heading"></a></h3>
+<p>Utilizes SAM with point and bounding box prompts.</p>
+</section>
+<section id="manual-annotation">
+<h3>Manual Annotation<a class="headerlink" href="#manual-annotation" title="Link to this heading"></a></h3>
+<p>Click or drag to draw polygons (0.15s per point).</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="annotation-adjustments">
+<h2>Annotation Adjustments<a class="headerlink" href="#annotation-adjustments" title="Link to this heading"></a></h2>
+<section id="polygon-adjustments">
+<h3>Polygon Adjustments<a class="headerlink" href="#polygon-adjustments" title="Link to this heading"></a></h3>
+<p>Delete points and adjust object occlusions to refine the annotation.</p>
+</section>
+<section id="polygon-visualization">
+<h3>Polygon Visualization<a class="headerlink" href="#polygon-visualization" title="Link to this heading"></a></h3>
+<p>Preview groups and semantic/instance segmentation masks.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="export-annotations">
+<h2>Export Annotations<a class="headerlink" href="#export-annotations" title="Link to this heading"></a></h2>
+<section id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Link to this heading"></a></h3>
+<p>Export annotations in multiple formats including MSCOCO, YOLO, LabelMe, and VOC (also XML).</p>
+<p>For more features, see the below</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="language-switching">
+<h2>Language switching<a class="headerlink" href="#language-switching" title="Link to this heading"></a></h2>
+<p>The software provides two interfaces, Chinese and English, which can be switched at any time.</p>
+<img alt="Bilingual Interface" src="_images/%E5%8F%8C%E8%AF%AD%E7%95%8C%E9%9D%A2.gif" />
+</section>
+<hr class="docutils" />
+<section id="model-switching">
+<h2>Model switching<a class="headerlink" href="#model-switching" title="Link to this heading"></a></h2>
+<p>Switch model among your downloaded models.</p>
+<img alt="Model switching" src="_images/%E6%A8%A1%E5%9E%8B%E5%88%87%E6%8D%A2.gif" />
+</section>
+<hr class="docutils" />
+<section id="contour-mode">
+<h2>Contour mode<a class="headerlink" href="#contour-mode" title="Link to this heading"></a></h2>
+<p>When using SAM for semi-automatic annotation, convert SAM mask to contours using OpenCV, then convert contours to polygons.</p>
+<ol class="arabic simple">
+<li><p><strong>Max only</strong>: Usually, the contour with the highest number of vertices also has the largest area. Other contours are deleted as noise.</p></li>
+<li><p><strong>External</strong>: Saves external contours; internal holes in masks will be filled.</p></li>
+<li><p><strong>All</strong>: Saves all contours; will add polygons with category __background__ for holes.</p></li>
+</ol>
+<img alt="Contour saving modes" src="_images/%E8%BD%AE%E5%BB%93%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%BC%8F.gif" />
+</section>
+<hr class="docutils" />
+<section id="occlusion-adjustment">
+<h2>Occlusion adjustment<a class="headerlink" href="#occlusion-adjustment" title="Link to this heading"></a></h2>
+<p>Adjust occlusion for polygons with overlapping parts, choosing either <strong>to top</strong> or <strong>to bottom</strong> adjustment.</p>
+<img alt="Adjusting layer occlusion" src="_images/%E5%9B%BE%E5%B1%82%E8%B0%83%E6%95%B4%E9%81%AE%E6%8C%A1%E5%85%B3%E7%B3%BB.gif" />
+</section>
+<hr class="docutils" />
+<section id="quick-jump-to-image">
+<h2>Quick jump to image<a class="headerlink" href="#quick-jump-to-image" title="Link to this heading"></a></h2>
+<p>Input an image name or index to quickly navigate to it.</p>
+<img alt="Quick image jump" src="_images/%E5%9B%BE%E7%89%87%E5%BF%AB%E9%80%9F%E8%B7%B3%E8%BD%AC.gif" />
+</section>
+<hr class="docutils" />
+<section id="statusbar-information">
+<h2>Statusbar information<a class="headerlink" href="#statusbar-information" title="Link to this heading"></a></h2>
+<p>Obtain position and pixel value information. If using SAM, CUDA memory usage is also displayed on the status bar.</p>
+<img alt="Statusbar Information" src="_images/%E7%8A%B6%E6%80%81%E6%A0%8F%E4%BF%A1%E6%81%AF.gif" />
+</section>
+<hr class="docutils" />
+<section id="preview-annotation-result">
+<h2>Preview annotation result<a class="headerlink" href="#preview-annotation-result" title="Link to this heading"></a></h2>
+<p>Click the <strong>Bit map</strong> button to preview semantic and instance annotation results.</p>
+<img alt="Real-time preview" src="_images/%E5%AE%9E%E6%97%B6%E9%A2%84%E8%A7%88.gif" />
+</section>
+<hr class="docutils" />
+<section id="import-export-config-file">
+<h2>Import/export config file<a class="headerlink" href="#import-export-config-file" title="Link to this heading"></a></h2>
+<p>Save categories and other parameters using a configuration file.</p>
+<img alt="Config file import/export" src="_images/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA.gif" />
+</section>
+<hr class="docutils" />
+<section id="drag-to-draw">
+<h2>Drag to draw<a class="headerlink" href="#drag-to-draw" title="Link to this heading"></a></h2>
+<p>Create polygons by keeping the mouse left button pressed and dragging. Use a click for straight lines and dragging for curves.</p>
+<img alt="Drag to draw" src="_images/%E6%8B%96%E5%8A%A8%E7%BB%98%E5%88%B6.gif" />
+</section>
+<hr class="docutils" />
+<section id="quick-browsing">
+<h2>Quick browsing<a class="headerlink" href="#quick-browsing" title="Link to this heading"></a></h2>
+<p>Select a group ID from a dropdown to view the target, supporting quick switching between different groups via the scroll wheel.</p>
+<img alt="Quick browsing" src="_images/%E5%BF%AB%E9%80%9F%E6%B5%8F%E8%A7%88.gif" />
+</section>
+<hr class="docutils" />
+<section id="detail-inspection">
+<h2>Detail inspection<a class="headerlink" href="#detail-inspection" title="Link to this heading"></a></h2>
+<p>Switch annotations one by one using group IDs, adapting the view to the size of the annotation for detailed inspection.</p>
+<img alt="Detail inspection" src="_images/%E7%BB%86%E8%8A%82%E6%A3%80%E6%9F%A5.gif" />
+</section>
+<hr class="docutils" />
+<section id="move-and-delete-vertices">
+<h2>Move and delete vertices<a class="headerlink" href="#move-and-delete-vertices" title="Link to this heading"></a></h2>
+<p>Select vertices using CTRL and move or delete them.</p>
+<img alt="Move and delete vertices" src="_images/%E9%A1%B6%E7%82%B9%E6%89%B9%E9%87%8F%E7%A7%BB%E5%8A%A8%E4%B8%8E%E5%88%A0%E9%99%A4.gif" />
+</section>
+<hr class="docutils" />
+<section id="sam-features-cache">
+<h2>SAM features cache<a class="headerlink" href="#sam-features-cache" title="Link to this heading"></a></h2>
+<p>Features are encoded using QThread to speed up image switching when using large models. Automatically encodes features for the current, previous, and next images.</p>
+<img alt="SAM features cache" src="_images/sam%E7%BC%93%E5%AD%98.gif" />
+</section>
+<hr class="docutils" />
+<section id="model-manager">
+<h2>Model manager<a class="headerlink" href="#model-manager" title="Link to this heading"></a></h2>
+<p>Supports multithreaded downloading with options to pause and resume transfers.</p>
+<img alt="Model manager" src="_images/%E6%A8%A1%E5%9E%8B%E4%B8%8B%E8%BD%BD.gif" />
+</section>
+<hr class="docutils" />
+<section id="repaint">
+<h2>Repaint<a class="headerlink" href="#repaint" title="Link to this heading"></a></h2>
+<p>Use the shortcut ‘R’ to switch to repaint mode. Start by selecting one vertex and end by selecting another vertex.</p>
+<img alt="Repaint" src="_images/%E9%87%8D%E7%BB%98.gif" />
+</section>
+<hr class="docutils" />
+<section id="intersection-union-difference-and-xor">
+<h2>Intersection, Union, Difference, and XOR<a class="headerlink" href="#intersection-union-difference-and-xor" title="Link to this heading"></a></h2>
+<p>Provides operations for the intersection, union, difference, and XOR of two polygons.</p>
+<section id="intersection">
+<h3>Intersection<a class="headerlink" href="#intersection" title="Link to this heading"></a></h3>
+<p>Calculate and display the intersection of two polygons.</p>
+<img alt="Intersection" src="_images/%E4%BA%A4%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="union">
+<h3>Union<a class="headerlink" href="#union" title="Link to this heading"></a></h3>
+<p>Calculate and display the union of two polygons.</p>
+<img alt="Union" src="_images/%E5%B9%B6%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="difference">
+<h3>Difference<a class="headerlink" href="#difference" title="Link to this heading"></a></h3>
+<p>Calculate and display the difference between two polygons.</p>
+<img alt="Difference" src="_images/%E5%B7%AE%E9%9B%86.gif" />
+</section>
+<hr class="docutils" />
+<section id="xor-symmetric-difference">
+<h3>XOR (Symmetric Difference)<a class="headerlink" href="#xor-symmetric-difference" title="Link to this heading"></a></h3>
+<p>Calculate and display the symmetric difference (XOR) between two polygons.</p>
+<img alt="XOR" src="_images/%E5%BC%82%E6%88%96.gif" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ISAT-SAM’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Shuwei Ji and Hongyuan Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

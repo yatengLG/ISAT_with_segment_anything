@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to ISAT-SAM’s documentation! &mdash; ISAT-SAM  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Features" href="features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ISAT-SAM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Installation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ISAT-SAM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to ISAT-SAM’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-isat-sam-s-documentation">
+<h1>Welcome to ISAT-SAM’s documentation!<a class="headerlink" href="#welcome-to-isat-sam-s-documentation" title="Link to this heading"></a></h1>
+<p><strong>ISAT-SAM</strong> stands for Interactive Semi-Automatic Annotation Tool with <a class="reference external" href="https://github.com/facebookresearch/segment-anything">Segment Anything Model</a></p>
+<img alt="Software demo" src="_images/%E6%A0%87%E6%B3%A8.gif" />
+<div class="line-block">
+<div class="line">The annotations are stored in ISAT json format, similar to MSCOCO:</div>
+</div>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>info</strong>:</dt><dd><ul>
+<li><p><strong>description</strong>: Always ‘ISAT’</p></li>
+<li><p><strong>folder</strong>: The directory where the images are stored</p></li>
+<li><p><strong>name</strong>: The name of the image file</p></li>
+<li><p><strong>width</strong>, <strong>height</strong>, <strong>depth</strong>: The dimensions of the image; depth is 3 for RGB images</p></li>
+<li><p><strong>note</strong>: An optional field for any additional notes related to the image</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>objects</strong>:</dt><dd><ul>
+<li><p><strong>category</strong>: The class label of the object. If the category_id from MSCOCO does not have a corresponding entry, ‘unknown’ is used</p></li>
+<li><p><strong>group</strong>: An identifier that groups objects based on overlapping bounding boxes. If an object’s bounding box is within another, they share the same group number. Group numbering starts at 1</p></li>
+<li><p><strong>segmentation</strong>: A list of [x, y] coordinates forming the polygon around the object, e.g. [[x1, y1], [x2, y2], …, [xn, yn]]</p></li>
+<li><p><strong>area</strong>: The area covered by the object in pixels</p></li>
+<li><p><strong>layer</strong>: A float indicating the sequence of the object. It increments within the same group, starting at 1.0</p></li>
+<li><p><strong>bbox</strong>: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]</p></li>
+<li><p><strong>iscrowd</strong>: A boolean value indicating if the object is part of a crowd</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Check <a class="reference internal" href="features.html"><span class="doc">Features</span></a> for full features demonstration. Or click <a class="reference internal" href="usage.html"><span class="doc">Installation</span></a> to <strong>get started!</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This project is under active development. Feedbacks are Welcome!</p>
+</div>
+</section>
+<section id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features.html#annotation-modes">Annotation Modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#semi-automatic-annotation">Semi-automatic Annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#manual-annotation">Manual Annotation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#annotation-adjustments">Annotation Adjustments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#polygon-adjustments">Polygon Adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#polygon-visualization">Polygon Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#export-annotations">Export Annotations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#supported-formats">Supported Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#language-switching">Language switching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#model-switching">Model switching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#contour-mode">Contour mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#occlusion-adjustment">Occlusion adjustment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#quick-jump-to-image">Quick jump to image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#statusbar-information">Statusbar information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#preview-annotation-result">Preview annotation result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#import-export-config-file">Import/export config file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#drag-to-draw">Drag to draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#quick-browsing">Quick browsing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#detail-inspection">Detail inspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#move-and-delete-vertices">Move and delete vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#sam-features-cache">SAM features cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#model-manager">Model manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#repaint">Repaint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#intersection-union-difference-and-xor">Intersection, Union, Difference, and XOR</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#intersection">Intersection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#union">Union</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#difference">Difference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#xor-symmetric-difference">XOR (Symmetric Difference)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-1-from-source-code">Option 1: From Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-2-pip-install">Option 2: Pip Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#option-3-install-with-exe">Option 3: Install with .exe</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Shuwei Ji and Hongyuan Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -175,7 +175,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             else:
                 self.color.setAlpha(self.nohover_alpha)
                 self.setBrush(self.color)
-                self.scene().selected_polygons_list.remove(self)
+                if self in self.scene().selected_polygons_list:
+                    self.scene().selected_polygons_list.remove(self)
             self.scene().mainwindow.annos_dock_widget.set_selected(self) # 更新label面板
 
         if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange: # ItemPositionHasChanged

@@ -140,7 +140,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.software_config_file = SOFTWARE_CONFIG_FILE
 
         self.saved = True
-        self.auto_save_anns = False
+        self.auto_save_anns = False # 自动保存功能，add from https://github.com/yatengLG/ISAT_with_segment_anything/pull/165
 
         self.can_be_annotated = True
         self.load_finished = False

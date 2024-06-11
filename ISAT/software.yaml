@@ -22,6 +22,7 @@ label:
 - color: '#204a87'
   name: hat
 software:
+  auto_save: false
   contour_mode: max_only
   language: zh
   mask_alpha: 0.6

@@ -155,6 +155,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def download(self):
         button = self.sender()
+        button.setText('downloading')
         row = self.tableWidget.indexAt(button.pos()).row()
         name_label = self.tableWidget.cellWidget(row, 0)
         name = name_label.text()

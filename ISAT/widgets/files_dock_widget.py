@@ -52,9 +52,13 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.label_all.setText('{}'.format(len(self.mainwindow.files_list)))
 
     def set_select(self, row):
+        if self.mainwindow.auto_save_anns:
+            self.mainwindow.save()
         self.listWidget.setCurrentRow(row)
 
     def listwidget_doubleclick(self):
+        if self.mainwindow.auto_save_anns:
+            self.mainwindow.save()
         row = self.listWidget.currentRow()
         self.mainwindow.current_index = row
         self.mainwindow.show_image(row)

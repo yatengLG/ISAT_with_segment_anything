@@ -1724,5 +1724,10 @@
         <source>Ctrl+E</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="MainWindow.py" line="549"/>
+        <source>Auto save</source>
+        <translation>自动保存</translation>
+    </message>
 </context>
 </TS>

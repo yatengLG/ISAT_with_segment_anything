@@ -34,7 +34,6 @@ import torch
 import cv2  # 调整图像饱和度
 import datetime
 
-
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
     def __init__(self, mainwindow):
@@ -141,6 +140,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.software_config_file = SOFTWARE_CONFIG_FILE
 
         self.saved = True
+        self.auto_save_anns = False
+
         self.can_be_annotated = True
         self.load_finished = False
         self.polygons:list = []
@@ -164,6 +165,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # sam初始化线程，大模型加载较慢
         self.init_segany_thread = InitSegAnyThread(self)
         self.init_segany_thread.tag.connect(self.init_sam_finish)
+
+    def toggle_auto_save(self, checked):
+        self.auto_save_anns = checked
+        self.cfg['software']['auto_save'] = self.auto_save_anns
+        self.save_software_cfg()
 
     def init_segment_anything(self, model_name=None):
         if not self.saved:
@@ -538,6 +544,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['language'] = language
         self.translate(language)
 
+        self.auto_save_anns = software_cfg.get('auto_save', False)
+        self.cfg['software']['auto_save'] = self.auto_save_anns
+        self.actionAutoSave.setChecked(self.auto_save_anns)
+
         contour_mode = software_cfg.get('contour_mode', 'max_only')
         self.cfg['software']['contour_mode'] = contour_mode
         self.change_contour_mode(contour_mode)
@@ -602,6 +612,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
+
+        # 当开启自动保存时，重新打开文件夹，自动保存之前未保存的标注
+        if not self.saved and self.auto_save_anns:
+            self.save()
 
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()
@@ -777,9 +791,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                return
+            if self.auto_save_anns:
+                self.save()
+            else:
+                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.No:
+                    return
         self.current_index = self.current_index - 1
         if self.current_index < 0:
             self.current_index = 0
@@ -793,9 +810,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                return
+            if self.auto_save_anns:
+                self.save()
+            else:
+                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+                if result == QtWidgets.QMessageBox.StandardButton.No:
+                    return
         self.current_index = self.current_index + 1
         if self.current_index > len(self.files_list)-1:
             self.current_index = len(self.files_list)-1
@@ -804,6 +824,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
     def jump_to(self):
+        if self.auto_save_anns:
+            self.save()
         index = self.files_dock_widget.lineEdit_jump.text()
         if index:
             if not index.isdigit():
@@ -1084,6 +1106,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)
         self.actionSave.triggered.connect(self.save)
+        self.actionAutoSave.toggled.connect(self.toggle_auto_save)
         self.actionTo_top.triggered.connect(self.scene.move_polygon_to_top)
         self.actionTo_bottom.triggered.connect(self.scene.move_polygon_to_bottom)
         self.actionCopy.triggered.connect(self.scene.copy_item)

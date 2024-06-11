@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
@@ -174,6 +174,7 @@
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
+    <addaction name="actionAutoSave"/>
     <addaction name="actionCopy"/>
     <addaction name="separator"/>
     <addaction name="actionTo_top"/>
@@ -912,6 +913,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionAutoSave">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Auto save</string>
    </property>
   </action>
  </widget>

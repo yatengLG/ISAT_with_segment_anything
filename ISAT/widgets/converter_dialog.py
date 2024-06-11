@@ -33,7 +33,7 @@ class Converter(QThread, ISAT):
                 self.message.emit(-1, -1, ' ' * 18 + '| -- Cancel --')
                 return
 
-            self.message.emit(index, num_json_files,
+            self.message.emit(index+1, num_json_files,
                               '{:>8d}/{:<8d} | Loading ISAT json {}'.format(index + 1, num_json_files, file))
             try:
                 anno = self._load_one_isat_json(os.path.join(self.isat_json_root, file))
@@ -139,7 +139,7 @@ class COCOConverter(Converter, COCO):
         self.load_from_isat()
 
         # convert to coco
-        self.message.emit(-1, -1, ' ' * 18 + '| Saving COCO json to {}.'.format('', '', self.coco_json_path))
+        self.message.emit(-1, -1, ' ' * 18 + '| Saving COCO json to {}.'.format(self.coco_json_path))
         try:
             self.save_to_coco(self.coco_json_path)
         except Exception as e:

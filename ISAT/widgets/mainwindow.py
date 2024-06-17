@@ -140,7 +140,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.software_config_file = SOFTWARE_CONFIG_FILE
 
         self.saved = True
-        self.auto_save_anns = False # 自动保存功能，add from https://github.com/yatengLG/ISAT_with_segment_anything/pull/165
+        self.auto_save_anns = False
 
         self.can_be_annotated = True
         self.load_finished = False
@@ -595,6 +595,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
     def set_saved_state(self, is_saved:bool):
+        if not is_saved:
+            if self.auto_save_anns:
+                self.save()
+                is_saved = True
         self.saved = is_saved
         if self.files_list is not None and self.current_index is not None:
 
@@ -612,10 +616,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
-
-        # 当开启自动保存时，重新打开文件夹，自动保存之前未保存的标注
-        if not self.saved and self.auto_save_anns:
-            self.save()
 
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()
@@ -791,12 +791,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            if self.auto_save_anns:
-                self.save()
-            else:
-                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-                if result == QtWidgets.QMessageBox.StandardButton.No:
-                    return
+            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                return
         self.current_index = self.current_index - 1
         if self.current_index < 0:
             self.current_index = 0
@@ -810,12 +807,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if not self.saved:
-            if self.auto_save_anns:
-                self.save()
-            else:
-                result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-                if result == QtWidgets.QMessageBox.StandardButton.No:
-                    return
+            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                return
         self.current_index = self.current_index + 1
         if self.current_index > len(self.files_list)-1:
             self.current_index = len(self.files_list)-1
@@ -824,8 +818,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
     def jump_to(self):
-        if self.auto_save_anns:
-            self.save()
         index = self.files_dock_widget.lineEdit_jump.text()
         if index:
             if not index.isdigit():

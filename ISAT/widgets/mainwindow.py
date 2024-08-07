@@ -45,17 +45,35 @@ class SegAnyThread(QThread):
     @torch.no_grad()
     def sam_encoder(self, image):
         torch.cuda.empty_cache()
+        with torch.inference_mode(), torch.autocast(self.mainwindow.segany.device,
+                                                    dtype=self.mainwindow.segany.model_dtype):
 
-        input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
-        input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
-        input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
+            # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
+            if 'sam2' in self.mainwindow.segany.model_type:
+                _orig_hw = tuple([image.shape[:2]])
+                input_image = self.mainwindow.segany.predictor_with_point_prompt._transforms(image)
+                input_image = input_image[None, ...].to(self.mainwindow.segany.predictor_with_point_prompt.device)
+                backbone_out = self.mainwindow.segany.predictor_with_point_prompt.model.forward_image(input_image)
+                _, vision_feats, _, _ = self.mainwindow.segany.predictor_with_point_prompt.model._prepare_backbone_features(backbone_out)
+                if self.mainwindow.segany.predictor_with_point_prompt.model.directly_add_no_mem_embed:
+                    vision_feats[-1] = vision_feats[-1] + self.mainwindow.segany.predictor_with_point_prompt.model.no_mem_embed
+                feats = [
+                    feat.permute(1, 2, 0).view(1, -1, *feat_size)
+                    for feat, feat_size in zip(vision_feats[::-1], self.mainwindow.segany.predictor_with_point_prompt._bb_feat_sizes[::-1])
+                ][::-1]
+                _features = {"image_embed": feats[-1], "high_res_feats": tuple(feats[:-1])}
+                return _features, _orig_hw, _orig_hw
+            else:
+                input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
+                input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
+                input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
 
-        original_size = image.shape[:2]
-        input_size = tuple(input_image_torch.shape[-2:])
+                original_size = image.shape[:2]
+                input_size = tuple(input_image_torch.shape[-2:])
 
-        input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
-        features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
-        return features, original_size, input_size
+                input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
+                features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
+                return features, original_size, input_size
 
     def run(self):
         if self.index is not None:
@@ -226,6 +244,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.labelGPUResource.setText('segment anything unused.')
             tooltip = 'model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
+            tooltip += '\ndtype: {}'.format(self.segany.model_dtype)
             tooltip += '\ntorch: {}'.format(torch.__version__)
             if self.segany.device == 'cuda':
                 try:
@@ -246,7 +265,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.use_segment_anything = False
 
         for name, action in self.pths_actions.items():
-            action.setChecked(checkpoint_name == name)
+            action.setChecked(tag and checkpoint_name == name)
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
         if state == 1:  # 识别完
@@ -303,6 +322,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany.predictor_with_point_prompt.original_size = original_size
             self.segany.predictor_with_point_prompt.input_size = input_size
             self.segany.predictor_with_point_prompt.is_image_set = True
+            # sam2
+            self.segany.predictor_with_point_prompt._orig_hw = list(original_size)
+            self.segany.predictor_with_point_prompt._features = features
+            self.segany.predictor_with_point_prompt._is_image_set = True
+
             self.actionSegment_anything.setEnabled(True)
         else:
             self.segany.predictor_with_point_prompt.reset_image()

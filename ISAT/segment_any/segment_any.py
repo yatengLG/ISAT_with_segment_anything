@@ -63,6 +63,24 @@ class SegAny:
             else:
                 raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
             self.model_source = 'sam'
+        elif 'sam2' in checkpoint:
+            from ISAT.segment_any.sam2.build_sam import sam_model_registry
+            from ISAT.segment_any.sam2.sam2_image_predictor import SAM2ImagePredictor as SamPredictor
+            # sam2
+            if 'hiera_tiny' in checkpoint:
+                self.model_type = "sam2_hiera_tiny"
+            elif 'hiera_small' in checkpoint:
+                self.model_type = "sam2_hiera_small"
+            elif 'hiera_base_plus' in checkpoint:
+                self.model_type = 'sam2_hiera_base_plus'
+            elif 'hiera_large' in checkpoint:
+                self.model_type = 'sam2_hiera_large'
+            else:
+                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+            self.model_source = 'sam2'
+            # sam2 在float32下运行时存在报错，暂时只在bfloat16下运行
+            # self.model_dtype = torch.bfloat16
+
         elif 'med2d' in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import sam_model_registry
             from ISAT.segment_any.segment_anything_med2d.predictor_for_isat import Predictor as SamPredictor
@@ -85,8 +103,9 @@ class SegAny:
         self.image = None
 
     def set_image(self, image):
-        self.image = image
-        self.predictor_with_point_prompt.set_image(image)
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+            self.image = image
+            self.predictor_with_point_prompt.set_image(image)
 
     def reset_image(self):
         self.predictor_with_point_prompt.reset_image()
@@ -94,31 +113,38 @@ class SegAny:
         torch.cuda.empty_cache()
 
     def predict_with_point_prompt(self, input_point, input_label):
-        input_point = np.array(input_point)
-        input_label = np.array(input_label)
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
 
-        masks, scores, logits = self.predictor_with_point_prompt.predict(
-            point_coords=input_point,
-            point_labels=input_label,
-            multimask_output=True,
-        )
-        if self.model_source == 'sam_med2d':
+            if 'sam2' not in self.model_type:
+                input_point = np.array(input_point)
+                input_label = np.array(input_label)
+            else:
+                input_point = input_point
+                input_label = input_label
+
+            masks, scores, logits = self.predictor_with_point_prompt.predict(
+                point_coords=input_point,
+                point_labels=input_label,
+                multimask_output=True,
+            )
+            if self.model_source == 'sam_med2d':
+                return masks
+
+            mask_input = logits[np.argmax(scores), :, :]  # Choose the model's best mask
+            masks, _, _ = self.predictor_with_point_prompt.predict(
+                point_coords=input_point,
+                point_labels=input_label,
+                mask_input=mask_input[None, :, :],
+                multimask_output=False,
+            )
+            torch.cuda.empty_cache()
             return masks
 
-        mask_input = logits[np.argmax(scores), :, :]  # Choose the model's best mask
-        masks, _, _ = self.predictor_with_point_prompt.predict(
-            point_coords=input_point,
-            point_labels=input_label,
-            mask_input=mask_input[None, :, :],
-            multimask_output=False,
-        )
-        torch.cuda.empty_cache()
-        return masks
-
     def predict_with_box_prompt(self, box):
-        masks, scores, logits = self.predictor_with_point_prompt.predict(
-            box = box,
-            multimask_output=False,
-        )
-        torch.cuda.empty_cache()
-        return masks
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+            masks, scores, logits = self.predictor_with_point_prompt.predict(
+                box=box,
+                multimask_output=False,
+            )
+            torch.cuda.empty_cache()
+            return masks

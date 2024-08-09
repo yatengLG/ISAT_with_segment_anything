@@ -14,6 +14,8 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.listWidget.clicked.connect(self.listwidget_doubleclick)
         self.lineEdit_jump.returnPressed.connect(self.mainwindow.jump_to)
 
+        self.setAcceptDrops(True)
+
     def generate_item_and_itemwidget(self, file_name):
         item = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(200, 30))
@@ -58,3 +60,88 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         row = self.listWidget.currentRow()
         self.mainwindow.current_index = row
         self.mainwindow.show_image(row)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if len(event.mimeData().urls()) != 1:
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Only support one path or dir.')
+            return
+        # 这里与mainwindow.opend_dir逻辑一致
+        path = event.mimeData().urls()[0].toLocalFile()
+        if os.path.isdir(path):
+            dir = path
+            # 等待sam线程退出，并清空特征缓存
+            if self.mainwindow.use_segment_anything:
+                self.mainwindow.seganythread.wait()
+                self.mainwindow.seganythread.results_dict.clear()
+
+            self.mainwindow.files_list.clear()
+            self.mainwindow.files_dock_widget.listWidget.clear()
+
+            files = []
+            suffixs = tuple(
+                ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+            for f in os.listdir(dir):
+                if f.lower().endswith(suffixs):
+                    # f = os.path.join(dir, f)
+                    files.append(f)
+            files = sorted(files)
+            self.mainwindow.files_list = files
+
+            self.mainwindow.files_dock_widget.update_widget()
+
+            self.mainwindow.current_index = 0
+
+            self.mainwindow.image_root = dir
+            self.mainwindow.actionOpen_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+
+            self.mainwindow.label_root = dir
+            self.mainwindow.actionSave_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+
+            if os.path.exists(os.path.join(dir, 'isat.yaml')):
+                # load setting yaml
+                self.mainwindow.config_file = os.path.join(dir, 'isat.yaml')
+                self.mainwindow.reload_cfg()
+
+            self.mainwindow.show_image(self.mainwindow.current_index)
+
+        if os.path.isfile(path):
+            # 等待sam线程退出，并清空特征缓存
+            if self.mainwindow.use_segment_anything:
+                self.mainwindow.seganythread.wait()
+                self.mainwindow.seganythread.results_dict.clear()
+
+            self.mainwindow.files_list.clear()
+            self.mainwindow.files_dock_widget.listWidget.clear()
+
+            suffixs = tuple(
+                ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+
+            dir, file = os.path.split(path)
+            files = []
+            if path.lower().endswith(suffixs):
+                files = [file]
+
+            self.mainwindow.files_list = files
+
+            self.mainwindow.files_dock_widget.update_widget()
+
+            self.mainwindow.current_index = 0
+
+            self.mainwindow.image_root = dir
+            self.mainwindow.actionOpen_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+
+            self.mainwindow.label_root = dir
+            self.mainwindow.actionSave_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+
+            if os.path.exists(os.path.join(dir, 'isat.yaml')):
+                # load setting yaml
+                self.mainwindow.config_file = os.path.join(dir, 'isat.yaml')
+                self.mainwindow.reload_cfg()
+
+            self.mainwindow.show_image(self.mainwindow.current_index)

@@ -16,6 +16,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         super(AnnotationScene, self).__init__()
         self.mainwindow = mainwindow
         self.image_item: QtWidgets.QGraphicsPixmapItem = None
+        self.mask_item: QtWidgets.QGraphicsPixmapItem = None
         self.image_data = None
         self.current_graph: Polygon = None
         self.current_line: Line = None
@@ -62,6 +63,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.image_item.setPixmap(QtGui.QPixmap(image_path))
         self.setSceneRect(self.image_item.boundingRect())
         self.change_mode_to_view()
+
+    def unload_image(self):
+        self.clear()
+        self.setSceneRect(QtCore.QRectF())
+        self.mainwindow.polygons.clear()
+        self.image_item = None
+        self.mask_item = None
+        self.current_graph = None
 
     def change_mode_to_create(self):
         if self.image_item is None:
@@ -948,14 +957,16 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             mask_image = QtGui.QImage(mask_image[:], mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
                                       QtGui.QImage.Format_RGB888)
             mask_pixmap = QtGui.QPixmap(mask_image)
-            self.mask_item.setPixmap(mask_pixmap)
+            if self.mask_item is not None:
+                self.mask_item.setPixmap(mask_pixmap)
         else:
             mask_image = np.zeros(self.image_data.shape, dtype=np.uint8)
             mask_image = cv2.addWeighted(self.image_data, 1, mask_image, 0, 0)
             mask_image = QtGui.QImage(mask_image[:], mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
                                       QtGui.QImage.Format_RGB888)
             mask_pixmap = QtGui.QPixmap(mask_image)
-            self.mask_item.setPixmap(mask_pixmap)
+            if self.mask_item is not None:
+                self.mask_item.setPixmap(mask_pixmap)
 
     def backspace(self):
         if self.mode == STATUSMode.CREATE:

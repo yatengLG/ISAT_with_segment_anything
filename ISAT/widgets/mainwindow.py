@@ -704,6 +704,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_image(self, index:int, zoomfit:bool=True):
         self.reset_action()
+        self.scene.cancel_draw()
+        self.scene.unload_image()
+        self.annos_dock_widget.listWidget.clear()
         self.change_bit_map_to_label()
         #
         self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format('#999999'))
@@ -714,13 +717,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.load_finished = False
         self.saved = True
         if not -1 < index < len(self.files_list):
-            self.scene.clear()
-            self.scene.setSceneRect(QtCore.QRectF())
             return
         try:
-            self.polygons.clear()
-            self.annos_dock_widget.listWidget.clear()
-            self.scene.cancel_draw()
             file_path = os.path.join(self.image_root, self.files_list[index])
             image_data = Image.open(file_path)
 
@@ -728,7 +726,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.png_palette is not None and file_path.endswith('.png'):
                 self.statusbar.showMessage('This is a label file.')
                 self.can_be_annotated = False
-
             else:
                 self.can_be_annotated = True
 

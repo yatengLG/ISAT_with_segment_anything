@@ -11,6 +11,9 @@ import time  # 拖动鼠标描点
 import shapely
 
 
+
+
+
 class AnnotationScene(QtWidgets.QGraphicsScene):
     def __init__(self, mainwindow):
         super(AnnotationScene, self).__init__()

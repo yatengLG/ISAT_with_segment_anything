@@ -84,14 +84,6 @@ def build_sam2_hiera_large(checkpoint=None):
     )
 
 
-sam_model_registry = {
-    "sam2_hiera_tiny": build_sam2_hiera_tiny,
-    "sam2_hiera_small": build_sam2_hiera_small,
-    "sam2_hiera_base_plus": build_sam2_hiera_base_plus,
-    "sam2_hiera_large": build_sam2_hiera_large,
-}
-
-
 def build_sam2_video_predictor(
     config_file,
     ckpt_path=None,
@@ -101,7 +93,7 @@ def build_sam2_video_predictor(
     apply_postprocessing=True,
 ):
     hydra_overrides = [
-        "++model._target_=sam2.sam2_video_predictor.SAM2VideoPredictor",
+        "++model._target_=ISAT.segment_any.sam2.sam2_video_predictor.SAM2VideoPredictor",
     ]
     if apply_postprocessing:
         hydra_overrides_extra = hydra_overrides_extra.copy()
@@ -139,3 +131,44 @@ def _load_checkpoint(model, ckpt_path):
             logging.error(unexpected_keys)
             raise RuntimeError()
         logging.info("Loaded checkpoint sucessfully")
+
+
+def build_sam2_video_predictor_hiera_tiny(checkpoint=None):
+    return build_sam2_video_predictor(
+        'sam2_hiera_t.yaml',
+        ckpt_path=checkpoint,
+    )
+
+
+def build_sam2_video_predictor_hiera_small(checkpoint=None):
+    return build_sam2_video_predictor(
+        'sam2_hiera_s.yaml',
+        ckpt_path=checkpoint,
+    )
+
+
+def build_sam2_video_predictor_hiera_base_plus(checkpoint=None):
+    return build_sam2_video_predictor(
+        'sam2_hiera_b+.yaml',
+        ckpt_path=checkpoint,
+    )
+
+
+def build_sam2_video_predictor_hiera_large(checkpoint=None):
+    return build_sam2_video_predictor(
+        'sam2_hiera_l.yaml',
+        ckpt_path=checkpoint,
+    )
+
+
+sam_model_registry = {
+    "sam2_hiera_tiny": build_sam2_hiera_tiny,
+    "sam2_hiera_small": build_sam2_hiera_small,
+    "sam2_hiera_base_plus": build_sam2_hiera_base_plus,
+    "sam2_hiera_large": build_sam2_hiera_large,
+
+    "sam2_hiera_video_tiny": build_sam2_video_predictor_hiera_tiny,
+    "sam2_hiera_video_small": build_sam2_video_predictor_hiera_small,
+    "sam2_hiera_video_base_plus": build_sam2_video_predictor_hiera_base_plus,
+    "sam2_hiera_video_large": build_sam2_video_predictor_hiera_large,
+}

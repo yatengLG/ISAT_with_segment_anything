@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>25</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="font">
@@ -167,6 +167,11 @@
     </property>
     <addaction name="actionSegment_anything"/>
     <addaction name="actionPolygon"/>
+    <addaction name="separator"/>
+    <addaction name="actionVideo_segment"/>
+    <addaction name="actionVideo_segment_once"/>
+    <addaction name="actionVideo_segment_five_times"/>
+    <addaction name="separator"/>
     <addaction name="actionBackspace"/>
     <addaction name="actionFinish"/>
     <addaction name="actionCancel"/>
@@ -259,9 +264,13 @@
    <addaction name="actionPrev"/>
    <addaction name="actionNext"/>
    <addaction name="separator"/>
-   <addaction name="separator"/>
    <addaction name="actionSegment_anything"/>
    <addaction name="actionPolygon"/>
+   <addaction name="separator"/>
+   <addaction name="actionVideo_segment_once"/>
+   <addaction name="actionVideo_segment_five_times"/>
+   <addaction name="actionVideo_segment"/>
+   <addaction name="separator"/>
    <addaction name="actionBackspace"/>
    <addaction name="actionFinish"/>
    <addaction name="actionCancel"/>
@@ -875,6 +884,9 @@
    <property name="text">
     <string>Union</string>
    </property>
+   <property name="statusTip">
+    <string>Select two polygons from the canvas and calculate their union. </string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
    </property>
@@ -886,6 +898,9 @@
    </property>
    <property name="text">
     <string>Subtract</string>
+   </property>
+   <property name="statusTip">
+    <string>Select two polygons from the canvas and calculate their subtract. </string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -899,6 +914,9 @@
    <property name="text">
     <string>Intersect</string>
    </property>
+   <property name="statusTip">
+    <string>Select two polygons from the canvas and calculate their intersect. </string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
@@ -910,6 +928,9 @@
    </property>
    <property name="text">
     <string>Exclude</string>
+   </property>
+   <property name="statusTip">
+    <string>Select two polygons from the canvas and calculate their exclude. </string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -924,6 +945,42 @@
    </property>
    <property name="text">
     <string>Auto save</string>
+   </property>
+  </action>
+  <action name="actionVideo_segment">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/play-all.svg</normaloff>:/icon/icons/play-all.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Video segment</string>
+   </property>
+   <property name="statusTip">
+    <string>Video segment full frames.(only support sam2 model)</string>
+   </property>
+  </action>
+  <action name="actionVideo_segment_once">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/play-1.svg</normaloff>:/icon/icons/play-1.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Video segment once</string>
+   </property>
+   <property name="statusTip">
+    <string>Video segment the next frame.(only support sam2 model)</string>
+   </property>
+  </action>
+  <action name="actionVideo_segment_five_times">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/play-5.svg</normaloff>:/icon/icons/play-5.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Video segment five times</string>
+   </property>
+   <property name="statusTip">
+    <string>Video segment next five frames.(only support sam2 model)</string>
    </property>
   </action>
  </widget>

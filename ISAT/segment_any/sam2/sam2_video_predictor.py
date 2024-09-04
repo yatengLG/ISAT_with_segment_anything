@@ -806,10 +806,10 @@ class SAM2VideoPredictor(SAM2Base):
             maskmem_features = maskmem_features.to(storage_device, non_blocking=True)
         pred_masks_gpu = current_out["pred_masks"]
         # potentially fill holes in the predicted masks
-        if self.fill_hole_area > 0:
-            pred_masks_gpu = fill_holes_in_mask_scores(
-                pred_masks_gpu, self.fill_hole_area
-            )
+        # if self.fill_hole_area > 0:
+        #     pred_masks_gpu = fill_holes_in_mask_scores(
+        #         pred_masks_gpu, self.fill_hole_area
+        #     )
         pred_masks = pred_masks_gpu.to(storage_device, non_blocking=True)
         # "maskmem_pos_enc" is the same across frames, so we only need to store one copy of it
         maskmem_pos_enc = self._get_maskmem_pos_enc(inference_state, current_out)

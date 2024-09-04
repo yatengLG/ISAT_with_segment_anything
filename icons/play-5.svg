@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32.0px"
+   height="32.0px"
+   viewBox="0 0 32.0 32.0"
+   version="1.1"
+   id="SVGRoot"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs26142" />
+  <g
+     id="layer1">
+    <path
+       d="m 16.32691,5.00447 c -3.06992,-0.0837 -6.17176,1.00378 -8.57788,3.28224 -4.81221,4.55687 -5.0192,12.15206 -0.46232,16.96426 4.55687,4.81221 12.15206,5.0192 16.96426,0.46232 2.40613,-2.27846 3.66093,-5.31647 3.74456,-8.38638"
+       stroke="#0064ff"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path757"
+       style="fill:none" />
+    <path
+       d="M 15,8 19,5 15,2"
+       stroke="#0064ff"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path759"
+       style="fill:none" />
+    <path
+       d="M 18.66667,13 H 14 v 3.80653 c 0.65633,-0.431 0.97927,-0.4732 2,-0.4732 2,0 2.66667,1.32574 2.66667,3.33334 0,2.0076 -1.33334,2.66666 -2.66667,2.66666 -1,0 -2,-0.66666 -2,-1.33333"
+       stroke="#0064ff"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path761"
+       style="fill:none" />
+  </g>
+</svg>

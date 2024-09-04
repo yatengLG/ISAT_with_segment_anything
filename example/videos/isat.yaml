@@ -1,0 +1,25 @@
+label:
+- color: '#000000'
+  name: __background__
+- color: '#ef2929'
+  name: person
+- color: '#fcaf3e'
+  name: knife
+- color: '#fce94f'
+  name: fork
+- color: '#8ae234'
+  name: cup
+- color: '#729fcf'
+  name: giraffe
+- color: '#ad7fa8'
+  name: plate
+- color: '#e9b96e'
+  name: table
+- color: '#a40000'
+  name: cake
+- color: '#5c3566'
+  name: fence
+- color: '#204a87'
+  name: hat
+- color: '#813d9c'
+  name: bed

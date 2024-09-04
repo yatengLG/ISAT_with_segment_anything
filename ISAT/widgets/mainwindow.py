@@ -21,11 +21,12 @@ from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
 from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
+from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 import os
 from PIL import Image
 import functools
 import imgviz
-from ISAT.segment_any.segment_any import SegAny
+from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
 import ISAT.icons_rc
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -33,6 +34,18 @@ import numpy as np
 import torch
 import cv2  # 调整图像饱和度
 import datetime
+from skimage.draw.draw import polygon
+
+
+def calculate_area(points):
+    area = 0
+    num_points = len(points)
+    for i in range(num_points):
+        p1 = points[i]
+        p2 = points[(i + 1) % num_points]
+        d = p1[0] * p2[1] - p2[0] * p1[1]
+        area += d
+    return abs(area) / 2
 
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
@@ -120,23 +133,180 @@ class SegAnyThread(QThread):
                     self.tag.emit(index, 1, '')
 
 
+class SegAnyVideoThread(QThread):
+    tag = pyqtSignal(int, int, bool, bool, str)    # current, total, finished, is_error, message
+
+    def __init__(self, mainwindow):
+        super(SegAnyVideoThread, self).__init__()
+        self.mainwindow = mainwindow
+        self.start_frame_idx = 0
+        self.max_frame_num_to_track = None
+
+    def run(self):
+        print('self.start_frame_idx: ', self.start_frame_idx)
+        print('self.max_frame_num_to_track: ', self.max_frame_num_to_track)
+
+        with torch.inference_mode(), torch.autocast(self.mainwindow.segany_video.device,
+                                                    dtype=self.mainwindow.segany_video.model_dtype):
+
+            if not self.mainwindow.use_segment_anything_video:
+                self.mainwindow.actionVideo_segment.setEnabled(False)
+                self.mainwindow.actionVideo_segment_once.setEnabled(False)
+                self.mainwindow.actionVideo_segment_five_times.setEnabled(False)
+                return
+
+            if self.mainwindow.segany_video.inference_state == {}:
+                self.mainwindow.segany_video.init_state(self.mainwindow.image_root, self.mainwindow.files_list)
+            self.mainwindow.segany_video.reset_state()
+            if not self.mainwindow.saved:
+                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Current annotation has not been saved!')
+                return
+
+            current_file = self.mainwindow.files_list[self.start_frame_idx]
+            current_file_path = os.path.join(self.mainwindow.image_root, current_file)
+            current_label_path = os.path.join(self.mainwindow.label_root, '.'.join(current_file.split('.')[:-1]) + '.json')
+            current_label = Annotation(current_file_path, current_label_path)
+
+            current_label.load_annotation()
+
+            group_object_dict = {}
+
+            for object in current_label.objects:
+                group = int(object.group)
+                segmentation = [(int(p[1]), int(p[0])) for p in object.segmentation]
+                category = object.category
+                is_crowd = object.iscrowd
+                layer = object.layer
+                note = object.note
+
+                # fill mask
+                mask = np.zeros(shape=(current_label.height, current_label.width), dtype=np.uint8)
+                xs = [x for x, y in segmentation]
+                ys = [y for x, y in segmentation]
+                rr, cc = polygon(xs, ys, mask.shape)
+                mask[rr, cc] = 1
+
+                if group not in group_object_dict:
+                    group_object_dict[group] = {}
+                    group_object_dict[group]['mask'] = mask
+                    group_object_dict[group]['category'] = category
+                    group_object_dict[group]['is_crowd'] = is_crowd
+                    group_object_dict[group]['layer'] = layer
+                    group_object_dict[group]['note'] = note
+                else:
+                    group_object_dict[group]['mask'] = group_object_dict[group]['mask'] + mask
+
+            if len(group_object_dict) < 1:
+                self.tag.emit(0, self.max_frame_num_to_track, True, True, 'Please label objects before video segment.')
+                return
+
+            for group, object_dict in group_object_dict.items():
+                mask = object_dict['mask']
+                self.mainwindow.segany_video.add_new_mask(self.start_frame_idx, group, mask)
+
+            for index, (out_frame_idxs, out_obj_ids, out_mask_logits) in enumerate(self.mainwindow.segany_video.predictor.propagate_in_video(
+                    self.mainwindow.segany_video.inference_state,
+                    start_frame_idx=self.start_frame_idx,
+                    max_frame_num_to_track=self.max_frame_num_to_track,
+                    reverse=False,
+            )):
+                if index == 0:  # 忽略当前图片
+                    continue
+                file = self.mainwindow.files_list[out_frame_idxs]
+                file_path = os.path.join(self.mainwindow.image_root, file)
+                label_path = os.path.join(self.mainwindow.label_root, '.'.join(file.split('.')[:-1]) + '.json')
+                annotation = Annotation(file_path, label_path)
+
+                objects = []
+                for index_mask, out_obj_id in enumerate(out_obj_ids):
+
+                    masks = out_mask_logits[index_mask]   # [1, h, w]
+                    masks = masks > 0
+                    masks = masks.cpu().numpy()
+
+                    # mask to polygon
+                    masks = masks.astype('uint8') * 255
+                    h, w = masks.shape[-2:]
+                    masks = masks.reshape(h, w)
+
+                    if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
+                        # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
+                        contours, hierarchy = cv2.findContours(masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
+                    else:
+                        # 当只保留外轮廓或单个mask时，只检测外轮廓
+                        contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
+
+                    if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY and contours:
+                        largest_contour = max(contours, key=cv2.contourArea)  # 只保留面积最大的轮廓
+                        contours = [largest_contour]
+
+                    for contour in contours:
+                        # polydp
+                        if self.mainwindow.cfg['software']['use_polydp']:
+                            epsilon_factor = 0.001
+                            epsilon = epsilon_factor * cv2.arcLength(contour, True)
+                            contour = cv2.approxPolyDP(contour, epsilon, True)
+
+                        if len(contour) < 3:
+                            continue
+
+                        segmentation = []
+                        xmin, ymin, xmax, ymax = annotation.width, annotation.height, 0, 0
+                        for point in contour:
+                            x, y = point[0]
+                            x, y = float(x), float(y)
+                            xmin = min(x, xmin)
+                            ymin = min(x, ymin)
+                            xmax = max(y, xmax)
+                            ymax = max(y, ymax)
+
+                            segmentation.append((x, y))
+
+                        area = calculate_area(segmentation)
+                        # bbox = (xmin, ymin, xmax, ymax)
+                        bbox = None
+                        obj = Object(category=group_object_dict[out_obj_id]['category'],
+                                     group=out_obj_id,
+                                     segmentation=segmentation,
+                                     area=area,
+                                     layer=group_object_dict[out_obj_id]['layer'],
+                                     bbox=bbox,
+                                     iscrowd=group_object_dict[out_obj_id]['is_crowd'],
+                                     note=group_object_dict[out_obj_id]['note'])
+                        objects.append(obj)
+
+                annotation.objects = objects
+                annotation.save_annotation()
+                self.tag.emit(index, self.max_frame_num_to_track, False, False, '')
+        self.tag.emit(index, self.max_frame_num_to_track, True, False, '')
+
+
 class InitSegAnyThread(QThread):
-    tag = pyqtSignal(bool)
+    tag = pyqtSignal(bool, bool)
     def __init__(self, mainwindow):
         super(InitSegAnyThread, self).__init__()
         self.mainwindow = mainwindow
         self.model_path:str = None
 
     def run(self):
+        sam_tag = False
+        sam_video_tag = False
         if self.model_path is not None:
             try:
                 self.mainwindow.segany = SegAny(self.model_path, self.mainwindow.cfg['software']['use_bfloat16'])
-                self.tag.emit(True)
+                sam_tag = True
             except Exception as e:
-                print(e)
-                self.tag.emit(False)
-        else:
-            self.tag.emit(False)
+                print('Init SAM Error: ', e)
+                sam_tag = False
+            if 'sam2' in self.model_path:
+                try:
+                    self.mainwindow.segany_video = SegAnyVideo(self.model_path, self.mainwindow.cfg['software']['use_bfloat16'])
+                    sam_video_tag = True
+                except Exception as e:
+                    print('Init SAM2 video Error: ', e)
+                    sam_video_tag = False
+
+        self.tag.emit(sam_tag, sam_video_tag)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -170,6 +340,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 标注目标
         self.current_label:Annotation = None
         self.use_segment_anything = False
+        self.use_segment_anything_video = False
         self.gpu_resource_thread = None
 
         # 新增 手动/自动 group选择
@@ -229,9 +400,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.init_segany_thread.start()
         self.setEnabled(False)
 
-    def init_sam_finish(self, tag:bool):
+    def init_sam_finish(self, sam_tag:bool, sam_video_tag:bool):
+        print('sam_tag:', sam_tag, 'sam_video_tag: ', sam_video_tag)
         self.setEnabled(True)
-        if tag:
+        if sam_video_tag:
+            self.use_segment_anything_video = True
+            if self.files_list:
+                self.segany_video.init_state(self.image_root, self.files_list)
+
+            self.segany_video_thread = SegAnyVideoThread(self)
+            self.segany_video_thread.tag.connect(self.seg_video_finish)
+
+        else:
+            self.segany_video_thread = None
+            self.use_segment_anything_video = False
+            torch.cuda.empty_cache()
+
+        self.actionVideo_segment.setEnabled(self.use_segment_anything_video)
+        self.actionVideo_segment_once.setEnabled(self.use_segment_anything_video)
+        self.actionVideo_segment_five_times.setEnabled(self.use_segment_anything_video)
+
+        if sam_tag:
             self.use_segment_anything = True
             if self.use_segment_anything:
                 if self.segany.device != 'cpu':
@@ -265,7 +454,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.use_segment_anything = False
 
         for name, action in self.pths_actions.items():
-            action.setChecked(tag and checkpoint_name == name)
+            action.setChecked(sam_tag and checkpoint_name == name)
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
         if state == 1:  # 识别完
@@ -331,6 +520,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.segany.predictor_with_point_prompt.reset_image()
             self.actionSegment_anything.setEnabled(False)
+
+    def seg_video_start(self, max_frame_num_to_track=None):
+        if self.current_index == None:
+            return
+        self.setEnabled(False)
+        self.segany_video_thread.start_frame_idx = self.current_index
+        self.segany_video_thread.max_frame_num_to_track=max_frame_num_to_track
+        self.segany_video_thread.start()
+
+    def seg_video_finish(self, current, total, finished, is_error, message):
+        if is_error:
+            QtWidgets.QMessageBox.warning(self, 'warning', message)
+
+        print('Segment video: {}/{}'.format(current, total))
+        if finished:
+            self.setEnabled(True)
+
 
     def init_ui(self):
         #q
@@ -640,6 +846,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
+            try:
+                self.segany_video.inference_state = {}
+            except: pass
 
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()
@@ -887,6 +1096,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
+        self.actionVideo_segment.setEnabled(False)
+        self.actionVideo_segment_once.setEnabled(False)
+        self.actionVideo_segment_five_times.setEnabled(False)
         self.actionPolygon.setEnabled(False)
         self.actionVisible.setEnabled(False)
         self.map_mode = MAPMode.SEMANTIC
@@ -912,6 +1124,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
+        self.actionVideo_segment.setEnabled(False)
+        self.actionVideo_segment_once.setEnabled(False)
+        self.actionVideo_segment_five_times.setEnabled(False)
         self.actionPolygon.setEnabled(False)
         self.actionVisible.setEnabled(False)
         self.map_mode = MAPMode.INSTANCE
@@ -932,6 +1147,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.setEnabled(True)
         self.annos_dock_widget.checkBox_visible.setEnabled(True)
         self.SeganyEnabled()
+        self.actionVideo_segment.setEnabled(self.use_segment_anything_video)
+        self.actionVideo_segment_once.setEnabled(self.use_segment_anything_video)
+        self.actionVideo_segment_five_times.setEnabled(self.use_segment_anything_video)
         self.actionPolygon.setEnabled(True)
         self.actionVisible.setEnabled(True)
         self.map_mode = MAPMode.LABEL
@@ -1106,6 +1324,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_connect(self):
         self.actionOpen_dir.triggered.connect(self.open_dir)
         self.actionSave_dir.triggered.connect(self.save_dir)
+        self.actionVideo_segment.triggered.connect(functools.partial(self.seg_video_start, None))
+        self.actionVideo_segment_once.triggered.connect(functools.partial(self.seg_video_start, 1))
+        self.actionVideo_segment_five_times.triggered.connect(functools.partial(self.seg_video_start, 5))
+
         self.actionPrev.triggered.connect(self.prev_image)
         self.actionNext.triggered.connect(self.next_image)
         self.actionSetting.triggered.connect(self.setting)
@@ -1158,6 +1380,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionNext.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
         self.actionPolygon.setEnabled(False)
+        self.actionVideo_segment.setEnabled(False)
+        self.actionVideo_segment_once.setEnabled(False)
+        self.actionVideo_segment_five_times.setEnabled(False)
         self.actionEdit.setEnabled(False)
         self.actionDelete.setEnabled(False)
         self.actionSave.setEnabled(False)

@@ -6,11 +6,19 @@ import torch
 import numpy as np
 import timm
 import platform
+from PIL import Image
+from collections import OrderedDict
+import os
+from skimage.draw.draw import polygon
+from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
+
 
 osplatform = platform.system()
 
 class SegAny:
     def __init__(self, checkpoint:str, use_bfloat16:bool=True):
+        print('--' * 20)
+        print('* Init SAM... *')
         self.checkpoint = checkpoint
         self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
         self.model_source = None
@@ -90,16 +98,17 @@ class SegAny:
         torch.cuda.empty_cache()
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        print('- device  : {}'.format(self.device))
-        print('- dtype   : {}'.format(self.model_dtype))
-        print('- loading : {}'.format(checkpoint))
+        print('  - device  : {}'.format(self.device))
+        print('  - dtype   : {}'.format(self.model_dtype))
+        print('  - loading : {}'.format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
         sam = sam.eval().to(self.model_dtype)
 
         sam.to(device=self.device)
         self.predictor_with_point_prompt = SamPredictor(sam)
-        print('- loaded')
+        print('* Init SAM finished *')
+        print('--'*20)
         self.image = None
 
     def set_image(self, image):
@@ -148,3 +157,190 @@ class SegAny:
             )
             torch.cuda.empty_cache()
             return masks
+
+
+class SegAnyVideo:
+    def __init__(self, checkpoint: str, use_bfloat16: bool = True):
+        print('--'*20)
+        print('* Init SAM for video... *')
+
+        self.checkpoint = checkpoint
+        self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
+        self.model_source = None
+
+        self.inference_state = {}
+
+        if 'sam2' in checkpoint:
+            from ISAT.segment_any.sam2.build_sam import sam_model_registry
+            # sam2
+            if 'hiera_tiny' in checkpoint:
+                self.model_type = "sam2_hiera_video_tiny"
+            elif 'hiera_small' in checkpoint:
+                self.model_type = "sam2_hiera_video_small"
+            elif 'hiera_base_plus' in checkpoint:
+                self.model_type = 'sam2_hiera_video_base_plus'
+            elif 'hiera_large' in checkpoint:
+                self.model_type = 'sam2_hiera_video_large'
+            else:
+                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+            self.model_source = 'sam2'
+
+        torch.cuda.empty_cache()
+
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        print('  - device  : {}'.format(self.device))
+        print('  - dtype   : {}'.format(self.model_dtype))
+        print('  - loading : {}'.format(checkpoint))
+        self.predictor = sam_model_registry[self.model_type](checkpoint=checkpoint)
+        self.predictor = self.predictor.eval().to(self.model_dtype)
+        self.predictor.to(device=self.device)
+        print('* Init SAM for video finished *')
+        print('--'*20)
+
+    def init_state(
+            self,
+            image_root,
+            image_name_list,
+            offload_video_to_cpu=True,
+            offload_state_to_cpu=True,
+            async_loading_frames=False,
+    ):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+
+            img_mean = (0.485, 0.456, 0.406)
+            img_std = (0.229, 0.224, 0.225)
+
+            num_frames = len(image_name_list)
+            img_paths = [os.path.join(image_root, frame_name) for frame_name in image_name_list]
+            img_mean = torch.tensor(img_mean, dtype=torch.float32)[:, None, None]
+            img_std = torch.tensor(img_std, dtype=torch.float32)[:, None, None]
+
+            image_size = self.predictor.image_size
+
+            if async_loading_frames:
+                lazy_images = AsyncVideoFrameLoader(
+                    img_paths, image_size, offload_video_to_cpu, img_mean, img_std
+                )
+                # return lazy_images, lazy_images.video_height, lazy_images.video_width
+                images, video_height, video_width = lazy_images, lazy_images.video_height, lazy_images.video_width
+            else:
+                images = torch.zeros(num_frames, 3, image_size, image_size, dtype=torch.float32)
+                for n, img_path in enumerate(img_paths):
+                    images[n], video_height, video_width = self._load_img_as_tensor(img_path, image_size)
+                if not offload_video_to_cpu:
+                    images = images.cuda()
+                    img_mean = img_mean.cuda()
+                    img_std = img_std.cuda()
+
+                images -= img_mean
+                images /= img_std
+                # images, video_height, video_width = load_video_frames
+
+            inference_state = {}
+            inference_state["images"] = images
+            inference_state["num_frames"] = len(images)
+            # whether to offload the video frames to CPU memory
+            # turning on this option saves the GPU memory with only a very small overhead
+            inference_state["offload_video_to_cpu"] = offload_video_to_cpu
+            # whether to offload the inference state to CPU memory
+            # turning on this option saves the GPU memory at the cost of a lower tracking fps
+            # (e.g. in a test case of 768x768 model, fps dropped from 27 to 24 when tracking one object
+            # and from 24 to 21 when tracking two objects)
+            inference_state["offload_state_to_cpu"] = offload_state_to_cpu
+            # the original video height and width, used for resizing final output scores
+            inference_state["video_height"] = video_height
+            inference_state["video_width"] = video_width
+            inference_state["device"] = torch.device("cuda")
+            if offload_state_to_cpu:
+                inference_state["storage_device"] = torch.device("cpu")
+            else:
+                inference_state["storage_device"] = torch.device("cuda")
+            # inputs on each frame
+            inference_state["point_inputs_per_obj"] = {}
+            inference_state["mask_inputs_per_obj"] = {}
+            # visual features on a small number of recently visited frames for quick interactions
+            inference_state["cached_features"] = {}
+            # values that don't change across frames (so we only need to hold one copy of them)
+            inference_state["constants"] = {}
+            # mapping between client-side object id and model-side object index
+            inference_state["obj_id_to_idx"] = OrderedDict()
+            inference_state["obj_idx_to_id"] = OrderedDict()
+            inference_state["obj_ids"] = []
+            # A storage to hold the model's tracking results and states on each frame
+            inference_state["output_dict"] = {
+                "cond_frame_outputs": {},  # dict containing {frame_idx: <out>}
+                "non_cond_frame_outputs": {},  # dict containing {frame_idx: <out>}
+            }
+            # Slice (view) of each object tracking results, sharing the same memory with "output_dict"
+            inference_state["output_dict_per_obj"] = {}
+            # A temporary storage to hold new outputs when user interact with a frame
+            # to add clicks or mask (it's merged into "output_dict" before propagation starts)
+            inference_state["temp_output_dict_per_obj"] = {}
+            # Frames that already holds consolidated outputs from click or mask inputs
+            # (we directly use their consolidated outputs during tracking)
+            inference_state["consolidated_frame_inds"] = {
+                "cond_frame_outputs": set(),  # set containing frame indices
+                "non_cond_frame_outputs": set(),  # set containing frame indices
+            }
+            # metadata for each tracking frame (e.g. which direction it's tracked)
+            inference_state["tracking_has_started"] = False
+            inference_state["frames_already_tracked"] = {}
+            # Warm up the visual backbone and cache the image feature on frame 0
+            self.predictor._get_image_feature(inference_state, frame_idx=0, batch_size=1)
+
+            self.inference_state = inference_state
+            self.reset_state()
+
+            print('init state finished.')
+
+    def reset_state(self):
+        """Remove all input points or mask in all frames throughout the video."""
+        self._reset_tracking_results(self.inference_state)
+        # Remove all object ids
+        self.inference_state["obj_id_to_idx"].clear()
+        self.inference_state["obj_idx_to_id"].clear()
+        self.inference_state["obj_ids"].clear()
+        self.inference_state["point_inputs_per_obj"].clear()
+        self.inference_state["mask_inputs_per_obj"].clear()
+        self.inference_state["output_dict_per_obj"].clear()
+        self.inference_state["temp_output_dict_per_obj"].clear()
+
+    def _reset_tracking_results(self, inference_state):
+        """Reset all tracking inputs and results across the videos."""
+        for v in inference_state["point_inputs_per_obj"].values():
+            v.clear()
+        for v in inference_state["mask_inputs_per_obj"].values():
+            v.clear()
+        for v in inference_state["output_dict_per_obj"].values():
+            v["cond_frame_outputs"].clear()
+            v["non_cond_frame_outputs"].clear()
+        for v in inference_state["temp_output_dict_per_obj"].values():
+            v["cond_frame_outputs"].clear()
+            v["non_cond_frame_outputs"].clear()
+        inference_state["output_dict"]["cond_frame_outputs"].clear()
+        inference_state["output_dict"]["non_cond_frame_outputs"].clear()
+        inference_state["consolidated_frame_inds"]["cond_frame_outputs"].clear()
+        inference_state["consolidated_frame_inds"]["non_cond_frame_outputs"].clear()
+        inference_state["tracking_has_started"] = False
+        inference_state["frames_already_tracked"].clear()
+
+    @staticmethod
+    def _load_img_as_tensor(img_path, image_size):
+        img_pil = Image.open(img_path)
+        img_np = np.array(img_pil.convert("RGB").resize((image_size, image_size)))
+        if img_np.dtype == np.uint8:  # np.uint8 is expected for JPEG images
+            img_np = img_np / 255.0
+        else:
+            raise RuntimeError(f"Unknown image dtype: {img_np.dtype} on {img_path}")
+        img = torch.from_numpy(img_np).permute(2, 0, 1)
+        video_width, video_height = img_pil.size  # the original video size
+        return img, video_height, video_width
+
+    def add_new_mask(self, frame_idx, ann_obj_id, mask):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+            self.predictor.add_new_mask(
+                inference_state=self.inference_state,
+                frame_idx=frame_idx,
+                obj_id=ann_obj_id,
+                mask=mask
+            )

@@ -158,9 +158,6 @@ class SegAnyVideoThread(QThread):
             if self.mainwindow.segany_video.inference_state == {}:
                 self.mainwindow.segany_video.init_state(self.mainwindow.image_root, self.mainwindow.files_list)
             self.mainwindow.segany_video.reset_state()
-            if not self.mainwindow.saved:
-                QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Current annotation has not been saved!')
-                return
 
             current_file = self.mainwindow.files_list[self.start_frame_idx]
             current_file_path = os.path.join(self.mainwindow.image_root, current_file)
@@ -199,86 +196,90 @@ class SegAnyVideoThread(QThread):
             if len(group_object_dict) < 1:
                 self.tag.emit(0, self.max_frame_num_to_track, True, True, 'Please label objects before video segment.')
                 return
+            try:
+                for group, object_dict in group_object_dict.items():
+                    mask = object_dict['mask']
+                    self.mainwindow.segany_video.add_new_mask(self.start_frame_idx, group, mask)
 
-            for group, object_dict in group_object_dict.items():
-                mask = object_dict['mask']
-                self.mainwindow.segany_video.add_new_mask(self.start_frame_idx, group, mask)
+                for index, (out_frame_idxs, out_obj_ids, out_mask_logits) in enumerate(self.mainwindow.segany_video.predictor.propagate_in_video(
+                        self.mainwindow.segany_video.inference_state,
+                        start_frame_idx=self.start_frame_idx,
+                        max_frame_num_to_track=self.max_frame_num_to_track,
+                        reverse=False,
+                )):
+                    if index == 0:  # 忽略当前图片
+                        continue
+                    file = self.mainwindow.files_list[out_frame_idxs]
+                    file_path = os.path.join(self.mainwindow.image_root, file)
+                    label_path = os.path.join(self.mainwindow.label_root, '.'.join(file.split('.')[:-1]) + '.json')
+                    annotation = Annotation(file_path, label_path)
 
-            for index, (out_frame_idxs, out_obj_ids, out_mask_logits) in enumerate(self.mainwindow.segany_video.predictor.propagate_in_video(
-                    self.mainwindow.segany_video.inference_state,
-                    start_frame_idx=self.start_frame_idx,
-                    max_frame_num_to_track=self.max_frame_num_to_track,
-                    reverse=False,
-            )):
-                if index == 0:  # 忽略当前图片
-                    continue
-                file = self.mainwindow.files_list[out_frame_idxs]
-                file_path = os.path.join(self.mainwindow.image_root, file)
-                label_path = os.path.join(self.mainwindow.label_root, '.'.join(file.split('.')[:-1]) + '.json')
-                annotation = Annotation(file_path, label_path)
+                    objects = []
+                    for index_mask, out_obj_id in enumerate(out_obj_ids):
 
-                objects = []
-                for index_mask, out_obj_id in enumerate(out_obj_ids):
+                        masks = out_mask_logits[index_mask]   # [1, h, w]
+                        masks = masks > 0
+                        masks = masks.cpu().numpy()
 
-                    masks = out_mask_logits[index_mask]   # [1, h, w]
-                    masks = masks > 0
-                    masks = masks.cpu().numpy()
+                        # mask to polygon
+                        masks = masks.astype('uint8') * 255
+                        h, w = masks.shape[-2:]
+                        masks = masks.reshape(h, w)
 
-                    # mask to polygon
-                    masks = masks.astype('uint8') * 255
-                    h, w = masks.shape[-2:]
-                    masks = masks.reshape(h, w)
+                        if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
+                            # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
+                            contours, hierarchy = cv2.findContours(masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
+                        else:
+                            # 当只保留外轮廓或单个mask时，只检测外轮廓
+                            contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
 
-                    if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
-                        # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
-                        contours, hierarchy = cv2.findContours(masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
-                    else:
-                        # 当只保留外轮廓或单个mask时，只检测外轮廓
-                        contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
+                        if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY and contours:
+                            largest_contour = max(contours, key=cv2.contourArea)  # 只保留面积最大的轮廓
+                            contours = [largest_contour]
 
-                    if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY and contours:
-                        largest_contour = max(contours, key=cv2.contourArea)  # 只保留面积最大的轮廓
-                        contours = [largest_contour]
+                        for contour in contours:
+                            # polydp
+                            if self.mainwindow.cfg['software']['use_polydp']:
+                                epsilon_factor = 0.001
+                                epsilon = epsilon_factor * cv2.arcLength(contour, True)
+                                contour = cv2.approxPolyDP(contour, epsilon, True)
 
-                    for contour in contours:
-                        # polydp
-                        if self.mainwindow.cfg['software']['use_polydp']:
-                            epsilon_factor = 0.001
-                            epsilon = epsilon_factor * cv2.arcLength(contour, True)
-                            contour = cv2.approxPolyDP(contour, epsilon, True)
+                            if len(contour) < 3:
+                                continue
 
-                        if len(contour) < 3:
-                            continue
+                            segmentation = []
+                            xmin, ymin, xmax, ymax = annotation.width, annotation.height, 0, 0
+                            for point in contour:
+                                x, y = point[0]
+                                x, y = float(x), float(y)
+                                xmin = min(x, xmin)
+                                ymin = min(x, ymin)
+                                xmax = max(y, xmax)
+                                ymax = max(y, ymax)
 
-                        segmentation = []
-                        xmin, ymin, xmax, ymax = annotation.width, annotation.height, 0, 0
-                        for point in contour:
-                            x, y = point[0]
-                            x, y = float(x), float(y)
-                            xmin = min(x, xmin)
-                            ymin = min(x, ymin)
-                            xmax = max(y, xmax)
-                            ymax = max(y, ymax)
+                                segmentation.append((x, y))
 
-                            segmentation.append((x, y))
+                            area = calculate_area(segmentation)
+                            # bbox = (xmin, ymin, xmax, ymax)
+                            bbox = None
+                            obj = Object(category=group_object_dict[out_obj_id]['category'],
+                                         group=out_obj_id,
+                                         segmentation=segmentation,
+                                         area=area,
+                                         layer=group_object_dict[out_obj_id]['layer'],
+                                         bbox=bbox,
+                                         iscrowd=group_object_dict[out_obj_id]['is_crowd'],
+                                         note=group_object_dict[out_obj_id]['note'])
+                            objects.append(obj)
 
-                        area = calculate_area(segmentation)
-                        # bbox = (xmin, ymin, xmax, ymax)
-                        bbox = None
-                        obj = Object(category=group_object_dict[out_obj_id]['category'],
-                                     group=out_obj_id,
-                                     segmentation=segmentation,
-                                     area=area,
-                                     layer=group_object_dict[out_obj_id]['layer'],
-                                     bbox=bbox,
-                                     iscrowd=group_object_dict[out_obj_id]['is_crowd'],
-                                     note=group_object_dict[out_obj_id]['note'])
-                        objects.append(obj)
+                    annotation.objects = objects
+                    annotation.save_annotation()
+                    self.tag.emit(index, self.max_frame_num_to_track, False, False, '')
 
-                annotation.objects = objects
-                annotation.save_annotation()
-                self.tag.emit(index, self.max_frame_num_to_track, False, False, '')
-        self.tag.emit(index, self.max_frame_num_to_track, True, False, '')
+                self.tag.emit(index, self.max_frame_num_to_track, True, False, '')
+
+            except Exception as e:
+                self.tag.emit(index, self.max_frame_num_to_track, True, True, '{}'.format(e))
 
 
 class InitSegAnyThread(QThread):
@@ -524,6 +525,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def seg_video_start(self, max_frame_num_to_track=None):
         if self.current_index == None:
             return
+
+        if not self.saved:
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'Current annotation has not been saved!')
+            return
+
         self.setEnabled(False)
         self.segany_video_thread.start_frame_idx = self.current_index
         self.segany_video_thread.max_frame_num_to_track=max_frame_num_to_track

@@ -37,6 +37,26 @@ import datetime
 from skimage.draw.draw import polygon
 
 
+class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
+    # copy from qtbox
+    def __init__(self):
+        super(QtBoxStyleProgressBar, self).__init__()
+        self.setTextVisible(False)
+        self.setStyleSheet("""
+        QProgressBar {
+            border: 2px solid #888783;
+            border-radius: 5px;
+        }
+
+        QProgressBar::chunk {
+            background-color: #74d65f;
+            border-radius: 2px;
+            width: 9px;
+            margin: 0.5px;
+        }
+        """)
+
+
 def calculate_area(points):
     area = 0
     num_points = len(points)
@@ -146,6 +166,11 @@ class SegAnyVideoThread(QThread):
         print('self.start_frame_idx: ', self.start_frame_idx)
         print('self.max_frame_num_to_track: ', self.max_frame_num_to_track)
 
+        if self.max_frame_num_to_track is not None:
+            total = self.max_frame_num_to_track
+        else:
+            total = len(self.mainwindow.files_list) - self.start_frame_idx + 1
+
         with torch.inference_mode(), torch.autocast(self.mainwindow.segany_video.device,
                                                     dtype=self.mainwindow.segany_video.model_dtype):
 
@@ -194,7 +219,7 @@ class SegAnyVideoThread(QThread):
                     group_object_dict[group]['mask'] = group_object_dict[group]['mask'] + mask
 
             if len(group_object_dict) < 1:
-                self.tag.emit(0, self.max_frame_num_to_track, True, True, 'Please label objects before video segment.')
+                self.tag.emit(0, total, True, True, 'Please label objects before video segment.')
                 return
             try:
                 for group, object_dict in group_object_dict.items():
@@ -274,12 +299,12 @@ class SegAnyVideoThread(QThread):
 
                     annotation.objects = objects
                     annotation.save_annotation()
-                    self.tag.emit(index, self.max_frame_num_to_track, False, False, '')
+                    self.tag.emit(index, total, False, False, '')
 
-                self.tag.emit(index, self.max_frame_num_to_track, True, False, '')
+                self.tag.emit(index, total, True, False, '')
 
             except Exception as e:
-                self.tag.emit(index, self.max_frame_num_to_track, True, True, '{}'.format(e))
+                self.tag.emit(index, total, True, True, '{}'.format(e))
 
 
 class InitSegAnyThread(QThread):
@@ -531,6 +556,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
 
         self.setEnabled(False)
+        self.statusbar_change_status(is_message=False)
         self.segany_video_thread.start_frame_idx = self.current_index
         self.segany_video_thread.max_frame_num_to_track=max_frame_num_to_track
         self.segany_video_thread.start()
@@ -540,7 +566,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self, 'warning', message)
 
         print('Segment video: {}/{}'.format(current, total))
+        self.progressbar.setMaximum(total)
+        self.progressbar.setValue(current)
         if finished:
+            self.statusbar_change_status(is_message=True)
+            self.progressbar.setValue(0)
             self.setEnabled(True)
 
 
@@ -629,6 +659,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """)
         self.statusbar.addPermanentWidget(self.modeState)
 
+        self.progressbar = QtBoxStyleProgressBar()
+        self.progressbar.setTextVisible(False)
+        self.progressbar.setFixedWidth(500)
+        self.progressbar.setVisible(False)
+        self.statusbar.addPermanentWidget(self.progressbar)
+
         self.update_menuSAM()
 
         # mask alpha
@@ -696,6 +732,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.toolBar.addWidget(self.use_polydp)
 
         self.trans = QtCore.QTranslator()
+
+    def statusbar_change_status(self, is_message:bool=True):
+        self.labelGPUResource.setVisible(is_message)
+        self.labelData.setVisible(is_message)
+        self.labelCoord.setVisible(is_message)
+        self.modeState.setVisible(is_message)
+        self.progressbar.setVisible(not is_message)
 
     def update_menuSAM(self):
         #

@@ -113,7 +113,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.download_thread_dict = {}
         self.init_gui()
 
-        self.tableWidget.setColumnWidth(0, 200)
+        self.tableWidget.setColumnWidth(0, 300)
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
         self.checkBox_use_bfloat16.stateChanged.connect(self.use_bfloat16)
 

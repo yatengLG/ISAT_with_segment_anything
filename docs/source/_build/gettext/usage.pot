@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"POT-Creation-Date: 2024-09-05 14:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgid "After version 0.0.3, you can manage checkpoints within the GUI, click [me
 msgstr ""
 
 #: ../../usage.rst:37
-msgid "Now support `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc."
+msgid "Now support `SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc."
 msgstr ""
 
 #: ../../usage.rst:39
@@ -220,50 +220,99 @@ msgstr ""
 msgid "2.4G"
 msgstr ""
 
+#: ../../usage.rst:90
+msgid "SAM2"
+msgstr ""
+
 #: ../../usage.rst:91
-msgid "**Run** Execute the main application:"
+msgid "`sam2_hiera_large.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_large.pt>`_"
+msgstr ""
+
+#: ../../usage.rst:92
+#: ../../usage.rst:96
+msgid "4000M"
+msgstr ""
+
+#: ../../usage.rst:93
+msgid "900M"
+msgstr ""
+
+#: ../../usage.rst:95
+msgid "`sam2_hiera_base_plus.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_base_plus.pt>`_"
+msgstr ""
+
+#: ../../usage.rst:97
+msgid "324M"
+msgstr ""
+
+#: ../../usage.rst:99
+msgid "`sam2_hiera_small.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_small.pt>`_"
+msgstr ""
+
+#: ../../usage.rst:100
+msgid "3000M"
 msgstr ""
 
 #: ../../usage.rst:101
-msgid "Option 2: Pip Install"
+msgid "185M"
 msgstr ""
 
 #: ../../usage.rst:103
+msgid "`sam2_hiera_tiny.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_tiny.pt>`_"
+msgstr ""
+
+#: ../../usage.rst:104
+msgid "2400M"
+msgstr ""
+
+#: ../../usage.rst:105
+msgid "156M"
+msgstr ""
+
+#: ../../usage.rst:107
+msgid "**Run** Execute the main application:"
+msgstr ""
+
+#: ../../usage.rst:117
+msgid "Option 2: Pip Install"
+msgstr ""
+
+#: ../../usage.rst:119
 msgid "**Create environment** Use conda to create and activate a new environment:"
 msgstr ""
 
-#: ../../usage.rst:111
+#: ../../usage.rst:127
 msgid "**Install ISAT-SAM using pip** To use GPU, install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first:"
 msgstr ""
 
-#: ../../usage.rst:118
+#: ../../usage.rst:134
 msgid "**Run** Start the application via the command line:"
 msgstr ""
 
-#: ../../usage.rst:128
+#: ../../usage.rst:144
 msgid "Option 3: Install with .exe"
 msgstr ""
 
-#: ../../usage.rst:130
+#: ../../usage.rst:146
 msgid "**Download the .exe** The .exe version may be older than the source code version."
 msgstr ""
 
-#: ../../usage.rst:133
+#: ../../usage.rst:149
 msgid "Download three .zip files, total 2.7G"
 msgstr ""
 
-#: ../../usage.rst:134
+#: ../../usage.rst:150
 msgid "Download link: `Baidu Netdisk <https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ Code: ISAT"
 msgstr ""
 
-#: ../../usage.rst:136
+#: ../../usage.rst:152
 msgid "Click `main.exe` to run the tool."
 msgstr ""
 
-#: ../../usage.rst:138
+#: ../../usage.rst:154
 msgid "**Download Segment anything pretrained checkpoint** The download zip files contain `sam_hq_vit_tiny.pth`, but note this model may not support CPU. You can download `mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_ to test the tool."
 msgstr ""
 
-#: ../../usage.rst:142
+#: ../../usage.rst:158
 msgid "For using other models, refer to `Download Segment anything pretrained checkpoint <https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint>`_."
 msgstr ""

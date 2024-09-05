@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"POT-Creation-Date: 2024-09-05 14:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "**info**:"
 msgstr ""
 
 #: ../../index.rst:13
-msgid "**description**: Always 'ISAT'"
+msgid "**description**: Always 'ISAT' for the software to recoginize"
 msgstr ""
 
 #: ../../index.rst:14
@@ -45,7 +45,7 @@ msgid "**folder**: The directory where the images are stored"
 msgstr ""
 
 #: ../../index.rst:15
-msgid "**name**: The name of the image file"
+msgid "**name**: The name (path) of the image file"
 msgstr ""
 
 #: ../../index.rst:16
@@ -56,7 +56,7 @@ msgstr ""
 msgid "**note**: An optional field for any additional notes related to the image"
 msgstr ""
 
-#: ../../index.rst:27
+#: ../../index.rst:28
 msgid "**objects**:"
 msgstr ""
 
@@ -88,14 +88,18 @@ msgstr ""
 msgid "**iscrowd**: A boolean value indicating if the object is part of a crowd"
 msgstr ""
 
-#: ../../index.rst:29
+#: ../../index.rst:27
+msgid "**note**: An optional field for any additional notes related to the annotation mask"
+msgstr ""
+
+#: ../../index.rst:30
 msgid "Check :doc:`features` for full features demonstration. Or click :doc:`usage` to **get started!**"
 msgstr ""
 
-#: ../../index.rst:34
+#: ../../index.rst:35
 msgid "This project is under active development. Feedbacks are Welcome!"
 msgstr ""
 
-#: ../../index.rst:37
+#: ../../index.rst:38
 msgid "Contents"
 msgstr ""

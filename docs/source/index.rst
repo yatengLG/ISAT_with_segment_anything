@@ -10,9 +10,9 @@ Welcome to ISAT-SAM's documentation!
 
 
 * **info**:
-    * **description**: Always 'ISAT'
+    * **description**: Always 'ISAT' for the software to recoginize
     * **folder**: The directory where the images are stored
-    * **name**: The name of the image file
+    * **name**: The name (path) of the image file
     * **width**, **height**, **depth**: The dimensions of the image; depth is 3 for RGB images
     * **note**: An optional field for any additional notes related to the image
 
@@ -24,6 +24,7 @@ Welcome to ISAT-SAM's documentation!
     * **layer**: A float indicating the sequence of the object. It increments within the same group, starting at 1.0
     * **bbox**: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]
     * **iscrowd**: A boolean value indicating if the object is part of a crowd
+    * **note**: An optional field for any additional notes related to the annotation mask
 
 
 Check :doc:`features` for full features demonstration. Or click :doc:`usage` to **get started!**

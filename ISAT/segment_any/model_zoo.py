@@ -119,7 +119,7 @@ model_dict = {
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam2_hiera_large.pt'
             ],
             'memory': '4000M',
-            'bf16_memory': '2500M',
+            'bf16_memory': '2800M',
             'params': '900M'
         },
     'sam2_hiera_base_plus.pt':
@@ -128,8 +128,8 @@ model_dict = {
                 'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_base_plus.pt',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam2_hiera_base_plus.pt'
             ],
-            'memory': '4000M',
-            'bf16_memory': '2000M',
+            'memory': '2800M',
+            'bf16_memory': '2200M',
             'params': '324M'
         },
     'sam2_hiera_small.pt':
@@ -138,8 +138,8 @@ model_dict = {
                 'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_small.pt',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam2_hiera_small.pt'
             ],
-            'memory': '3000M',
-            'bf16_memory': '1500M',
+            'memory': '2500M',
+            'bf16_memory': '1800M',
             'params': '185M'
         },
     'sam2_hiera_tiny.pt':
@@ -148,8 +148,8 @@ model_dict = {
                 'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_tiny.pt',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam2_hiera_tiny.pt'
             ],
-            'memory': '2400M',
-            'bf16_memory': '1200M',
+            'memory': '2200M',
+            'bf16_memory': '1500M',
             'params': '156M'
         },
 }

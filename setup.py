@@ -33,8 +33,7 @@ setup(
     author="yatengLG",
     author_email="yatenglg@foxmail.com",
     description="Interactive semi-automatic annotation tool for image segmentation based on SAM(segment anything model).",
-    long_description=(codecs.open("README.md", encoding='utf-8').read() + "\n" +
-                      codecs.open("CHANGELOG.md", encoding='utf-8').read()),
+    long_description=(codecs.open("README.md", encoding='utf-8').read()),
     long_description_content_type="text/markdown",
 
     url="https://github.com/yatengLG/ISAT_with_segment_anything",  # 项目相关文件地址
@@ -58,6 +57,9 @@ setup(
         'torchvision',
         'pycocotools',
         'timm',
+        'shapely',
+        'hydra-core>=1.3.2',
+        'tqdm>=4.66.1'
         ],
 
     classifiers=[

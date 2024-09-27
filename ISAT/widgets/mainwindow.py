@@ -438,6 +438,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany_video_thread = SegAnyVideoThread(self)
             self.segany_video_thread.tag.connect(self.seg_video_finish)
 
+            # sam2 建议使用bfloat16
+            if self.segany.model_dtype == torch.float32:
+                if self.actionChinese.isChecked():
+                    QtWidgets.QMessageBox.warning(self,
+                                                  'warning',
+                                                  """建议使用bfloat16模式进行视频分割\n在[菜单栏]-[SAM]-[模型管理]界面打开该功能""")
+                else:
+                    QtWidgets.QMessageBox.warning(self,
+                                                  'warning',
+                                                  """Suggest Use bfloat16 mode to segment video.\nYou can open it in [Menubar]-[SAM]-[model manage].""")
+
         else:
             self.segany_video_thread = None
             self.use_segment_anything_video = False

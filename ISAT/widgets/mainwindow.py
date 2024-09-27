@@ -14,6 +14,7 @@ from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
 from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
+from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
@@ -616,6 +617,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.window_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'window'))
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
+        self.video2frames_dialog = Video2FramesDialog(self, self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
         self.annos_validator_dialog = AnnosValidatorDialog(self, self)
 
@@ -778,6 +780,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
+        self.video2frames_dialog.retranslateUi(self.video2frames_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
         self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
 
@@ -1307,6 +1310,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def converter(self):
         self.Converter_dialog.show()
 
+    def video2frames(self):
+        self.video2frames_dialog.show()
+
     def auto_segment(self):
         if self.use_segment_anything:
             self.auto_segment_dialog.show()
@@ -1413,6 +1419,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
 
         self.actionConverter.triggered.connect(self.converter)
+        self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
 

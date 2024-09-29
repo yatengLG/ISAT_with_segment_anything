@@ -26,6 +26,8 @@ class Converter(QThread, ISAT):
         raise NotImplementedError
 
     def load_from_isat(self):
+        self.annos.clear()
+        self.cates = ()
         json_files = [file for file in os.listdir(self.isat_json_root) if file.endswith('.json')]
         num_json_files = len(json_files)
         for index, file in enumerate(json_files):

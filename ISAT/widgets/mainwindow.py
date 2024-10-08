@@ -1045,14 +1045,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.current_group = group + 1 if group >= self.current_group else self.current_group
                         elif self.group_select_mode == 'manual':
                             self.current_group = 1
-                        self.update_group_display()
                     except Exception as e:
                         pass
                     polygon = Polygon()
                     self.scene.addItem(polygon)
                     polygon.load_object(object)
                     self.polygons.append(polygon)
-
+                self.update_group_display()
             if self.current_label is not None:
                 self.setWindowTitle('{}'.format(self.current_label.label_path))
             else:

@@ -191,6 +191,8 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             try:
                 if self.comboBox_group_select.currentText() == "All":
                     max_group = self.comboBox_group_select.itemText(len(self.comboBox_group_select) - 1)
+                    if max_group == 'All':
+                        max_group = 1
                     self.mainwindow.current_group = max_group
                     self.mainwindow.update_group_display()
                 else:
@@ -211,6 +213,8 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             try:
                 if self.comboBox_group_select.currentText() == "All":
                     max_group = self.comboBox_group_select.itemText(len(self.comboBox_group_select) - 1)
+                    if max_group == 'All':
+                        max_group = 1
                     self.mainwindow.current_group = max_group
                     self.mainwindow.update_group_display()
                 else:

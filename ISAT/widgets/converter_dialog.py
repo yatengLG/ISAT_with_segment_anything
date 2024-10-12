@@ -427,8 +427,23 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
         self.mainwindow = mainwindow
         self.converter = None
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        self.tabWidget.currentChanged.connect(self.tab_widget_current_changed)
 
         self.init_connect()
+
+    def tab_widget_current_changed(self):
+        if self.tabWidget.currentWidget() == self.tab_COCO:
+            self.mainwindow.cfg['software']['current_converter'] = 'coco'
+        elif self.tabWidget.currentWidget() == self.tab_YOLO:
+            self.mainwindow.cfg['software']['current_converter'] = 'yolo'
+        elif self.tabWidget.currentWidget() == self.tab_LABELME:
+            self.mainwindow.cfg['software']['current_converter'] = 'labelme'
+        elif self.tabWidget.currentWidget() == self.tab_VOC:
+            self.mainwindow.cfg['software']['current_converter'] = 'voc'
+        elif self.tabWidget.currentWidget() == self.tab_VOC_DETECTION:
+            self.mainwindow.cfg['software']['current_converter'] = 'voc for detection'
+        else:
+            self.mainwindow.cfg['software']['current_converter'] = 'coco'
 
     def apply(self):
         self.tabWidget.setEnabled(False)
@@ -603,7 +618,6 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             if lineEdit is not None:
                 lineEdit.clear()
-
 
     def open_dir(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='Open dir')

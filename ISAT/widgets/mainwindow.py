@@ -1318,6 +1318,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #     self.show_image(self.current_index)
 
     def converter(self):
+        current_converter = self.cfg['software'].get('current_converter', 'coco')
+        if current_converter == 'coco':
+            current_converter_tab = self.Converter_dialog.tab_COCO
+        elif current_converter == 'yolo':
+            current_converter_tab = self.Converter_dialog.tab_YOLO
+        elif current_converter == 'labelme':
+            current_converter_tab = self.Converter_dialog.tab_LABELME
+        elif current_converter == 'voc':
+            current_converter_tab = self.Converter_dialog.tab_VOC
+        elif current_converter == 'voc for detection':
+            current_converter_tab = self.Converter_dialog.tab_VOC_DETECTION
+        else:
+            current_converter_tab = self.Converter_dialog.tab_COCO
+
+        self.Converter_dialog.tabWidget.setCurrentWidget(current_converter_tab)
+
         self.Converter_dialog.show()
 
     def video2frames(self):

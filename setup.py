@@ -59,7 +59,9 @@ setup(
         'timm',
         'shapely',
         'hydra-core>=1.3.2',
-        'tqdm>=4.66.1'
+        'tqdm>=4.66.1',
+        'fuzzywuzzy'
+        'python-Levenshtein'
         ],
 
     classifiers=[

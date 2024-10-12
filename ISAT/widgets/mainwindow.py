@@ -14,6 +14,7 @@ from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
 from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
+from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
@@ -437,6 +438,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany_video_thread = SegAnyVideoThread(self)
             self.segany_video_thread.tag.connect(self.seg_video_finish)
 
+            # sam2 建议使用bfloat16
+            if self.segany.model_dtype == torch.float32:
+                if self.actionChinese.isChecked():
+                    QtWidgets.QMessageBox.warning(self,
+                                                  'warning',
+                                                  """建议使用bfloat16模式进行视频分割\n在[菜单栏]-[SAM]-[模型管理]界面打开该功能""")
+                else:
+                    QtWidgets.QMessageBox.warning(self,
+                                                  'warning',
+                                                  """Suggest Use bfloat16 mode to segment video.\nYou can open it in [Menubar]-[SAM]-[model manage].""")
+
         else:
             self.segany_video_thread = None
             self.use_segment_anything_video = False
@@ -616,6 +628,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.window_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'window'))
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
+        self.video2frames_dialog = Video2FramesDialog(self, self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
         self.annos_validator_dialog = AnnosValidatorDialog(self, self)
 
@@ -778,6 +791,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
+        self.video2frames_dialog.retranslateUi(self.video2frames_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
         self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
 
@@ -1031,14 +1045,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.current_group = group + 1 if group >= self.current_group else self.current_group
                         elif self.group_select_mode == 'manual':
                             self.current_group = 1
-                        self.update_group_display()
                     except Exception as e:
                         pass
                     polygon = Polygon()
                     self.scene.addItem(polygon)
                     polygon.load_object(object)
                     self.polygons.append(polygon)
-
+                self.update_group_display()
             if self.current_label is not None:
                 self.setWindowTitle('{}'.format(self.current_label.label_path))
             else:
@@ -1305,7 +1318,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #     self.show_image(self.current_index)
 
     def converter(self):
+        current_converter = self.cfg['software'].get('current_converter', 'coco')
+        if current_converter == 'coco':
+            current_converter_tab = self.Converter_dialog.tab_COCO
+        elif current_converter == 'yolo':
+            current_converter_tab = self.Converter_dialog.tab_YOLO
+        elif current_converter == 'labelme':
+            current_converter_tab = self.Converter_dialog.tab_LABELME
+        elif current_converter == 'voc':
+            current_converter_tab = self.Converter_dialog.tab_VOC
+        elif current_converter == 'voc for detection':
+            current_converter_tab = self.Converter_dialog.tab_VOC_DETECTION
+        else:
+            current_converter_tab = self.Converter_dialog.tab_COCO
+
+        self.Converter_dialog.tabWidget.setCurrentWidget(current_converter_tab)
+
         self.Converter_dialog.show()
+
+    def video2frames(self):
+        self.video2frames_dialog.show()
 
     def auto_segment(self):
         if self.use_segment_anything:
@@ -1413,6 +1445,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
 
         self.actionConverter.triggered.connect(self.converter)
+        self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
 

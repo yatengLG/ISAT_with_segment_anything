@@ -152,6 +152,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionConverter"/>
+    <addaction name="actionVideo_to_frames"/>
     <addaction name="actionAuto_segment"/>
     <addaction name="actionAnno_validator"/>
    </widget>
@@ -981,6 +982,15 @@
    </property>
    <property name="statusTip">
     <string>Video segment next five frames.(only support sam2 model)</string>
+   </property>
+  </action>
+  <action name="actionVideo_to_frames">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/视频_video-two.svg</normaloff>:/icon/icons/视频_video-two.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Video to frames</string>
    </property>
   </action>
  </widget>

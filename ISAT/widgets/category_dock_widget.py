@@ -3,6 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore
 from ISAT.ui.category_dock import Ui_Form
+from fuzzywuzzy import process
 
 
 class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
@@ -11,6 +12,8 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.listWidget.itemClicked.connect(self.item_choice)
+        self.lineEdit_search_category.textChanged.connect(self.update_widget)
+        self.lineEdit_search_category.setClearButtonEnabled(True)
 
         # 新增 手动/自动 group 选择
         self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
@@ -23,8 +26,21 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.listWidget.clear()
         btngroup = QtWidgets.QButtonGroup(self)
         labels = self.mainwindow.cfg.get('label', [])
-        for index in range(len(labels)):
-            label = labels[index]
+        search_text = self.lineEdit_search_category.text()
+
+        name_label_dict = {label.get('name', 'UNKNOW'): label for label in labels}
+
+        label_names = [label.get('name', 'UNKNOW') for label in labels]
+        if search_text == '':
+            show_label_names = label_names
+        elif search_text.strip(' ') == '':
+            show_label_names = label_names
+        else:
+            matches = process.extract(search_text, label_names, limit=5)
+            show_label_names = [name for name, score in matches if score > 0]
+
+        for index in range(len(show_label_names)):
+            label = name_label_dict[show_label_names[index]]
             name = label.get('name', 'UNKNOW')
             color = label.get('color', '#000000')
             item = QtWidgets.QListWidgetItem()

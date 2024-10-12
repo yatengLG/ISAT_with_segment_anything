@@ -65,5 +65,6 @@
     <file>../icons/编辑_edit.svg</file>
     <file>../icons/保存硬盘_save-one.svg</file>
     <file>../icons/保存_save.svg</file>
+    <file>../icons/视频_video-two.svg</file>
   </qresource>
 </RCC>

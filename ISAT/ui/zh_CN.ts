@@ -927,37 +927,37 @@
         <translation>显示/隐藏</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="59"/>
+        <location filename="category_dock.py" line="63"/>
         <source>Group mode</source>
         <translation>组模式[自动/手动]</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="60"/>
+        <location filename="category_dock.py" line="64"/>
         <source>Auto</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="62"/>
+        <location filename="category_dock.py" line="66"/>
         <source>Current group -</source>
         <translation>组id-</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="63"/>
+        <location filename="category_dock.py" line="67"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="65"/>
+        <location filename="category_dock.py" line="69"/>
         <source>Current group</source>
         <translation>当前组id</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="67"/>
+        <location filename="category_dock.py" line="71"/>
         <source>Current group +</source>
         <translation>组id+</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="68"/>
+        <location filename="category_dock.py" line="72"/>
         <source>+</source>
         <translation>+</translation>
     </message>
@@ -1005,6 +1005,11 @@
         <location filename="anno_dock.py" line="74"/>
         <source>Next group.</source>
         <translation>下一组.</translation>
+    </message>
+    <message>
+        <location filename="category_dock.py" line="61"/>
+        <source>Search categories.</source>
+        <translation>查找类别.</translation>
     </message>
 </context>
 <context>

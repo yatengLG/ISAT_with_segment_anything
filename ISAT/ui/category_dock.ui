@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
     <number>2</number>
@@ -29,6 +29,13 @@
    <property name="bottomMargin">
     <number>2</number>
    </property>
+   <item>
+    <widget class="QLineEdit" name="lineEdit_search_category">
+     <property name="placeholderText">
+      <string>Search categories.</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QListWidget" name="listWidget">
      <property name="selectionMode">

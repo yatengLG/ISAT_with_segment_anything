@@ -60,7 +60,7 @@ setup(
         'shapely',
         'hydra-core>=1.3.2',
         'tqdm>=4.66.1',
-        'fuzzywuzzy'
+        'fuzzywuzzy',
         'python-Levenshtein'
         ],
 

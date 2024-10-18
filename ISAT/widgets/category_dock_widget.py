@@ -30,7 +30,6 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def choice_category(self):
         index = self.category_choice_shortcuts.get(self.sender(), 0)
-        print('index: ', index)
         try:
             item = self.listWidget.item(index)
             widget = self.listWidget.itemWidget(item)

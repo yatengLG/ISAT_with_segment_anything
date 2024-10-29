@@ -31,6 +31,9 @@
    </property>
    <item>
     <widget class="QLineEdit" name="lineEdit_search_category">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="placeholderText">
       <string>Search categories.</string>
      </property>

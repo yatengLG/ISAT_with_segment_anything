@@ -87,30 +87,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_group">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly</set>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="placeholderText">
-         <string>group id</string>
+       <widget class="QSpinBox" name="spinBox_group">
+        <property name="maximum">
+         <number>9999</number>
         </property>
        </widget>
       </item>

@@ -20,6 +20,7 @@ class Ui_Form(object):
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lineEdit_search_category = QtWidgets.QLineEdit(Form)
+        self.lineEdit_search_category.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.lineEdit_search_category.setObjectName("lineEdit_search_category")
         self.verticalLayout.addWidget(self.lineEdit_search_category)
         self.listWidget = QtWidgets.QListWidget(Form)

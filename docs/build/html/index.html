@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html class="writer-html5" lang="EN" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/documentation_options.js?v=8f91ca17"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -82,9 +82,9 @@
 <ul class="simple">
 <li><dl class="simple">
 <dt><strong>info</strong>:</dt><dd><ul>
-<li><p><strong>description</strong>: Always ‘ISAT’</p></li>
+<li><p><strong>description</strong>: Always ‘ISAT’ for the software to recoginize</p></li>
 <li><p><strong>folder</strong>: The directory where the images are stored</p></li>
-<li><p><strong>name</strong>: The name of the image file</p></li>
+<li><p><strong>name</strong>: The name (path) of the image file</p></li>
 <li><p><strong>width</strong>, <strong>height</strong>, <strong>depth</strong>: The dimensions of the image; depth is 3 for RGB images</p></li>
 <li><p><strong>note</strong>: An optional field for any additional notes related to the image</p></li>
 </ul>
@@ -100,6 +100,7 @@
 <li><p><strong>layer</strong>: A float indicating the sequence of the object. It increments within the same group, starting at 1.0</p></li>
 <li><p><strong>bbox</strong>: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]</p></li>
 <li><p><strong>iscrowd</strong>: A boolean value indicating if the object is part of a crowd</p></li>
+<li><p><strong>note</strong>: An optional field for any additional notes related to the annotation mask</p></li>
 </ul>
 </dd>
 </dl>

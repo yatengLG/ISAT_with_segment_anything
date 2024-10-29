@@ -34,7 +34,7 @@ Option 1: From Source Code
 
    After version 0.0.3, you can manage checkpoints within the GUI, click [menubar]-[SAM]-[Model manage] to open the GUI.
 
-   Now support `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc.
+   Now support `SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc.
 
    .. list-table:: Pretrained Checkpoints
       :header-rows: 1
@@ -87,6 +87,22 @@ Option 1: From Source Code
         - `sam-med2d_b.pth <https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link>`_
         - 1500M
         - 2.4G
+      * - SAM2
+        - `sam2_hiera_large.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_large.pt>`_
+        - 4000M
+        - 900M
+      * - 
+        - `sam2_hiera_base_plus.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_base_plus.pt>`_
+        - 4000M
+        - 324M
+      * - 
+        - `sam2_hiera_small.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_small.pt>`_
+        - 3000M
+        - 185M
+      * - 
+        - `sam2_hiera_tiny.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_tiny.pt>`_
+        - 2400M
+        - 156M
 
 4. **Run**
    Execute the main application:

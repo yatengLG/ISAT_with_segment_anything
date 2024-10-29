@@ -58,9 +58,9 @@ model_dict = {
                 'https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_vit_h_4b8939.pth'
             ],
-            'memory':'6462M',
-            'bf16_memory':'3378M',
-            'params':'2.6G'
+            'memory': '6462M',
+            'bf16_memory': '3378M',
+            'params': '2.6G'
         },
     'sam_vit_l_0b3195.pth':
         {

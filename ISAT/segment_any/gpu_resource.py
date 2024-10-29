@@ -33,9 +33,12 @@ class GPUResource_Thread(QThread):
 
     def run(self):
         while True:
-            r = os.popen('{} Used'.format(self.command)).readline()
-            used = r.split(':')[-1].strip().split(' ')[0]
-            self.message.emit("cuda: {}/{}MiB".format(used, self.total))
+            try:
+                r = os.popen('{} Used'.format(self.command)).readline()
+                used = r.split(':')[-1].strip().split(' ')[0]
+                self.message.emit("cuda: {}/{}MiB".format(used, self.total))
+            except:
+                self.message.emit("cuda: {}/{}MiB".format('-', '-'))
 
     def __del__(self):
         self.message.emit("Ground filter thread | Wait for thread to exit.")

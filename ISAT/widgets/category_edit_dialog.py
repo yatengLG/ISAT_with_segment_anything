@@ -14,8 +14,6 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         self.scene = scene
         self.polygon = None
 
-        self.lineEdit_group.setValidator(QtGui.QIntValidator(0,1000))
-
         self.listWidget.itemClicked.connect(self.get_category)
         self.pushButton_apply.clicked.connect(self.apply)
         self.pushButton_cancel.clicked.connect(self.cancel)
@@ -62,7 +60,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.listWidget.setCurrentItem(item)
 
         if self.polygon is None:
-            self.lineEdit_group.clear()
+            self.spinBox_group.clear()
             self.lineEdit_category.clear()
             self.checkBox_iscrowded.setCheckState(False)
             self.lineEdit_note.clear()
@@ -70,7 +68,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             self.lineEdit_category.setText('{}'.format(self.polygon.category))
             self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.lineEdit_group.setText('{}'.format(self.polygon.group))
+            self.spinBox_group.setValue(self.polygon.group)
             iscrowd = QtCore.Qt.CheckState.Checked if self.polygon.iscrowd == 1 else QtCore.Qt.CheckState.Unchecked
             self.checkBox_iscrowded.setCheckState(iscrowd)
             self.lineEdit_note.setText('{}'.format(self.polygon.note))
@@ -86,7 +84,8 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def apply(self):
         category = self.lineEdit_category.text()
-        group = int(self.lineEdit_group.text())
+        group = self.spinBox_group.value()
+
         is_crowd = int(self.checkBox_iscrowded.isChecked())
         note = self.lineEdit_note.text()
         if not category:

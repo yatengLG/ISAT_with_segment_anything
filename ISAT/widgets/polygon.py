@@ -179,7 +179,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
                     self.scene().selected_polygons_list.remove(self)
             self.scene().mainwindow.annos_dock_widget.set_selected(self) # 更新label面板
 
-        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange: # ItemPositionHasChanged
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:  # ItemPositionHasChanged
             bias = value
             l, t, b, r = self.boundingRect().left(), self.boundingRect().top(), self.boundingRect().bottom(), self.boundingRect().right()
             if l + bias.x() < 0: bias.setX(-l)
@@ -193,6 +193,10 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             if self.scene().mainwindow.load_finished and not self.is_drawing:
                 self.scene().mainwindow.set_saved_state(False)
 
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
+            value = 0 if self.is_drawing else value
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged and self.isSelected():
+            self.setSelected(not self.is_drawing)
         return super(Polygon, self).itemChange(change, value)
 
     def hoverEnterEvent(self, event: 'QGraphicsSceneHoverEvent'):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-06 14:10+0200\n"
+"POT-Creation-Date: 2024-09-05 14:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,7 @@ msgstr ""
 msgid "Create polygons by keeping the mouse left button pressed and dragging. Use a click for straight lines and dragging for curves."
 msgstr ""
 
+#: ../../features.rst:-1
 #: ../../features.rst:125
 msgid "Quick browsing"
 msgstr ""
@@ -199,9 +200,6 @@ msgid "Select a group ID from a dropdown to view the target, supporting quick sw
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "快速浏览"
-msgstr ""
-
 #: ../../features.rst:134
 msgid "Detail inspection"
 msgstr ""
@@ -211,9 +209,6 @@ msgid "Switch annotations one by one using group IDs, adapting the view to the s
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "细节检查"
-msgstr ""
-
 #: ../../features.rst:143
 msgid "Move and delete vertices"
 msgstr ""
@@ -223,9 +218,6 @@ msgid "Select vertices using CTRL and move or delete them."
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "移动和删除顶点"
-msgstr ""
-
 #: ../../features.rst:152
 msgid "SAM features cache"
 msgstr ""
@@ -235,9 +227,6 @@ msgid "Features are encoded using QThread to speed up image switching when using
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "SAM特性缓存"
-msgstr ""
-
 #: ../../features.rst:161
 msgid "Model manager"
 msgstr ""
@@ -247,19 +236,12 @@ msgid "Supports multithreaded downloading with options to pause and resume trans
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "模型管理器"
-msgstr ""
-
 #: ../../features.rst:170
 msgid "Repaint"
 msgstr ""
 
 #: ../../features.rst:171
 msgid "Use the shortcut 'R' to switch to repaint mode. Start by selecting one vertex and end by selecting another vertex."
-msgstr ""
-
-#: ../../features.rst:-1
-msgid "重绘"
 msgstr ""
 
 #: ../../features.rst:179
@@ -270,6 +252,7 @@ msgstr ""
 msgid "Provides operations for the intersection, union, difference, and XOR of two polygons."
 msgstr ""
 
+#: ../../features.rst:-1
 #: ../../features.rst:184
 msgid "Intersection"
 msgstr ""
@@ -279,9 +262,6 @@ msgid "Calculate and display the intersection of two polygons."
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "交集"
-msgstr ""
-
 #: ../../features.rst:193
 msgid "Union"
 msgstr ""
@@ -291,19 +271,12 @@ msgid "Calculate and display the union of two polygons."
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "并集"
-msgstr ""
-
 #: ../../features.rst:202
 msgid "Difference"
 msgstr ""
 
 #: ../../features.rst:203
 msgid "Calculate and display the difference between two polygons."
-msgstr ""
-
-#: ../../features.rst:-1
-msgid "差集"
 msgstr ""
 
 #: ../../features.rst:211
@@ -315,5 +288,5 @@ msgid "Calculate and display the symmetric difference (XOR) between two polygons
 msgstr ""
 
 #: ../../features.rst:-1
-msgid "异或"
+msgid "XOR"
 msgstr ""

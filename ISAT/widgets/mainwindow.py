@@ -68,8 +68,10 @@ def calculate_area(points):
         area += d
     return abs(area) / 2
 
+
 class SegAnyThread(QThread):
     tag = pyqtSignal(int, int, str)
+
     def __init__(self, mainwindow):
         super(SegAnyThread, self).__init__()
         self.mainwindow = mainwindow
@@ -310,10 +312,11 @@ class SegAnyVideoThread(QThread):
 
 class InitSegAnyThread(QThread):
     tag = pyqtSignal(bool, bool)
+
     def __init__(self, mainwindow):
         super(InitSegAnyThread, self).__init__()
         self.mainwindow = mainwindow
-        self.model_path:str = None
+        self.model_path: str = None
 
     def run(self):
         sam_tag = False
@@ -342,7 +345,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.image_root: str = None
-        self.label_root:str = None
+        self.label_root: str = None
 
         self.files_list: list = []
         self.current_index = None
@@ -359,13 +362,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.can_be_annotated = True
         self.load_finished = False
-        self.polygons:list = []
+        self.polygons: list = []
 
         self.png_palette = None # 图像拥有调色盘，说明是单通道的标注png文件
         self.instance_cmap = imgviz.label_colormap()
         self.map_mode = MAPMode.LABEL
         # 标注目标
-        self.current_label:Annotation = None
+        self.current_label: Annotation = None
         self.use_segment_anything = False
         self.use_segment_anything_video = False
         self.gpu_resource_thread = None
@@ -476,7 +479,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if self.segany.device == 'cuda':
                 try:
                     tooltip += '\ncuda : {}'.format(torch.version.cuda)
-                except: pass
+                except: 
+                    pass
             self.labelGPUResource.setToolTip(tooltip)
 
             self.seganythread = SegAnyThread(self)
@@ -585,9 +589,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.progressbar.setValue(0)
             self.setEnabled(True)
 
-
     def init_ui(self):
-        #q
         self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
 
         self.categories_dock_widget = CategoriesDockWidget(mainwindow=self)
@@ -1103,7 +1105,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if result == QtWidgets.QMessageBox.StandardButton.No:
                 return
         self.current_index = self.current_index + 1
-        if self.current_index > len(self.files_list)-1:
+        if self.current_index > len(self.files_list) - 1:
             self.current_index = len(self.files_list)-1
             QtWidgets.QMessageBox.warning(self, 'Warning', 'This is the last picture.')
         else:
@@ -1355,8 +1357,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.about_dialog.show()
 
     def screen_shot(self, type='scene'):
-        image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-        save_path = os.path.join(os.getcwd(), image_name)
+        # image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+        file_path = os.path.join(self.image_root, self.files_list[self.current_index])
+        image_name = os.path.basename(file_path)
+        image_name = os.path.splitext(image_name)[0] + '.png'
+        screen_shot_dir = os.path.join(os.getcwd(), 'screen_shots')
+        if not os.path.exists(screen_shot_dir):
+            os.makedirs(screen_shot_dir, exist_ok=True)
+        save_path = os.path.join(screen_shot_dir, image_name)
+        print(f'save path: {file_path}')
 
         if type == 'scene':
             try:

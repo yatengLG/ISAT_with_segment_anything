@@ -128,6 +128,16 @@
      </attribute>
      <column>
       <property name="text">
+       <string>image</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>video</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>model</string>
       </property>
      </column>

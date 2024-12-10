@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/关闭-小_close-small.svg</file>
+    <file>../icons/校验-小_check-small.svg</file>
     <file>../icons/play-1.svg</file>
     <file>../icons/play-5.svg</file>
     <file>../icons/play-all.svg</file>

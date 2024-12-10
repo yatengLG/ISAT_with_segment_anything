@@ -4,47 +4,47 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="category_choice.py" line="119"/>
+        <location filename="category_choice.py" line="115"/>
         <source>category:</source>
         <translation>类别:</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="120"/>
+        <location filename="category_choice.py" line="116"/>
         <source>group:</source>
         <translation>组:</translation>
     </message>
     <message>
         <location filename="category_choice.py" line="121"/>
         <source>group id</source>
-        <translation>id</translation>
+        <translation type="obsolete">id</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="122"/>
+        <location filename="category_choice.py" line="117"/>
         <source>note:</source>
         <translation>注释:</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="123"/>
+        <location filename="category_choice.py" line="118"/>
         <source>add extra note here</source>
         <translation>为标签添加额外注释</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="125"/>
+        <location filename="category_choice.py" line="120"/>
         <source>is crowded</source>
         <translation>拥挤</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="124"/>
+        <location filename="category_choice.py" line="119"/>
         <source>layer:</source>
         <translation>图层:</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="126"/>
+        <location filename="category_choice.py" line="121"/>
         <source>cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="category_choice.py" line="127"/>
+        <location filename="category_choice.py" line="122"/>
         <source>apply</source>
         <translation>应用</translation>
     </message>
@@ -509,37 +509,37 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="85"/>
+        <location filename="model_manager_dialog.py" line="89"/>
         <source>Model Manage</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="90"/>
+        <location filename="model_manager_dialog.py" line="98"/>
         <source>model</source>
         <translation>模型</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="92"/>
+        <location filename="model_manager_dialog.py" line="100"/>
         <source>memory(GPU)</source>
         <translation>显存</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="94"/>
+        <location filename="model_manager_dialog.py" line="102"/>
         <source>params</source>
         <translation>硬盘</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="96"/>
+        <location filename="model_manager_dialog.py" line="104"/>
         <source>operate</source>
         <translation>操作</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="97"/>
+        <location filename="model_manager_dialog.py" line="105"/>
         <source>clear tmp</source>
         <translation>清除临时文件</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="98"/>
+        <location filename="model_manager_dialog.py" line="106"/>
         <source>Download model, and select it in SAM menu to use.</source>
         <translation>下载模型，然后在SAM菜单中选择模型并使用。</translation>
     </message>
@@ -754,7 +754,7 @@
         <translation>开始</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="87"/>
+        <location filename="model_manager_dialog.py" line="91"/>
         <source>use bfloat16</source>
         <translation></translation>
     </message>
@@ -774,7 +774,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="86"/>
+        <location filename="model_manager_dialog.py" line="90"/>
         <source>use bfloat16 to reduce GPU memory required</source>
         <translation>通过bfloat16减少显存需求</translation>
     </message>
@@ -873,6 +873,16 @@
         <source>start</source>
         <translation>开始</translation>
     </message>
+    <message>
+        <location filename="model_manager_dialog.py" line="94"/>
+        <source>image</source>
+        <translation>图像</translation>
+    </message>
+    <message>
+        <location filename="model_manager_dialog.py" line="96"/>
+        <source>video</source>
+        <translation>视频</translation>
+    </message>
 </context>
 <context>
     <name>Form</name>
@@ -927,37 +937,37 @@
         <translation>显示/隐藏</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="63"/>
+        <location filename="category_dock.py" line="64"/>
         <source>Group mode</source>
         <translation>组模式[自动/手动]</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="64"/>
+        <location filename="category_dock.py" line="65"/>
         <source>Auto</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="66"/>
+        <location filename="category_dock.py" line="67"/>
         <source>Current group -</source>
         <translation>组id-</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="67"/>
+        <location filename="category_dock.py" line="68"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="69"/>
+        <location filename="category_dock.py" line="70"/>
         <source>Current group</source>
         <translation>当前组id</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="71"/>
+        <location filename="category_dock.py" line="72"/>
         <source>Current group +</source>
         <translation>组id+</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="72"/>
+        <location filename="category_dock.py" line="73"/>
         <source>+</source>
         <translation>+</translation>
     </message>
@@ -1007,7 +1017,7 @@
         <translation>下一组.</translation>
     </message>
     <message>
-        <location filename="category_dock.py" line="61"/>
+        <location filename="category_dock.py" line="62"/>
         <source>Search categories.</source>
         <translation>查找类别.</translation>
     </message>

@@ -12,8 +12,10 @@ import shutil
 import time
 import os
 
+
 class DownloadThread(QThread):
     tag = pyqtSignal(float, float)
+
     def __init__(self, parent=None):
         super(DownloadThread, self).__init__(parent)
         self.urls = None
@@ -113,7 +115,9 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.download_thread_dict = {}
         self.init_gui()
 
-        self.tableWidget.setColumnWidth(0, 300)
+        self.tableWidget.setColumnWidth(0, 50)
+        self.tableWidget.setColumnWidth(1, 50)
+        self.tableWidget.setColumnWidth(2, 200)
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
         self.checkBox_use_bfloat16.stateChanged.connect(self.use_bfloat16)
 
@@ -123,8 +127,21 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             memory = info_dict.get('memory', '')
             bf16_memory = info_dict.get('bf16_memory', '')
             params = info_dict.get('params', '')
+            image_segment = info_dict.get('image_segment', False)
+            video_segment = info_dict.get('video_segment', False)
+            # image seg
+            image_segment_label = QtWidgets.QLabel()
+            pixmap = QtGui.QPixmap(":/icon/icons/校验-小_check-small.svg") if image_segment else QtGui.QPixmap(":/icon/icons/关闭-小_close-small.svg")
+            image_segment_label.setPixmap(pixmap)
+            image_segment_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            # video seg
+            video_segment_label = QtWidgets.QLabel()
+            pixmap = QtGui.QPixmap(":/icon/icons/校验-小_check-small.svg") if video_segment else QtGui.QPixmap(":/icon/icons/关闭-小_close-small.svg")
+            video_segment_label.setPixmap(pixmap)
+            video_segment_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            # model name
             name_label = QtWidgets.QLabel()
-            name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
             name_label.setText(name)
             # 显存占用
             memory_label = QtWidgets.QLabel()
@@ -148,16 +165,18 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
                 ops_button.clicked.connect(self.download)
 
             self.tableWidget.insertRow(index)
-            self.tableWidget.setCellWidget(index, 0, name_label)
-            self.tableWidget.setCellWidget(index, 1, memory_label)
-            self.tableWidget.setCellWidget(index, 2, params_label)
-            self.tableWidget.setCellWidget(index, 3, ops_button)
+            self.tableWidget.setCellWidget(index, 0, image_segment_label)
+            self.tableWidget.setCellWidget(index, 1, video_segment_label)
+            self.tableWidget.setCellWidget(index, 2, name_label)
+            self.tableWidget.setCellWidget(index, 3, memory_label)
+            self.tableWidget.setCellWidget(index, 4, params_label)
+            self.tableWidget.setCellWidget(index, 5, ops_button)
 
     def download(self):
         button = self.sender()
         button.setText('downloading')
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 2)
         name = name_label.text()
         info_dict = model_dict.get(name, None)
         urls = info_dict.get('urls', None)
@@ -197,7 +216,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def pause(self):
         button = self.sender()
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 2)
         name = name_label.text()
 
         download_thread:DownloadThread = self.download_thread_dict[name]
@@ -206,7 +225,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def delete(self):
         button = self.sender()
         row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 0)
+        name_label = self.tableWidget.cellWidget(row, 2)
         name = name_label.text()
         try:
             os.remove(os.path.join(CHECKPOINT_PATH, name))
@@ -255,7 +274,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
                 memory_label.setText(bf16_memory)
             else:
                 memory_label.setText(memory)
-            self.tableWidget.setCellWidget(index, 1, memory_label)
+            self.tableWidget.setCellWidget(index, 3, memory_label)
 
     def use_bfloat16(self):
         use = self.checkBox_use_bfloat16.isChecked()

@@ -11,7 +11,7 @@ def get_version():
         from ISAT.__init__ import __version__
         return __version__
 
-    except:
+    except FileExistsError:
         FileExistsError('ISAT/__init__.py not exists.')
 
 
@@ -27,9 +27,10 @@ def get_install_requires():
                     requirements_list.append(line)
     return requirements_list
 
+
 setup(
     name="isat-sam",                                        # 包名
-    version=get_version(),                              # 版本号
+    version=get_version(),                                  # 版本号
     author="yatengLG",
     author_email="yatenglg@foxmail.com",
     description="Interactive semi-automatic annotation tool for image segmentation based on SAM(segment anything model).",
@@ -61,7 +62,8 @@ setup(
         'hydra-core>=1.3.2',
         'tqdm>=4.66.1',
         'fuzzywuzzy',
-        'python-Levenshtein'
+        'python-Levenshtein',
+        'iopath'
         ],
 
     classifiers=[

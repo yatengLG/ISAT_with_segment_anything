@@ -12,8 +12,8 @@ import os
 from skimage.draw.draw import polygon
 from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
 
-
 osplatform = platform.system()
+
 
 class SegAny:
     def __init__(self, checkpoint:str, use_bfloat16:bool=True):
@@ -76,18 +76,19 @@ class SegAny:
             from ISAT.segment_any.sam2.sam2_image_predictor import SAM2ImagePredictor as SamPredictor
             # sam2
             if 'hiera_tiny' in checkpoint:
-                self.model_type = "sam2_hiera_tiny"
+                model_type = "hiera_tiny"
             elif 'hiera_small' in checkpoint:
-                self.model_type = "sam2_hiera_small"
+                model_type = "hiera_small"
             elif 'hiera_base_plus' in checkpoint:
-                self.model_type = 'sam2_hiera_base_plus'
+                model_type = 'hiera_base_plus'
             elif 'hiera_large' in checkpoint:
-                self.model_type = 'sam2_hiera_large'
+                model_type = 'hiera_large'
             else:
                 raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
-            self.model_source = 'sam2'
-            # sam2 在float32下运行时存在报错，暂时只在bfloat16下运行
-            # self.model_dtype = torch.bfloat16
+            # sam2.1 or sam2
+            model_source = 'sam2.1' if 'sam2.1' in checkpoint else 'sam2'
+            self.model_type = "{}_{}".format(model_source, model_type)
+            self.model_source = model_source
 
         elif 'med2d' in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import sam_model_registry
@@ -174,16 +175,20 @@ class SegAnyVideo:
             from ISAT.segment_any.sam2.build_sam import sam_model_registry
             # sam2
             if 'hiera_tiny' in checkpoint:
-                self.model_type = "sam2_hiera_video_tiny"
+                model_type = "hiera_tiny"
             elif 'hiera_small' in checkpoint:
-                self.model_type = "sam2_hiera_video_small"
+                model_type = "hiera_small"
             elif 'hiera_base_plus' in checkpoint:
-                self.model_type = 'sam2_hiera_video_base_plus'
+                model_type = 'hiera_base_plus'
             elif 'hiera_large' in checkpoint:
-                self.model_type = 'sam2_hiera_video_large'
+                model_type = 'hiera_large'
             else:
                 raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
-            self.model_source = 'sam2'
+
+            # sam2.1 or sam2
+            model_source = 'sam2.1' if 'sam2.1' in checkpoint else 'sam2'
+            self.model_type = "{}_{}_video".format(model_source, model_type)
+            self.model_source = model_source
 
         torch.cuda.empty_cache()
 

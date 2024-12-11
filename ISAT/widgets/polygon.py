@@ -179,7 +179,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
                     self.scene().selected_polygons_list.remove(self)
             self.scene().mainwindow.annos_dock_widget.set_selected(self) # 更新label面板
 
-        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionHasChanged:  # ItemPositionHasChanged
+        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange: # ItemPositionHasChanged
             bias = value
             l, t, b, r = self.boundingRect().left(), self.boundingRect().top(), self.boundingRect().bottom(), self.boundingRect().right()
             if l + bias.x() < 0: bias.setX(-l)

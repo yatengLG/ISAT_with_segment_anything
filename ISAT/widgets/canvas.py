@@ -4,14 +4,10 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
-from PIL import Image
 import numpy as np
 import cv2
 import time  # 拖动鼠标描点
 import shapely
-
-
-
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):

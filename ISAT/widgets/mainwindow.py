@@ -405,6 +405,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 return
         # 等待sam线程完成
         self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_box.setEnabled(False)
         try:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
@@ -539,6 +540,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """
         if not self.use_segment_anything:
             self.actionSegment_anything.setEnabled(False)
+            self.actionSegment_anything_box.setEnabled(False)
             return
 
         results = self.seganythread.results_dict.get(self.current_index, {})
@@ -560,9 +562,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany.predictor_with_point_prompt._is_image_set = True
 
             self.actionSegment_anything.setEnabled(True)
+            self.actionSegment_anything_box.setEnabled(True)
         else:
             self.segany.predictor_with_point_prompt.reset_image()
             self.actionSegment_anything.setEnabled(False)
+            self.actionSegment_anything_box.setEnabled(False)
 
     def seg_video_start(self, max_frame_num_to_track=None):
         if self.current_index == None:
@@ -1161,6 +1165,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_box.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)
         self.actionVideo_segment_five_times.setEnabled(False)
@@ -1189,6 +1194,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_box.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)
         self.actionVideo_segment_five_times.setEnabled(False)
@@ -1425,6 +1431,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionExit.triggered.connect(self.exit)
 
         self.actionSegment_anything.triggered.connect(self.scene.start_segment_anything)
+        self.actionSegment_anything_box.triggered.connect(self.scene.start_segment_anything_box)
         self.actionPolygon.triggered.connect(self.scene.start_draw_polygon)
         self.actionCancel.triggered.connect(self.scene.cancel_draw)
         self.actionBackspace.triggered.connect(self.scene.backspace)
@@ -1471,6 +1478,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionPrev.setEnabled(False)
         self.actionNext.setEnabled(False)
         self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_box.setEnabled(False)
         self.actionPolygon.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)

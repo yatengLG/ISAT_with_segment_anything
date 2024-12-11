@@ -167,6 +167,7 @@
      <string>Edit</string>
     </property>
     <addaction name="actionSegment_anything"/>
+    <addaction name="actionSegment_anything_box"/>
     <addaction name="actionPolygon"/>
     <addaction name="separator"/>
     <addaction name="actionVideo_segment"/>
@@ -266,6 +267,7 @@
    <addaction name="actionNext"/>
    <addaction name="separator"/>
    <addaction name="actionSegment_anything"/>
+   <addaction name="actionSegment_anything_box"/>
    <addaction name="actionPolygon"/>
    <addaction name="separator"/>
    <addaction name="actionVideo_segment_once"/>
@@ -528,10 +530,10 @@
      <normaloff>:/icon/icons/M_Favicon.ico</normaloff>:/icon/icons/M_Favicon.ico</iconset>
    </property>
    <property name="text">
-    <string>Segment anything</string>
+    <string>Segment anything point</string>
    </property>
    <property name="toolTip">
-    <string>Segment anything</string>
+    <string>Segment anything point</string>
    </property>
    <property name="statusTip">
     <string>Quick annotate using Segment anything.</string>
@@ -991,6 +993,21 @@
    </property>
    <property name="text">
     <string>Video to frames</string>
+   </property>
+  </action>
+  <action name="actionSegment_anything_box">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/小矩形_rectangle-small.svg</normaloff>:/icon/icons/小矩形_rectangle-small.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Segment anything box</string>
+   </property>
+   <property name="statusTip">
+    <string>Quick annotate using Segment anything.</string>
+   </property>
+   <property name="shortcut">
+    <string>W</string>
    </property>
   </action>
  </widget>

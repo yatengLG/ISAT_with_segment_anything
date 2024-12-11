@@ -37,6 +37,7 @@ class STATUSMode(Enum):
 class DRAWMode(Enum):
     POLYGON = 0
     SEGMENTANYTHING = 1
+    SEGMENTANYTHING_BOX = 2
 
 class CLICKMode(Enum):
     POSITIVE = 0

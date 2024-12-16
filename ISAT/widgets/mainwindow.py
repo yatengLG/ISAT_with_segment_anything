@@ -1365,14 +1365,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def screen_shot(self, type='scene'):
         # image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-        file_path = os.path.join(self.image_root, self.files_list[self.current_index])
-        image_name = os.path.basename(file_path)
-        image_name = os.path.splitext(image_name)[0] + '.png'
+        if self.current_index is not None and self.files_list:
+            current_image = self.files_list[self.current_index]
+        else:
+            current_image = 'no_image.jpg'
+            if type == 'scene':
+                print('no image saved.')
+                return
+        image_name = os.path.splitext(current_image)[0] + '.png'
         screen_shot_dir = os.path.join(os.getcwd(), 'screen_shots')
-        if not os.path.exists(screen_shot_dir):
-            os.makedirs(screen_shot_dir, exist_ok=True)
+        os.makedirs(screen_shot_dir, exist_ok=True)
         save_path = os.path.join(screen_shot_dir, image_name)
-        print(f'save path: {file_path}')
+        print(f'save path: {save_path}')
 
         if type == 'scene':
             try:

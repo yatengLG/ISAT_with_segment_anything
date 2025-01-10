@@ -810,6 +810,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     pass
+                elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
+                    try:
+                        self.finish_draw()
+                    except: pass
                 else:
                     raise ValueError('The draw mode named {} not supported.')
             if self.draw_mode == DRAWMode.SEGMENTANYTHING:

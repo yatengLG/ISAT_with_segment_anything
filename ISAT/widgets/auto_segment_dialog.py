@@ -61,9 +61,9 @@ class AutoSegmentThread(QThread):
                 root = tree.getroot()
                 objs = root.findall('object')
                 size = root.find('size')
-                width = size.find('width').text
-                height = size.find('height').text
-                depth = size.find('depth').text
+                width = int(size.find('width').text)
+                height = int(size.find('height').text)
+                depth = int(size.find('depth').text)
             except Exception as e:
                 self.message.emit(-1, -1, 'Load xml error: {}'.format(e))
                 continue

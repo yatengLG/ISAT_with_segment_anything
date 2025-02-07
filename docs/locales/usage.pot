@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-07 19:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/usage.rst:2
+msgid "Installation"
+msgstr ""
+
+#: ../source/usage.rst:4
+msgid "There are three ways to install ISAT-SAM:"
+msgstr ""
+
+#: ../source/usage.rst:6
+msgid "(recommended) from source code"
+msgstr ""
+
+#: ../source/usage.rst:7
+msgid "pip install"
+msgstr ""
+
+#: ../source/usage.rst:8
+msgid "(old version) from .exe"
+msgstr ""
+
+#: ../source/usage.rst:9
+msgid "(new) local + GPU server"
+msgstr ""
+
+#: ../source/usage.rst:14
+msgid "Option 1: From Source Code"
+msgstr ""
+
+#: ../source/usage.rst:16
+#: ../source/usage.rst:69
+msgid "**Create environment**"
+msgstr ""
+
+#: ../source/usage.rst:19
+#: ../source/usage.rst:72
+msgid "Use `conda <https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html/>`_ to set up a new environment:"
+msgstr ""
+
+#: ../source/usage.rst:27
+msgid "**Install ISAT_with_segment_anything and its dependencies**"
+msgstr ""
+
+#: ../source/usage.rst:30
+msgid "To use GPU, please install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first."
+msgstr ""
+
+#: ../source/usage.rst:32
+msgid "**Note**: the next step requires 'git' in environment path. If not, you can download the code zip file `Here <https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_. And you need to change the folder name 'ISAT_with_segment_anything-master' to 'ISAT_with_segment_anything'. Doing this, you can skip the `git clone` step"
+msgstr ""
+
+#: ../source/usage.rst:43
+#: ../source/usage.rst:113
+msgid "**Download Segment anything pretrained checkpoint**"
+msgstr ""
+
+#: ../source/usage.rst:0
+msgid "Download the model checkpoint with the GUI, click [menubar]-[SAM]-[Model manage] to open the GUI."
+msgstr ""
+
+#: ../source/usage.rst:0
+msgid "Model checkpoints are stored under: ``ISAT_with_segment_anything/ISAT/checkpoints``"
+msgstr ""
+
+#: ../source/usage.rst:55
+#: ../source/usage.rst:88
+msgid "**Run**"
+msgstr ""
+
+#: ../source/usage.rst:58
+msgid "Execute the main application:"
+msgstr ""
+
+#: ../source/usage.rst:67
+msgid "Option 2: Pip Install"
+msgstr ""
+
+#: ../source/usage.rst:79
+msgid "**Install ISAT-SAM using pip**"
+msgstr ""
+
+#: ../source/usage.rst:82
+msgid "To use GPU, install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first:"
+msgstr ""
+
+#: ../source/usage.rst:91
+msgid "Start the application via the command line:"
+msgstr ""
+
+#: ../source/usage.rst:100
+msgid "Option 3: Install with .exe"
+msgstr ""
+
+#: ../source/usage.rst:102
+msgid "**Download the .exe**"
+msgstr ""
+
+#: ../source/usage.rst:105
+msgid "The .exe version may be older than the source code version."
+msgstr ""
+
+#: ../source/usage.rst:107
+msgid "Download three .zip files, total 2.7G"
+msgstr ""
+
+#: ../source/usage.rst:108
+msgid "Download link: `Baidu Netdisk <https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ Code: ISAT"
+msgstr ""
+
+#: ../source/usage.rst:109
+msgid "Click `main.exe` to run the tool."
+msgstr ""
+
+#: ../source/usage.rst:116
+msgid "The download zip files contain `sam_hq_vit_tiny.pth`, but note this model may not support CPU. You can download `mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_ to test the tool."
+msgstr ""
+
+#: ../source/usage.rst:124
+msgid "Option 4: GPU server + local GUI"
+msgstr ""
+
+#: ../source/usage.rst:126
+msgid "Ensure ensure these lines are enabled in ```/etc/ssh/sshd_config```"
+msgstr ""
+
+#: ../source/usage.rst:141
+msgid "Install local X forwarding softwares"
+msgstr ""
+
+#: ../source/usage.rst:143
+msgid "Windows: `MobaXterm <https://mobaxterm.mobatek.net/download.html>`_"
+msgstr ""
+
+#: ../source/usage.rst:144
+msgid "macOS: `XQuartz <https://www.xquartz.org>`_"
+msgstr ""
+
+#: ../source/usage.rst:148
+msgid "Test the X forwarding"
+msgstr ""
+
+#: ../source/usage.rst:157
+msgid "You should be able to a running eyes annimation"
+msgstr ""
+
+#: ../source/usage.rst:161
+msgid "Build and run the docker image"
+msgstr ""
+
+#: ../source/usage.rst:163
+msgid "The Dockerfile and entrypoint file are under ``/ISAT_with_segment_anything/docker/``."
+msgstr ""
+
+#: ../source/usage.rst:164
+msgid "Please change the user and mounted volume as you desire."
+msgstr ""

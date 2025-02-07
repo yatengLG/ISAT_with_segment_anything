@@ -6,6 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sphinx_pdj_theme
 
 project = 'ISAT-SAM'
 copyright = '2023, Shuwei Ji and Hongyuan Zhang'
@@ -19,7 +20,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx',
+    'sphinx.ext.intersphinx'
 ]
 
 intersphinx_mapping = {
@@ -39,5 +40,5 @@ gettext_compact = False
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_pdj_theme'
 html_static_path = ['_static']

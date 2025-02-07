@@ -24,6 +24,7 @@ label:
 software:
   auto_save: false
   contour_mode: external
+  create_mode_invisible_polygon: true
   language: en
   mask_alpha: 0.6
   show_edge: true

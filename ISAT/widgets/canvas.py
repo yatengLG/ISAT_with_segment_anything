@@ -101,6 +101,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSave.setEnabled(False)
         self.mainwindow.actionVisible.setEnabled(True)
 
+        self.mainwindow.set_labels_visible(False)
         self.mainwindow.annos_dock_widget.setEnabled(False)
         self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
 
@@ -138,6 +139,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionVisible.setEnabled(True)
         self.mainwindow.polygon_repaint_shortcut.setEnabled(True)
 
+        self.mainwindow.set_labels_visible(True)
         self.mainwindow.annos_dock_widget.setEnabled(True)
 
         self.mainwindow.modeState.setText('V')
@@ -258,9 +260,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             return
         # 否则，切换到绘图模式
         self.change_mode_to_create()
-        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
-            self.mainwindow.set_labels_visible(False)
-
         # 绘图模式
         if self.mode == STATUSMode.CREATE:
             self.current_graph = Polygon()
@@ -270,6 +269,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         if self.current_graph is None:
             return
+
+        self.change_mode_to_view()
 
         category = self.mainwindow.current_category
         group = self.mainwindow.current_group
@@ -350,11 +351,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if len(self.current_graph.points) < 2:
                 self.current_graph.delete()
                 self.removeItem(self.current_graph)
-
                 self.change_mode_to_view()
-                if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
-                    self.mainwindow.set_labels_visible(True)
-
                 return
 
             # 两点，默认矩形
@@ -386,7 +383,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # self.mainwindow.category_choice_widget.load_cfg()
         # self.mainwindow.category_choice_widget.show()
 
-        self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+        self.mainwindow.annos_dock_widget.update_listwidget()
+
         self.current_graph = None
 
         if self.current_sam_rect is not None:
@@ -395,8 +393,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.current_sam_rect = None
 
         self.change_mode_to_view()
-        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
-            self.mainwindow.set_labels_visible(True)
 
         # mask清空
         self.click_points.clear()
@@ -430,8 +426,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.current_sam_rect = None
 
         self.change_mode_to_view()
-        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
-            self.mainwindow.set_labels_visible(True)
 
         self.click_points.clear()
         self.click_points_mode.clear()
@@ -451,7 +445,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if item in self.selected_polygons_list:
                     self.selected_polygons_list.remove(item)
                 self.mainwindow.polygons.remove(item)
-                self.mainwindow.annos_dock_widget.listwidget_remove_polygon(item)
                 item.delete()
                 self.removeItem(item)
                 deleted_layer = item.zValue()
@@ -468,7 +461,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if len(polygon.vertexs) < 3:
                     if polygon in self.mainwindow.polygons:
                         self.mainwindow.polygons.remove(polygon)
-                        self.mainwindow.annos_dock_widget.listwidget_remove_polygon(polygon)
                         polygon.delete()
                     if polygon in self.items():
                         self.removeItem(polygon)
@@ -479,6 +471,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for p in self.mainwindow.polygons:
                 if p.zValue() > deleted_layer:
                     p.setZValue(p.zValue() - 1)
+            self.mainwindow.annos_dock_widget.update_listwidget()
 
     def edit_polygon(self):
         selectd_items = self.selectedItems()
@@ -544,7 +537,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                 self.current_graph.set_drawed(item.category, item.group, item.iscrowd, item.note, item.color, item.zValue())
                 self.mainwindow.polygons.insert(index, self.current_graph)
-                self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+                self.mainwindow.annos_dock_widget.update_listwidget()
                 self.current_graph.setSelected(True)
                 self.current_graph = None
             elif isinstance(item, Vertex):
@@ -1055,9 +1048,6 @@ class AnnotationView(QtWidgets.QGraphicsView):
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
         self.factor = 1.2
-
-        self.setViewport(QtWidgets.QOpenGLWidget())
-        self.setRenderHint(QtGui.QPainter.Antialiasing, False)
 
     def wheelEvent(self, event: QtGui.QWheelEvent):
         angel = event.angleDelta()

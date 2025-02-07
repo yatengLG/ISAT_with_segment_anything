@@ -95,7 +95,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         # 设置polygon 属性
         self.polygon.set_drawed(category, group, is_crowd, note,
                                             QtGui.QColor(self.mainwindow.category_color_dict.get(category, '#000000')))
-        self.mainwindow.annos_dock_widget.listwidget_update_polygon(polygon=self.polygon)
+        self.mainwindow.annos_dock_widget.update_listwidget()
 
         self.polygon = None
         self.scene.change_mode_to_view()

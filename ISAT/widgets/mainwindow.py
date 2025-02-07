@@ -374,9 +374,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.use_segment_anything_video = False
         self.gpu_resource_thread = None
 
-        # 标注模式下，多边形不可见
-        self.create_mode_invisible_polygon = True
-
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
         self.init_ui()
@@ -754,15 +751,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.use_polydp.checkedChanged.connect(self.change_approx_polygon_state)
         self.toolBar.addWidget(self.use_polydp)
 
-        # create mode invisible polygon
-        self.toolBar.addSeparator()
-        self.invisible_polygon_switch = SwitchBtn(self)
-        self.invisible_polygon_switch.setFixedSize(50, 20)
-        self.invisible_polygon_switch.setStatusTip('create mode invisible polygon.')
-        self.invisible_polygon_switch.setToolTip('create mode invisible polygon')
-        self.invisible_polygon_switch.checkedChanged.connect(self.change_create_mode_invisible_polygon_state)
-        self.toolBar.addWidget(self.invisible_polygon_switch)
-
         self.trans = QtCore.QTranslator()
 
     def statusbar_change_status(self, is_message:bool=True):
@@ -884,10 +872,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['use_polydp'] = bool(use_polydp)
         self.use_polydp.setChecked(use_polydp)
 
-        invisible_polygon = software_cfg.get('create_mode_invisible_polygon', True)
-        self.cfg['software']['create_mode_invisible_polygon'] = bool(invisible_polygon)
-        self.invisible_polygon_switch.setChecked(invisible_polygon)
-
         use_bfloat16 = software_cfg.get('use_bfloat16', False)
         self.cfg['software']['use_bfloat16'] = bool(use_bfloat16)
         self.model_manager_dialog.update_gui()
@@ -958,8 +942,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_root = dir
         self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
 
-        self.saved = True
-
         if os.path.exists(os.path.join(dir, 'isat.yaml')):
             # load setting yaml
             self.config_file = os.path.join(dir, 'isat.yaml')
@@ -1000,11 +982,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
 
     def show_image(self, index:int, zoomfit:bool=True):
-        if not self.saved:
-            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
-            if result == QtWidgets.QMessageBox.StandardButton.No:
-                return
-
         self.reset_action()
         self.scene.cancel_draw()
         self.scene.unload_image()
@@ -1112,6 +1089,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         if self.current_index is None:
             return
+        if not self.saved:
+            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                return
         self.current_index = self.current_index - 1
         if self.current_index < 0:
             self.current_index = 0
@@ -1124,6 +1105,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         if self.current_index is None:
             return
+        if not self.saved:
+            result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
+            if result == QtWidgets.QMessageBox.StandardButton.No:
+                return
         self.current_index = self.current_index + 1
         if self.current_index > len(self.files_list) - 1:
             self.current_index = len(self.files_list)-1
@@ -1319,15 +1304,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_create_mode_invisible_polygon_state(self):
-        checked = self.invisible_polygon_switch.checked
-        self.cfg['software']['create_mode_invisible_polygon'] = checked
-        self.save_software_cfg()
-        if self.current_index is not None:
-            self.show_image(self.current_index, zoomfit=False)
-
-
-        pass
     def change_saturation(self, value):  # 调整图像饱和度
         if self.scene.image_data is not None:
             saturation_scale = value / 100.0

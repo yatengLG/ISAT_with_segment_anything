@@ -1,0 +1,89 @@
+{% extends "basic/layout.html" %}
+{% set script_files = script_files + ["_static/js/pdj.js"] %}
+
+{%- macro pdjcss() %}
+  {%- for css in css_files %}
+    {%- if css|attr("filename") %}
+      {{ css_tag(css) }}
+
+    {%- else %}
+      <link rel="stylesheet" href="{{ pathto(css, 1)|e }}" type="text/css" />
+  {%- endif %}
+{%- endfor %}
+
+<link rel="stylesheet" href="{{ pathto('_static/css/darker.css', 1)|e }}" type="text/css"
+      media="(prefers-color-scheme: dark)"/>
+
+{%- endmacro %}
+
+{%- macro pdjscript() %}
+    {%- for js in script_files %}
+    {{ js_tag(js) }}
+    {%- endfor %}
+
+    <script type="module" src="{{ pathto('_static/js/dark-mode-toggle.js', 1)|e }}"></script>
+{%- endmacro %}
+
+
+
+{% block body_tag %}  <body class="wy-body-for-nav" role="document"> {% endblock %}
+
+{%- block css %}
+  {{- pdjcss() }}
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+{%- endblock %}
+
+{%- block scripts %}
+  {{- pdjscript() }}
+{%- endblock %}
+
+
+{%- block relbar1 %}{% endblock %}
+{%- block relbar2 %}{% endblock %}
+
+{% block content %}
+
+<section data-toggle="wy-nav-shift" class="wy-nav-content-wrap {%- if flatpage %} bkg-escuro {%- endif %}">
+
+  <nav class="wy-nav-top" id="barra-mobile" role="navigation" aria-label="top navigation">
+    <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+    <a href="#">{{ project }} </a>
+  </nav>
+
+  <div class="wy-nav-content">
+    <div class="fundo-claro">
+    </div>
+    <div class="fundo-escuro">
+    </div>
+
+    <div class="rst-content">
+      <div role="navigation" aria-label="breadcrumbs navigation">
+	{%- block breadcrumbs %}{%- endblock %}
+      </div>
+      <div role="main" class="">
+
+	<div id="content" class="hfeed entry-container hentry">
+      	  <div id="dark-mode-toggle-container">
+	    <dark-mode-toggle appearance="toggle" class="slider" dark="" light="">
+	    </dark-mode-toggle>
+	  </div>
+          {%- block body %}
+	  {%- endblock %}
+	</div>
+      </div>
+
+      {% block innerfooter %}
+      {% include "footer.html" %}
+      {% endblock %}
+
+      <div class="clearer"></div>
+    </div>
+  </div>
+
+</section>
+
+{% include "sidebar.html" %}
+{% endblock %}
+
+{%- block footer %}
+{%- endblock %}

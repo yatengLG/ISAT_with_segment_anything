@@ -1,0 +1,38 @@
+<nav data-toggle="wy-nav-shift" class="wy-nav-side">
+  <div class="wy-side-nav-search {%- if flatpage %} wy-side-nav-search-flat {%- endif %}">
+    {% if theme_home_link != 'hide' %}
+    <a href="{{ pathto(master_doc) }}" class="fa fa-home"> {{ project }} </a>
+    {% endif %}
+    {% if logo_url %}
+    <div id="logo-container">
+      <a href="{{ pathto(master_doc) }}">
+	<img src="{{logo_url}}"
+	     style="
+	     {% if theme_logo_width %}width:{{theme_logo_width}};{% endif %}
+	     {% if theme_logo_height %}height:{{theme_logo_height}};{% endif %}
+	    "
+	     />
+
+      </a>
+    </div>
+    {% endif %}
+    <div role="search">
+      {% if theme_search != "hide" %}
+	{%- include "searchbox.html" %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+    {% block menu %}
+      {% set toctree = toctree(maxdepth=2, collapse=False, includehidden=True) %}
+      {% if toctree %}
+	  {{ toctree }}
+      {% else %}
+	  <div class="local-toc">{{ toc }}</div>
+      {% endif %}
+    {% endblock %}
+
+  </div>
+  &nbsp;
+</nav>

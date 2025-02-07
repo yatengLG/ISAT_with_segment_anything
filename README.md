@@ -19,6 +19,8 @@ Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ---
 
 # Features and Installation
+- &#x1F389;: **New**: **Now we support running annotation models on remote server + local GUI operations！** 
+
 Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
 
 # Star History
@@ -50,8 +52,8 @@ Please refers to our latest [Documentation in English](https://isat-with-segment
   title={{ISAT with Segment Anything: An Interactive Semi-Automatic Annotation Tool}},
   author={Ji, Shuwei and Zhang, Hongyuan},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
-  note={Updated on 2023-06-03},
-  year={2023},
-  version={1.10}
+  note={Updated on 2025-02-07},
+  year={2024},
+  version={1.29}
 }
 ```

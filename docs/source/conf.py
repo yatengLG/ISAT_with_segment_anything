@@ -41,8 +41,3 @@ gettext_compact = False
 
 html_theme = 'sphinx_rtd_theme'
 
-html_css_files = [
-    "custom.css",
-]
-
-html_static_path = ['_static']

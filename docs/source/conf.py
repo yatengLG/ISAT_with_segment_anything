@@ -20,7 +20,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx'
+    'sphinx.ext.intersphinx',
 ]
 
 intersphinx_mapping = {
@@ -36,9 +36,11 @@ language = 'EN'
 locale_dirs = ['locales/']
 gettext_compact = False
 
-
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_pdj_theme'
+
+html_theme_path = [sphinx_pdj_theme.get_html_theme_path()]
+
 html_static_path = ['_static']

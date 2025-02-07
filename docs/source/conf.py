@@ -6,10 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import sphinx_pdj_theme
 
 project = 'ISAT-SAM'
-copyright = '2023, Shuwei Ji and Hongyuan Zhang'
+copyright = '2025, Shuwei Ji and Hongyuan Zhang'
 author = 'Shuwei Ji and Hongyuan Zhang'
 
 # -- General configuration ---------------------------------------------------
@@ -36,11 +35,9 @@ language = 'EN'
 locale_dirs = ['locales/']
 gettext_compact = False
 
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_pdj_theme'
-
-html_theme_path = ['_themes']
-
+html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']

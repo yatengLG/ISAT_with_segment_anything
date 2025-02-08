@@ -1112,24 +1112,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         if self.current_index is None:
             return
-        self.current_index = self.current_index - 1
-        if self.current_index < 0:
-            self.current_index = 0
+        current_index = self.current_index - 1
+        if current_index < 0:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'This is the first picture.')
         else:
-            self.show_image(self.current_index)
+            self.show_image(current_index)
 
     def next_image(self):
         if self.scene.mode != STATUSMode.VIEW:
             return
         if self.current_index is None:
             return
-        self.current_index = self.current_index + 1
-        if self.current_index > len(self.files_list) - 1:
-            self.current_index = len(self.files_list)-1
+        current_index = self.current_index + 1
+        if current_index > len(self.files_list) - 1:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'This is the last picture.')
         else:
-            self.show_image(self.current_index)
+            self.show_image(current_index)
 
     def jump_to(self):
         index = self.files_dock_widget.lineEdit_jump.text()

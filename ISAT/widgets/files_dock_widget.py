@@ -58,7 +58,6 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def listwidget_doubleclick(self):
         row = self.listWidget.currentRow()
-        self.mainwindow.current_index = row
         self.mainwindow.show_image(row)
 
     def dragEnterEvent(self, event):

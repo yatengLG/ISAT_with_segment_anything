@@ -1058,6 +1058,9 @@ class AnnotationView(QtWidgets.QGraphicsView):
         self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
         self.factor = 1.2
 
+        self.setViewport(QtWidgets.QOpenGLWidget())
+        self.setRenderHint(QtGui.QPainter.Antialiasing, False)
+
     def wheelEvent(self, event: QtGui.QWheelEvent):
         angel = event.angleDelta()
         angelX, angelY = angel.x(), angel.y()

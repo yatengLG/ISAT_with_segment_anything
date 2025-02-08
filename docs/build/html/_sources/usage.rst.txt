@@ -3,9 +3,10 @@ Installation
 
 There are three ways to install ISAT-SAM:
 
-1. from source code (recommended)
+1. (recommended) from source code 
 2. pip install
-3. from .exe
+3. (old version) from .exe
+4. (new) local + GPU server
 
 ------------------------------------------------------------------------
 
@@ -13,15 +14,24 @@ Option 1: From Source Code
 ------------------------------------------------------------------------
 
 1. **Create environment**
-   Use conda to set up a new environment:
+
+
+   Use `conda <https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html/>`_ to set up a new environment:
 
    .. code-block:: bash
 
-      conda create -n isat_env python=3.8
+      conda create -n isat_env python=3.10
       conda activate isat_env
 
+
 2. **Install ISAT_with_segment_anything and its dependencies**
+
+
    To use GPU, please install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first.
+
+   **Note**: the next step requires 'git' in environment path. If not, you can download the code zip file `Here <https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_. 
+   And you need to change the folder name 'ISAT_with_segment_anything-master' to 'ISAT_with_segment_anything'. 
+   Doing this, you can skip the `git clone` step
 
    .. code-block:: bash
 
@@ -29,82 +39,22 @@ Option 1: From Source Code
       cd ISAT_with_segment_anything
       pip install -r requirements.txt
 
+
 3. **Download Segment anything pretrained checkpoint**
-   Download the checkpoint, and save it under: ``ISAT_with_segment_anything/ISAT/checkpoints``
 
-   After version 0.0.3, you can manage checkpoints within the GUI, click [menubar]-[SAM]-[Model manage] to open the GUI.
 
-   Now support `SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ etc.
+   | Download the model checkpoint with the GUI, click [menubar]-[SAM]-[Model manage] to open the GUI. 
 
-   .. list-table:: Pretrained Checkpoints
-      :header-rows: 1
+   | Model checkpoints are stored under: ``ISAT_with_segment_anything/ISAT/checkpoints`` 
 
-      * - Model
-        - Pretrained Checkpoint
-        - Memory
-        - Size
-      * - SAM
-        - `sam_vit_h_4b8939.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth>`_
-        - 7305M
-        - 2.6G
-      * - 
-        - `sam_vit_l_0b3195.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth>`_
-        - 5855M
-        - 2.6G
-      * - 
-        - `sam_vit_b_01ec64.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth>`_
-        - 4149M
-        - 375M
-      * - sam-hq
-        - `sam_hq_vit_h.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_h.pth>`_
-        - 7393M
-        - 2.6G
-      * - 
-        - `sam_hq_vit_l.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_l.pth>`_
-        - 5939M
-        - 1.3G
-      * - 
-        - `sam_hq_vit_b.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_b.pth>`_
-        - 4207M
-        - 379M
-      * - 
-        - `sam_hq_vit_tiny.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth>`_
-        - 1463M
-        - 43M
-      * - mobile-sam
-        - `mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_
-        - 1375M
-        - 40M
-      * - edge-sam
-        - `edge_sam.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth>`_
-        - 960M
-        - 39M
-      * - 
-        - `edge_sam_3x.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth>`_
-        - 960M
-        - 39M
-      * - sam-med
-        - `sam-med2d_b.pth <https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link>`_
-        - 1500M
-        - 2.4G
-      * - SAM2
-        - `sam2_hiera_large.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_large.pt>`_
-        - 4000M
-        - 900M
-      * - 
-        - `sam2_hiera_base_plus.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_base_plus.pt>`_
-        - 4000M
-        - 324M
-      * - 
-        - `sam2_hiera_small.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_small.pt>`_
-        - 3000M
-        - 185M
-      * - 
-        - `sam2_hiera_tiny.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_tiny.pt>`_
-        - 2400M
-        - 156M
+
+
+| 
+
 
 4. **Run**
+
+
    Execute the main application:
 
    .. code-block:: bash
@@ -117,14 +67,18 @@ Option 2: Pip Install
 ------------------------------------------------------------------------
 
 1. **Create environment**
-   Use conda to create and activate a new environment:
+
+
+   Use `conda <https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html/>`_ to set up a new environment:
 
    .. code-block:: bash
 
-      conda create -n isat_env python=3.8
+      conda create -n isat_env python=3.10
       conda activate isat_env
 
 2. **Install ISAT-SAM using pip**
+
+
    To use GPU, install `Pytorch-GPU <https://pytorch.org/>`_ on Windows OS first:
 
    .. code-block:: bash
@@ -132,6 +86,8 @@ Option 2: Pip Install
       pip install isat-sam
 
 3. **Run**
+
+
    Start the application via the command line:
 
    .. code-block:: bash
@@ -144,18 +100,81 @@ Option 3: Install with .exe
 ------------------------------------------------------------------------
 
 1. **Download the .exe**
+
+
    The .exe version may be older than the source code version.
 
    - Download three .zip files, total 2.7G
    - Download link: `Baidu Netdisk <https://pan.baidu.com/s/1vD19PzvIT1QAJrAkSVFfhg>`_ Code: ISAT
+   - Click `main.exe` to run the tool.
 
-   Click `main.exe` to run the tool.
+
 
 2. **Download Segment anything pretrained checkpoint**
+
+
    The download zip files contain `sam_hq_vit_tiny.pth`, but note this model may not support CPU.
    You can download `mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_ to test the tool.
 
-   For using other models, refer to `Download Segment anything pretrained checkpoint <https://github.com/yatengLG/ISAT_with_segment_anything/blob/master/docs/README-en.md#3-download-segment-anything-pretrained-checkpoint>`_.
+
+
+------------------------------------------------------------------------
+
+Option 4: GPU server + local GUI
+------------------------------------------------------------------------
+
+1. Ensure ensure these lines are enabled in ```/etc/ssh/sshd_config```
+
+   .. code-block:: bash
+
+      sudo nano /etc/ssh/sshd_config
+      
+      X11Forwarding yes
+      X11DisplayOffset 10
+      X11UseLocalhost yes
+
+      sudo apt-get install xauth x11-xserver-utils
+      sudo systemctl restart sshd
 
 
 
+2. Install local X forwarding softwares
+
+   - Windows: `MobaXterm <https://mobaxterm.mobatek.net/download.html>`_
+   - macOS: `XQuartz <https://www.xquartz.org>`_
+
+| 
+
+3. Test the X forwarding
+
+   .. code-block:: bash
+
+      ssh -X user_name@host_name
+      
+      echo $DISPLAY
+      xeyes
+
+| You should be able to a running eyes annimation
+| 
+| 
+
+4. Build and run the docker image
+
+| The Dockerfile and entrypoint file are under ``/ISAT_with_segment_anything/docker/``.  
+| Please change the user and mounted volume as you desire.
+| 
+
+.. code-block:: bash
+
+    docker build --network=host -t isat .
+    
+    docker run -it \
+      --user $(id -u):$(id -g) \
+      --gpus all \
+      -v /tmp/.X11-unix:/tmp/.X11-unix \
+      -v $HOME/.Xauthority:$HOME/.Xauthority \
+      -v ~/projects/ISAT_SAM:/ISAT_SAM \
+      -e DISPLAY=$DISPLAY \
+      --network host \
+      isat \
+      --rm

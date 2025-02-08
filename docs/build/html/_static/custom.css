@@ -1,0 +1,17 @@
+/* docs/_static/custom.css */
+
+/* Instead of 100% or 95%, try a moderate width. */
+.wy-nav-content {
+  /* Let’s keep a maximum width for reading comfort, 
+   * but wider than the default 700-800px.
+   */
+  max-width: 1000px; /* or 60em, e.g. */
+  margin: 0 auto;    /* Keep content centered */
+  padding: 1em;
+}
+
+/* If you have wide tables or code blocks, this helps avoid overflow */
+.rst-content table.docutils,
+.rst-content div.highlight {
+  overflow-x: auto;
+}

@@ -8,7 +8,7 @@
 
 
 project = 'ISAT-SAM'
-copyright = '2023, Shuwei Ji and Hongyuan Zhang'
+copyright = '2025, Shuwei Ji and Hongyuan Zhang'
 author = 'Shuwei Ji and Hongyuan Zhang'
 
 # -- General configuration ---------------------------------------------------
@@ -40,4 +40,4 @@ gettext_compact = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+

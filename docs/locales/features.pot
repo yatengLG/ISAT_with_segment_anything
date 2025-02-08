@@ -1,0 +1,292 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-07 19:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/features.rst:2
+msgid "Features"
+msgstr ""
+
+#: ../source/features.rst:5
+msgid "Annotation Modes"
+msgstr ""
+
+#: ../source/features.rst:7
+msgid "Semi-automatic Annotation"
+msgstr ""
+
+#: ../source/features.rst:8
+msgid "Utilizes SAM with point and bounding box prompts."
+msgstr ""
+
+#: ../source/features.rst:11
+msgid "Manual Annotation"
+msgstr ""
+
+#: ../source/features.rst:12
+msgid "Click or drag to draw polygons (0.15s per point)."
+msgstr ""
+
+#: ../source/features.rst:17
+msgid "Annotation Adjustments"
+msgstr ""
+
+#: ../source/features.rst:19
+msgid "Polygon Adjustments"
+msgstr ""
+
+#: ../source/features.rst:20
+msgid "Delete points and adjust object occlusions to refine the annotation."
+msgstr ""
+
+#: ../source/features.rst:23
+msgid "Polygon Visualization"
+msgstr ""
+
+#: ../source/features.rst:24
+msgid "Preview groups and semantic/instance segmentation masks."
+msgstr ""
+
+#: ../source/features.rst:29
+msgid "Export Annotations"
+msgstr ""
+
+#: ../source/features.rst:31
+msgid "Supported Formats"
+msgstr ""
+
+#: ../source/features.rst:32
+msgid "Export annotations in multiple formats including MSCOCO, YOLO, LabelMe, and VOC (also XML)."
+msgstr ""
+
+#: ../source/features.rst:34
+msgid "For more features, see the below"
+msgstr ""
+
+#: ../source/features.rst:40
+msgid "Language switching"
+msgstr ""
+
+#: ../source/features.rst:41
+msgid "The software provides two interfaces, Chinese and English, which can be switched at any time."
+msgstr ""
+
+#: ../source/features.rst:43
+msgid "Bilingual Interface"
+msgstr ""
+
+#: ../source/features.rst:49
+#: ../source/features.rst:52
+msgid "Model switching"
+msgstr ""
+
+#: ../source/features.rst:50
+msgid "Switch model among your downloaded models."
+msgstr ""
+
+#: ../source/features.rst:58
+msgid "Contour mode"
+msgstr ""
+
+#: ../source/features.rst:59
+msgid "When using SAM for semi-automatic annotation, convert SAM mask to contours using OpenCV, then convert contours to polygons."
+msgstr ""
+
+#: ../source/features.rst:61
+msgid "**Max only**: Usually, the contour with the highest number of vertices also has the largest area. Other contours are deleted as noise."
+msgstr ""
+
+#: ../source/features.rst:62
+msgid "**External**: Saves external contours; internal holes in masks will be filled."
+msgstr ""
+
+#: ../source/features.rst:63
+msgid "**All**: Saves all contours; will add polygons with category __background__ for holes."
+msgstr ""
+
+#: ../source/features.rst:65
+msgid "Contour saving modes"
+msgstr ""
+
+#: ../source/features.rst:71
+msgid "Occlusion adjustment"
+msgstr ""
+
+#: ../source/features.rst:72
+msgid "Adjust occlusion for polygons with overlapping parts, choosing either **to top** or **to bottom** adjustment."
+msgstr ""
+
+#: ../source/features.rst:74
+msgid "Adjusting layer occlusion"
+msgstr ""
+
+#: ../source/features.rst:80
+msgid "Quick jump to image"
+msgstr ""
+
+#: ../source/features.rst:81
+msgid "Input an image name or index to quickly navigate to it."
+msgstr ""
+
+#: ../source/features.rst:83
+msgid "Quick image jump"
+msgstr ""
+
+#: ../source/features.rst:89
+msgid "Statusbar information"
+msgstr ""
+
+#: ../source/features.rst:90
+msgid "Obtain position and pixel value information. If using SAM, CUDA memory usage is also displayed on the status bar."
+msgstr ""
+
+#: ../source/features.rst:92
+msgid "Statusbar Information"
+msgstr ""
+
+#: ../source/features.rst:98
+msgid "Preview annotation result"
+msgstr ""
+
+#: ../source/features.rst:99
+msgid "Click the **Bit map** button to preview semantic and instance annotation results."
+msgstr ""
+
+#: ../source/features.rst:101
+msgid "Real-time preview"
+msgstr ""
+
+#: ../source/features.rst:107
+msgid "Import/export config file"
+msgstr ""
+
+#: ../source/features.rst:108
+msgid "Save categories and other parameters using a configuration file."
+msgstr ""
+
+#: ../source/features.rst:110
+msgid "Config file import/export"
+msgstr ""
+
+#: ../source/features.rst:116
+#: ../source/features.rst:119
+msgid "Drag to draw"
+msgstr ""
+
+#: ../source/features.rst:117
+msgid "Create polygons by keeping the mouse left button pressed and dragging. Use a click for straight lines and dragging for curves."
+msgstr ""
+
+#: ../source/features.rst:125
+#: ../source/features.rst:128
+msgid "Quick browsing"
+msgstr ""
+
+#: ../source/features.rst:126
+msgid "Select a group ID from a dropdown to view the target, supporting quick switching between different groups via the scroll wheel."
+msgstr ""
+
+#: ../source/features.rst:134
+#: ../source/features.rst:137
+msgid "Detail inspection"
+msgstr ""
+
+#: ../source/features.rst:135
+msgid "Switch annotations one by one using group IDs, adapting the view to the size of the annotation for detailed inspection."
+msgstr ""
+
+#: ../source/features.rst:143
+#: ../source/features.rst:146
+msgid "Move and delete vertices"
+msgstr ""
+
+#: ../source/features.rst:144
+msgid "Select vertices using CTRL and move or delete them."
+msgstr ""
+
+#: ../source/features.rst:152
+#: ../source/features.rst:155
+msgid "SAM features cache"
+msgstr ""
+
+#: ../source/features.rst:153
+msgid "Features are encoded using QThread to speed up image switching when using large models. Automatically encodes features for the current, previous, and next images."
+msgstr ""
+
+#: ../source/features.rst:161
+#: ../source/features.rst:164
+msgid "Model manager"
+msgstr ""
+
+#: ../source/features.rst:162
+msgid "Supports multithreaded downloading with options to pause and resume transfers."
+msgstr ""
+
+#: ../source/features.rst:170
+#: ../source/features.rst:173
+msgid "Repaint"
+msgstr ""
+
+#: ../source/features.rst:171
+msgid "Use the shortcut 'R' to switch to repaint mode. Start by selecting one vertex and end by selecting another vertex."
+msgstr ""
+
+#: ../source/features.rst:179
+msgid "Intersection, Union, Difference, and XOR"
+msgstr ""
+
+#: ../source/features.rst:181
+msgid "Provides operations for the intersection, union, difference, and XOR of two polygons."
+msgstr ""
+
+#: ../source/features.rst:184
+#: ../source/features.rst:187
+msgid "Intersection"
+msgstr ""
+
+#: ../source/features.rst:185
+msgid "Calculate and display the intersection of two polygons."
+msgstr ""
+
+#: ../source/features.rst:193
+#: ../source/features.rst:196
+msgid "Union"
+msgstr ""
+
+#: ../source/features.rst:194
+msgid "Calculate and display the union of two polygons."
+msgstr ""
+
+#: ../source/features.rst:202
+#: ../source/features.rst:205
+msgid "Difference"
+msgstr ""
+
+#: ../source/features.rst:203
+msgid "Calculate and display the difference between two polygons."
+msgstr ""
+
+#: ../source/features.rst:211
+msgid "XOR (Symmetric Difference)"
+msgstr ""
+
+#: ../source/features.rst:212
+msgid "Calculate and display the symmetric difference (XOR) between two polygons."
+msgstr ""
+
+#: ../source/features.rst:214
+msgid "XOR"
+msgstr ""

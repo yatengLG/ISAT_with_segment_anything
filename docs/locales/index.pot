@@ -1,0 +1,354 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-07 19:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/index.rst:2
+msgid "Welcome to ISAT-SAM's documentation!"
+msgstr ""
+
+#: ../source/index.rst:4
+msgid "**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_"
+msgstr ""
+
+#: ../source/index.rst:6
+msgid "Software demo"
+msgstr ""
+
+#: ../source/index.rst:12
+msgid "Annotation JSON File Structure"
+msgstr ""
+
+#: ../source/index.rst:14
+msgid "The annotations are stored in ISAT json format, similar to MSCOCO:"
+msgstr ""
+
+#: ../source/index.rst:17
+msgid "**info**:"
+msgstr ""
+
+#: ../source/index.rst:18
+msgid "**description**: Always 'ISAT' for the software to recoginize"
+msgstr ""
+
+#: ../source/index.rst:19
+msgid "**folder**: The directory where the images are stored"
+msgstr ""
+
+#: ../source/index.rst:20
+msgid "**name**: The name (path) of the image file"
+msgstr ""
+
+#: ../source/index.rst:21
+msgid "**width**, **height**, **depth**: The dimensions of the image; depth is 3 for RGB images"
+msgstr ""
+
+#: ../source/index.rst:22
+msgid "**note**: An optional field for any additional notes related to the image"
+msgstr ""
+
+#: ../source/index.rst:24
+msgid "**objects**:"
+msgstr ""
+
+#: ../source/index.rst:25
+msgid "**category**: The class label of the object. If the category_id from MSCOCO does not have a corresponding entry, 'unknown' is used"
+msgstr ""
+
+#: ../source/index.rst:26
+msgid "**group**: An identifier that groups objects based on overlapping bounding boxes. If an object's bounding box is within another, they share the same group number. Group numbering starts at 1"
+msgstr ""
+
+#: ../source/index.rst:27
+msgid "**segmentation**: A list of [x, y] coordinates forming the polygon around the object, e.g. [[x1, y1], [x2, y2], ..., [xn, yn]]"
+msgstr ""
+
+#: ../source/index.rst:28
+msgid "**area**: The area covered by the object in pixels"
+msgstr ""
+
+#: ../source/index.rst:29
+msgid "**layer**: A float indicating the sequence of the object. It increments within the same group, starting at 1.0"
+msgstr ""
+
+#: ../source/index.rst:30
+msgid "**bbox**: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]"
+msgstr ""
+
+#: ../source/index.rst:31
+msgid "**iscrowd**: A boolean value indicating if the object is part of a crowd"
+msgstr ""
+
+#: ../source/index.rst:32
+msgid "**note**: An optional field for any additional notes related to the annotation mask"
+msgstr ""
+
+#: ../source/index.rst:37
+msgid "Supported Models"
+msgstr ""
+
+#: ../source/index.rst:39
+msgid "Now support `SAM2.1 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM <https://github.com/facebookresearch/segment-anything>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MedSAM <https://github.com/bowang-lab/MedSAM>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, and `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_."
+msgstr ""
+
+#: ../source/index.rst:43
+msgid "Pretrained Checkpoints"
+msgstr ""
+
+#: ../source/index.rst:46
+msgid "Model"
+msgstr ""
+
+#: ../source/index.rst:47
+msgid "Pretrained Checkpoint"
+msgstr ""
+
+#: ../source/index.rst:48
+msgid "Memory"
+msgstr ""
+
+#: ../source/index.rst:49
+msgid "Size"
+msgstr ""
+
+#: ../source/index.rst:51
+msgid "SAM-HQ"
+msgstr ""
+
+#: ../source/index.rst:52
+msgid "`sam_hq_vit_h.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_h.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:53
+msgid "7393M"
+msgstr ""
+
+#: ../source/index.rst:54
+#: ../source/index.rst:93
+msgid "2.6G"
+msgstr ""
+
+#: ../source/index.rst:56
+msgid "`sam_hq_vit_l.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_l.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:57
+msgid "5939M"
+msgstr ""
+
+#: ../source/index.rst:58
+#: ../source/index.rst:97
+msgid "1.3G"
+msgstr ""
+
+#: ../source/index.rst:60
+msgid "`sam_hq_vit_b.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_b.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:61
+msgid "4207M"
+msgstr ""
+
+#: ../source/index.rst:62
+msgid "379M"
+msgstr ""
+
+#: ../source/index.rst:64
+msgid "`sam_hq_vit_tiny.pth <https://huggingface.co/lkeab/hq-sam/blob/main/sam_hq_vit_tiny.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:65
+msgid "1463M"
+msgstr ""
+
+#: ../source/index.rst:66
+msgid "43M"
+msgstr ""
+
+#: ../source/index.rst:68
+msgid "SAM2.1"
+msgstr ""
+
+#: ../source/index.rst:69
+msgid "`sam2.1_hiera_large.pt <https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_large.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:70
+#: ../source/index.rst:74
+#: ../source/index.rst:119
+#: ../source/index.rst:123
+msgid "4000M"
+msgstr ""
+
+#: ../source/index.rst:71
+#: ../source/index.rst:120
+msgid "900M"
+msgstr ""
+
+#: ../source/index.rst:73
+msgid "`sam2.1_hiera_base_plus.pt <https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_base_plus.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:75
+#: ../source/index.rst:124
+msgid "324M"
+msgstr ""
+
+#: ../source/index.rst:77
+msgid "`sam2.1_hiera_small.pt <https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:78
+#: ../source/index.rst:127
+msgid "3000M"
+msgstr ""
+
+#: ../source/index.rst:79
+#: ../source/index.rst:128
+msgid "185M"
+msgstr ""
+
+#: ../source/index.rst:81
+msgid "`sam2.1_hiera_tiny.pt <https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_tiny.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:82
+#: ../source/index.rst:131
+msgid "2400M"
+msgstr ""
+
+#: ../source/index.rst:83
+#: ../source/index.rst:132
+msgid "156M"
+msgstr ""
+
+#: ../source/index.rst:85
+msgid "MedSAM"
+msgstr ""
+
+#: ../source/index.rst:86
+msgid "`sam-med2d_b.pth <https://drive.google.com/file/d/1ARiB5RkSsWmAB_8mqWnwDF8ZKTtFwsjl/view?usp=drive_link>`_"
+msgstr ""
+
+#: ../source/index.rst:87
+msgid "1500M"
+msgstr ""
+
+#: ../source/index.rst:88
+msgid "2.4G"
+msgstr ""
+
+#: ../source/index.rst:90
+msgid "SAM"
+msgstr ""
+
+#: ../source/index.rst:91
+msgid "`sam_vit_h_4b8939.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:92
+msgid "7305M"
+msgstr ""
+
+#: ../source/index.rst:95
+msgid "`sam_vit_l_0b3195.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:96
+msgid "5855M"
+msgstr ""
+
+#: ../source/index.rst:99
+msgid "`sam_vit_b_01ec64.pth <https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:100
+msgid "4149M"
+msgstr ""
+
+#: ../source/index.rst:101
+msgid "375M"
+msgstr ""
+
+#: ../source/index.rst:103
+msgid "Edge-SAM"
+msgstr ""
+
+#: ../source/index.rst:104
+msgid "`edge_sam.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:105
+#: ../source/index.rst:109
+msgid "960M"
+msgstr ""
+
+#: ../source/index.rst:106
+#: ../source/index.rst:110
+msgid "39M"
+msgstr ""
+
+#: ../source/index.rst:108
+msgid "`edge_sam_3x.pth <https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth>`_"
+msgstr ""
+
+#: ../source/index.rst:112
+msgid "Mobile-SAM"
+msgstr ""
+
+#: ../source/index.rst:113
+msgid "`mobile_sam.pt <https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:114
+msgid "1375M"
+msgstr ""
+
+#: ../source/index.rst:115
+msgid "40M"
+msgstr ""
+
+#: ../source/index.rst:117
+msgid "SAM2"
+msgstr ""
+
+#: ../source/index.rst:118
+msgid "`sam2_hiera_large.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_large.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:122
+msgid "`sam2_hiera_base_plus.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_base_plus.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:126
+msgid "`sam2_hiera_small.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_small.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:130
+msgid "`sam2_hiera_tiny.pt <https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam2_hiera_tiny.pt>`_"
+msgstr ""
+
+#: ../source/index.rst:137
+msgid "Check :doc:`usage` to get started! Or :doc:`features` for full features demonstration."
+msgstr ""
+
+#: ../source/index.rst:139
+msgid "This project is under active development. Feedbacks are Welcome!"
+msgstr ""
+
+#: ../source/index.rst:142
+msgid "Contents"
+msgstr ""

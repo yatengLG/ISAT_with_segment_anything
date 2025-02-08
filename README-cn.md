@@ -19,7 +19,8 @@
 ---
 
 # 软件特点及安装
-请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
+- &#x1F389;: **新功能**: **现在我们支持服务器运算模型 + 本地GUI操作了！** 
+请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/) (待更新，先看英文文档吧😄)
 
 # Star History
 
@@ -50,8 +51,8 @@
   title={{ISAT with Segment Anything: An Interactive Semi-Automatic Annotation Tool}},
   author={Ji, Shuwei and Zhang, Hongyuan},
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
-  note={Updated on 2023-06-03},
-  year={2023},
-  version={1.10}
+  note={Updated on 2025-02-07},
+  year={2024},
+  version={1.29}
 }
 ```

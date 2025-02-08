@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1280, 764)
+        MainWindow.resize(1600, 900)
         MainWindow.setMinimumSize(QtCore.QSize(800, 600))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")

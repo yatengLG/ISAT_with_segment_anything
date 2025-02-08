@@ -101,7 +101,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSave.setEnabled(False)
         self.mainwindow.actionVisible.setEnabled(True)
 
-        self.mainwindow.set_labels_visible(False)
         self.mainwindow.annos_dock_widget.setEnabled(False)
         self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
 
@@ -139,7 +138,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionVisible.setEnabled(True)
         self.mainwindow.polygon_repaint_shortcut.setEnabled(True)
 
-        self.mainwindow.set_labels_visible(True)
         self.mainwindow.annos_dock_widget.setEnabled(True)
 
         self.mainwindow.modeState.setText('V')
@@ -260,6 +258,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             return
         # 否则，切换到绘图模式
         self.change_mode_to_create()
+        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
+            self.mainwindow.set_labels_visible(False)
+
         # 绘图模式
         if self.mode == STATUSMode.CREATE:
             self.current_graph = Polygon()
@@ -269,8 +270,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         if self.current_graph is None:
             return
-
-        self.change_mode_to_view()
 
         category = self.mainwindow.current_category
         group = self.mainwindow.current_group
@@ -351,7 +350,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if len(self.current_graph.points) < 2:
                 self.current_graph.delete()
                 self.removeItem(self.current_graph)
+
                 self.change_mode_to_view()
+                if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
+                    self.mainwindow.set_labels_visible(True)
+
                 return
 
             # 两点，默认矩形
@@ -393,6 +396,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.current_sam_rect = None
 
         self.change_mode_to_view()
+        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
+            self.mainwindow.set_labels_visible(True)
 
         # mask清空
         self.click_points.clear()
@@ -426,6 +431,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.current_sam_rect = None
 
         self.change_mode_to_view()
+        if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
+            self.mainwindow.set_labels_visible(True)
 
         self.click_points.clear()
         self.click_points_mode.clear()

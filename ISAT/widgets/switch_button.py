@@ -57,7 +57,7 @@ class SwitchBtn(QWidget):
         #发射信号
         self.checkedChanged.emit(self.checked)
         # 每次移动的步长为宽度的50分之一
-        self.step = self.width() / 50
+        self.step = self.width() / 20
         #状态切换改变后自动计算终点坐标
         if self.checked:
             self.endX = self.width() - self.height()

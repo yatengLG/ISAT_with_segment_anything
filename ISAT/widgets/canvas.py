@@ -330,6 +330,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                     # 添加新polygon
                     self.mainwindow.polygons.append(self.current_graph)
+                    self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
                     # 设置为最高图层
                     self.current_graph.setZValue(len(self.mainwindow.polygons))
                     for vertex in self.current_graph.vertexs:
@@ -378,6 +379,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)
+            self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
             # 设置为最高图层
             self.current_graph.setZValue(len(self.mainwindow.polygons))
             for vertex in self.current_graph.vertexs:
@@ -385,8 +387,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 选择类别
         # self.mainwindow.category_choice_widget.load_cfg()
         # self.mainwindow.category_choice_widget.show()
-
-        self.mainwindow.annos_dock_widget.update_listwidget()
 
         self.current_graph = None
 
@@ -452,6 +452,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if item in self.selected_polygons_list:
                     self.selected_polygons_list.remove(item)
                 self.mainwindow.polygons.remove(item)
+                self.mainwindow.annos_dock_widget.listwidget_remove_polygon(item)
                 item.delete()
                 self.removeItem(item)
                 deleted_layer = item.zValue()
@@ -468,6 +469,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 if len(polygon.vertexs) < 3:
                     if polygon in self.mainwindow.polygons:
                         self.mainwindow.polygons.remove(polygon)
+                        self.mainwindow.annos_dock_widget.listwidget_remove_polygon(polygon)
                         polygon.delete()
                     if polygon in self.items():
                         self.removeItem(polygon)
@@ -478,7 +480,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for p in self.mainwindow.polygons:
                 if p.zValue() > deleted_layer:
                     p.setZValue(p.zValue() - 1)
-            self.mainwindow.annos_dock_widget.update_listwidget()
 
     def edit_polygon(self):
         selectd_items = self.selectedItems()
@@ -544,7 +545,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                 self.current_graph.set_drawed(item.category, item.group, item.iscrowd, item.note, item.color, item.zValue())
                 self.mainwindow.polygons.insert(index, self.current_graph)
-                self.mainwindow.annos_dock_widget.update_listwidget()
+                self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+                item.setSelected(False)
                 self.current_graph.setSelected(True)
                 self.current_graph = None
             elif isinstance(item, Vertex):

@@ -93,6 +93,26 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         else:
             self.comboBox_group_select.setCurrentIndex(0)
 
+    def listwidget_add_polygon(self, polygon):
+        item, item_widget = self.generate_item_and_itemwidget(polygon)
+        self.listWidget.addItem(item)
+        self.listWidget.setItemWidget(item, item_widget)
+        self.polygon_item_dict[polygon] = item
+        self.mainwindow.set_saved_state(False)
+
+    def listwidget_remove_polygon(self, polygon):
+        item = self.polygon_item_dict[polygon]
+        self.listWidget.removeItemWidget(item)
+        self.listWidget.takeItem(self.listWidget.row(item))
+        del self.polygon_item_dict[polygon]
+        self.mainwindow.set_saved_state(False)
+
+    def listwidget_update_polygon(self, polygon):
+        _, item_widget = self.generate_item_and_itemwidget(polygon)
+        item = self.polygon_item_dict[polygon]
+        self.listWidget.setItemWidget(item, item_widget)
+        self.mainwindow.set_saved_state(False)
+
     def set_selected(self, polygon):
         item = self.polygon_item_dict[polygon]
         if polygon.isSelected():

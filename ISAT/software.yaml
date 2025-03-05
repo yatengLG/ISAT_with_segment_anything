@@ -21,6 +21,151 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
+shortcut:
+  actionAbout:
+    default_key: null
+    key: null
+  actionAnno_validator:
+    default_key: null
+    key: null
+  actionAuto_save:
+    default_key: null
+    key: null
+  actionAuto_segment_with_bounding_box:
+    default_key: null
+    key: null
+  actionBackspace:
+    default_key: Z
+    key: Z
+  actionBit_map:
+    default_key: Space
+    key: Space
+  actionCancel:
+    default_key: Esc
+    key: Esc
+  actionChinese:
+    default_key: null
+    key: null
+  actionContour_all:
+    default_key: null
+    key: null
+  actionContour_external:
+    default_key: null
+    key: null
+  actionContour_max_only:
+    default_key: null
+    key: null
+  actionConverter:
+    default_key: null
+    key: null
+  actionCopy:
+    default_key: Ctrl+C
+    key: Ctrl+C
+  actionDelete:
+    default_key: Del
+    key: Del
+  actionEdit:
+    default_key: null
+    key: null
+  actionEnglish:
+    default_key: null
+    key: null
+  actionExclude:
+    default_key: Ctrl+E
+    key: Ctrl+E
+  actionExit:
+    default_key: null
+    key: null
+  actionFinish:
+    default_key: E
+    key: E
+  actionFit_window:
+    default_key: F
+    key: F
+  actionImages_dir:
+    default_key: null
+    key: ''
+  actionIntersect:
+    default_key: Ctrl+Q
+    key: Ctrl+Q
+  actionLabel_dir:
+    default_key: null
+    key: ''
+  actionModel_manage:
+    default_key: null
+    key: null
+  actionNext_group:
+    default_key: Tab
+    key: Tab
+  actionNext_image:
+    default_key: D
+    key: D
+  actionPolygon:
+    default_key: C
+    key: C
+  actionPrev_group:
+    default_key: '`'
+    key: '`'
+  actionPrev_image:
+    default_key: A
+    key: A
+  actionRepaint:
+    default_key: R
+    key: R
+  actionSave:
+    default_key: S
+    key: S
+  actionScene_shot:
+    default_key: P
+    key: P
+  actionSegment_anything_box:
+    default_key: W
+    key: W
+  actionSegment_anything_point:
+    default_key: Q
+    key: Q
+  actionSetting:
+    default_key: null
+    key: null
+  actionShortcut:
+    default_key: null
+    key: null
+  actionSubtract:
+    default_key: Ctrl+D
+    key: Ctrl+D
+  actionTo_bottom:
+    default_key: B
+    key: B
+  actionTo_top:
+    default_key: T
+    key: T
+  actionUnion:
+    default_key: Ctrl+A
+    key: Ctrl+A
+  actionVideo_segment:
+    default_key: null
+    key: null
+  actionVideo_segment_five_times:
+    default_key: null
+    key: null
+  actionVideo_segment_once:
+    default_key: null
+    key: null
+  actionVideo_to_frames:
+    default_key: null
+    key: null
+  actionVisible:
+    default_key: V
+    key: V
+  actionWindow_shot:
+    default_key: Ctrl+P
+    key: Ctrl+P
+  actionZoom_in:
+    default_key: null
+    key: null
+  actionZoom_out:
+    default_key: null
+    key: null
 software:
   auto_save: false
   contour_mode: external

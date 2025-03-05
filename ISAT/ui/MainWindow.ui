@@ -85,11 +85,11 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_dir"/>
-    <addaction name="actionSave_dir"/>
+    <addaction name="actionImages_dir"/>
+    <addaction name="actionLabel_dir"/>
     <addaction name="separator"/>
-    <addaction name="actionPrev"/>
-    <addaction name="actionNext"/>
+    <addaction name="actionPrev_image"/>
+    <addaction name="actionNext_image"/>
     <addaction name="separator"/>
     <addaction name="actionSetting"/>
     <addaction name="actionExit"/>
@@ -105,12 +105,18 @@
      <string>View</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionZoom_in"/>
-    <addaction name="actionZoom_out"/>
-    <addaction name="actionFit_wiondow"/>
+    <addaction name="actionPrev_group"/>
+    <addaction name="actionNext_group"/>
+    <addaction name="actionVisible"/>
     <addaction name="separator"/>
     <addaction name="actionBit_map"/>
     <addaction name="separator"/>
+    <addaction name="actionZoom_in"/>
+    <addaction name="actionZoom_out"/>
+    <addaction name="actionFit_window"/>
+    <addaction name="separator"/>
+    <addaction name="actionScene_shot"/>
+    <addaction name="actionWindow_shot"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="font">
@@ -153,7 +159,7 @@
     <addaction name="separator"/>
     <addaction name="actionConverter"/>
     <addaction name="actionVideo_to_frames"/>
-    <addaction name="actionAuto_segment"/>
+    <addaction name="actionAuto_segment_with_bounding_box"/>
     <addaction name="actionAnno_validator"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -166,9 +172,10 @@
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionSegment_anything"/>
+    <addaction name="actionSegment_anything_point"/>
     <addaction name="actionSegment_anything_box"/>
     <addaction name="actionPolygon"/>
+    <addaction name="actionRepaint"/>
     <addaction name="separator"/>
     <addaction name="actionVideo_segment"/>
     <addaction name="actionVideo_segment_once"/>
@@ -181,7 +188,7 @@
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
-    <addaction name="actionAutoSave"/>
+    <addaction name="actionAuto_save"/>
     <addaction name="actionCopy"/>
     <addaction name="separator"/>
     <addaction name="actionTo_top"/>
@@ -209,9 +216,9 @@
      <property name="title">
       <string>Contour mode</string>
      </property>
-     <addaction name="actionContour_Max_only"/>
-     <addaction name="actionContour_External"/>
-     <addaction name="actionContour_All"/>
+     <addaction name="actionContour_max_only"/>
+     <addaction name="actionContour_external"/>
+     <addaction name="actionContour_all"/>
     </widget>
     <addaction name="menuContour_mode"/>
    </widget>
@@ -263,10 +270,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionPrev"/>
-   <addaction name="actionNext"/>
+   <addaction name="actionPrev_image"/>
+   <addaction name="actionNext_image"/>
    <addaction name="separator"/>
-   <addaction name="actionSegment_anything"/>
+   <addaction name="actionSegment_anything_point"/>
    <addaction name="actionSegment_anything_box"/>
    <addaction name="actionPolygon"/>
    <addaction name="separator"/>
@@ -293,7 +300,7 @@
    <addaction name="separator"/>
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
-   <addaction name="actionFit_wiondow"/>
+   <addaction name="actionFit_window"/>
    <addaction name="actionBit_map"/>
    <addaction name="actionVisible"/>
   </widget>
@@ -353,7 +360,7 @@
     <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </widget>
   </widget>
-  <action name="actionOpen_dir">
+  <action name="actionImages_dir">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/照片_pic.svg</normaloff>:/icon/icons/照片_pic.svg</iconset>
@@ -389,7 +396,7 @@
     <string>Zoom out.</string>
    </property>
   </action>
-  <action name="actionFit_wiondow">
+  <action name="actionFit_window">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/全宽_fullwidth.svg</normaloff>:/icon/icons/全宽_fullwidth.svg</iconset>
@@ -434,7 +441,7 @@
     <string>Exit.</string>
    </property>
   </action>
-  <action name="actionSave_dir">
+  <action name="actionLabel_dir">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/文件夹-开_folder-open.svg</normaloff>:/icon/icons/文件夹-开_folder-open.svg</iconset>
@@ -461,7 +468,7 @@
     <string>S</string>
    </property>
   </action>
-  <action name="actionPrev">
+  <action name="actionPrev_image">
    <property name="checkable">
     <bool>false</bool>
    </property>
@@ -488,7 +495,7 @@
     <enum>QAction::NormalPriority</enum>
    </property>
   </action>
-  <action name="actionNext">
+  <action name="actionNext_image">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/下一步_next.svg</normaloff>:/icon/icons/下一步_next.svg</iconset>
@@ -524,7 +531,7 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionSegment_anything">
+  <action name="actionSegment_anything_point">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/M_Favicon.ico</normaloff>:/icon/icons/M_Favicon.ico</iconset>
@@ -759,12 +766,12 @@
     <string>V</string>
    </property>
   </action>
-  <action name="actionContour_Max_only">
+  <action name="actionContour_max_only">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Max only</string>
+    <string>Contour max only</string>
    </property>
    <property name="statusTip">
     <string>Max contour save only.</string>
@@ -779,12 +786,12 @@
     </font>
    </property>
   </action>
-  <action name="actionContour_External">
+  <action name="actionContour_external">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>External</string>
+    <string>Contour external</string>
    </property>
    <property name="statusTip">
     <string>External contour save only.</string>
@@ -799,12 +806,12 @@
     </font>
    </property>
   </action>
-  <action name="actionContour_All">
+  <action name="actionContour_all">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>All</string>
+    <string>Contour all</string>
    </property>
    <property name="statusTip">
     <string>All contour save.</string>
@@ -849,7 +856,7 @@
     <string>Converter</string>
    </property>
   </action>
-  <action name="actionAuto_segment">
+  <action name="actionAuto_segment_with_bounding_box">
    <property name="icon">
     <iconset resource="../icons.qrc">
      <normaloff>:/icon/icons/M_Favicon.ico</normaloff>:/icon/icons/M_Favicon.ico</iconset>
@@ -939,7 +946,7 @@
     <string>Ctrl+E</string>
    </property>
   </action>
-  <action name="actionAutoSave">
+  <action name="actionAuto_save">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1008,6 +1015,66 @@
    </property>
    <property name="shortcut">
     <string>W</string>
+   </property>
+  </action>
+  <action name="actionPrev_group">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/上一步_back.svg</normaloff>:/icon/icons/上一步_back.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Prev group</string>
+   </property>
+   <property name="shortcut">
+    <string>`</string>
+   </property>
+  </action>
+  <action name="actionNext_group">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/下一步_next.svg</normaloff>:/icon/icons/下一步_next.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Next group</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+`</string>
+   </property>
+  </action>
+  <action name="actionRepaint">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/编辑撰写_writing-fluently.svg</normaloff>:/icon/icons/编辑撰写_writing-fluently.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Repaint</string>
+   </property>
+   <property name="shortcut">
+    <string>R</string>
+   </property>
+  </action>
+  <action name="actionScene_shot">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/截屏_screenshot-two.svg</normaloff>:/icon/icons/截屏_screenshot-two.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Scene shot</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
+   </property>
+  </action>
+  <action name="actionWindow_shot">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/截屏_screenshot-two.svg</normaloff>:/icon/icons/截屏_screenshot-two.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Window shot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

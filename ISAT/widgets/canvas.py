@@ -79,10 +79,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.CREATE
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
-        self.mainwindow.actionPrev.setEnabled(False)
-        self.mainwindow.actionNext.setEnabled(False)
+        self.mainwindow.actionPrev_image.setEnabled(False)
+        self.mainwindow.actionNext_image.setEnabled(False)
 
-        self.mainwindow.actionSegment_anything.setEnabled(False)
+        self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
@@ -102,7 +102,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionVisible.setEnabled(True)
 
         self.mainwindow.annos_dock_widget.setEnabled(False)
-        self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
+        self.mainwindow.actionRepaint.setEnabled(False)
 
         self.mainwindow.modeState.setText('C')
         self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Create mode.'))
@@ -117,8 +117,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
 
-        self.mainwindow.actionPrev.setEnabled(True)
-        self.mainwindow.actionNext.setEnabled(True)
+        self.mainwindow.actionPrev_image.setEnabled(True)
+        self.mainwindow.actionNext_image.setEnabled(True)
         self.mainwindow.SeganyEnabled()
         self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionBackspace.setEnabled(False)
@@ -136,7 +136,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionVisible.setEnabled(True)
-        self.mainwindow.polygon_repaint_shortcut.setEnabled(True)
+        self.mainwindow.actionRepaint.setEnabled(True)
 
         self.mainwindow.annos_dock_widget.setEnabled(True)
 
@@ -153,10 +153,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
 
-        self.mainwindow.actionPrev.setEnabled(False)
-        self.mainwindow.actionNext.setEnabled(False)
+        self.mainwindow.actionPrev_image.setEnabled(False)
+        self.mainwindow.actionNext_image.setEnabled(False)
 
-        self.mainwindow.actionSegment_anything.setEnabled(False)
+        self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(False)
@@ -174,7 +174,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(True)
         self.mainwindow.actionSave.setEnabled(True)
         self.mainwindow.actionVisible.setEnabled(True)
-        self.mainwindow.polygon_repaint_shortcut.setEnabled(False)
+        self.mainwindow.actionRepaint.setEnabled(False)
 
         self.mainwindow.modeState.setText('E')
         self.mainwindow.modeState.setStatusTip(QtCore.QCoreApplication.translate('MainWindow', 'Edit mode.'))
@@ -195,10 +195,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
 
-        self.mainwindow.actionPrev.setEnabled(False)
-        self.mainwindow.actionNext.setEnabled(False)
+        self.mainwindow.actionPrev_image.setEnabled(False)
+        self.mainwindow.actionNext_image.setEnabled(False)
 
-        self.mainwindow.actionSegment_anything.setEnabled(False)
+        self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
@@ -1058,8 +1058,9 @@ class AnnotationView(QtWidgets.QGraphicsView):
         self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
         self.factor = 1.2
 
-        self.setViewport(QtWidgets.QOpenGLWidget())
-        self.setRenderHint(QtGui.QPainter.Antialiasing, False)
+        # 影响了窗口截图功能，暂时注释掉
+        # self.setViewport(QtWidgets.QOpenGLWidget())
+        # self.setRenderHint(QtGui.QPainter.Antialiasing, False)
 
     def wheelEvent(self, event: QtGui.QWheelEvent):
         angel = event.angleDelta()

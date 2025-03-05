@@ -6,6 +6,7 @@ ISAT_ROOT = os.path.split(os.path.abspath(__file__))[0]
 SOFTWARE_CONFIG_FILE = os.path.join(ISAT_ROOT, 'software.yaml')
 CONFIG_FILE = os.path.join(ISAT_ROOT, 'isat.yaml')
 CHECKPOINT_PATH = os.path.join(ISAT_ROOT, 'checkpoints')
+SHORTCUT_FILE = os.path.join(ISAT_ROOT, 'shortcut.yaml')
 
 os.makedirs(os.path.join(CHECKPOINT_PATH, 'tmp'), exist_ok=True)
 

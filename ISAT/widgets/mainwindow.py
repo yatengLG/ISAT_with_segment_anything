@@ -19,7 +19,7 @@ from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
-from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT
+from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, SHORTCUT_FILE
 from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
@@ -357,6 +357,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.config_file = CONFIG_FILE
         self.software_config_file = SOFTWARE_CONFIG_FILE
+        self.shortcut_config_file = SHORTCUT_FILE
 
         self.saved = True
         self.auto_save_anns = False
@@ -407,7 +408,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 return
         # 等待sam线程完成
-        self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
         try:
             self.seganythread.wait()
@@ -542,7 +543,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         :return:
         """
         if not self.use_segment_anything:
-            self.actionSegment_anything.setEnabled(False)
+            self.actionSegment_anything_point.setEnabled(False)
             self.actionSegment_anything_box.setEnabled(False)
             return
 
@@ -564,11 +565,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany.predictor_with_point_prompt._features = features
             self.segany.predictor_with_point_prompt._is_image_set = True
 
-            self.actionSegment_anything.setEnabled(True)
+            self.actionSegment_anything_point.setEnabled(True)
             self.actionSegment_anything_box.setEnabled(True)
         else:
             self.segany.predictor_with_point_prompt.reset_image()
-            self.actionSegment_anything.setEnabled(False)
+            self.actionSegment_anything_point.setEnabled(False)
             self.actionSegment_anything_box.setEnabled(False)
 
     def seg_video_start(self, max_frame_num_to_track=None):
@@ -614,28 +615,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
-        # 新增 group 选择 快捷键
-        self.next_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Tab"), self)
-        self.prev_group_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("`"), self)
-        self.next_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
-        self.prev_group_shortcut.setContext(QtCore.Qt.ApplicationShortcut)
-        # 新增手动/自动 选择group
-        self.next_group_shortcut.activated.connect(self.annos_dock_widget.go_to_next_group)
-        self.prev_group_shortcut.activated.connect(self.annos_dock_widget.go_to_prev_group)           
-
         self.scene = AnnotationScene(mainwindow=self)
         self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
-
-        # 批量点修改 (issue 160) 快捷键
-        self.polygon_repaint_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("R"), self)
-        self.polygon_repaint_shortcut.activated.connect(self.scene.change_mode_to_repaint)
-
-        # 新增图片保存功能，快捷键。P保存场景(只图片区域)，Ctrl+P保存整个窗口
-        self.scene_shot_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("P"), self)
-        self.scene_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'scene'))
-        self.window_shot_shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+P"), self)
-        self.window_shot_shortcut.activated.connect(functools.partial(self.screen_shot, 'window'))
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
         self.video2frames_dialog = Video2FramesDialog(self, self)
@@ -653,7 +635,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.right_button_menu.addAction(self.actionTo_bottom)
         self.right_button_menu.addAction(self.actionDelete)
 
-        self.shortcut_dialog = ShortcutDialog(self)
+        self.shortcut_dialog = ShortcutDialog(self, self)
         self.about_dialog = AboutDialog(self)
 
         self.labelGPUResource = QtWidgets.QLabel('')
@@ -858,7 +840,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.auto_save_anns = software_cfg.get('auto_save', False)
         self.cfg['software']['auto_save'] = self.auto_save_anns
-        self.actionAutoSave.setChecked(self.auto_save_anns)
+        self.actionAuto_save.setChecked(self.auto_save_anns)
 
         contour_mode = software_cfg.get('contour_mode', 'max_only')
         self.cfg['software']['contour_mode'] = contour_mode
@@ -910,6 +892,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is not None:
             self.show_image(self.current_index)
 
+        # shortcut
+        self.load_actions_shortcut(default=False)
+
     def set_saved_state(self, is_saved:bool):
         if not is_saved:
             if self.auto_save_anns:
@@ -953,10 +938,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_index = 0
 
         self.image_root = dir
-        self.actionOpen_dir.setStatusTip("Image root: {}".format(self.image_root))
+        self.actionImages_dir.setStatusTip("Image root: {}".format(self.image_root))
 
         self.label_root = dir
-        self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+        self.actionLabel_dir.setStatusTip("Label root: {}".format(self.label_root))
 
         self.saved = True
 
@@ -973,7 +958,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
 
         self.label_root = dir
-        self.actionSave_dir.setStatusTip("Label root: {}".format(self.label_root))
+        self.actionLabel_dir.setStatusTip("Label root: {}".format(self.label_root))
         # load setting yaml
         if os.path.exists(os.path.join(dir, 'isat.yaml')):
             self.config_file = os.path.join(dir, 'isat.yaml')
@@ -1098,14 +1083,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print(e)
         finally:
             if self.current_index > 0:
-                self.actionPrev.setEnabled(True)
+                self.actionPrev_image.setEnabled(True)
             else:
-                self.actionPrev.setEnabled(False)
+                self.actionPrev_image.setEnabled(False)
 
             if self.current_index < len(self.files_list) - 1:
-                self.actionNext.setEnabled(True)
+                self.actionNext_image.setEnabled(True)
             else:
-                self.actionNext.setEnabled(False)
+                self.actionNext_image.setEnabled(False)
 
     def prev_image(self):
         if self.scene.mode != STATUSMode.VIEW:
@@ -1177,7 +1162,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             polygon.setBrush(polygon.color)
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
-        self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)
@@ -1206,7 +1191,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             polygon.setBrush(polygon.color)
         self.annos_dock_widget.listWidget.setEnabled(False)
         self.annos_dock_widget.checkBox_visible.setEnabled(False)
-        self.actionSegment_anything.setEnabled(False)
+        self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)
@@ -1283,9 +1268,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.scene.change_contour_mode_to_save_max_only()
             self.statusbar.showMessage('The contour mode [{}] not support.'.format(contour_mode), 3000)
 
-        self.actionContour_Max_only.setChecked(contour_mode == 'max_only')
-        self.actionContour_External.setChecked(contour_mode == 'external')
-        self.actionContour_All.setChecked(contour_mode == 'all')
+        self.actionContour_max_only.setChecked(contour_mode == 'max_only')
+        self.actionContour_external.setChecked(contour_mode == 'external')
+        self.actionContour_all.setChecked(contour_mode == 'all')
         self.cfg['software']['contour_mode'] = contour_mode
         self.save_software_cfg()
 
@@ -1379,7 +1364,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def annos_validator(self):
         self.annos_validator_dialog.show()
 
-    def help(self):
+    def shortcut(self):
+        self.shortcut_dialog.update_ui()
         self.shortcut_dialog.show()
 
     def about(self):
@@ -1445,27 +1431,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.exit()
 
     def init_connect(self):
-        self.actionOpen_dir.triggered.connect(self.open_dir)
-        self.actionSave_dir.triggered.connect(self.save_dir)
+        self.actionImages_dir.triggered.connect(self.open_dir)
+        self.actionLabel_dir.triggered.connect(self.save_dir)
         self.actionVideo_segment.triggered.connect(functools.partial(self.seg_video_start, None))
         self.actionVideo_segment_once.triggered.connect(functools.partial(self.seg_video_start, 1))
         self.actionVideo_segment_five_times.triggered.connect(functools.partial(self.seg_video_start, 5))
 
-        self.actionPrev.triggered.connect(self.prev_image)
-        self.actionNext.triggered.connect(self.next_image)
+        self.actionPrev_image.triggered.connect(self.prev_image)
+        self.actionNext_image.triggered.connect(self.next_image)
         self.actionSetting.triggered.connect(self.setting)
         self.actionExit.triggered.connect(self.exit)
 
-        self.actionSegment_anything.triggered.connect(self.scene.start_segment_anything)
+        self.actionSegment_anything_point.triggered.connect(self.scene.start_segment_anything)
         self.actionSegment_anything_box.triggered.connect(self.scene.start_segment_anything_box)
         self.actionPolygon.triggered.connect(self.scene.start_draw_polygon)
+        self.actionRepaint.triggered.connect(self.scene.change_mode_to_repaint)
         self.actionCancel.triggered.connect(self.scene.cancel_draw)
         self.actionBackspace.triggered.connect(self.scene.backspace)
         self.actionFinish.triggered.connect(self.scene.finish_draw)
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)
         self.actionSave.triggered.connect(self.save)
-        self.actionAutoSave.toggled.connect(self.toggle_auto_save)
+        self.actionAuto_save.toggled.connect(self.toggle_auto_save)
         self.actionTo_top.triggered.connect(self.scene.move_polygon_to_top)
         self.actionTo_bottom.triggered.connect(self.scene.move_polygon_to_bottom)
         self.actionCopy.triggered.connect(self.scene.copy_item)
@@ -1474,25 +1461,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionIntersect.triggered.connect(self.scene.polygons_intersection)
         self.actionExclude.triggered.connect(self.scene.polygons_symmetric_difference)
 
+        self.actionPrev_group.triggered.connect(self.annos_dock_widget.go_to_next_group)
+        self.actionNext_group.triggered.connect(self.annos_dock_widget.go_to_prev_group)
         self.actionZoom_in.triggered.connect(self.view.zoom_in)
         self.actionZoom_out.triggered.connect(self.view.zoom_out)
-        self.actionFit_wiondow.triggered.connect(self.view.zoomfit)
+        self.actionFit_window.triggered.connect(self.view.zoomfit)
         self.actionBit_map.triggered.connect(self.change_bit_map)
         self.actionVisible.triggered.connect(functools.partial(self.set_labels_visible, None))
+        self.actionScene_shot.triggered.connect(functools.partial(self.screen_shot, 'scene'))
+        self.actionWindow_shot.triggered.connect(functools.partial(self.screen_shot, 'window'))
 
         self.actionModel_manage.triggered.connect(self.model_manage)
         self.actionModel_manage.setStatusTip(CHECKPOINT_PATH)
 
-        self.actionContour_Max_only.triggered.connect(functools.partial(self.change_contour_mode, 'max_only'))
-        self.actionContour_External.triggered.connect(functools.partial(self.change_contour_mode, 'external'))
-        self.actionContour_All.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
+        self.actionContour_max_only.triggered.connect(functools.partial(self.change_contour_mode, 'max_only'))
+        self.actionContour_external.triggered.connect(functools.partial(self.change_contour_mode, 'external'))
+        self.actionContour_all.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
 
         self.actionConverter.triggered.connect(self.converter)
         self.actionVideo_to_frames.triggered.connect(self.video2frames)
-        self.actionAuto_segment.triggered.connect(self.auto_segment)
+        self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
 
-        self.actionShortcut.triggered.connect(self.help)
+        self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)
 
         self.actionChinese.triggered.connect(self.translate_to_chinese)
@@ -1501,11 +1492,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
 
     def reset_action(self):
-        self.actionPrev.setEnabled(False)
-        self.actionNext.setEnabled(False)
-        self.actionSegment_anything.setEnabled(False)
+        self.actionPrev_image.setEnabled(False)
+        self.actionNext_image.setEnabled(False)
+        self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
         self.actionPolygon.setEnabled(False)
+        self.actionRepaint.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)
         self.actionVideo_segment_five_times.setEnabled(False)
@@ -1521,3 +1513,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSubtract.setEnabled(False)
         self.actionIntersect.setEnabled(False)
         self.actionExclude.setEnabled(False)
+
+    def load_actions_shortcut(self, default=False):
+        shortcut_cfg = self.cfg['shortcut']
+        for action in shortcut_cfg:
+
+            default_key = shortcut_cfg[action]['default_key']
+            if default:
+                shortcut_cfg[action]['key'] = default_key
+            key = shortcut_cfg[action]['key']
+            try:
+                if key is not None:
+                    eval('self.' + action).setShortcut(QtGui.QKeySequence(key))
+                else:
+                    eval('self.' + action).setShortcut(QtGui.QKeySequence(0))
+            except Exception as e:
+                pass
+

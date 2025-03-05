@@ -137,7 +137,8 @@ class SegAnyThread(QThread):
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
                     self.results_dict[index] = {}
-                    image_data = cv2.imread(image_path)
+                    # image_data = cv2.imread(image_path)
+                    image_data = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8),cv2.IMREAD_COLOR)
                     image_data = cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB)
                     try:
                         features, original_size, input_size = self.sam_encoder(image_data)

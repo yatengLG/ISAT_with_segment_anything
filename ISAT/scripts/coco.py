@@ -227,8 +227,11 @@ class COCO(ISAT):
 
                             # (xmin, ymin, xmax, ymax) 2 (xmin, ymin, w, h)
                             bbox_tmp = coco_anno_info['bbox']
-                            coco_anno_info['bbox'] = [bbox_tmp[0], bbox_tmp[1],
-                                                      bbox_tmp[2] - bbox_tmp[0], bbox_tmp[3] - bbox_tmp[1]]
+                            if len(bbox_tmp) >= 4:
+                                coco_anno_info['bbox'] = [bbox_tmp[0], bbox_tmp[1],
+                                                          bbox_tmp[2] - bbox_tmp[0], bbox_tmp[3] - bbox_tmp[1]]
+                            else:
+                                coco_anno_info['bbox'] = []
 
                             coco_anno['annotations'].append(coco_anno_info)
             except Exception as e:

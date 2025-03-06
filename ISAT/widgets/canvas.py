@@ -312,6 +312,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         continue
                     for point in contour:
                         x, y = point[0]
+                        x = max(0.1, x)
+                        y = max(0.1, y)
                         self.current_graph.addPoint(QtCore.QPointF(x, y))
 
                     if self.contour_mode == CONTOURMode.SAVE_ALL and hierarchy[0][index][3] != -1:

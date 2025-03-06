@@ -341,6 +341,24 @@ class InitSegAnyThread(QThread):
         self.tag.emit(sam_tag, sam_video_tag)
 
 
+class CheckLatestVersionThread(QThread):
+    tag = pyqtSignal(bool, str)
+    def __init__(self, mainwindow):
+        super(CheckLatestVersionThread, self).__init__()
+        self.mainwindow = mainwindow
+
+    def run(self):
+        try:
+            import requests
+            from ISAT import __version__
+
+            response = requests.get(f"https://pypi.org/pypi/isat-sam/json", timeout=3)
+            latest_version = response.json()["info"]["version"]
+            self.tag.emit(__version__ == latest_version, latest_version)
+        except Exception as e:
+            self.tag.emit(True, '')
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -390,6 +408,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # sam初始化线程，大模型加载较慢
         self.init_segany_thread = InitSegAnyThread(self)
         self.init_segany_thread.tag.connect(self.init_sam_finish)
+
+        # 检查最新版本
+        self.check_latest_version_thread = CheckLatestVersionThread(self)
+        self.check_latest_version_thread.tag.connect(self.latest_version_tip)
+        self.check_latest_version_thread.start()
 
     def toggle_auto_save(self, checked):
         self.auto_save_anns = checked
@@ -1531,3 +1554,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             except Exception as e:
                 pass
 
+    def latest_version_tip(self, is_latest_version, latest_version):
+        if not is_latest_version:
+            if self.actionChinese.isChecked():
+                title = ''
+                text = f'<html><head/><body><p align=\"center\">新版本<b>{latest_version}</b>已发布!</p><p align=\"center\">请在<a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a>上查看更新内容</p></body></html>'
+            else:
+                title = ''
+                text = f'<html><head/><body><p align=\"center\">New version <b>{latest_version}</b> released!</p><p align=\"center\">Check the update content on <a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a></p></body></html>'
+
+            QtWidgets.QMessageBox.information(self, title, text)

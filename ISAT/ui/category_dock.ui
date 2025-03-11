@@ -50,6 +50,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_category_setting">
+     <property name="text">
+      <string>Category setting</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>6</number>

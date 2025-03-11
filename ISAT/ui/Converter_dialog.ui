@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>680</height>
+    <width>960</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="font">
@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_COCO">
       <attribute name="title">
@@ -61,7 +61,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>138</width>
+               <width>142</width>
                <height>109</height>
               </rect>
              </property>
@@ -196,8 +196,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>960</width>
-               <height>153</height>
+               <width>920</width>
+               <height>113</height>
               </rect>
              </property>
              <attribute name="label">
@@ -373,7 +373,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>161</width>
+               <width>165</width>
                <height>144</height>
               </rect>
              </property>
@@ -562,8 +562,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>960</width>
-               <height>153</height>
+               <width>920</width>
+               <height>113</height>
               </rect>
              </property>
              <attribute name="label">
@@ -701,8 +701,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>960</width>
-               <height>153</height>
+               <width>920</width>
+               <height>113</height>
               </rect>
              </property>
              <attribute name="label">
@@ -798,7 +798,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>138</width>
+               <width>142</width>
                <height>78</height>
               </rect>
              </property>
@@ -1145,6 +1145,7 @@
      <property name="font">
       <font>
        <family>宋体</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
     </widget>

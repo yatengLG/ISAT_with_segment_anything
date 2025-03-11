@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>764</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -56,7 +56,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1600</width>
      <height>29</height>
     </rect>
    </property>
@@ -128,18 +128,7 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <widget class="QMenu" name="menuLaguage">
-     <property name="title">
-      <string>Laguage</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../icons.qrc">
-       <normaloff>:/icon/icons/翻译_translate.svg</normaloff>:/icon/icons/翻译_translate.svg</iconset>
-     </property>
-     <addaction name="actionChinese"/>
-     <addaction name="actionEnglish"/>
-    </widget>
-    <addaction name="menuLaguage"/>
+    <addaction name="actionLanguage"/>
     <addaction name="actionShortcut"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -188,7 +177,6 @@
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
-    <addaction name="actionAuto_save"/>
     <addaction name="actionCopy"/>
     <addaction name="separator"/>
     <addaction name="actionTo_top"/>
@@ -198,29 +186,6 @@
     <addaction name="actionSubtract"/>
     <addaction name="actionIntersect"/>
     <addaction name="actionExclude"/>
-   </widget>
-   <widget class="QMenu" name="menuMode">
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <italic>false</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>Mode</string>
-    </property>
-    <widget class="QMenu" name="menuContour_mode">
-     <property name="title">
-      <string>Contour mode</string>
-     </property>
-     <addaction name="actionContour_max_only"/>
-     <addaction name="actionContour_external"/>
-     <addaction name="actionContour_all"/>
-    </widget>
-    <addaction name="menuContour_mode"/>
    </widget>
    <widget class="QMenu" name="menuSAM_model">
     <property name="title">
@@ -233,7 +198,6 @@
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuSAM_model"/>
-   <addaction name="menuMode"/>
    <addaction name="menuTools"/>
    <addaction name="menuAbout"/>
   </widget>
@@ -276,6 +240,7 @@
    <addaction name="actionSegment_anything_point"/>
    <addaction name="actionSegment_anything_box"/>
    <addaction name="actionPolygon"/>
+   <addaction name="actionRepaint"/>
    <addaction name="separator"/>
    <addaction name="actionVideo_segment_once"/>
    <addaction name="actionVideo_segment_five_times"/>
@@ -359,6 +324,28 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>RightToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionModel_manage"/>
+   <addaction name="actionShortcut"/>
+   <addaction name="actionSetting"/>
+   <addaction name="actionLanguage"/>
+   <addaction name="actionAbout"/>
   </widget>
   <action name="actionImages_dir">
    <property name="icon">
@@ -525,7 +512,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/我的_me.svg</normaloff>:/icon/icons/我的_me.svg</iconset>
+     <normaloff>:/icon/icons/ISAT13.svg</normaloff>:/icon/icons/ISAT13.svg</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -648,34 +635,6 @@
     <string>B</string>
    </property>
   </action>
-  <action name="actionChinese">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>中文</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-  </action>
-  <action name="actionEnglish">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>English</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-  </action>
   <action name="actionBackspace">
    <property name="icon">
     <iconset resource="../icons.qrc">
@@ -764,66 +723,6 @@
    </property>
    <property name="shortcut">
     <string>V</string>
-   </property>
-  </action>
-  <action name="actionContour_max_only">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Contour max only</string>
-   </property>
-   <property name="statusTip">
-    <string>Max contour save only.</string>
-   </property>
-   <property name="whatsThis">
-    <string>Max contour save only.</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-  </action>
-  <action name="actionContour_external">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Contour external</string>
-   </property>
-   <property name="statusTip">
-    <string>External contour save only.</string>
-   </property>
-   <property name="whatsThis">
-    <string>External contour save only.</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-  </action>
-  <action name="actionContour_all">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Contour all</string>
-   </property>
-   <property name="statusTip">
-    <string>All contour save.</string>
-   </property>
-   <property name="whatsThis">
-    <string>All contour save.</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Times New Roman</family>
-     <pointsize>12</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionModel_manage">
@@ -946,17 +845,6 @@
     <string>Ctrl+E</string>
    </property>
   </action>
-  <action name="actionAuto_save">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Auto save</string>
-   </property>
-  </action>
   <action name="actionVideo_segment">
    <property name="icon">
     <iconset resource="../icons.qrc">
@@ -1075,6 +963,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionLanguage">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/中文_chinese.svg</normaloff>:/icon/icons/中文_chinese.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Language</string>
    </property>
   </action>
  </widget>

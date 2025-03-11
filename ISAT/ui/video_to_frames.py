@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/lg/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/video_to_frames.ui'
+# Form implementation generated from reading ui file '/media/lg/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/video_to_frames.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(1000, 680)
+        Dialog.resize(960, 600)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)

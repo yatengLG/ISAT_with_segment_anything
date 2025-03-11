@@ -2,7 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtGui, QtCore
-from ISAT.ui.category_choice import Ui_Dialog
+from ISAT.ui.category_edit import Ui_Dialog
 
 
 class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):

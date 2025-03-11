@@ -3,8 +3,7 @@
 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ISAT.ui.MainWindow import Ui_MainWindow
-from ISAT.widgets.setting_dialog import SettingDialog
-from ISAT.widgets.category_choice_dialog import CategoryChoiceDialog
+from ISAT.widgets.category_setting_dialog import CategorySettingDialog
 from ISAT.widgets.category_edit_dialog import CategoryEditDialog
 from ISAT.widgets.category_dock_widget import CategoriesDockWidget
 from ISAT.widgets.annos_dock_widget import AnnosDockWidget
@@ -13,6 +12,7 @@ from ISAT.widgets.info_dock_widget import InfoDockWidget
 from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
 from ISAT.widgets.about_dialog import AboutDialog
+from ISAT.widgets.setting_dialog import SettingDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
@@ -379,7 +379,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.shortcut_config_file = SHORTCUT_FILE
 
         self.saved = True
-        self.auto_save_anns = False
 
         self.can_be_annotated = True
         self.load_finished = False
@@ -414,12 +413,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_latest_version_thread.tag.connect(self.latest_version_tip)
         self.check_latest_version_thread.start()
 
-    def toggle_auto_save(self, checked):
-        self.auto_save_anns = checked
-        self.cfg['software']['auto_save'] = self.auto_save_anns
-        self.save_software_cfg()
+    def init_segment_anything(self, model_name=None, checked=None):
+        if checked is not None and not checked:
+            return
 
-    def init_segment_anything(self, model_name=None):
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
@@ -443,17 +440,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if model_name == '':
             self.use_segment_anything = False
-            for name, action in self.pths_actions.items():
-                action.setChecked(model_name == name)
+            self.model_manager_dialog.update_ui()
             return
         model_path = os.path.join(CHECKPOINT_PATH, model_name)
         if not os.path.exists(model_path):
             QtWidgets.QMessageBox.warning(self, 'Warning',
                                           'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format(
                                               'https://github.com/facebookresearch/segment-anything#model-checkpoints'))
-            for name, action in self.pths_actions.items():
-                action.setChecked(model_name == name)
             self.use_segment_anything = False
+            self.model_manager_dialog.update_ui()
             return
 
         self.init_segany_thread.model_path = model_path
@@ -473,14 +468,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             # sam2 建议使用bfloat16
             if self.segany.model_dtype == torch.float32:
-                if self.actionChinese.isChecked():
+                if self.cfg['software']['language'] == 'zh':
                     QtWidgets.QMessageBox.warning(self,
                                                   'warning',
-                                                  """建议使用bfloat16模式进行视频分割\n在[菜单栏]-[SAM]-[模型管理]界面打开该功能""")
+                                                  """建议使用bfloat16模式进行视频分割\n在[设置]界面打开该功能""")
                 else:
                     QtWidgets.QMessageBox.warning(self,
                                                   'warning',
-                                                  """Suggest Use bfloat16 mode to segment video.\nYou can open it in [Menubar]-[SAM]-[model manage].""")
+                                                  """Suggest Use bfloat16 mode to segment video.\nYou can open it in [Setting].""")
 
         else:
             self.segany_video_thread = None
@@ -525,8 +520,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.use_segment_anything = False
 
-        for name, action in self.pths_actions.items():
-            action.setChecked(sam_tag and checkpoint_name == name)
+        self.model_manager_dialog.update_ui()
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
         if state == 1:  # 识别完
@@ -623,7 +617,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.setEnabled(True)
 
     def init_ui(self):
-        self.setting_dialog = SettingDialog(parent=self, mainwindow=self)
+        self.category_setting_dialog = CategorySettingDialog(parent=self, mainwindow=self)
 
         self.categories_dock_widget = CategoriesDockWidget(mainwindow=self)
         self.categories_dock.setWidget(self.categories_dock_widget)
@@ -640,7 +634,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
         self.scene = AnnotationScene(mainwindow=self)
-        self.category_choice_widget = CategoryChoiceDialog(self, mainwindow=self, scene=self.scene)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
@@ -661,6 +654,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.shortcut_dialog = ShortcutDialog(self, self)
         self.about_dialog = AboutDialog(self)
+        self.setting_dialog = SettingDialog(self, self)
 
         self.labelGPUResource = QtWidgets.QLabel('')
         self.labelGPUResource.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
@@ -696,29 +690,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.update_menuSAM()
 
-        # mask alpha
-        self.toolBar.addSeparator()
-        self.mask_aplha = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
-        self.mask_aplha.setFixedWidth(50)
-        self.mask_aplha.setStatusTip('Mask alpha.')
-        self.mask_aplha.setToolTip('Mask alpha')
-        self.mask_aplha.setMaximum(10)
-        self.mask_aplha.setMinimum(0)
-        self.mask_aplha.setPageStep(1)
-        self.mask_aplha.valueChanged.connect(self.change_mask_aplha)
-        self.toolBar.addWidget(self.mask_aplha)
-
-        # vertex size
-        self.toolBar.addSeparator()
-        self.vertex_size = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
-        self.vertex_size.setFixedWidth(50)
-        self.vertex_size.setStatusTip('Vertex size.')
-        self.vertex_size.setToolTip('Vertex size')
-        self.vertex_size.setMaximum(5)
-        self.vertex_size.setPageStep(1)
-        self.vertex_size.valueChanged.connect(self.change_vertex_size)
-        self.toolBar.addWidget(self.vertex_size)
-
         # image saturation  调整图像饱和度
         self.toolBar.addSeparator()
         self.image_saturation = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
@@ -732,42 +703,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.image_saturation.valueChanged.connect(self.change_saturation)
         self.toolBar.addWidget(self.image_saturation)
 
-        # show prompt
-        from ISAT.widgets.switch_button import SwitchBtn
-        self.toolBar.addSeparator()
-        self.show_prompt = SwitchBtn(self)
-        self.show_prompt.setFixedSize(50, 20)
-        self.show_prompt.setStatusTip('Show prompt.')
-        self.show_prompt.setToolTip('Show prompt')
-        self.show_prompt.checkedChanged.connect(self.change_prompt_visiable)
-        self.toolBar.addWidget(self.show_prompt)
-
-        # show edge
-        self.toolBar.addSeparator()
-        self.show_edge = SwitchBtn(self)
-        self.show_edge.setFixedSize(50, 20)
-        self.show_edge.setStatusTip('Show edge.')
-        self.show_edge.setToolTip('Show edge')
-        self.show_edge.checkedChanged.connect(self.change_edge_state)
-        self.toolBar.addWidget(self.show_edge)
-
-        # use polydp
-        self.toolBar.addSeparator()
-        self.use_polydp = SwitchBtn(self)
-        self.use_polydp.setFixedSize(50, 20)
-        self.use_polydp.setStatusTip('approx polygon.')
-        self.use_polydp.setToolTip('approx polygon')
-        self.use_polydp.checkedChanged.connect(self.change_approx_polygon_state)
-        self.toolBar.addWidget(self.use_polydp)
-
-        # create mode invisible polygon
-        self.toolBar.addSeparator()
-        self.invisible_polygon_switch = SwitchBtn(self)
-        self.invisible_polygon_switch.setFixedSize(50, 20)
-        self.invisible_polygon_switch.setStatusTip('create mode invisible polygon.')
-        self.invisible_polygon_switch.setToolTip('create mode invisible polygon')
-        self.invisible_polygon_switch.checkedChanged.connect(self.change_create_mode_invisible_polygon_state)
-        self.toolBar.addWidget(self.invisible_polygon_switch)
+        # 右侧工具栏，添加弹性空间
+        spacer = QtWidgets.QWidget()
+        spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.toolBar_2.insertWidget(self.actionLanguage, spacer)
 
         self.trans = QtCore.QTranslator()
 
@@ -785,33 +724,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         model_names = sorted(
             [pth for pth in os.listdir(CHECKPOINT_PATH) if pth.endswith('.pth') or pth.endswith('.pt')])
         self.pths_actions = {}
-        for model_name in model_names:
-            action = QtWidgets.QAction(self)
-            action.setObjectName("actionZoom_in")
-            action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
-            action.setText("{}".format(model_name))
-            action.setCheckable(True)
-
-            self.pths_actions[model_name] = action
-            self.menuSAM_model.addAction(action)
+        # for model_name in model_names:
+        #     action = QtWidgets.QAction(self)
+        #     action.setObjectName("actionZoom_in")
+        #     action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
+        #     action.setText("{}".format(model_name))
+        #     action.setCheckable(True)
+        #
+        #     self.pths_actions[model_name] = action
+        #     self.menuSAM_model.addAction(action)
 
     def translate(self, language='zh'):
         if language == 'zh':
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/zh_CN'))
         else:
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/en'))
-        self.actionChinese.setChecked(language=='zh')
-        self.actionEnglish.setChecked(language=='en')
+        language_icon = QtGui.QIcon()
+        icon_path = ":/icon/icons/中文_chinese.svg" if language == 'en' else ":/icon/icons/英文_english.svg"
+        language_icon.addPixmap(QtGui.QPixmap(icon_path), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLanguage.setIcon(language_icon)
+        language_tool_tip = '中文' if language == 'en' else 'English'
+        self.actionLanguage.setToolTip(language_tool_tip)
+        language_status_tip = '切换中文界面' if language == 'en' else 'Switch to English'
+        self.actionLanguage.setStatusTip(language_status_tip)
+
         _app = QtWidgets.QApplication.instance()
         _app.installTranslator(self.trans)
         self.retranslateUi(self)
         self.info_dock_widget.retranslateUi(self.info_dock_widget)
         self.annos_dock_widget.retranslateUi(self.annos_dock_widget)
         self.files_dock_widget.retranslateUi(self.files_dock_widget)
-        self.category_choice_widget.retranslateUi(self.category_choice_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
         self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
-        self.setting_dialog.retranslateUi(self.setting_dialog)
+        self.category_setting_dialog.retranslateUi(self.category_setting_dialog)
         self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
@@ -819,35 +764,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.video2frames_dialog.retranslateUi(self.video2frames_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
         self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
+        self.setting_dialog.retranslateUi(self.setting_dialog)
 
         # 手动添加翻译 ------
         _translate = QtCore.QCoreApplication.translate
-        self.mask_aplha.setStatusTip(_translate("MainWindow", "Mask alpha."))
-        self.mask_aplha.setToolTip(_translate("MainWindow", "Mask alpha"))
-        self.vertex_size.setStatusTip(_translate("MainWindow", "Vertex size."))
-        self.vertex_size.setToolTip(_translate("MainWindow", "Vertex size"))
         self.image_saturation.setStatusTip(_translate("MainWindow", "Image saturation."))
         self.image_saturation.setToolTip(_translate("MainWindow", "Image saturation"))
-        self.show_prompt.setStatusTip(_translate("MainWindow", "Show prompt."))
-        self.show_prompt.setToolTip(_translate("MainWindow", "Show prompt"))
-        self.show_edge.setStatusTip(_translate("MainWindow", "Show edge."))
-        self.show_edge.setToolTip(_translate("MainWindow", "Show edge"))
-        self.use_polydp.setStatusTip(_translate("MainWindow", "approx polygon."))
-        self.use_polydp.setToolTip(_translate("MainWindow", "approx polygon"))
 
         self.categories_dock_widget.pushButton_group_mode.setStatusTip(_translate("MainWindow", "Group id auto add 1 when add a new polygon."))
         self.modeState.setStatusTip(_translate('MainWindow', 'View mode.'))
 
         # -----------------
 
-    def translate_to_chinese(self):
-        self.translate('zh')
-        self.cfg['software']['language'] = 'zh'
-        self.save_software_cfg()
-
-    def translate_to_english(self):
-        self.translate('en')
-        self.cfg['software']['language'] = 'en'
+    def change_language(self):
+        change_to_language = 'en' if self.cfg['software']['language'] == 'zh' else 'zh'
+        self.translate(change_to_language)
+        self.cfg['software']['language'] = change_to_language
         self.save_software_cfg()
 
     def reload_cfg(self):
@@ -862,9 +794,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['language'] = language
         self.translate(language)
 
-        self.auto_save_anns = software_cfg.get('auto_save', False)
-        self.cfg['software']['auto_save'] = self.auto_save_anns
-        self.actionAuto_save.setChecked(self.auto_save_anns)
+        auto_save = software_cfg.get('auto_save', False)
+        self.cfg['software']['auto_save'] = auto_save
+        self.setting_dialog.checkBox_auto_save.setChecked(auto_save)
 
         contour_mode = software_cfg.get('contour_mode', 'max_only')
         self.cfg['software']['contour_mode'] = contour_mode
@@ -872,31 +804,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         mask_alpha = software_cfg.get('mask_alpha', 0.5)
         self.cfg['software']['mask_alpha'] = mask_alpha
-        self.mask_aplha.setValue(int(mask_alpha*10))
+        self.setting_dialog.horizontalSlider_mask_alpha.setValue(mask_alpha * 10)
 
         vertex_size = software_cfg.get('vertex_size', 1)
         self.cfg['software']['vertex_size'] = int(vertex_size)
-        self.vertex_size.setValue(vertex_size)
+        self.setting_dialog.horizontalSlider_vertex_size.setValue(vertex_size)
 
         show_prompt = software_cfg.get('show_prompt', False)
         self.cfg['software']['show_prompt'] = bool(show_prompt)
-        self.show_prompt.setChecked(show_prompt)
+        self.setting_dialog.checkBox_show_prompt.setChecked(show_prompt)
 
         show_edge = software_cfg.get('show_edge', True)
         self.cfg['software']['show_edge'] = bool(show_edge)
-        self.show_edge.setChecked(show_edge)
+        self.setting_dialog.checkBox_show_edge.setChecked(show_edge)
 
         use_polydp = software_cfg.get('use_polydp', True)
         self.cfg['software']['use_polydp'] = bool(use_polydp)
-        self.use_polydp.setChecked(use_polydp)
+        self.setting_dialog.checkBox_approx_polygon.setChecked(use_polydp)
 
         invisible_polygon = software_cfg.get('create_mode_invisible_polygon', True)
         self.cfg['software']['create_mode_invisible_polygon'] = bool(invisible_polygon)
-        self.invisible_polygon_switch.setChecked(invisible_polygon)
+        self.setting_dialog.checkBox_polygon_invisible.setChecked(invisible_polygon)
 
         use_bfloat16 = software_cfg.get('use_bfloat16', False)
         self.cfg['software']['use_bfloat16'] = bool(use_bfloat16)
-        self.model_manager_dialog.update_gui()
+        self.setting_dialog.checkBox_use_bfloat16.setChecked(use_bfloat16)
+        self.model_manager_dialog.update_ui()
 
         # 类别
         self.cfg.update(load_config(self.config_file))
@@ -921,7 +854,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_saved_state(self, is_saved:bool):
         if not is_saved:
-            if self.auto_save_anns:
+            if self.cfg['software']['auto_save']:
                 self.save()
                 is_saved = True
         self.saved = is_saved
@@ -1161,9 +1094,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def cancel_draw(self):
         self.scene.cancel_draw()
 
-    def setting(self):
-        self.setting_dialog.load_cfg()
-        self.setting_dialog.show()
+    def category_setting(self):
+        self.category_setting_dialog.load_cfg()
+        self.category_setting_dialog.show()
 
     def add_new_object(self, category, group, segmentation, area, layer, bbox):
         if self.current_label is None:
@@ -1273,10 +1206,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def model_manage(self):
         self.model_manager_dialog.show()
 
-    def change_bfloat16_state(self, use: bool):
-        self.cfg['software']['use_bfloat16'] = use
+    def change_bfloat16_state(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg['software']['use_bfloat16'] = checked
         self.init_segment_anything()
-        self.model_manager_dialog.update_gui()
+        self.model_manager_dialog.update_ui()
         self.save_software_cfg()
 
     def change_contour_mode(self, contour_mode='max_only'):
@@ -1292,42 +1226,54 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.scene.change_contour_mode_to_save_max_only()
             self.statusbar.showMessage('The contour mode [{}] not support.'.format(contour_mode), 3000)
 
-        self.actionContour_max_only.setChecked(contour_mode == 'max_only')
-        self.actionContour_external.setChecked(contour_mode == 'external')
-        self.actionContour_all.setChecked(contour_mode == 'all')
+        if contour_mode == 'external':
+            index = 0
+        elif contour_mode == 'max_only':
+            index = 1
+        elif contour_mode == 'all':
+            index = 2
+        else:
+            index = 0
+        self.setting_dialog.comboBox_contour_mode.setCurrentIndex(index)
         self.cfg['software']['contour_mode'] = contour_mode
         self.save_software_cfg()
 
-    def change_mask_aplha(self):
-        value = self.mask_aplha.value() / 10
+    def change_mask_aplha(self, value):
+        value = value / 10
         self.scene.mask_alpha = value
         self.scene.update_mask()
         self.cfg['software']['mask_alpha'] = value
         self.save_software_cfg()
+        self.setting_dialog.label_mask_alpha.setText('{}'.format(value))
 
-    def change_vertex_size(self):
-        value = self.vertex_size.value()
+    def change_vertex_size(self, value):
         self.cfg['software']['vertex_size'] = value
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
+        self.setting_dialog.label_vertex_size.setText('{}'.format(value))
 
-    def change_edge_state(self):
-        visible = self.show_edge.checked
-        self.cfg['software']['show_edge'] = visible
+    def change_auto_save_state(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg['software']['auto_save'] = checked
+        self.save_software_cfg()
+
+    def change_edge_state(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg['software']['show_edge'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_approx_polygon_state(self):  # 是否使用多边形拟合，来减少多边形顶点
-        checked = self.use_polydp.checked
+    def change_approx_polygon_state(self, check_state):  # 是否使用多边形拟合，来减少多边形顶点
+        checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['use_polydp'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_create_mode_invisible_polygon_state(self):
-        checked = self.invisible_polygon_switch.checked
+    def change_create_mode_invisible_polygon_state(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['create_mode_invisible_polygon'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
@@ -1347,13 +1293,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print('Image data not loaded in AnnotationScene')
 
-    def change_prompt_visiable(self):
-        visible = self.show_prompt.checked
-        self.cfg['software']['show_prompt'] = visible
+    def change_prompt_visiable(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg['software']['show_prompt'] = checked
         self.save_software_cfg()
         for item in self.scene.items():
             if isinstance(item, PromptPoint):
-                item.setVisible(visible)
+                item.setVisible(checked)
         # if self.current_index is not None:
         #     self.show_image(self.current_index)
 
@@ -1394,6 +1340,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def about(self):
         self.about_dialog.show()
+
+    def setting(self):
+        # self.setting_dialog.update_ui()
+        self.setting_dialog.show()
 
     def screen_shot(self, type='scene'):
         # image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
@@ -1476,7 +1426,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)
         self.actionSave.triggered.connect(self.save)
-        self.actionAuto_save.toggled.connect(self.toggle_auto_save)
         self.actionTo_top.triggered.connect(self.scene.move_polygon_to_top)
         self.actionTo_bottom.triggered.connect(self.scene.move_polygon_to_bottom)
         self.actionCopy.triggered.connect(self.scene.copy_item)
@@ -1485,8 +1434,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionIntersect.triggered.connect(self.scene.polygons_intersection)
         self.actionExclude.triggered.connect(self.scene.polygons_symmetric_difference)
 
-        self.actionPrev_group.triggered.connect(self.annos_dock_widget.go_to_next_group)
-        self.actionNext_group.triggered.connect(self.annos_dock_widget.go_to_prev_group)
+        self.actionPrev_group.triggered.connect(self.annos_dock_widget.go_to_prev_group)
+        self.actionNext_group.triggered.connect(self.annos_dock_widget.go_to_next_group)
         self.actionZoom_in.triggered.connect(self.view.zoom_in)
         self.actionZoom_out.triggered.connect(self.view.zoom_out)
         self.actionFit_window.triggered.connect(self.view.zoomfit)
@@ -1498,10 +1447,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionModel_manage.triggered.connect(self.model_manage)
         self.actionModel_manage.setStatusTip(CHECKPOINT_PATH)
 
-        self.actionContour_max_only.triggered.connect(functools.partial(self.change_contour_mode, 'max_only'))
-        self.actionContour_external.triggered.connect(functools.partial(self.change_contour_mode, 'external'))
-        self.actionContour_all.triggered.connect(functools.partial(self.change_contour_mode, 'all'))
-
         self.actionConverter.triggered.connect(self.converter)
         self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
@@ -1510,8 +1455,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)
 
-        self.actionChinese.triggered.connect(self.translate_to_chinese)
-        self.actionEnglish.triggered.connect(self.translate_to_english)
+        self.actionLanguage.triggered.connect(self.change_language)
 
         self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
 
@@ -1556,7 +1500,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def latest_version_tip(self, is_latest_version, latest_version):
         if not is_latest_version:
-            if self.actionChinese.isChecked():
+            if self.cfg['software']['language'] == 'zh':
                 title = ''
                 text = f'<html><head/><body><p align=\"center\">新版本<b>{latest_version}</b>已发布!</p><p align=\"center\">请在<a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a>上查看更新内容</p></body></html>'
             else:

@@ -113,131 +113,182 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.download_thread_dict = {}
-        self.init_gui()
-
-        self.tableWidget.setColumnWidth(0, 50)
-        self.tableWidget.setColumnWidth(1, 50)
-        self.tableWidget.setColumnWidth(2, 200)
+        self.init_ui()
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
-        self.checkBox_use_bfloat16.stateChanged.connect(self.use_bfloat16)
 
-    def init_gui(self):
-        for index, (name, info_dict) in enumerate(model_dict.items()):
+    def init_ui(self):
+        for i in range(self.gridLayout.count()):
+            self.gridLayout.itemAt(i).widget().deleteLater()
+
+        for index, (model_name, info_dict) in enumerate(model_dict.items()):
             url = info_dict.get('url', '')
             memory = info_dict.get('memory', '')
             bf16_memory = info_dict.get('bf16_memory', '')
             params = info_dict.get('params', '')
             image_segment = info_dict.get('image_segment', False)
             video_segment = info_dict.get('video_segment', False)
+            # radio
+            radio = QtWidgets.QRadioButton()
+            radio.setFixedWidth(30)
+            radio.toggled.connect(partial(self.mainwindow.init_segment_anything, model_name))
+            radio.setEnabled(False)
             # image seg
             image_segment_label = QtWidgets.QLabel()
             pixmap = QtGui.QPixmap(":/icon/icons/校验-小_check-small.svg") if image_segment else QtGui.QPixmap(":/icon/icons/关闭-小_close-small.svg")
             image_segment_label.setPixmap(pixmap)
             image_segment_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            image_segment_label.setFixedWidth(60)
+            image_segment_label.setStyleSheet('' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # video seg
             video_segment_label = QtWidgets.QLabel()
             pixmap = QtGui.QPixmap(":/icon/icons/校验-小_check-small.svg") if video_segment else QtGui.QPixmap(":/icon/icons/关闭-小_close-small.svg")
             video_segment_label.setPixmap(pixmap)
             video_segment_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            video_segment_label.setFixedWidth(60)
+            video_segment_label.setStyleSheet('' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # model name
             name_label = QtWidgets.QLabel()
             name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-            name_label.setText(name)
+            name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter)
+            name_label.setText(model_name)
+            name_label.setStyleSheet('' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # 显存占用
             memory_label = QtWidgets.QLabel()
             memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             memory_label.setText(bf16_memory)
+            memory_label.setFixedWidth(100)
+            memory_label.setStyleSheet('' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # 权重大小
             params_label = QtWidgets.QLabel()
             params_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             params_label.setText(params)
+            params_label.setFixedWidth(100)
+            params_label.setStyleSheet('' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # 下载/删除按钮
             ops_button = QtWidgets.QPushButton()
-            if os.path.exists(os.path.join(CHECKPOINT_PATH, name)):
+            ops_button.setFixedWidth(300)
+            ops_button.setFixedHeight(30)
+            ops_button.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
+
+            if self.mainwindow.use_segment_anything:
+                current_model_name = os.path.split(self.mainwindow.segany.checkpoint)[-1]
+                if current_model_name == model_name:
+                    radio.setChecked(True)
+
+            if os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'red')
                 ops_button.setStyleSheet('QWidget {color: %s}' % 'red')
                 ops_button.setText('delete')
-                ops_button.clicked.connect(self.delete)
+                ops_button.clicked.connect(partial(self.delete, model_name))
+                radio.setEnabled(True)
             else:
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'green')
                 ops_button.setStyleSheet('QWidget {color: %s}' % 'green')
                 ops_button.setText('download')
-                ops_button.clicked.connect(self.download)
+                ops_button.clicked.connect(partial(self.download, model_name))
 
-            self.tableWidget.insertRow(index)
-            self.tableWidget.setCellWidget(index, 0, image_segment_label)
-            self.tableWidget.setCellWidget(index, 1, video_segment_label)
-            self.tableWidget.setCellWidget(index, 2, name_label)
-            self.tableWidget.setCellWidget(index, 3, memory_label)
-            self.tableWidget.setCellWidget(index, 4, params_label)
-            self.tableWidget.setCellWidget(index, 5, ops_button)
+            self.gridLayout.addWidget(radio, index, 0, 1, 1)
+            self.gridLayout.addWidget(image_segment_label, index, 1, 1, 1)
+            self.gridLayout.addWidget(video_segment_label, index, 2, 1, 1)
+            self.gridLayout.addWidget(name_label, index, 3, 1, 1)
+            self.gridLayout.addWidget(memory_label, index, 4, 1, 1)
+            self.gridLayout.addWidget(params_label, index, 5, 1, 1)
+            self.gridLayout.addWidget(ops_button, index, 6, 1, 1)
 
-    def download(self):
+
+    def update_ui(self):
+        for index, (model_name, info_dict) in enumerate(model_dict.items()):
+            url = info_dict.get('url', '')
+            memory = info_dict.get('memory', '')
+            bf16_memory = info_dict.get('bf16_memory', '')
+            params = info_dict.get('params', '')
+            image_segment = info_dict.get('image_segment', False)
+            video_segment = info_dict.get('video_segment', False)
+
+            radio = self.gridLayout.itemAtPosition(index, 0).widget()
+            image_segment_label = self.gridLayout.itemAtPosition(index, 1).widget()
+            video_segment_label = self.gridLayout.itemAtPosition(index, 2).widget()
+            name_label = self.gridLayout.itemAtPosition(index, 3).widget()
+            memory_label = self.gridLayout.itemAtPosition(index, 4).widget()
+            params_label = self.gridLayout.itemAtPosition(index, 5).widget()
+            ops_button = self.gridLayout.itemAtPosition(index, 6).widget()
+
+            if self.mainwindow.use_segment_anything:
+                current_model_name = os.path.split(self.mainwindow.segany.checkpoint)[-1]
+                radio.setChecked(current_model_name == model_name)
+            else:
+                radio.setChecked(False)
+
+            memory_label.setText(bf16_memory if self.mainwindow.cfg['software']['use_bfloat16'] else memory)
+
+            if os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
+                # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'red')
+                ops_button.setStyleSheet('QWidget {color: %s}' % 'red')
+                ops_button.setText('delete')
+                ops_button.clicked.connect(partial(self.delete, model_name))
+                radio.setEnabled(True)
+            else:
+                # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'green')
+                ops_button.setStyleSheet('QWidget {color: %s}' % 'green')
+                ops_button.setText('download')
+                ops_button.clicked.connect(partial(self.download, model_name))
+                radio.setEnabled(False)
+
+    def download(self, model_name):
         button = self.sender()
         button.setText('downloading')
-        row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 2)
-        name = name_label.text()
-        info_dict = model_dict.get(name, None)
+        info_dict = model_dict.get(model_name, {})
         urls = info_dict.get('urls', None)
 
-        if name in self.download_thread_dict:
-            download_thread = self.download_thread_dict[name]
+        if model_name in self.download_thread_dict:
+            download_thread = self.download_thread_dict[model_name]
         else:
             download_thread = DownloadThread(self)
-            self.download_thread_dict[name] = download_thread
+            self.download_thread_dict[model_name] = download_thread
 
-        download_thread.setNameAndUrl(name, urls)
-        download_thread.tag.connect(partial(self.download_process, button))
+        download_thread.setNameAndUrl(model_name, urls)
+        download_thread.tag.connect(partial(self.download_process, button, model_name))
         download_thread.start()
 
         button.setEnabled(False)
-        button.clicked.connect(self.pause)
+        button.clicked.connect(partial(self.pause, model_name))
         button.setEnabled(True)
 
-    def download_process(self, button:QtWidgets.QPushButton, downloaded_size, total_size):
+    def download_process(self, button:QtWidgets.QPushButton, model_name, downloaded_size, total_size):
         if downloaded_size == -1 and total_size == -1:
             button.setText('continue')
             button.setEnabled(False)
-            button.clicked.connect(self.download)
+            button.clicked.connect(partial(self.download, model_name))
             button.setEnabled(True)
 
         elif downloaded_size == -2 and total_size == -2:
             button.setText('delete')
             button.setStyleSheet('QWidget {color: %s}' % 'red')
             button.setEnabled(False)
-            button.clicked.connect(self.delete)
+            button.clicked.connect(partial(self.delete, model_name))
             button.setEnabled(True)
-            self.mainwindow.update_menuSAM()
+            # self.mainwindow.update_menuSAM()
+            self.update_ui()
         else:
             button.setText('{:.2f}% - {}/{}M'.format(downloaded_size/total_size*100, downloaded_size//1000000, total_size//1000000))
 
-
-    def pause(self):
-        button = self.sender()
-        row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 2)
-        name = name_label.text()
-
-        download_thread:DownloadThread = self.download_thread_dict[name]
+    def pause(self, model_name):
+        download_thread:DownloadThread = self.download_thread_dict[model_name]
         download_thread.pause = True
 
-    def delete(self):
+    def delete(self, model_name):
         button = self.sender()
-        row = self.tableWidget.indexAt(button.pos()).row()
-        name_label = self.tableWidget.cellWidget(row, 2)
-        name = name_label.text()
         try:
-            os.remove(os.path.join(CHECKPOINT_PATH, name))
+            os.remove(os.path.join(CHECKPOINT_PATH, model_name))
             button.setText('download')
             button.setStyleSheet('QWidget {color: %s}' % 'green')
             button.setEnabled(False)
-            button.clicked.connect(self.download)
+            button.clicked.connect(partial(self.download, model_name))
             button.setEnabled(True)
         except Exception as e:
             print('Error when remove {}, {}'.format(
-                os.path.join(CHECKPOINT_PATH, name), e))
-        self.mainwindow.update_menuSAM()
+                os.path.join(CHECKPOINT_PATH, model_name), e))
+        self.update_ui()
 
     def clear_tmp(self):
         remove_list = []
@@ -260,22 +311,3 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             'clear tmp',
             'Remove tmp: [' + '],['.join(remove_list) + ']'
         )
-
-    def update_gui(self):
-        self.checkBox_use_bfloat16.setChecked(self.mainwindow.cfg['software']['use_bfloat16'])
-
-        for index, (name, info_dict) in enumerate(model_dict.items()):
-            memory = info_dict.get('memory', '')
-            bf16_memory = info_dict.get('bf16_memory', '')
-            # 显存占用
-            memory_label = QtWidgets.QLabel()
-            memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            if self.mainwindow.cfg['software']['use_bfloat16']:
-                memory_label.setText(bf16_memory)
-            else:
-                memory_label.setText(memory)
-            self.tableWidget.setCellWidget(index, 3, memory_label)
-
-    def use_bfloat16(self):
-        use = self.checkBox_use_bfloat16.isChecked()
-        self.mainwindow.change_bfloat16_state(use)

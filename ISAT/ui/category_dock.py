@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/lg/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/category_dock.ui'
+# Form implementation generated from reading ui file '/media/lg/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/category_dock.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -28,6 +28,9 @@ class Ui_Form(object):
         self.listWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
+        self.pushButton_category_setting = QtWidgets.QPushButton(Form)
+        self.pushButton_category_setting.setObjectName("pushButton_category_setting")
+        self.verticalLayout.addWidget(self.pushButton_category_setting)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(0, 0, -1, 0)
         self.horizontalLayout.setSpacing(6)
@@ -60,6 +63,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lineEdit_search_category.setPlaceholderText(_translate("Form", "Search categories."))
+        self.pushButton_category_setting.setText(_translate("Form", "Category setting"))
         self.pushButton_group_mode.setStatusTip(_translate("Form", "Group mode"))
         self.pushButton_group_mode.setWhatsThis(_translate("Form", "Group mode"))
         self.pushButton_group_mode.setText(_translate("Form", "Auto"))

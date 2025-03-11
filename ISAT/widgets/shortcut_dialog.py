@@ -39,7 +39,6 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             self.mainwindow.actionEdit,
             self.mainwindow.actionDelete,
             self.mainwindow.actionSave,
-            # self.mainwindow.actionAuto_save,
             self.mainwindow.actionCopy,
             self.mainwindow.actionTo_top,
             self.mainwindow.actionTo_bottom,
@@ -60,17 +59,12 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
 
             # self.mainwindow.actionModel_manage,
 
-            # self.mainwindow.actionContour_max_only,
-            # self.mainwindow.actionContour_external,
-            # self.mainwindow.actionContour_all,
-
             # self.mainwindow.actionConverter,
             # self.mainwindow.actionVideo_to_frames,
             # self.mainwindow.actionAuto_segment_with_bounding_box,
             # self.mainwindow.actionAnno_validator,
 
-            # self.mainwindow.actionChinese,
-            # self.mainwindow.actionEnglish,
+            self.mainwindow.actionLanguage,
             # self.mainwindow.actionShortcut,
             # self.mainwindow.actionAbout,
         ]
@@ -87,7 +81,8 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             label = QtWidgets.QLabel()
             label.setText(action.text())
             key_edit = QtWidgets.QKeySequenceEdit()
-            key_edit.setFixedSize(120, 30)
+            key_edit.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
+            key_edit.setFixedSize(150, 30)
             key_edit.setKeySequence(action.shortcut())
             key_edit.editingFinished.connect(functools.partial(self.shortcut_change_finish, action))
 
@@ -113,9 +108,11 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             print("New shortcut [{}] for {}".format(ks.toString(), action.text()))
 
             for action_str in self.mainwindow.cfg['shortcut']:
-                if eval('self.mainwindow.' + action_str) == action:
-                    self.mainwindow.cfg['shortcut'][action_str]['key'] = ks.toString()
-                    break
+                try:
+                    if eval('self.mainwindow.' + action_str) == action:
+                        self.mainwindow.cfg['shortcut'][action_str]['key'] = ks.toString()
+                        break
+                except Exception:pass
 
             self.sender().clearFocus()
 

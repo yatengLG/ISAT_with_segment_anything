@@ -790,7 +790,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(1)
                     prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 1)
-                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
 
@@ -816,7 +816,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.click_points.append([sceneX, sceneY])
                     self.click_points_mode.append(0)
                     prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 0)
-                    prompt_point.setVisible(self.mainwindow.show_prompt.checked)
+                    prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
 

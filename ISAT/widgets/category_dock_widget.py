@@ -11,6 +11,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         super(CategoriesDockWidget, self).__init__()
         self.setupUi(self)
         self.mainwindow = mainwindow
+        self.pushButton_category_setting.clicked.connect(self.mainwindow.category_setting)
         self.listWidget.itemClicked.connect(self.item_choice)
         self.lineEdit_search_category.textChanged.connect(self.update_widget)
         self.lineEdit_search_category.setClearButtonEnabled(True)

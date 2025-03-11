@@ -804,11 +804,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         mask_alpha = software_cfg.get('mask_alpha', 0.5)
         self.cfg['software']['mask_alpha'] = mask_alpha
-        self.setting_dialog.horizontalSlider_mask_alpha.setValue(mask_alpha * 10)
+        self.setting_dialog.horizontalSlider_mask_alpha.setValue(int(mask_alpha * 10))
 
         vertex_size = software_cfg.get('vertex_size', 1)
         self.cfg['software']['vertex_size'] = int(vertex_size)
-        self.setting_dialog.horizontalSlider_vertex_size.setValue(vertex_size)
+        self.setting_dialog.horizontalSlider_vertex_size.setValue(int(vertex_size))
 
         show_prompt = software_cfg.get('show_prompt', False)
         self.cfg['software']['show_prompt'] = bool(show_prompt)

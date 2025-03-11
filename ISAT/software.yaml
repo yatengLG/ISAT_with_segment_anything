@@ -160,5 +160,5 @@ software:
   show_edge: true
   show_prompt: true
   use_bfloat16: false
-  use_polydp: true
+  use_polydp: false
   vertex_size: 1

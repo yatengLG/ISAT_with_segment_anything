@@ -867,10 +867,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     distance = abs(repaint_end_index - repaint_start_index)
                     if len(repaint_polygon.vertexs) - distance < distance:
                         # 替换两端的点
-                        points = repaint_polygon.points[repaint_start_index+1: repaint_end_index] + replace_points[::-1]
+                        points = ([vertex.pos() for vertex in
+                                  repaint_polygon.vertexs[repaint_start_index + 1: repaint_end_index]]
+                                  + replace_points[::-1])
                     else:
                         # 替换中间的点
-                        points = repaint_polygon.points[:repaint_start_index] + replace_points + repaint_polygon.points[repaint_end_index+1:]
+                        points = ([vertex.pos() for vertex in repaint_polygon.vertexs[:repaint_start_index]] +
+                                  replace_points +
+                                  [vertex.pos() for vertex in repaint_polygon.vertexs[repaint_end_index + 1:]])
                     repaint_polygon.delete()
                     for point in points:
                         repaint_polygon.addPoint(point)

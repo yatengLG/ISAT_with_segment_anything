@@ -4,7 +4,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ISAT.ui.category_dock import Ui_Form
 from fuzzywuzzy import process
-
+import functools
 
 class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, mainwindow):
@@ -13,6 +13,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow = mainwindow
         self.pushButton_category_setting.clicked.connect(self.mainwindow.category_setting)
         self.listWidget.itemClicked.connect(self.item_choice)
+        self.listWidget.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.lineEdit_search_category.textChanged.connect(self.update_widget)
         self.lineEdit_search_category.setClearButtonEnabled(True)
 
@@ -73,7 +74,8 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
 
             label_radio = QtWidgets.QRadioButton('{}'.format(name))
             label_radio.setObjectName('label_radio')
-            label_radio.toggled.connect(self.radio_choice)
+            label_radio.toggled.connect(functools.partial(self.radio_choice, index))
+            label_radio.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
             btngroup.addButton(label_radio)
             if name == '__background__':
                 label_radio.setChecked(True)
@@ -85,17 +87,16 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.listWidget.addItem(item)
             self.listWidget.setItemWidget(item, widget)
 
-    def radio_choice(self):
+    def radio_choice(self, index):
         if isinstance(self.sender(), QtWidgets.QRadioButton):
             if self.sender().isChecked():
                 self.mainwindow.current_category = self.sender().text()
+                self.listWidget.setCurrentRow(index)
 
-    def item_choice(self, item_now):
-        for index in range(self.listWidget.count()):
-            item = self.listWidget.item(index)
-            widget = self.listWidget.itemWidget(item)
-            label_radio = widget.findChild(QtWidgets.QRadioButton, 'label_radio')
-            label_radio.setChecked(item==item_now)
+    def item_choice(self, item):
+        widget = self.listWidget.itemWidget(item)
+        label_radio = widget.findChild(QtWidgets.QRadioButton, 'label_radio')
+        label_radio.setChecked(True)
 
     def update_current_group(self, text):
         # Update the current_group variable when the text in the QLineEdit changes

@@ -96,13 +96,6 @@
 conda<span class="w"> </span>activate<span class="w"> </span>isat_env
 </pre></div>
 </div>
-<p><strong>For macOS users</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>isat_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
-conda<span class="w"> </span>install<span class="w"> </span>timm<span class="w"> </span>imgviz<span class="w"> </span>scikit-image<span class="w"> </span>opencv<span class="w"> </span>pillow<span class="w"> </span>pyyaml<span class="w"> </span>pycocotools<span class="w"> </span>shapely<span class="w"> </span>hydra-core<span class="w"> </span>tqdm<span class="w"> </span>fuzzywuzzy<span class="w"> </span>python-Levenshtein<span class="w"> </span>iopath
-conda<span class="w"> </span>install<span class="w"> </span>conda-forge::pyqt
-conda<span class="w"> </span>install<span class="w"> </span><span class="nv">pytorch</span><span class="o">==</span><span class="m">2</span>.5.1<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.20.1<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.5.1<span class="w"> </span>-c<span class="w"> </span>pytorch
-</pre></div>
-</div>
 </li>
 <li><p><strong>Install ISAT_with_segment_anything and its dependencies</strong></p>
 <p>To use GPU, please install <a class="reference external" href="https://pytorch.org/">Pytorch-GPU</a> on Windows OS first.</p>
@@ -114,6 +107,15 @@ Doing this, you can skip the <cite>git clone</cite> step</p>
 pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </pre></div>
 </div>
+<p><strong>For macOS users</strong>:</p>
+<p>It is important to follow the installation order to ensure SAM can be load on CPU</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yatengLG/ISAT_with_segment_anything.git
+<span class="nb">cd</span><span class="w"> </span>ISAT_with_segment_anything
+pip<span class="w"> </span>timm<span class="w"> </span>imgviz<span class="w"> </span>scikit-image<span class="w"> </span>opencv-python<span class="w"> </span>pillow<span class="w"> </span>pyyaml<span class="w"> </span>pycocotools<span class="w"> </span>shapely<span class="w"> </span>hydra-core<span class="w"> </span>tqdm<span class="w"> </span>fuzzywuzzy<span class="w"> </span>python-Levenshtein<span class="w"> </span>iopath
+conda<span class="w"> </span>install<span class="w"> </span>conda-forge::pyqt
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">pytorch</span><span class="o">==</span><span class="m">2</span>.5.1<span class="w"> </span><span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.20.1<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">2</span>.5.1<span class="w"> </span>-c<span class="w"> </span>pytorch
+</pre></div>
+</div>
 </li>
 <li><p><strong>Download Segment anything pretrained checkpoint</strong></p>
 <div class="line-block">
@@ -123,11 +125,6 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 <div class="line">Model checkpoints are stored under: <code class="docutils literal notranslate"><span class="pre">ISAT_with_segment_anything/ISAT/checkpoints</span></code></div>
 </div>
 </li>
-</ol>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<ol class="arabic" start="4">
 <li><p><strong>Run</strong></p>
 <p>Execute the main application:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>main.py

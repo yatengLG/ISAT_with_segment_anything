@@ -89,7 +89,7 @@ def build_sam_vit_t(checkpoint=None):
     mobile_sam.eval()
     if checkpoint is not None:
         with open(checkpoint, "rb") as f:
-            state_dict = torch.load(f, map_location=torch.device('cpu'))
+            state_dict = torch.load(f, map_location=torch.device('cpu'), weights_only=False)
         info = mobile_sam.load_state_dict(state_dict, strict=False)
         print(info)
     for n, p in mobile_sam.named_parameters():
@@ -157,7 +157,7 @@ def _build_sam(
     sam.eval()
     if checkpoint is not None:
         with open(checkpoint, "rb") as f:
-            state_dict = torch.load(f, map_location=torch.device('cpu'))
+            state_dict = torch.load(f, map_location=torch.device('cpu'), weights_only=False)
         info = sam.load_state_dict(state_dict, strict=False)
         print(info)
     for n, p in sam.named_parameters():

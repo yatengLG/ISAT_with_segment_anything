@@ -23,6 +23,15 @@ Option 1: From Source Code
       conda create -n isat_env python=3.10
       conda activate isat_env
 
+   **For macOS users**:
+   
+   .. code-block:: bash
+
+      conda create -n isat_env python=3.10
+      conda install timm imgviz scikit-image opencv pillow pyyaml pycocotools shapely hydra-core tqdm fuzzywuzzy python-Levenshtein iopath
+      conda install conda-forge::pyqt 
+      conda install pytorch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 -c pytorch
+
 
 2. **Install ISAT_with_segment_anything and its dependencies**
 

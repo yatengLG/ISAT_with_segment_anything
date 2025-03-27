@@ -53,6 +53,6 @@
   url={https://github.com/yatengLG/ISAT_with_segment_anything},
   note={Updated on 2025-02-07},
   year={2024},
-  version={1.29}
+  version={1.33}
 }
 ```

@@ -115,6 +115,12 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.download_thread_dict = {}
         self.init_ui()
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
+        
+        # Add close button
+        self.pushButton_close = QtWidgets.QPushButton(self)
+        self.pushButton_close.setText("Close")
+        self.pushButton_close.clicked.connect(self.close)
+        self.horizontalLayout.addWidget(self.pushButton_close)
 
     def init_ui(self):
         for i in range(self.gridLayout.count()):

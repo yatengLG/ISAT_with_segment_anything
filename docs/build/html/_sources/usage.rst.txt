@@ -40,6 +40,18 @@ Option 1: From Source Code
       pip install -r requirements.txt
 
 
+   **For macOS users**:
+
+   It is important to follow the installation order to ensure SAM can be load on CPU
+
+   .. code-block:: bash
+
+      git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
+      cd ISAT_with_segment_anything
+      pip timm imgviz scikit-image opencv-python pillow pyyaml pycocotools shapely hydra-core tqdm fuzzywuzzy python-Levenshtein iopath
+      conda install conda-forge::pyqt 
+      conda install pytorch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 -c pytorch
+
 3. **Download Segment anything pretrained checkpoint**
 
 
@@ -47,9 +59,6 @@ Option 1: From Source Code
 
    | Model checkpoints are stored under: ``ISAT_with_segment_anything/ISAT/checkpoints`` 
 
-
-
-| 
 
 
 4. **Run**

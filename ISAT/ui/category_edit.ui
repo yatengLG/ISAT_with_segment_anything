@@ -240,7 +240,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_cancel">
         <property name="text">
-         <string>cancel</string>
+         <string>&amp;Cancel</string>
         </property>
         <property name="icon">
          <iconset>
@@ -251,7 +251,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_apply">
         <property name="text">
-         <string>apply</string>
+         <string>&amp;Apply</string>
         </property>
         <property name="icon">
          <iconset>

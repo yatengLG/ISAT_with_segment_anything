@@ -20,6 +20,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.horizontalSlider_vertex_size.valueChanged.connect(self.mainwindow.change_vertex_size)
         self.horizontalSlider_mask_alpha.valueChanged.connect(self.mainwindow.change_mask_aplha)
         self.comboBox_contour_mode.currentIndexChanged.connect(self.contour_mode_index_changed)
+        self.pushButton_close.clicked.connect(self.close)
 
     def contour_mode_index_changed(self, index):
         if index == 0:

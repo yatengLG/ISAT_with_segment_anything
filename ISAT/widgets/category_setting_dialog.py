@@ -117,9 +117,9 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.close()
 
     def init_connect(self):
-        self.add_button.clicked.connect(self.add_new_category)
-        self.apply_button.clicked.connect(self.apply)
-        self.cancel_button.clicked.connect(self.cancel)
+        self.pushButton_add.clicked.connect(self.add_new_category)
+        self.pushButton_apply.clicked.connect(self.apply)
+        self.pushButton_close.clicked.connect(self.cancel)
         self.color_button.clicked.connect(self.choice_color)
         self.pushButton_import.clicked.connect(self.import_cfg)
         self.pushButton_export.clicked.connect(self.export_cfg)

@@ -13,6 +13,7 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         self.pushButton_reset.clicked.connect(self.reset_shortcut)
+        self.pushButton_close.clicked.connect(self.close)
 
         self.columns = 3    # action列数
         self.column_columns = 3 # 每个action有多少列内容[icon, label, QKeySequenceEdit]

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="font">
@@ -175,6 +175,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_start">
+        <property name="text">
+         <string>&amp;Start</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButton_cancel">
         <property name="text">
          <string>Cancel</string>
@@ -182,9 +189,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_start">
+       <widget class="QPushButton" name="pushButton_close">
         <property name="text">
-         <string>Start</string>
+         <string>&amp;Close</string>
         </property>
        </widget>
       </item>

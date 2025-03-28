@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(960, 600)
+        Dialog.resize(1280, 720)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -51,6 +51,9 @@ class Ui_Dialog(object):
         self.pushButton_start = QtWidgets.QPushButton(self.widget)
         self.pushButton_start.setObjectName("pushButton_start")
         self.horizontalLayout_2.addWidget(self.pushButton_start)
+        self.pushButton_close = QtWidgets.QPushButton(self.widget)
+        self.pushButton_close.setObjectName("pushButton_close")
+        self.horizontalLayout_2.addWidget(self.pushButton_close)
         self.verticalLayout.addWidget(self.widget)
 
         self.retranslateUi(Dialog)
@@ -61,4 +64,5 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Annos validator"))
         self.lineEdit_json_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
         self.pushButton_json_root.setText(_translate("Dialog", "json root"))
-        self.pushButton_start.setText(_translate("Dialog", "Start"))
+        self.pushButton_start.setText(_translate("Dialog", "&Start"))
+        self.pushButton_close.setText(_translate("Dialog", "&Close"))

@@ -19,6 +19,7 @@ class Video2FramesDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_video_path.clicked.connect(self.open_file)
         self.pushButton_frames_root.clicked.connect(self.open_dir)
         self.pushButton_start.clicked.connect(self.start)
+        self.pushButton_close.clicked.connect(self.close)
 
     def open_file(self):
         file, _ = QtWidgets.QFileDialog.getOpenFileName(self, caption='Open video', filter="mp4 (*.mp4 *.MP4);;All Files (*)")

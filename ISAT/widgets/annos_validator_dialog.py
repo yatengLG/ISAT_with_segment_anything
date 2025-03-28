@@ -19,6 +19,7 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_json_root.clicked.connect(self.open_dir)
         self.pushButton_start.clicked.connect(self.validate)
         self.pushButton_start.setEnabled(False)
+        self.pushButton_close.clicked.connect(self.close)
 
     def open_dir(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='Open dir')

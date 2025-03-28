@@ -115,14 +115,13 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.download_thread_dict = {}
         self.init_ui()
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
-        
-        # Add close button
-        self.pushButton_close = QtWidgets.QPushButton(self)
-        self.pushButton_close.setText("Close")
         self.pushButton_close.clicked.connect(self.close)
-        self.horizontalLayout.addWidget(self.pushButton_close)
 
     def init_ui(self):
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+
         for i in range(self.gridLayout.count()):
             self.gridLayout.itemAt(i).widget().deleteLater()
 
@@ -154,18 +153,21 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             video_segment_label.setStyleSheet('background-color: rgb(240, 240, 240);' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # model name
             name_label = QtWidgets.QLabel()
+            name_label.setFont(font)
             name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
             name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignVCenter)
             name_label.setText(model_name)
             name_label.setStyleSheet('background-color: rgb(240, 240, 240);' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # 显存占用
             memory_label = QtWidgets.QLabel()
+            memory_label.setFont(font)
             memory_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             memory_label.setText(bf16_memory)
             memory_label.setFixedWidth(100)
             memory_label.setStyleSheet('background-color: rgb(240, 240, 240);' if index % 2 else 'background-color: rgb(255, 255, 255);')
             # 权重大小
             params_label = QtWidgets.QLabel()
+            params_label.setFont(font)
             params_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             params_label.setText(params)
             params_label.setFixedWidth(100)
@@ -175,6 +177,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             ops_button.setFixedWidth(300)
             ops_button.setFixedHeight(30)
             ops_button.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
+            ops_button.setFont(font)
 
             if self.mainwindow.use_segment_anything:
                 current_model_name = os.path.split(self.mainwindow.segany.checkpoint)[-1]

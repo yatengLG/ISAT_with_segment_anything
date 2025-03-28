@@ -40,13 +40,13 @@
     </message>
     <message>
         <location filename="category_edit.py" line="121"/>
-        <source>cancel</source>
-        <translation>取消</translation>
+        <source>&amp;Cancel</source>
+        <translation>&amp;取消</translation>
     </message>
     <message>
         <location filename="category_edit.py" line="122"/>
         <source>apply</source>
-        <translation>应用</translation>
+        <translation type="obsolete">应用</translation>
     </message>
     <message>
         <location filename="convert_dialog.py" line="106"/>
@@ -64,7 +64,7 @@
         <translation type="obsolete">实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="528"/>
+        <location filename="Converter_dialog.py" line="531"/>
         <source>ISAT jsons root</source>
         <translation>ISAT json文件目录</translation>
     </message>
@@ -241,15 +241,15 @@
     <message>
         <location filename="category_setting_dialog.py" line="120"/>
         <source>Apply</source>
-        <translation>应用</translation>
+        <translation type="obsolete">应用</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="534"/>
+        <location filename="Converter_dialog.py" line="538"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="357"/>
+        <location filename="setting_dialog.py" line="369"/>
         <source>Setting</source>
         <translation>设置</translation>
     </message>
@@ -264,7 +264,7 @@
         <translation>导出</translation>
     </message>
     <message>
-        <location filename="about_dialog.py" line="84"/>
+        <location filename="about_dialog.py" line="109"/>
         <source>about</source>
         <translation>关于</translation>
     </message>
@@ -274,7 +274,7 @@
         <translation type="obsolete">关于</translation>
     </message>
     <message>
-        <location filename="about_dialog.py" line="85"/>
+        <location filename="about_dialog.py" line="110"/>
         <source>ISAT with Segment anything</source>
         <translation>ISAT with Segment anything</translation>
     </message>
@@ -284,7 +284,7 @@
         <translation>添加新类别</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="73"/>
+        <location filename="shortcut_dialog.py" line="86"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
@@ -334,7 +334,7 @@
         <translation type="obsolete">多边形显示/隐藏</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="480"/>
+        <location filename="Converter_dialog.py" line="483"/>
         <source>COCO to ISAT</source>
         <translation>COCO 转 ISAT</translation>
     </message>
@@ -344,12 +344,12 @@
         <translation type="obsolete">Json路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="509"/>
+        <location filename="Converter_dialog.py" line="512"/>
         <source>ISAT jsons save root</source>
         <translation>ISAT json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="477"/>
+        <location filename="Converter_dialog.py" line="480"/>
         <source>COCO json path</source>
         <translation>COCO json文件路径</translation>
     </message>
@@ -364,7 +364,7 @@
         <translation type="obsolete">将COCO格式json转为ISAT格式json,图层默认为1。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="486"/>
+        <location filename="Converter_dialog.py" line="489"/>
         <source>ISAT to COCO</source>
         <translation>ISAT 转 COCO</translation>
     </message>
@@ -379,7 +379,7 @@
         <translation type="obsolete">jsons目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="483"/>
+        <location filename="Converter_dialog.py" line="486"/>
         <source>COCO json save path</source>
         <translation>COCO json文件保存路径</translation>
     </message>
@@ -459,214 +459,214 @@
         <translation type="obsolete">下载模型，然后在SAM菜单中选择模型并使用。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="475"/>
+        <location filename="Converter_dialog.py" line="478"/>
         <source>json path</source>
         <translation>json路径</translation>
     </message>
     <message>
-        <location filename="video_to_frames.py" line="76"/>
+        <location filename="video_to_frames.py" line="79"/>
         <source>save root</source>
         <translation>保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="485"/>
+        <location filename="Converter_dialog.py" line="488"/>
         <source>keep crowd</source>
         <translation>保留拥挤目标</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="529"/>
+        <location filename="Converter_dialog.py" line="532"/>
         <source>json root</source>
         <translation>json目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="484"/>
+        <location filename="Converter_dialog.py" line="487"/>
         <source>save path</source>
         <translation>保存路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="487"/>
+        <location filename="Converter_dialog.py" line="490"/>
         <source>COCO save annotations to a single JSON file.</source>
-        <translation></translation>
+        <translation>COCO数据集格式是一个json文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="488"/>
+        <location filename="Converter_dialog.py" line="491"/>
         <source>COCO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="491"/>
+        <location filename="Converter_dialog.py" line="494"/>
         <source>YOLO txts root</source>
         <translation>YOLO txt文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="492"/>
+        <location filename="Converter_dialog.py" line="495"/>
         <source>txt root</source>
         <translation>txt目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="493"/>
+        <location filename="Converter_dialog.py" line="496"/>
         <source>YOLO images root</source>
         <translation>YOLO图像文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="494"/>
+        <location filename="Converter_dialog.py" line="497"/>
         <source>image root</source>
         <translation>图像目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="495"/>
+        <location filename="Converter_dialog.py" line="498"/>
         <source>YOLO category file path.(Txt file with one line for one category.)  </source>
         <translation>YOLO 类别文件路径。(txt文件，每一行一个类别。)  </translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="496"/>
+        <location filename="Converter_dialog.py" line="499"/>
         <source>category file</source>
         <translation>类别文件</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="499"/>
+        <location filename="Converter_dialog.py" line="502"/>
         <source>*</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="500"/>
+        <location filename="Converter_dialog.py" line="503"/>
         <source>YOLO to ISAT</source>
         <translation>YOLO 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="502"/>
+        <location filename="Converter_dialog.py" line="505"/>
         <source>YOLO txts save root</source>
         <translation>YOLO txt保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="505"/>
+        <location filename="Converter_dialog.py" line="508"/>
         <source>ISAT to YOLO</source>
         <translation>ISAT 转 YOLO</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="506"/>
+        <location filename="Converter_dialog.py" line="509"/>
         <source>YOLO save annotations to multiple TXT files.</source>
-        <translation></translation>
+        <translation>YOLO数据集格式是多个txt文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="507"/>
+        <location filename="Converter_dialog.py" line="510"/>
         <source>YOLO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="510"/>
+        <location filename="Converter_dialog.py" line="513"/>
         <source>LABELME jsons root</source>
         <translation>LABELME json文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="512"/>
+        <location filename="Converter_dialog.py" line="515"/>
         <source>LABELME to ISAT</source>
         <translation>LABELME 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="515"/>
+        <location filename="Converter_dialog.py" line="518"/>
         <source>LABELME jsons save root</source>
         <translation>LABELME json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="517"/>
+        <location filename="Converter_dialog.py" line="520"/>
         <source>ISAT to LABELME</source>
         <translation>ISAT 转 LABELME</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="518"/>
+        <location filename="Converter_dialog.py" line="521"/>
         <source>LABELME save annotations to multiple JSON files. (When convert LABELME to ISAT for instance segmentation, labelme group id must&gt;0.)</source>
-        <translation></translation>
+        <translation>LABELME数据集格式是多个json文件。（将LABELME转换为ISAT时，实例分割的group id 必须大于0）</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="519"/>
+        <location filename="Converter_dialog.py" line="522"/>
         <source>LABELME</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="521"/>
+        <location filename="Converter_dialog.py" line="524"/>
         <source>VOC pngs save root</source>
         <translation>VOC png文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="524"/>
+        <location filename="Converter_dialog.py" line="527"/>
         <source>is instance</source>
         <translation>实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="525"/>
+        <location filename="Converter_dialog.py" line="528"/>
         <source>VOC save annotations to multiple PNG files.</source>
-        <translation></translation>
+        <translation>VOC数据集的图像分割格式是多个png文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="527"/>
+        <location filename="Converter_dialog.py" line="530"/>
         <source>VOC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="530"/>
+        <location filename="Converter_dialog.py" line="533"/>
         <source>VOC xmls save root</source>
         <translation>VOC xml文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="532"/>
+        <location filename="Converter_dialog.py" line="535"/>
         <source>VOC save annotations to multiple XML files for object detection.</source>
-        <translation></translation>
+        <translation>VOC数据集的目标检测格式是多个xml文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="533"/>
+        <location filename="Converter_dialog.py" line="536"/>
         <source>VOC for object detection</source>
         <translation>VOC-目标检测</translation>
     </message>
     <message>
         <location filename="Converter_dialog.py" line="535"/>
         <source>Convert</source>
-        <translation>转换</translation>
+        <translation type="obsolete">转换</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="474"/>
+        <location filename="Converter_dialog.py" line="477"/>
         <source>Converter</source>
         <translation>转换器</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="526"/>
+        <location filename="Converter_dialog.py" line="529"/>
         <source>**The num of classification and the group must in [0, 255]**</source>
         <translation>** 类别数量与组id必须在[0, 255]范围内 **</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="95"/>
+        <location filename="auto_segment.py" line="98"/>
         <source>Auto segment</source>
         <translation>自动分割</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="96"/>
+        <location filename="auto_segment.py" line="99"/>
         <source>Image dir</source>
         <translation>图片文件夹</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="98"/>
+        <location filename="auto_segment.py" line="101"/>
         <source>VOC xmls dir (for object detection)</source>
         <translation>xml文件夹（voc目标检测格式）</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="99"/>
+        <location filename="auto_segment.py" line="102"/>
         <source>xml root</source>
         <translation>xml文件夹</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="100"/>
+        <location filename="auto_segment.py" line="103"/>
         <source>ISAT jsons save dir</source>
         <translation>ISAT格式json文件夹</translation>
     </message>
     <message>
-        <location filename="auto_segment.py" line="102"/>
+        <location filename="auto_segment.py" line="105"/>
         <source>Auto segment with bounding box.(&apos;contour_mode&apos; and &apos;use_polydp&apos; also effect the results.)</source>
         <translation>使用[voc目标检测标注框]自动分割。(轮廓模式建议使用[只保存最大轮廓]或[只保存外轮廓])</translation>
     </message>
     <message>
         <location filename="auto_segment.py" line="104"/>
         <source>Start</source>
-        <translation>开始</translation>
+        <translation type="obsolete">开始</translation>
     </message>
     <message>
         <location filename="shortcut_dialog.py" line="707"/>
@@ -674,7 +674,7 @@
         <translation type="obsolete">重绘</translation>
     </message>
     <message>
-        <location filename="about_dialog.py" line="86"/>
+        <location filename="about_dialog.py" line="111"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Open source on &lt;a href=&quot;https://github.com/yatengLG/ISAT_with_segment_anything&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Main contributor &lt;a href=&quot;https://github.com/Alias-z&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;Alias-z&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;ISAT Copyright (C) 2022 &lt;a href=&quot;https://github.com/yatengLG&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;yatengLG&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
@@ -684,7 +684,7 @@
         <translation type="obsolete">通过bfloat16减少显存需求</translation>
     </message>
     <message>
-        <location filename="annos_validator.py" line="61"/>
+        <location filename="annos_validator.py" line="64"/>
         <source>Annos validator</source>
         <translation>标注检查</translation>
     </message>
@@ -724,24 +724,24 @@
         <translation type="obsolete">窗口截图</translation>
     </message>
     <message>
-        <location filename="video_to_frames.py" line="72"/>
+        <location filename="video_to_frames.py" line="75"/>
         <source>Video to frames</source>
         <translation>视频转帧图片</translation>
     </message>
     <message>
-        <location filename="video_to_frames.py" line="74"/>
+        <location filename="video_to_frames.py" line="77"/>
         <source>video path</source>
         <translation>视频路径</translation>
     </message>
     <message>
-        <location filename="video_to_frames.py" line="75"/>
+        <location filename="video_to_frames.py" line="78"/>
         <source>frames save root</source>
         <translation>帧保存目录</translation>
     </message>
     <message>
         <location filename="video_to_frames.py" line="77"/>
         <source>start</source>
-        <translation>开始</translation>
+        <translation type="obsolete">开始</translation>
     </message>
     <message>
         <location filename="model_manager_dialog.py" line="94"/>
@@ -756,7 +756,7 @@
     <message>
         <location filename="shortcut_dialog.py" line="74"/>
         <source>Reset</source>
-        <translation>重置</translation>
+        <translation type="obsolete">重置</translation>
     </message>
     <message>
         <location filename="category_setting_dialog.py" line="114"/>
@@ -769,149 +769,169 @@
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="146"/>
+        <location filename="model_manager_dialog.py" line="151"/>
         <source>Model manage</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="147"/>
+        <location filename="model_manager_dialog.py" line="152"/>
         <source>SAM Model</source>
         <translation>SAM模型</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="153"/>
+        <location filename="model_manager_dialog.py" line="158"/>
         <source>Clear tmp</source>
         <translation>清除临时文件</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="358"/>
+        <location filename="setting_dialog.py" line="370"/>
         <source>Approx polygon</source>
         <translation>近似多边形</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="359"/>
+        <location filename="setting_dialog.py" line="371"/>
         <source>Reduce the number of polygon vertics when genetating polygons from masks.</source>
         <translation>当掩码转换为多边形时，减少多边形的顶点数量。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="360"/>
+        <location filename="setting_dialog.py" line="372"/>
         <source>Mask alpha</source>
         <translation>掩码透明度</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="361"/>
+        <location filename="setting_dialog.py" line="373"/>
         <source>The transparency of the masks generated by SAM.</source>
         <translation>SAM生成的掩码透明度。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="362"/>
+        <location filename="setting_dialog.py" line="374"/>
         <source>Polygons invisible</source>
         <translation>隐藏多边形</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="363"/>
+        <location filename="setting_dialog.py" line="375"/>
         <source>Hide polygons when in create mode.</source>
         <translation>标注时隐藏其他多边形。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="364"/>
+        <location filename="setting_dialog.py" line="376"/>
         <source>Show prompt</source>
         <translation>显示sam提示点</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="365"/>
+        <location filename="setting_dialog.py" line="377"/>
         <source>Show prompt point when using SAM.</source>
         <translation>使用sam时，显示提示点。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="366"/>
+        <location filename="setting_dialog.py" line="378"/>
         <source>Contour mode</source>
         <translation>轮廓模式</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="367"/>
+        <location filename="setting_dialog.py" line="379"/>
         <source>External</source>
         <translation>只保存外轮廓</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="368"/>
+        <location filename="setting_dialog.py" line="380"/>
         <source>Max only</source>
         <translation>只保存最大轮廓</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="369"/>
+        <location filename="setting_dialog.py" line="381"/>
         <source>All</source>
         <translation>保存所有轮廓</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="370"/>
+        <location filename="setting_dialog.py" line="382"/>
         <source>Contour saving mode. External contours or only max contour or all contours.</source>
         <translation>轮廓保存模式。外轮廓、最大轮廓或者所有轮廓。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="371"/>
+        <location filename="setting_dialog.py" line="383"/>
         <source>Auto save</source>
         <translation>自动保存</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="372"/>
+        <location filename="setting_dialog.py" line="384"/>
         <source>Auto save.</source>
         <translation>标注和修改时，自动保存。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="373"/>
+        <location filename="setting_dialog.py" line="385"/>
         <source>Show edge</source>
         <translation>显示边</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="374"/>
+        <location filename="setting_dialog.py" line="386"/>
         <source>Show edges of polygons.</source>
         <translation>显示多边形的边。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="375"/>
+        <location filename="setting_dialog.py" line="387"/>
         <source>Use bfloat16</source>
         <translation>使用bfloat16</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="376"/>
+        <location filename="setting_dialog.py" line="388"/>
         <source>Run sam on bfloat16 for smaller GPU memory footprint.</source>
         <translation>使用bfloat16运行SAM，可以降低显存需求。</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="377"/>
+        <location filename="setting_dialog.py" line="389"/>
         <source>Vertex size</source>
         <translation>顶点大小</translation>
     </message>
     <message>
-        <location filename="setting_dialog.py" line="378"/>
+        <location filename="setting_dialog.py" line="390"/>
         <source>The size of polygon vertexs.</source>
         <translation>多边形的顶点大小。</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="148"/>
+        <location filename="model_manager_dialog.py" line="153"/>
         <source>Image</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="149"/>
+        <location filename="model_manager_dialog.py" line="154"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="150"/>
+        <location filename="model_manager_dialog.py" line="155"/>
         <source>Model name</source>
         <translation>模型名</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="151"/>
+        <location filename="model_manager_dialog.py" line="156"/>
         <source>GPU</source>
         <translation>显存</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="152"/>
+        <location filename="model_manager_dialog.py" line="157"/>
         <source>Disk</source>
         <translation>硬盘</translation>
+    </message>
+    <message>
+        <location filename="video_to_frames.py" line="81"/>
+        <source>&amp;Close</source>
+        <translation>&amp;关闭</translation>
+    </message>
+    <message>
+        <location filename="video_to_frames.py" line="80"/>
+        <source>&amp;Start</source>
+        <translation>&amp;开始</translation>
+    </message>
+    <message>
+        <location filename="category_setting_dialog.py" line="119"/>
+        <source>&amp;Apply</source>
+        <translation>&amp;应用</translation>
+    </message>
+    <message>
+        <location filename="shortcut_dialog.py" line="87"/>
+        <source>&amp;Reset</source>
+        <translation>&amp;重置</translation>
     </message>
 </context>
 <context>

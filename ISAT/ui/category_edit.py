@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/lg/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/category_choice.ui'
+# Form implementation generated from reading ui file '/media/lg/disk2/PycharmProjects/ISAT_with_segment_anything/ISAT/ui/category_edit.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -118,5 +118,5 @@ class Ui_Dialog(object):
         self.lineEdit_note.setPlaceholderText(_translate("Dialog", "add extra note here"))
         self.label_4.setText(_translate("Dialog", "layer:"))
         self.checkBox_iscrowded.setText(_translate("Dialog", "is crowded"))
-        self.pushButton_cancel.setText(_translate("Dialog", "cancel"))
-        self.pushButton_apply.setText(_translate("Dialog", "apply"))
+        self.pushButton_cancel.setText(_translate("Dialog", "&Cancel"))
+        self.pushButton_apply.setText(_translate("Dialog", "&Apply"))

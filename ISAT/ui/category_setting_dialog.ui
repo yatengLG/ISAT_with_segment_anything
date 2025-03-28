@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>960</width>
-    <height>600</height>
+    <height>601</height>
    </rect>
   </property>
   <property name="font">
@@ -104,7 +104,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="add_button">
+         <widget class="QPushButton" name="pushButton_add">
           <property name="minimumSize">
            <size>
             <width>150</width>
@@ -194,24 +194,24 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="cancel_button">
+         <widget class="QPushButton" name="pushButton_apply">
           <property name="text">
-           <string>Cancel</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="apply_button">
-          <property name="text">
-           <string>Apply</string>
+           <string>&amp;Apply</string>
           </property>
           <property name="icon">
            <iconset>
             <normaloff>:/icons/icons/校验_check-one.svg</normaloff>:/icons/icons/校验_check-one.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_close">
+          <property name="text">
+           <string>&amp;Close</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/icons/icons/关闭_close-one.svg</normaloff>:/icons/icons/关闭_close-one.svg</iconset>
           </property>
          </widget>
         </item>

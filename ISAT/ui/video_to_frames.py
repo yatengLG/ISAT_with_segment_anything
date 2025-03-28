@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(960, 600)
+        Dialog.resize(1280, 720)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -62,6 +62,9 @@ class Ui_Dialog(object):
         self.pushButton_start = QtWidgets.QPushButton(self.widget_3)
         self.pushButton_start.setObjectName("pushButton_start")
         self.horizontalLayout_3.addWidget(self.pushButton_start)
+        self.pushButton_close = QtWidgets.QPushButton(self.widget_3)
+        self.pushButton_close.setObjectName("pushButton_close")
+        self.horizontalLayout_3.addWidget(self.pushButton_close)
         self.verticalLayout.addWidget(self.widget_3)
 
         self.retranslateUi(Dialog)
@@ -74,4 +77,5 @@ class Ui_Dialog(object):
         self.pushButton_video_path.setText(_translate("Dialog", "video path"))
         self.lineEdit_frames_root.setPlaceholderText(_translate("Dialog", "frames save root"))
         self.pushButton_frames_root.setText(_translate("Dialog", "save root"))
-        self.pushButton_start.setText(_translate("Dialog", "start"))
+        self.pushButton_start.setText(_translate("Dialog", "&Start"))
+        self.pushButton_close.setText(_translate("Dialog", "&Close"))

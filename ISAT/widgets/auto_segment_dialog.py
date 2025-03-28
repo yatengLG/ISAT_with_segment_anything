@@ -166,6 +166,7 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.auto_segment_thread = AutoSegmentThread(self.mainwindow)
         self.auto_segment_thread.message.connect(self.print_message)
+        self.pushButton_close.clicked.connect(self.close)
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.init_connect()
@@ -195,7 +196,7 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
         self.save_dir = self.lineEdit_save_dir.text()
 
         if self.image_dir == '' or self.label_dir == '' or self.save_dir == '':
-            self.textBrowser.append('不能为空')
+            self.textBrowser.append('Error: image root / xml root / save root is None. ')
             return
 
         self.auto_segment_thread.image_dir = self.image_dir

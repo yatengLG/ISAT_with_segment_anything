@@ -428,6 +428,7 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
         self.converter = None
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.tabWidget.currentChanged.connect(self.tab_widget_current_changed)
+        self.pushButton_close.clicked.connect(self.close)
 
         self.init_connect()
 
@@ -447,7 +448,7 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def apply(self):
         self.tabWidget.setEnabled(False)
-        self.pushButton_convert.setEnabled(False)
+        self.pushButton_start.setEnabled(False)
         self.progressBar.reset()
         self.textBrowser.clear()
 
@@ -566,7 +567,7 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             pass
         self.tabWidget.setEnabled(True)
-        self.pushButton_convert.setEnabled(True)
+        self.pushButton_start.setEnabled(True)
 
     def cancel(self):
         try:
@@ -729,7 +730,7 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
             self.textBrowser.append(message)
 
     def init_connect(self):
-        self.pushButton_convert.clicked.connect(self.apply)
+        self.pushButton_start.clicked.connect(self.apply)
         self.pushButton_cancel.clicked.connect(self.cancel)
         # coco2isat
         self.pushButton_coco2isat_coco_json_path.clicked.connect(self.open_file)

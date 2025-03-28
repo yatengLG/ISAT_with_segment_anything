@@ -13,3 +13,4 @@ class AboutDialog(QtWidgets.QDialog, Ui_Dialog):
         from ISAT import __version__
         version_text = 'V{}'.format(__version__)
         self.label_version.setText(version_text)
+        self.pushButton_close.clicked.connect(self.close)

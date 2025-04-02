@@ -81,7 +81,7 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addWidget(self.widget_3)
         self.toolBox_coco.addItem(self.toolbox_item_coco2isat, "")
         self.toolbox_item_isat2coco = QtWidgets.QWidget()
-        self.toolbox_item_isat2coco.setGeometry(QtCore.QRect(0, 0, 1240, 173))
+        self.toolbox_item_isat2coco.setGeometry(QtCore.QRect(0, 0, 1240, 271))
         self.toolbox_item_isat2coco.setObjectName("toolbox_item_isat2coco")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.toolbox_item_isat2coco)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -218,7 +218,7 @@ class Ui_Dialog(object):
         self.verticalLayout_9.addWidget(self.widget_10)
         self.toolBox_yolo.addItem(self.toolbox_item_yolo2isat, "")
         self.toolbox_item_isat2yolo = QtWidgets.QWidget()
-        self.toolbox_item_isat2yolo.setGeometry(QtCore.QRect(0, 0, 1240, 173))
+        self.toolbox_item_isat2yolo.setGeometry(QtCore.QRect(0, 0, 1240, 271))
         self.toolbox_item_isat2yolo.setObjectName("toolbox_item_isat2yolo")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.toolbox_item_isat2yolo)
         self.verticalLayout_11.setObjectName("verticalLayout_11")
@@ -274,7 +274,7 @@ class Ui_Dialog(object):
         self.toolBox_labelme.setFrameShadow(QtWidgets.QFrame.Plain)
         self.toolBox_labelme.setObjectName("toolBox_labelme")
         self.toolbox_item_labelme2isat = QtWidgets.QWidget()
-        self.toolbox_item_labelme2isat.setGeometry(QtCore.QRect(0, 0, 1240, 173))
+        self.toolbox_item_labelme2isat.setGeometry(QtCore.QRect(0, 0, 1240, 271))
         self.toolbox_item_labelme2isat.setObjectName("toolbox_item_labelme2isat")
         self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.toolbox_item_labelme2isat)
         self.verticalLayout_16.setContentsMargins(9, 9, 9, 9)
@@ -384,10 +384,17 @@ class Ui_Dialog(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         spacerItem2 = QtWidgets.QSpacerItem(708, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
+        self.checkBox_use_setting_color = QtWidgets.QCheckBox(self.widget_15)
+        self.checkBox_use_setting_color.setObjectName("checkBox_use_setting_color")
+        self.horizontalLayout_4.addWidget(self.checkBox_use_setting_color)
         self.checkBox_is_instance = QtWidgets.QCheckBox(self.widget_15)
         self.checkBox_is_instance.setObjectName("checkBox_is_instance")
         self.horizontalLayout_4.addWidget(self.checkBox_is_instance)
         self.verticalLayout_14.addWidget(self.widget_15)
+        self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab_VOC)
+        self.textBrowser_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.verticalLayout_14.addWidget(self.textBrowser_2)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_14.addItem(spacerItem3)
         self.widget_22 = QtWidgets.QWidget(self.tab_VOC)
@@ -496,7 +503,7 @@ class Ui_Dialog(object):
         self.verticalLayout_13.addWidget(self.widget_2)
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(4)
+        self.tabWidget.setCurrentIndex(3)
         self.toolBox_coco.setCurrentIndex(1)
         self.toolBox_yolo.setCurrentIndex(1)
         self.toolBox_labelme.setCurrentIndex(0)
@@ -554,7 +561,30 @@ class Ui_Dialog(object):
         self.lineEdit_isat2voc_voc_png_root.setPlaceholderText(_translate("Dialog", "VOC pngs save root"))
         self.lineEdit_isat2voc_isat_json_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
         self.pushButton_isat2voc_isat_json_root.setText(_translate("Dialog", "json root"))
+        self.checkBox_use_setting_color.setText(_translate("Dialog", "use setting color(only semantic)"))
         self.checkBox_is_instance.setText(_translate("Dialog", "is instance"))
+        self.textBrowser_2.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"># use PIL instead of cv2.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">from PIL import Image</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">image_path = \'ISAT/example/semantic/000000000113.png\'</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">image = np.array(Image.open(image_path))</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">image.shape</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">&gt;&gt;&gt; [640, 416]</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">image</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">&gt;&gt;&gt; [[0, 0, 0, ...0, 0, 0],</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...0, 0, 0],</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...0, 0, 0],</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         ...</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...7, 7, 7],</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...7, 7, 7],</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...7, 7, 7]]</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_5.setText(_translate("Dialog", "VOC save annotations to multiple PNG files."))
         self.label_10.setText(_translate("Dialog", "**The num of classification and the group must in [0, 255]**"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_VOC), _translate("Dialog", "VOC"))

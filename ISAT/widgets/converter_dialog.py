@@ -13,6 +13,8 @@ from ISAT.scripts.voc_detection import VOCDetect
 import os
 import yaml
 import imgviz
+import numpy as np
+from PIL import ImageColor
 
 
 class Converter(QThread, ISAT):
@@ -342,6 +344,7 @@ class VOCConverter(Converter, VOC):
         super(VOCConverter, self).__init__()
         self.isat_json_root = None
         self.voc_png_root = None
+        self.use_setting_color = False
 
     def run(self):
         if self.isat_json_root is not None and self.voc_png_root is not None:
@@ -353,8 +356,21 @@ class VOCConverter(Converter, VOC):
         # load from isat
         self.load_from_isat()
 
-        # cmap
+        # default cmap
         cmap = imgviz.label_colormap()
+
+        # segment cmap when use setting color
+        isat_yaml = os.path.join(self.isat_json_root, 'isat.yaml')
+        if not self.is_instance and self.use_setting_color and os.path.exists(isat_yaml):
+            with open(isat_yaml, 'rb')as f:
+                cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
+
+            labels = cfg.get('label', [])
+            cmap = np.zeros((len(self.cates), 3), dtype=np.uint8)
+
+            for index, label_dict in enumerate(labels):
+                color = label_dict.get('color', '#000000')
+                cmap[index] = (ImageColor.getrgb(color))
 
         if not self.is_instance:
             category_index_dict = {}
@@ -549,6 +565,8 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.converter.isat_json_root = self.lineEdit_isat2voc_isat_json_root.text()
                 self.converter.voc_png_root = self.lineEdit_isat2voc_voc_png_root.text()
                 self.converter.is_instance = self.checkBox_is_instance.isChecked()
+                self.converter.use_setting_color = self.checkBox_use_setting_color.isChecked()
+                self.checkBox_use_setting_color.setEnabled(not self.checkBox_is_instance.isChecked())
                 self.converter.run()
             else:
                 QtWidgets.QMessageBox.warning(self, '', '')

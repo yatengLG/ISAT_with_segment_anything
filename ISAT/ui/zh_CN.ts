@@ -64,7 +64,7 @@
         <translation type="obsolete">实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="531"/>
+        <location filename="Converter_dialog.py" line="591"/>
         <source>ISAT jsons root</source>
         <translation>ISAT json文件目录</translation>
     </message>
@@ -244,7 +244,7 @@
         <translation type="obsolete">应用</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="538"/>
+        <location filename="Converter_dialog.py" line="598"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -284,7 +284,7 @@
         <translation>添加新类别</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="86"/>
+        <location filename="shortcut_dialog.py" line="87"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
@@ -334,7 +334,7 @@
         <translation type="obsolete">多边形显示/隐藏</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="483"/>
+        <location filename="Converter_dialog.py" line="520"/>
         <source>COCO to ISAT</source>
         <translation>COCO 转 ISAT</translation>
     </message>
@@ -344,12 +344,12 @@
         <translation type="obsolete">Json路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="512"/>
+        <location filename="Converter_dialog.py" line="549"/>
         <source>ISAT jsons save root</source>
         <translation>ISAT json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="480"/>
+        <location filename="Converter_dialog.py" line="517"/>
         <source>COCO json path</source>
         <translation>COCO json文件路径</translation>
     </message>
@@ -364,7 +364,7 @@
         <translation type="obsolete">将COCO格式json转为ISAT格式json,图层默认为1。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="489"/>
+        <location filename="Converter_dialog.py" line="526"/>
         <source>ISAT to COCO</source>
         <translation>ISAT 转 COCO</translation>
     </message>
@@ -379,7 +379,7 @@
         <translation type="obsolete">jsons目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="486"/>
+        <location filename="Converter_dialog.py" line="523"/>
         <source>COCO json save path</source>
         <translation>COCO json文件保存路径</translation>
     </message>
@@ -459,7 +459,7 @@
         <translation type="obsolete">下载模型，然后在SAM菜单中选择模型并使用。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="478"/>
+        <location filename="Converter_dialog.py" line="515"/>
         <source>json path</source>
         <translation>json路径</translation>
     </message>
@@ -469,152 +469,152 @@
         <translation>保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="488"/>
+        <location filename="Converter_dialog.py" line="525"/>
         <source>keep crowd</source>
         <translation>保留拥挤目标</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="532"/>
+        <location filename="Converter_dialog.py" line="592"/>
         <source>json root</source>
         <translation>json目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="487"/>
+        <location filename="Converter_dialog.py" line="524"/>
         <source>save path</source>
         <translation>保存路径</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="490"/>
+        <location filename="Converter_dialog.py" line="527"/>
         <source>COCO save annotations to a single JSON file.</source>
         <translation>COCO数据集格式是一个json文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="491"/>
+        <location filename="Converter_dialog.py" line="528"/>
         <source>COCO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="494"/>
+        <location filename="Converter_dialog.py" line="531"/>
         <source>YOLO txts root</source>
         <translation>YOLO txt文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="495"/>
+        <location filename="Converter_dialog.py" line="532"/>
         <source>txt root</source>
         <translation>txt目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="496"/>
+        <location filename="Converter_dialog.py" line="533"/>
         <source>YOLO images root</source>
         <translation>YOLO图像文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="497"/>
+        <location filename="Converter_dialog.py" line="534"/>
         <source>image root</source>
         <translation>图像目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="498"/>
+        <location filename="Converter_dialog.py" line="535"/>
         <source>YOLO category file path.(Txt file with one line for one category.)  </source>
         <translation>YOLO 类别文件路径。(txt文件，每一行一个类别。)  </translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="499"/>
+        <location filename="Converter_dialog.py" line="536"/>
         <source>category file</source>
         <translation>类别文件</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="502"/>
+        <location filename="Converter_dialog.py" line="539"/>
         <source>*</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="503"/>
+        <location filename="Converter_dialog.py" line="540"/>
         <source>YOLO to ISAT</source>
         <translation>YOLO 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="505"/>
+        <location filename="Converter_dialog.py" line="542"/>
         <source>YOLO txts save root</source>
         <translation>YOLO txt保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="508"/>
+        <location filename="Converter_dialog.py" line="545"/>
         <source>ISAT to YOLO</source>
         <translation>ISAT 转 YOLO</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="509"/>
+        <location filename="Converter_dialog.py" line="546"/>
         <source>YOLO save annotations to multiple TXT files.</source>
         <translation>YOLO数据集格式是多个txt文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="510"/>
+        <location filename="Converter_dialog.py" line="547"/>
         <source>YOLO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="513"/>
+        <location filename="Converter_dialog.py" line="550"/>
         <source>LABELME jsons root</source>
         <translation>LABELME json文件目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="515"/>
+        <location filename="Converter_dialog.py" line="552"/>
         <source>LABELME to ISAT</source>
         <translation>LABELME 转 ISAT</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="518"/>
+        <location filename="Converter_dialog.py" line="555"/>
         <source>LABELME jsons save root</source>
         <translation>LABELME json文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="520"/>
+        <location filename="Converter_dialog.py" line="557"/>
         <source>ISAT to LABELME</source>
         <translation>ISAT 转 LABELME</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="521"/>
+        <location filename="Converter_dialog.py" line="558"/>
         <source>LABELME save annotations to multiple JSON files. (When convert LABELME to ISAT for instance segmentation, labelme group id must&gt;0.)</source>
         <translation>LABELME数据集格式是多个json文件。（将LABELME转换为ISAT时，实例分割的group id 必须大于0）</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="522"/>
+        <location filename="Converter_dialog.py" line="559"/>
         <source>LABELME</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="524"/>
+        <location filename="Converter_dialog.py" line="561"/>
         <source>VOC pngs save root</source>
         <translation>VOC png文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="527"/>
+        <location filename="Converter_dialog.py" line="565"/>
         <source>is instance</source>
         <translation>实例分割</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="528"/>
+        <location filename="Converter_dialog.py" line="588"/>
         <source>VOC save annotations to multiple PNG files.</source>
         <translation>VOC数据集的图像分割格式是多个png文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="530"/>
+        <location filename="Converter_dialog.py" line="590"/>
         <source>VOC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="533"/>
+        <location filename="Converter_dialog.py" line="593"/>
         <source>VOC xmls save root</source>
         <translation>VOC xml文件保存目录</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="535"/>
+        <location filename="Converter_dialog.py" line="595"/>
         <source>VOC save annotations to multiple XML files for object detection.</source>
         <translation>VOC数据集的目标检测格式是多个xml文件。</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="536"/>
+        <location filename="Converter_dialog.py" line="596"/>
         <source>VOC for object detection</source>
         <translation>VOC-目标检测</translation>
     </message>
@@ -624,12 +624,12 @@
         <translation type="obsolete">转换</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="477"/>
+        <location filename="Converter_dialog.py" line="514"/>
         <source>Converter</source>
         <translation>转换器</translation>
     </message>
     <message>
-        <location filename="Converter_dialog.py" line="529"/>
+        <location filename="Converter_dialog.py" line="589"/>
         <source>**The num of classification and the group must in [0, 255]**</source>
         <translation>** 类别数量与组id必须在[0, 255]范围内 **</translation>
     </message>
@@ -769,17 +769,17 @@
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="151"/>
+        <location filename="model_manager_dialog.py" line="165"/>
         <source>Model manage</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="152"/>
+        <location filename="model_manager_dialog.py" line="166"/>
         <source>SAM Model</source>
         <translation>SAM模型</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="158"/>
+        <location filename="model_manager_dialog.py" line="172"/>
         <source>Clear tmp</source>
         <translation>清除临时文件</translation>
     </message>
@@ -889,27 +889,27 @@
         <translation>多边形的顶点大小。</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="153"/>
+        <location filename="model_manager_dialog.py" line="167"/>
         <source>Image</source>
         <translation>图像</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="154"/>
+        <location filename="model_manager_dialog.py" line="168"/>
         <source>Video</source>
         <translation>视频</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="155"/>
+        <location filename="model_manager_dialog.py" line="169"/>
         <source>Model name</source>
         <translation>模型名</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="156"/>
+        <location filename="model_manager_dialog.py" line="170"/>
         <source>GPU</source>
         <translation>显存</translation>
     </message>
     <message>
-        <location filename="model_manager_dialog.py" line="157"/>
+        <location filename="model_manager_dialog.py" line="171"/>
         <source>Disk</source>
         <translation>硬盘</translation>
     </message>
@@ -929,9 +929,40 @@
         <translation>&amp;应用</translation>
     </message>
     <message>
-        <location filename="shortcut_dialog.py" line="87"/>
+        <location filename="shortcut_dialog.py" line="88"/>
         <source>&amp;Reset</source>
         <translation>&amp;重置</translation>
+    </message>
+    <message>
+        <location filename="Converter_dialog.py" line="564"/>
+        <source>use setting color(only semantic)</source>
+        <translation>使用设置的类别颜色(只对语义分割有效)</translation>
+    </message>
+    <message>
+        <location filename="Converter_dialog.py" line="566"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Times New Roman&apos;; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;# use PIL instead of cv2.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;from PIL import Image&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;image_path = &apos;ISAT/example/semantic/000000000113.png&apos;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;image = np.array(Image.open(image_path))&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;image.shape&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;gt;&amp;gt;&amp;gt; [640, 416]&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;image&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;gt;&amp;gt;&amp;gt; [[0, 0, 0, ...0, 0, 0],&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         [0, 0, 0, ...0, 0, 0],&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         [0, 0, 0, ...0, 0, 0],&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         ...&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         [0, 0, 0, ...7, 7, 7],&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         [0, 0, 0, ...7, 7, 7],&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;         [0, 0, 0, ...7, 7, 7]]&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
     </message>
 </context>
 <context>

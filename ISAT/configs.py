@@ -24,8 +24,8 @@ def load_config(file):
     return cfg
 
 def save_config(cfg, file):
-    s = yaml.dump(cfg)
-    with open(file, 'w') as f:
+    s = yaml.dump(cfg, allow_unicode=True)
+    with open(file, 'w', encoding='utf-8') as f:
         f.write(s)
     return True
 

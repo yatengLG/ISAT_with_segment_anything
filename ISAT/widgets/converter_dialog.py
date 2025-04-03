@@ -361,16 +361,19 @@ class VOCConverter(Converter, VOC):
 
         # segment cmap when use setting color
         isat_yaml = os.path.join(self.isat_json_root, 'isat.yaml')
-        if not self.is_instance and self.use_setting_color and os.path.exists(isat_yaml):
-            with open(isat_yaml, 'rb')as f:
-                cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
+        if not self.is_instance and self.use_setting_color:
+            if os.path.exists(isat_yaml):
+                with open(isat_yaml, 'rb')as f:
+                    cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            labels = cfg.get('label', [])
-            cmap = np.zeros((len(self.cates), 3), dtype=np.uint8)
+                labels = cfg.get('label', [])
+                cmap = np.zeros((len(self.cates), 3), dtype=np.uint8)
 
-            for index, label_dict in enumerate(labels):
-                color = label_dict.get('color', '#000000')
-                cmap[index] = (ImageColor.getrgb(color))
+                for index, label_dict in enumerate(labels):
+                    color = label_dict.get('color', '#000000')
+                    cmap[index] = (ImageColor.getrgb(color))
+            else:
+                self.message.emit(-1, -1, ' ' * 18 + '| Warning: {}.'.format('Not found isat.yaml, will use default color.'))
 
         if not self.is_instance:
             category_index_dict = {}

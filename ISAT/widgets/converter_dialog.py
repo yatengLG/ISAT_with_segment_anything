@@ -145,7 +145,7 @@ class COCOConverter(Converter, COCO):
         # convert to coco
         self.message.emit(-1, -1, ' ' * 18 + '| Saving COCO json to {}.'.format(self.coco_json_path))
         try:
-            self.save_to_coco(self.coco_json_path)
+            self.save_to_coco(self.coco_json_path, self.cates)
         except Exception as e:
             self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
         self.message.emit(-1, -1, ' ' * 18 + '| Finished.')

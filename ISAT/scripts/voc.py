@@ -22,7 +22,7 @@ class VOC(ISAT):
         # cmap
         cmap = imgviz.label_colormap()
         category_index_dict = {}
-        with open(os.path.join(png_root, 'classification.txt'), 'w') as f:
+        with open(os.path.join(png_root, 'classification.txt'), 'w', encoding='utf-8') as f:
             for index, cate in enumerate(self.cates):
                 category_index_dict[cate] = index
                 f.write('{}\n'.format(cate))

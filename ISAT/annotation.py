@@ -101,6 +101,6 @@ class Annotation:
             object['iscrowd'] = obj.iscrowd
             object['note'] = obj.note
             dataset['objects'].append(object)
-        with open(self.label_path, 'w') as f:
-            dump(dataset, f, indent=4)
+        with open(self.label_path, 'w', encoding='utf-8') as f:
+            dump(dataset, f, indent=4, ensure_ascii=False)
         return True

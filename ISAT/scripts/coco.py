@@ -121,7 +121,7 @@ class COCO(ISAT):
             self.annos[self.remove_file_suffix(file_name)] = anno
         return True
 
-    def save_to_coco(self, annotation_file):
+    def save_to_coco(self, annotation_file, cates: tuple=()):
 
         coco_anno = {}
         # info
@@ -145,9 +145,10 @@ class COCO(ISAT):
         coco_anno['annotations'] = []
         coco_anno['categories'] = []
 
-        categories_dict = {}
+        categories_dict = {cat: index for index, cat in enumerate(cates)}
         uncontained_dict = {}
         # categories_dict from isat.yaml, https://github.com/yatengLG/ISAT_with_segment_anything/issues/36
+
 
         pbar = tqdm.tqdm(self.annos.items())
         for file_index, (name_without_suffix, anno) in enumerate(pbar):
@@ -240,9 +241,9 @@ class COCO(ISAT):
         categories_dict = sorted(categories_dict.items(), key=lambda x: x[1])
         coco_anno['categories'] = [{'name': name, 'id': id, 'supercategory': None} for name, id in categories_dict]
 
-        with open(annotation_file, 'w') as f:
+        with open(annotation_file, 'w', encoding='utf-8') as f:
             try:
-                dump(coco_anno, f)
+                dump(coco_anno, f, indent=4, ensure_ascii=False)
                 print('Save COCO json finished.')
             except Exception as e:
                 print('Save COCO json error: {}'.format(e))

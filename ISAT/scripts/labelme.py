@@ -81,15 +81,15 @@ class LABELME(ISAT):
 
             labelme_anno['shapes'].append(shape)
 
-        with open(json_path, 'w') as f:
-            dump(labelme_anno, f, indent=4)
+        with open(json_path, 'w', encoding='utf-8') as f:
+            dump(labelme_anno, f, indent=4, ensure_ascii=False)
         return True
 
     def _load_one_labelme_json(self, json_path):
         anno = self.ANNO()
         anno.info = self.ANNO.INFO()
 
-        with open(json_path, 'r') as f:
+        with open(json_path, 'r', encoding='utf-8') as f:
             dataset = load(f)
             anno.info.description = 'ISAT'
             anno.info.folder = os.path.split(json_path)[0]

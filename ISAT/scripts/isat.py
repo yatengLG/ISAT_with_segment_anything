@@ -59,7 +59,7 @@ class ISAT:
 
         if os.path.exists(os.path.join(json_root, 'isat.yaml')):
             cates = []
-            with open(os.path.join(json_root, 'isat.yaml'), 'rb')as f:
+            with open(os.path.join(json_root, 'isat.yaml'), 'r', encoding='utf-8')as f:
                 cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
             for label in cfg.get('label', []):
                 cates.append(label.get('name'))
@@ -91,8 +91,8 @@ class ISAT:
                 'name': cat if isinstance(cat, str) else str(cat),
                 'color': "#{:02x}{:02x}{:02x}".format(r, g, b)
             })
-        s = yaml.dump({'label': categories})
-        with open(os.path.join(json_root, 'isat.yaml'), 'w') as f:
+        s = yaml.dump({'label': categories}, allow_unicode=True)
+        with open(os.path.join(json_root, 'isat.yaml'), 'w', encoding='utf-8') as f:
             f.write(s)
 
         return True
@@ -102,7 +102,7 @@ class ISAT:
 
     def _load_one_isat_json(self, json_path) -> ANNO:
         anno = self.ANNO()
-        with open(json_path, 'r') as f:
+        with open(json_path, 'r', encoding='utf-8') as f:
             dataset = load(f)
             info = dataset.get('info', {})
             description = info.get('description', '')
@@ -175,6 +175,6 @@ class ISAT:
             object['note'] = obj.note
             dataset['objects'].append(object)
 
-        with open(save_path, 'w') as f:
-            dump(dataset, f, indent=4)
+        with open(save_path, 'w', encoding='utf-8') as f:
+            dump(dataset, f, indent=4, ensure_ascii=False)
         return True

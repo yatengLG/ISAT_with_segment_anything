@@ -55,7 +55,7 @@ class YOLO(ISAT):
         os.makedirs(txt_root, exist_ok=True)
         cates_index_dict = {cat:index for index, cat in enumerate(self.cates)}
 
-        with open(os.path.join(txt_root, 'classification.txt'), 'w') as f:
+        with open(os.path.join(txt_root, 'classification.txt'), 'w', encoding='utf-8') as f:
             for cat in self.cates:
                 f.write('{}\n'.format(cat))
 
@@ -211,7 +211,7 @@ class YOLO(ISAT):
         return anno
 
     def _save_one_yolo_txt(self, anno, save_path, cates_index_dict):
-        with open(save_path, 'w') as f:
+        with open(save_path, 'w', encoding='utf-8') as f:
             objects = anno.objs
 
             objects_groups = [obj.group for obj in objects]

@@ -82,7 +82,8 @@ class SegAnyThread(QThread):
     def sam_encoder(self, image):
         torch.cuda.empty_cache()
         with torch.inference_mode(), torch.autocast(self.mainwindow.segany.device,
-                                                    dtype=self.mainwindow.segany.model_dtype):
+                                                    dtype=self.mainwindow.segany.model_dtype,
+                                                    enabled=torch.cuda.is_available()):
 
             # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
             if 'sam2' in self.mainwindow.segany.model_type:
@@ -826,9 +827,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['create_mode_invisible_polygon'] = bool(invisible_polygon)
         self.setting_dialog.checkBox_polygon_invisible.setChecked(invisible_polygon)
 
-        use_bfloat16 = software_cfg.get('use_bfloat16', False)
+        use_bfloat16 = software_cfg.get('use_bfloat16', False) if torch.cuda.is_available() else False
         self.cfg['software']['use_bfloat16'] = bool(use_bfloat16)
         self.setting_dialog.checkBox_use_bfloat16.setChecked(use_bfloat16)
+        self.setting_dialog.checkBox_use_bfloat16.setEnabled(torch.cuda.is_available())
         self.model_manager_dialog.update_ui()
 
         # 类别

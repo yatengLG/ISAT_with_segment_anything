@@ -44,7 +44,7 @@ class Annotation:
 
     def load_annotation(self):
         if os.path.exists(self.label_path):
-            with open(self.label_path, 'r') as f:
+            with open(self.label_path, 'r', encoding='utf-8') as f:
                 dataset = load(f)
                 info = dataset.get('info', {})
                 description = info.get('description', '')

@@ -23,6 +23,22 @@ Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
 
+## Install
+- Create a conda environment(recommended, optional)
+```shell
+conda create -n isat_env python=3.8
+```
+
+- Install
+```shell
+pip install isat-sam
+```
+
+- Run
+```shell
+isat-sam
+```
+
 # Star History
 
 **Please support us with a star—it's like a virtual coffee!**

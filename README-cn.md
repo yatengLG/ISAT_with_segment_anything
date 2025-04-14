@@ -25,7 +25,11 @@
 ## 安装
 - 新建conda环境（推荐，可选）
 ```shell
+# 创建环境
 conda create -n isat_env python=3.8
+
+# 激活环境
+conda activate isat_env
 ```
 
 - 安装
@@ -43,6 +47,7 @@ isat-sam
 **请给该项目一个star，您的点赞就是对我最大的支持与鼓励**
 [![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
 
+
 # 核心贡献者
 
 <table border="0">
@@ -58,7 +63,6 @@ isat-sam
     <td><a href="https://github.com/yatengLG/ISAT_with_segment_anything/graphs/contributors">...</a>
 </tr>
 </table>
-
 
 
 # 引用

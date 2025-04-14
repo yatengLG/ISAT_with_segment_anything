@@ -20,13 +20,16 @@ Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
 # Features and Installation
 - &#x1F389;: **New**: **Now we support running annotation models on remote server + local GUI operations！** 
-
 Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
 
 ## Install
 - Create a conda environment(recommended, optional)
 ```shell
+# create environment
 conda create -n isat_env python=3.8
+
+# activate environment
+conda activate isat_env
 ```
 
 - Install

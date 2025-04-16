@@ -65,6 +65,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
             self.checkBox_iscrowded.setCheckState(False)
             self.lineEdit_note.clear()
             self.label_layer.setText('{}'.format(''))
+            self.label_area.setText('{}'.format(''))
         else:
             self.lineEdit_category.setText('{}'.format(self.polygon.category))
             self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -73,6 +74,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
             self.checkBox_iscrowded.setCheckState(iscrowd)
             self.lineEdit_note.setText('{}'.format(self.polygon.note))
             self.label_layer.setText('{}'.format(self.polygon.zValue()))
+            self.label_area.setText('{:.0f}{}'.format(self.polygon.area, '' if self.mainwindow.cfg['software']['real_time_area'] else '(no real time)'))
         if self.listWidget.count() == 0:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'Please set categorys before tagging.')
 

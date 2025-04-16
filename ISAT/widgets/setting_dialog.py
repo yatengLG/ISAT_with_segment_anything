@@ -12,6 +12,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         self.checkBox_auto_save.stateChanged.connect(self.mainwindow.change_auto_save_state)
+        self.checkBox_real_time_area.stateChanged.connect(self.mainwindow.change_real_time_area_state)
         self.checkBox_approx_polygon.stateChanged.connect(self.mainwindow.change_approx_polygon_state)
         self.checkBox_polygon_invisible.stateChanged.connect(self.mainwindow.change_create_mode_invisible_polygon_state)
         self.checkBox_show_edge.stateChanged.connect(self.mainwindow.change_edge_state)

@@ -799,6 +799,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['auto_save'] = auto_save
         self.setting_dialog.checkBox_auto_save.setChecked(auto_save)
 
+        real_time_area = software_cfg.get('real_time_area', False)
+        self.cfg['software']['real_time_area'] = real_time_area
+        self.setting_dialog.checkBox_real_time_area.setChecked(real_time_area)
+
         contour_mode = software_cfg.get('contour_mode', 'max_only')
         self.cfg['software']['contour_mode'] = contour_mode
         self.change_contour_mode(contour_mode)
@@ -1258,6 +1262,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def change_auto_save_state(self, check_state):
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['auto_save'] = checked
+        self.save_software_cfg()
+
+    def change_real_time_area_state(self, check_state):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg['software']['real_time_area'] = checked
         self.save_software_cfg()
 
     def change_edge_state(self, check_state):

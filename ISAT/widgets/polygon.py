@@ -113,8 +113,9 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.rxmin, self.rxmax, self.rymin, self.rymax = 0, 0, 0, 0 # 用于绘画完成后，记录多边形的各边界，此处与points对应
         self.color = QtGui.QColor('#ff0000')
         self.is_drawing = True
-
-        self.setPen(QtGui.QPen(self.color, self.line_width))
+        pen = QtGui.QPen(self.color, self.line_width)
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
         self.setBrush(QtGui.QBrush(self.color, QtCore.Qt.BrushStyle.FDiagPattern))
 
         self.setAcceptHoverEvents(True)
@@ -359,6 +360,9 @@ class Line(QtWidgets.QGraphicsPathItem):
         self.points = []
         self.vertexs = []
         self.color = QtGui.QColor('#ff0000')
+        pen = QtGui.QPen(self.color, self.line_width)
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
 
     def addPoint(self, point):
         self.points.append(point)

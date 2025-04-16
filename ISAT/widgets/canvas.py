@@ -932,13 +932,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.REPAINT:
             self.current_line.movePoint(len(self.current_line.points) - 1, pos)
 
+        pen = QtGui.QPen()
+        pen.setStyle(QtCore.Qt.PenStyle.DashLine)
         # 辅助线
         if self.guide_line_x is None and self.width() > 0 and self.height() > 0:
             self.guide_line_x = QtWidgets.QGraphicsLineItem(QtCore.QLineF(pos.x(), 0, pos.x(), self.height()))
+            self.guide_line_x.setPen(pen)
             self.guide_line_x.setZValue(1)
             self.addItem(self.guide_line_x)
         if self.guide_line_y is None and self.width() > 0 and self.height() > 0:
             self.guide_line_y = QtWidgets.QGraphicsLineItem(QtCore.QLineF(0, pos.y(), self.width(), pos.y()))
+            self.guide_line_y.setPen(pen)
             self.guide_line_y.setZValue(1)
             self.addItem(self.guide_line_y)
 

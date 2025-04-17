@@ -363,6 +363,7 @@ class Line(QtWidgets.QGraphicsPathItem):
         pen = QtGui.QPen(self.color, self.line_width)
         pen.setStyle(QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
+        self.setZValue(1e5)
 
     def addPoint(self, point):
         self.points.append(point)

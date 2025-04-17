@@ -189,9 +189,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.REPAINT
         self.repaint_start_vertex = None
         self.repaint_end_vertex = None
-
-        self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
-        self.addItem(self.current_line)
+        if self.current_line is None:
+            self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
+            self.addItem(self.current_line)
 
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))

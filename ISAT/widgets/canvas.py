@@ -882,6 +882,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                     self.current_line.delete()  # 清除所有路径
                     self.removeItem(self.current_line)
+                    self.current_line = None
 
                     self.repaint_start_vertex = None
                     self.repaint_end_vertex = None

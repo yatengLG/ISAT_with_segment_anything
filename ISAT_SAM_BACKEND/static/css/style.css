@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.content {
+    text-align: center;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+/* 响应式设计：小屏幕适配 */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .content {
+        margin-top: 120px;
+    }
+}

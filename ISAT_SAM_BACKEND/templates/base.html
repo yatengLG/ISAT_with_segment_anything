@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>居中显示示例</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <!-- 添加导航栏样式 -->
+    <style>
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #333;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: white;
+            font-size: 1.5em;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: white;
+            font-size: 18px;
+            line-height: 1.5;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            color: #4CAF50;
+        }
+
+        /* 调整内容区域 */
+        .content {
+            margin-top: 80px; /* 为导航栏留出空间 */
+        }
+
+        /* 表格*/
+        .grid-table {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr); /* 3列等宽 */
+          border: 1px solid #ddd;
+        }
+
+        .grid-table > div {
+          padding: 12px;
+          border-bottom: 1px solid #ddd;
+          border-right: 1px solid #ddd;
+        }
+
+        /* 表头样式 */
+        .grid-table > div:nth-child(-n+5) {
+          background: #f5f5f5;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        /* 最后一列去掉右边框 */
+        .grid-table > div:nth-child(5n) {
+          border-right: none;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/?lang={{ current_lang }}" class="nav-brand">ISAT SAM Encode</a>
+            <div class="nav-links">
+                <a href="/model?lang={{ current_lang }}" class="nav-link">{{ _['model manage'] }}</a>
+                <a href="/api?lang={{ current_lang }}" class="nav-link">{{ _['api description'] }}</a>
+                <!-- 语言切换按钮 -->
+                <a href="?lang={{ 'zh' if current_lang == 'en' else 'en' }}" class="nav-link"> {{ _['toggle_lang'] }}</a>
+            </div>
+        </div>
+    </nav>
+    {% block contents%}
+    {% endblock %}
+</body>
+</html>

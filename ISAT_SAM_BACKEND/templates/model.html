@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block contents %}
+    <div>
+        <h1>{{ _['model list']}}</h1>
+        <p>aaa</p>
+
+        <div class="grid-table">
+            <!-- 模型列表 -->
+            <div>{{ _['model name'] }}</div>
+            <div>{{ _['memory'] }}</div>
+            <div>{{ _['bf16_memory'] }}</div>
+            <div>{{ _['params'] }}</div>
+            <div>{{ _['downloaded'] }}</div>
+
+            {% for model_name, attr in model_dict.items() %}
+            <div>{{ model_name }}</div>
+            <div>{{ attr['memory'] }}</div>
+            <div>{{ attr['bf16_memory'] }}</div>
+            <div>{{ attr['params'] }}</div>
+            <div>
+            {% if attr['downloaded'] %}
+            <svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align: middle;">
+                <path d="M2 10 L8 16 L18 4" stroke="#4CAF50" fill="none" stroke-width="3"/>
+            </svg>
+            {% else %}
+            <svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align: middle;">
+                <path d="M2 2 L18 18 M18 2 L2 18" stroke="#FF4444" stroke-width="3"/>
+            </svg>
+            {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

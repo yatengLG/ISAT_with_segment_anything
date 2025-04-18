@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block contents %}
+    <div class="content">
+        <!-- 使用本地图标 -->
+        <img src="{{ url_for('static', path='/images/ISAT13_100.svg') }}" class="icon" alt="图标">
+
+        <!-- 或者使用 Font Awesome 图标 -->
+        <!-- <i class="fas fa-heart fa-4x" style="color: red;"></i> -->
+    </div>
+{% endblock %}

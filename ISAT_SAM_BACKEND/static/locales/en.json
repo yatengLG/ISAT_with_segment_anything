@@ -1,0 +1,17 @@
+{
+    "model manage": "Model Manage",
+    "contact": "Contact",
+    "api description": "API description",
+    "demo_text": "Localization Example",
+    "toggle_lang": "中文",
+
+    "describe": "ISAT SAM Encode Backend",
+    "current_checkpoint": "Current checkpoint: ",
+    "model list": "Model list",
+
+    "model name": "Model name",
+    "memory": "Memory",
+    "bf16_memory": "Memory(bf16)",
+    "params": "Params",
+    "downloaded": "Downloaded"
+}

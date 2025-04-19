@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>居中显示示例</title>
+    <title>{{ _['title']}}</title>
+    <link rel="icon" href="{{ url_for('static', path='/images/ISAT13_100.svg') }}" />
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+
     <!-- 添加导航栏样式 -->
     <style>
         /* 导航栏样式 */
@@ -52,6 +54,8 @@
         /* 调整内容区域 */
         .content {
             margin-top: 80px; /* 为导航栏留出空间 */
+            margin-bottom: 80px;
+            width: 1200px;
         }
 
         /* 表格*/
@@ -79,6 +83,22 @@
           border-right: none;
         }
 
+        /* 页脚 */
+        .site-footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333; /* 页脚背景色 */
+            color: white; /* 文字颜色 */
+            text-align: center; /* 内容居中 */
+        }
+
+        .footer-content {
+            width: 1200px; /* 内容最大宽度 */
+            margin: 0 auto; /* 居中显示 */
+        }
+
     </style>
 </head>
 <body>
@@ -93,7 +113,16 @@
             </div>
         </div>
     </nav>
-    {% block contents%}
-    {% endblock %}
+    <div class="content">
+        {% block contents%}
+        {% endblock %}
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p><a href="https://github.com/yatengLG/ISAT_with_segment_anything" target="_blank" style="color: white">Github</a></p>
+        </div>
+    </footer>
+
 </body>
 </html>

@@ -1,13 +1,16 @@
 {
+    "title": "ISAT SAM Encode",
     "model manage": "Model Manage",
     "contact": "Contact",
     "api description": "API description",
     "demo_text": "Localization Example",
     "toggle_lang": "中文",
 
-    "describe": "ISAT SAM Encode Backend",
-    "current_checkpoint": "Current checkpoint: ",
-    "model list": "Model list",
+    "home page title": "ISAT SAM Encode Backend",
+    "home page description": "Support ISAT to use remote server for SAM encoding",
+    "current checkpoint": "Current checkpoint: ",
+    "model page title": "Model list",
+    "model page description": "model page description",
 
     "model name": "Model name",
     "memory": "Memory",

@@ -1,13 +1,16 @@
 {
+    "title": "ISAT SAM Encode",
     "model manage": "模型管理",
     "contact": "联系",
     "api description": "接口说明",
     "demo_text": "多语言示例",
     "toggle_lang": "EN",
 
-    "describe": "ISAT SAM 编码后端",
-    "current_checkpoint": "当前模型: ",
-    "model list": "模型列表",
+    "home page title": "ISAT SAM Encode 后端",
+    "home page description": "支持ISAT使用远程服务器进行SAM encoding",
+    "current checkpoint": "当前模型: ",
+    "model page title": "模型列表",
+    "model page description": "model page description",
 
     "model name": "模型名",
     "memory": "显存",

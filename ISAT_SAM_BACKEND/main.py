@@ -22,8 +22,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 加载语言文件
 LOCALES = {
-    'en': json.loads(Path('static/locales/en.json').read_text()),
-    'zh': json.loads(Path('static/locales/zh.json').read_text())
+    'en': json.loads(Path('static/locales/en.json').read_text(encoding='utf-8')),
+    'zh': json.loads(Path('static/locales/zh.json').read_text(encoding='utf-8'))
 }
 
 def get_locale(request: Request):

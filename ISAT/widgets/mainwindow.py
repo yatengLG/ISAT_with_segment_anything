@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
+from http.client import responses
 
+import requests
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ISAT.ui.MainWindow import Ui_MainWindow
 from ISAT.widgets.category_setting_dialog import CategorySettingDialog
@@ -79,38 +81,57 @@ class SegAnyThread(QThread):
         self.index = None
 
     @torch.no_grad()
-    def sam_encoder(self, image):
-        torch.cuda.empty_cache()
-        with torch.inference_mode(), torch.autocast(self.mainwindow.segany.device,
-                                                    dtype=self.mainwindow.segany.model_dtype,
-                                                    enabled=torch.cuda.is_available()):
+    def sam_encoder(self, image: np.ndarray):
+        if self.mainwindow.use_remote_sam:
+            shape = ",".join(map(str, image.shape))
+            dtype = image.dtype.name
+            response = requests.post(
+                url="http://127.0.0.1:5000/encode",
+                files={'file': ('', image.tobytes(), "application/octet-stream")},
+                data={"dtype": dtype, "shape": shape}
+            )
 
-            # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
-            if 'sam2' in self.mainwindow.segany.model_type:
-                _orig_hw = tuple([image.shape[:2]])
-                input_image = self.mainwindow.segany.predictor_with_point_prompt._transforms(image)
-                input_image = input_image[None, ...].to(self.mainwindow.segany.predictor_with_point_prompt.device)
-                backbone_out = self.mainwindow.segany.predictor_with_point_prompt.model.forward_image(input_image)
-                _, vision_feats, _, _ = self.mainwindow.segany.predictor_with_point_prompt.model._prepare_backbone_features(backbone_out)
-                if self.mainwindow.segany.predictor_with_point_prompt.model.directly_add_no_mem_embed:
-                    vision_feats[-1] = vision_feats[-1] + self.mainwindow.segany.predictor_with_point_prompt.model.no_mem_embed
-                feats = [
-                    feat.permute(1, 2, 0).view(1, -1, *feat_size)
-                    for feat, feat_size in zip(vision_feats[::-1], self.mainwindow.segany.predictor_with_point_prompt._bb_feat_sizes[::-1])
-                ][::-1]
-                _features = {"image_embed": feats[-1], "high_res_feats": tuple(feats[:-1])}
-                return _features, _orig_hw, _orig_hw
-            else:
-                input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
-                input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
-                input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
-
-                original_size = image.shape[:2]
-                input_size = tuple(input_image_torch.shape[-2:])
-
-                input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
-                features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
+            if response.status_code == 200:
+                features = torch.tensor(response.json()['features'], dtype=torch.float32)
+                original_size = response.json()['original_size']
+                input_size = response.json()['input_size']
                 return features, original_size, input_size
+            else:
+                raise RuntimeError(response.status_code)
+
+
+        else:
+            torch.cuda.empty_cache()
+            with torch.inference_mode(), torch.autocast(self.mainwindow.segany.device,
+                                                        dtype=self.mainwindow.segany.model_dtype,
+                                                        enabled=torch.cuda.is_available()):
+
+                # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
+                if 'sam2' in self.mainwindow.segany.model_type:
+                    _orig_hw = tuple([image.shape[:2]])
+                    input_image = self.mainwindow.segany.predictor_with_point_prompt._transforms(image)
+                    input_image = input_image[None, ...].to(self.mainwindow.segany.predictor_with_point_prompt.device)
+                    backbone_out = self.mainwindow.segany.predictor_with_point_prompt.model.forward_image(input_image)
+                    _, vision_feats, _, _ = self.mainwindow.segany.predictor_with_point_prompt.model._prepare_backbone_features(backbone_out)
+                    if self.mainwindow.segany.predictor_with_point_prompt.model.directly_add_no_mem_embed:
+                        vision_feats[-1] = vision_feats[-1] + self.mainwindow.segany.predictor_with_point_prompt.model.no_mem_embed
+                    feats = [
+                        feat.permute(1, 2, 0).view(1, -1, *feat_size)
+                        for feat, feat_size in zip(vision_feats[::-1], self.mainwindow.segany.predictor_with_point_prompt._bb_feat_sizes[::-1])
+                    ][::-1]
+                    _features = {"image_embed": feats[-1], "high_res_feats": tuple(feats[:-1])}
+                    return _features, _orig_hw, _orig_hw
+                else:
+                    input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
+                    input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
+                    input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
+
+                    original_size = image.shape[:2]
+                    input_size = tuple(input_image_torch.shape[-2:])
+
+                    input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
+                    features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
+                    return features, original_size, input_size
 
     def run(self):
         if self.index is not None:
@@ -393,6 +414,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.use_segment_anything = False
         self.use_segment_anything_video = False
         self.gpu_resource_thread = None
+        self.use_remote_sam = False
 
         # 标注模式下，多边形不可见
         self.create_mode_invisible_polygon = True

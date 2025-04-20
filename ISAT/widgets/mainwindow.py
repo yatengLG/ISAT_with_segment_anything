@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-from http.client import responses
 
-import requests
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ISAT.ui.MainWindow import Ui_MainWindow
 from ISAT.widgets.category_setting_dialog import CategorySettingDialog
@@ -38,6 +36,7 @@ import torch
 import cv2  # 调整图像饱和度
 import datetime
 from skimage.draw.draw import polygon
+import requests
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):

@@ -86,7 +86,7 @@ class SegAnyThread(QThread):
             shape = ",".join(map(str, image.shape))
             dtype = image.dtype.name
             response = requests.post(
-                url="http://127.0.0.1:5000/encode",
+                url="http://127.0.0.1:8000/encode",
                 files={'file': ('', image.tobytes(), "application/octet-stream")},
                 data={"dtype": dtype, "shape": shape}
             )

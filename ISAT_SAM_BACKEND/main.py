@@ -10,8 +10,8 @@ import uvicorn
 import numpy as np
 import json
 from pathlib import Path
-from ISAT_SAM_BACKEND.segment_any.segment_any import SegAny
-from ISAT_SAM_BACKEND.segment_any.model_zoo import model_dict
+from segment_any.segment_any import SegAny
+from segment_any.model_zoo import model_dict
 import os.path
 import argparse
 
@@ -35,6 +35,8 @@ def get_locale(request: Request):
 
 # init sam
 def sam_init(model_name='mobile_sam.pt', use_bfloat16=True):
+    if not torch.cuda.is_available():
+        use_bfloat16 = False
     segany = SegAny(f'checkpoints/{model_name}', use_bfloat16=use_bfloat16)
     return segany
 

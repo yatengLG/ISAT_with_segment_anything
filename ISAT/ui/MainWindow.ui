@@ -193,6 +193,7 @@
     </property>
     <addaction name="actionModel_manage"/>
     <addaction name="separator"/>
+    <addaction name="actionRemote_SAM"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -342,6 +343,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionModel_manage"/>
+   <addaction name="actionRemote_SAM"/>
    <addaction name="actionShortcut"/>
    <addaction name="actionSetting"/>
    <addaction name="actionLanguage"/>
@@ -972,6 +974,15 @@
    </property>
    <property name="text">
     <string>Language</string>
+   </property>
+  </action>
+  <action name="actionRemote_SAM">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/云运行_link-cloud.svg</normaloff>:/icon/icons/云运行_link-cloud.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Remote SAM</string>
    </property>
   </action>
  </widget>

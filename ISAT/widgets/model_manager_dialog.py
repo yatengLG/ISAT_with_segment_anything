@@ -179,11 +179,6 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             ops_button.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
             ops_button.setFont(font)
 
-            if self.mainwindow.use_segment_anything:
-                current_model_name = os.path.split(self.mainwindow.segany.checkpoint)[-1]
-                if current_model_name == model_name:
-                    radio.setChecked(True)
-
             if os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'red')
                 ops_button.setStyleSheet('QWidget {color: %s}' % 'red')
@@ -222,11 +217,13 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             params_label = self.gridLayout.itemAtPosition(index, 5).widget()
             ops_button = self.gridLayout.itemAtPosition(index, 6).widget()
 
+            radio.blockSignals(True)
             if self.mainwindow.use_segment_anything:
                 current_model_name = os.path.split(self.mainwindow.segany.checkpoint)[-1]
                 radio.setChecked(current_model_name == model_name)
             else:
                 radio.setChecked(False)
+            radio.blockSignals(False)
 
             memory_label.setText(bf16_memory if self.mainwindow.cfg['software']['use_bfloat16'] else memory)
 

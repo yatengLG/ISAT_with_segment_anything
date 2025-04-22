@@ -17,6 +17,7 @@ from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
+from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, SHORTCUT_FILE
@@ -91,9 +92,27 @@ class SegAnyThread(QThread):
             )
 
             if response.status_code == 200:
-                features = torch.tensor(response.json()['features'], dtype=torch.float32)
-                original_size = response.json()['original_size']
-                input_size = response.json()['input_size']
+                features = response.json()['features']
+                original_size = tuple(response.json()['original_size'])
+                input_size = tuple(response.json()['input_size'])
+                dtype = self.mainwindow.segany.model_dtype
+                device = self.mainwindow.segany.device
+
+                if self.mainwindow.segany.model_source == 'sam_hq':
+                    features, interm_features = features
+                    features = torch.tensor(features, dtype=torch.float32, device=device)
+                    interm_features = [torch.tensor(interm_feature, dtype=dtype, device=device) for interm_feature in interm_features]
+                    features = (features, interm_features)
+
+                elif 'sam2' in self.mainwindow.segany.model_source:
+                    image_embed = features['image_embed']
+                    high_res_feats = features['high_res_feats']
+                    image_embed = torch.tensor(image_embed, dtype=torch.float32, device=device)
+                    high_res_feats = [torch.tensor(high_res_feat, dtype=dtype, device=device) for high_res_feat in high_res_feats]
+                    features['image_embed'] = image_embed
+                    features['high_res_feats'] = high_res_feats
+                else:
+                    features = torch.tensor(features, dtype=torch.float32, device=device)
                 return features, original_size, input_size
             else:
                 raise RuntimeError(response.status_code)
@@ -136,11 +155,12 @@ class SegAnyThread(QThread):
         if self.index is not None:
 
             # 需要缓存特征的图像索引，可以自行更改缓存策略
-            indexs = [self.index]
-            if self.index + 1 < len(self.mainwindow.files_list):
-                indexs += [self.index + 1]
-            if self.index - 1 > -1:
-                indexs += [self.index - 1]
+            indexs = []
+            for i in range(-1, 2):
+                cache_index = self.index + i
+                if cache_index < 0 or cache_index >= len(self.mainwindow.files_list):
+                    continue
+                indexs.append(cache_index)
 
             # 先删除不需要的旧特征
             features_ks = list(self.results_dict.keys())
@@ -157,7 +177,7 @@ class SegAnyThread(QThread):
                     self.tag.emit(index, 2, '')    # 进行
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
-                    self.results_dict[index] = {}
+
                     # image_data = cv2.imread(image_path)
                     image_data = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8),cv2.IMREAD_COLOR)
                     image_data = cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB)
@@ -165,9 +185,9 @@ class SegAnyThread(QThread):
                         features, original_size, input_size = self.sam_encoder(image_data)
                     except Exception as e:
                         self.tag.emit(index, 3, '{}'.format(e))  # error
-                        del self.results_dict[index]
                         continue
 
+                    self.results_dict[index] = {}
                     self.results_dict[index]['features'] = features
                     self.results_dict[index]['original_size'] = original_size
                     self.results_dict[index]['input_size'] = input_size
@@ -478,6 +498,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setEnabled(False)
 
     def init_sam_finish(self, sam_tag:bool, sam_video_tag:bool):
+        if self.use_remote_sam:
+            sam_video_tag = False
+
         print('sam_tag:', sam_tag, 'sam_video_tag: ', sam_video_tag)
         self.setEnabled(True)
         if sam_video_tag:
@@ -520,7 +543,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.labelGPUResource.setText('cpu')
             else:
                 self.labelGPUResource.setText('segment anything unused.')
-            tooltip = 'model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
+            if self.use_remote_sam:
+                tooltip = 'remote model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
+            else:
+                tooltip = 'local model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
             tooltip += '\ndtype: {}'.format(self.segany.model_dtype)
             tooltip += '\ntorch: {}'.format(torch.__version__)
             if self.segany.device == 'cuda':
@@ -567,6 +593,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format(color))
         elif index == self.current_index + 1:
             self.files_dock_widget.label_next_state.setStyleSheet("background-color: {};".format(color))
+        # # todo
+        # elif index == self.current_index + 2:
+        #     self.files_dock_widget.label_next2_state.setStyleSheet("background-color: {};".format(color))
+        # elif index == self.current_index + 3:
+        #     self.files_dock_widget.label_next3_state.setStyleSheet("background-color: {};".format(color))
         else:
             pass
 
@@ -655,6 +686,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
+        self.remote_sam_dialog = RemoteSamDialog(self, self)
+
         self.scene = AnnotationScene(mainwindow=self)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
@@ -710,8 +743,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.progressbar.setVisible(False)
         self.statusbar.addPermanentWidget(self.progressbar)
 
-        self.update_menuSAM()
-
         # image saturation  调整图像饱和度
         self.toolBar.addSeparator()
         self.image_saturation = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal, self)
@@ -739,23 +770,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.modeState.setVisible(is_message)
         self.progressbar.setVisible(not is_message)
 
-    def update_menuSAM(self):
-        #
-        self.menuSAM_model.clear()
-        self.menuSAM_model.addAction(self.actionModel_manage)
-        model_names = sorted(
-            [pth for pth in os.listdir(CHECKPOINT_PATH) if pth.endswith('.pth') or pth.endswith('.pt')])
-        self.pths_actions = {}
-        # for model_name in model_names:
-        #     action = QtWidgets.QAction(self)
-        #     action.setObjectName("actionZoom_in")
-        #     action.triggered.connect(functools.partial(self.init_segment_anything, model_name))
-        #     action.setText("{}".format(model_name))
-        #     action.setCheckable(True)
-        #
-        #     self.pths_actions[model_name] = action
-        #     self.menuSAM_model.addAction(action)
-
     def translate(self, language='zh'):
         if language == 'zh':
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/zh_CN'))
@@ -780,6 +794,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
         self.category_setting_dialog.retranslateUi(self.category_setting_dialog)
         self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
+        self.remote_sam_dialog.retranslateUi(self.remote_sam_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
@@ -990,6 +1005,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not -1 < index < len(self.files_list):
             return
         try:
+            self.current_index = index
             file_path = os.path.join(self.image_root, self.files_list[index])
             image_data = Image.open(file_path)
 
@@ -1059,7 +1075,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.annos_dock_widget.update_listwidget()
             self.info_dock_widget.update_widget()
             self.files_dock_widget.set_select(index)
-            self.current_index = index
             self.files_dock_widget.label_current.setText('{}'.format(self.current_index+1))
             self.load_finished = True
 
@@ -1232,6 +1247,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def model_manage(self):
         self.model_manager_dialog.show()
+
+    def remote_sam(self):
+        self.remote_sam_dialog.show()
 
     def change_bfloat16_state(self, check_state):
         checked = check_state == QtCore.Qt.CheckState.Checked
@@ -1478,6 +1496,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionModel_manage.triggered.connect(self.model_manage)
         self.actionModel_manage.setStatusTip(CHECKPOINT_PATH)
+
+        self.actionRemote_SAM.triggered.connect(self.remote_sam)
 
         self.actionConverter.triggered.connect(self.converter)
         self.actionVideo_to_frames.triggered.connect(self.video2frames)

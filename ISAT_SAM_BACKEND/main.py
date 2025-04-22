@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-import os.path
 
 import torch
-from fastapi import FastAPI, Request, UploadFile, File, Body, Form, HTTPException, Depends
+from fastapi import FastAPI, Request, File, Form, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from PIL import Image
-from io import BytesIO
+import uvicorn
 import numpy as np
 import json
 from pathlib import Path
 from ISAT_SAM_BACKEND.segment_any.segment_any import SegAny
 from ISAT_SAM_BACKEND.segment_any.model_zoo import model_dict
+import os.path
+import argparse
 
 
 app = FastAPI()
+segany:SegAny = None
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -33,11 +34,10 @@ def get_locale(request: Request):
 
 
 # init sam
-def sam_init(model_name='mobile_sam.pt', use_bfloat16=False):
+def sam_init(model_name='mobile_sam.pt', use_bfloat16=True):
     segany = SegAny(f'checkpoints/{model_name}', use_bfloat16=use_bfloat16)
     return segany
 
-segany = sam_init()
 
 @torch.no_grad()
 async def sam_encode(image: np.ndarray):
@@ -100,6 +100,7 @@ async def model(request: Request, _: dict = Depends(get_locale)):
 
 @app.get("/api", response_class=HTMLResponse)
 async def api(request: Request, _: dict = Depends(get_locale)):
+    # todo 补充页面
     return templates.TemplateResponse("api.html", {
         "request": request,
         "_": _,
@@ -114,17 +115,66 @@ async def encode(file: bytes=File(...), shape: str=Form(...), dtype: str=Form(..
         image_data = np.frombuffer(file, eval(f'np.{dtype}')).reshape(shape)
         # process
         features, original_size, input_size = await sam_encode(image_data)
-        features = features.detach().cpu().numpy()
+        if segany.model_source == 'sam_hq':
+            # sam_hq features is a tuple. include features: Tensor and interm_features: List[Tensor, ...]
+            features, interm_features = features
 
-        return {"features": features.tolist(), "original_size": original_size, "input_size": input_size}
+            features = features.detach().to(torch.float32).cpu().numpy().tolist()
+            interm_features = [interm_feature.detach().to(torch.float32).cpu().numpy().tolist() for interm_feature in interm_features]
+            features = (features, interm_features)
 
-    except HTTPException as e:
-        raise e
+        elif 'sam2' in segany.model_source:
+            # sam2 features is a dict. include image_embed: Tensor and high_res_feats: Tuple[Tensor, ...]
+            image_embed = features['image_embed']
+            high_res_feats = features['high_res_feats']
+
+            image_embed = image_embed.detach().to(torch.float32).cpu().numpy().tolist()
+            high_res_feats = [high_res_feat.detach().to(torch.float32).cpu().numpy().tolist() for high_res_feat in high_res_feats]
+            features['image_embed'] = image_embed
+            features['high_res_feats'] = high_res_feats
+        else:
+            features = features.detach().cpu().numpy().tolist()
+
+        return {
+            "features": features,
+            "original_size": original_size,
+            "input_size": input_size
+        }
+
     except Exception as e:
         raise e
 
+@app.get("/info")
+async def info():
+    return {
+        'checkpoint': segany.checkpoint if isinstance(segany, SegAny) else None,
+        'device': segany.device if isinstance(segany, SegAny) else None,
+        'dtype': f'{segany.model_dtype}' if isinstance(segany, SegAny) else None
+    }
+
+def main():
+    parser = argparse.ArgumentParser(description="ISAT Remote encoding server.")
+    parser.add_argument("--checkpoint", type=str, default="mobile_sam.pt", help="SAM checkpoint name.")
+    parser.add_argument("--host", type=str, default="127.0.0.1", help="ip.")
+    parser.add_argument("--port", type=int, default=8000, help="port.")
+    parser.add_argument("--workers", type=int, default=1, help="num of workers.")
+    args = parser.parse_args()
+
+    checkpoint = args.checkpoint
+    if not os.path.exists(f'checkpoints/{checkpoint}'):
+        raise FileExistsError(checkpoint)
+
+    # init sam
+    global segany
+    try:
+        segany = sam_init(args.checkpoint)
+    except Exception as e:
+        raise f"init sam failed: {e}"
+
+    # start server
+    uvicorn.run(app, host=args.host, port=args.port, workers=args.workers)
+
 
 if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=5000)
+    main()
 

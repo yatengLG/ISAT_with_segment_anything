@@ -9,7 +9,6 @@ import platform
 from PIL import Image
 from collections import OrderedDict
 import os
-from skimage.draw.draw import polygon
 from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
 
 osplatform = platform.system()

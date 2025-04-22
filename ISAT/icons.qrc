@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/云运行_link-cloud.svg</file>
     <file>../icons/英文_english.svg</file>
     <file>../icons/中文_chinese.svg</file>
     <file>../icons/小矩形_rectangle-small.svg</file>

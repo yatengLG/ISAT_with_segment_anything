@@ -86,7 +86,7 @@ class SegAnyThread(QThread):
             shape = ",".join(map(str, image.shape))
             dtype = image.dtype.name
             response = requests.post(
-                url="http://127.0.0.1:8000/encode",
+                url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/encode",
                 files={'file': ('', image.tobytes(), "application/octet-stream")},
                 data={"dtype": dtype, "shape": shape}
             )
@@ -543,10 +543,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.labelGPUResource.setText('cpu')
             else:
                 self.labelGPUResource.setText('segment anything unused.')
-            if self.use_remote_sam:
-                tooltip = 'remote model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
-            else:
-                tooltip = 'local model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
+            tooltip = 'model: {}'.format(os.path.split(self.segany.checkpoint)[-1])
             tooltip += '\ndtype: {}'.format(self.segany.model_dtype)
             tooltip += '\ntorch: {}'.format(torch.__version__)
             if self.segany.device == 'cuda':

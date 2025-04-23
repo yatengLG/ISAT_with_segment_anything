@@ -4,6 +4,7 @@
 import os.path
 import requests
 from ISAT.ui.remote_sam_dialog import Ui_Dialog
+from ISAT.configs import CHECKPOINT_PATH
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QValidator
 
@@ -17,11 +18,12 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.checkBox_use_remote.setEnabled(False)
-        self.widget_info.setVisible(False)
+        self.frame_info.setVisible(False)
         self.lineEdit_host.setValidator(IPv4Validator())
 
         self.pushButton_check.clicked.connect(self.check_connection)
         self.checkBox_use_remote.stateChanged.connect(self.use_remote_sam)
+        self.pushButton_close.clicked.connect(self.close)
 
     def check_connection(self):
         host = self.lineEdit_host.text()
@@ -37,7 +39,7 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
             try:
                 model_name = os.path.split(checkpoint)[-1]
 
-                self.widget_info.setVisible(True)
+                self.frame_info.setVisible(True)
                 self.label_name.setText(model_name)
                 self.label_device.setText(device)
                 self.label_dtype.setText(dtype)
@@ -45,26 +47,35 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.checkBox_use_remote.setEnabled(True)
 
             except Exception as e:
-                self.widget_info.setVisible(False)
+                self.frame_info.setVisible(False)
                 self.checkBox_use_remote.setEnabled(False)
 
         except requests.exceptions.RequestException as e:
-            self.widget_info.setVisible(False)
+            self.frame_info.setVisible(False)
             self.checkBox_use_remote.setEnabled(False)
+            QtWidgets.QMessageBox.warning(self, "Error", str(e))
 
     def use_remote_sam(self, check_state):
         if check_state == QtCore.Qt.CheckState.Checked:
-            try:
-                self.mainwindow.use_remote_sam = True
-                self.mainwindow.init_segment_anything(self.label_name.text(), checked=True)
-            except Exception as e:
-                self.sender().setChecked(False)
+            model_name = self.label_name.text()
+            if not os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
                 self.mainwindow.use_remote_sam = False
-                QtWidgets.QMessageBox.warning(self, "Error", f"Init local sam failed.\n {e}")
-                return
+                QtWidgets.QMessageBox.warning(self, "Error", f"Local model {model_name} does not exist.")
+            else:
+                try:
+                    self.mainwindow.use_remote_sam = True
+                    self.mainwindow.init_segment_anything(model_name, checked=True)
+                except Exception as e:
+                    self.mainwindow.use_remote_sam = False
+                    QtWidgets.QMessageBox.warning(self, "Error", f"Init local sam failed.\n {e}")
+
         else:
             self.mainwindow.use_remote_sam = False
 
+        state = QtCore.Qt.CheckState.Checked if self.mainwindow.use_remote_sam else QtCore.Qt.CheckState.Unchecked
+        self.sender().setCheckState(state)
+        self.lineEdit_host.setEnabled(not self.mainwindow.use_remote_sam)
+        self.lineEdit_port.setEnabled(not self.mainwindow.use_remote_sam)
 
 class IPv4Validator(QValidator):
     def validate(self, input_str, pos):

@@ -114,56 +114,10 @@ border-radius: 3px;</string>
          </size>
         </property>
         <property name="statusTip">
-         <string>Next 1 image SAM state</string>
+         <string>Next image SAM state</string>
         </property>
         <property name="whatsThis">
-         <string>Next 1 image SAM state.</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(153, 153, 153);
-border-radius: 3px;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_next2_state">
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>8</height>
-         </size>
-        </property>
-        <property name="statusTip">
-         <string>Next 2 image SAM state</string>
-        </property>
-        <property name="whatsThis">
-         <string>Next 1 image SAM state.</string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(153, 153, 153);
-border-radius: 3px;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_next3_state">
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>8</height>
-         </size>
-        </property>
-        <property name="statusTip">
-         <string>Next 3 image SAM state</string>
-        </property>
-        <property name="whatsThis">
-         <string>Next 3 image SAM state.</string>
+         <string>Next image SAM state.</string>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(153, 153, 153);

@@ -435,9 +435,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.gpu_resource_thread = None
         self.use_remote_sam = False
 
-        # 标注模式下，多边形不可见
-        self.create_mode_invisible_polygon = True
-
         # 新增 手动/自动 group选择
         self.group_select_mode = 'auto'
         self.init_ui()
@@ -590,11 +587,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.files_dock_widget.label_prev_state.setStyleSheet("background-color: {};".format(color))
         elif index == self.current_index + 1:
             self.files_dock_widget.label_next_state.setStyleSheet("background-color: {};".format(color))
-        # # todo
-        # elif index == self.current_index + 2:
-        #     self.files_dock_widget.label_next2_state.setStyleSheet("background-color: {};".format(color))
-        # elif index == self.current_index + 3:
-        #     self.files_dock_widget.label_next3_state.setStyleSheet("background-color: {};".format(color))
         else:
             pass
 

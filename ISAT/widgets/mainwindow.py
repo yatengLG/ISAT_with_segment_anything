@@ -86,7 +86,7 @@ class SegAnyThread(QThread):
             shape = ",".join(map(str, image.shape))
             dtype = image.dtype.name
             response = requests.post(
-                url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/encode",
+                url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/api/encode",
                 files={'file': ('', image.tobytes(), "application/octet-stream")},
                 data={"dtype": dtype, "shape": shape}
             )

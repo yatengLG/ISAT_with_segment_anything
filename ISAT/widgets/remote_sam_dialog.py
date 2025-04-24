@@ -29,8 +29,9 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
         host = self.lineEdit_host.text()
         port = self.lineEdit_port.text()
         try:
-            response = requests.get(f"http://{host}:{port}/info")
+            response = requests.get(f"http://{host}:{port}/api/info")
             if response.status_code != 200:
+                QtWidgets.QMessageBox.warning(self, "Error", f"Could not connect to remote Sam, status_code: {response.status_code}")
                 return
             checkpoint = response.json()['checkpoint']
             device = response.json()['device']
@@ -49,6 +50,7 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
             except Exception as e:
                 self.frame_info.setVisible(False)
                 self.checkBox_use_remote.setEnabled(False)
+                QtWidgets.QMessageBox.warning(self, "Error", str(e))
 
         except requests.exceptions.RequestException as e:
             self.frame_info.setVisible(False)

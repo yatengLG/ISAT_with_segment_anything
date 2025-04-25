@@ -12,9 +12,9 @@ import numpy as np
 import torch
 from PIL.Image import Image
 
-from ISAT.segment_any.sam2.modeling.sam2_base import SAM2Base
+from .modeling.sam2_base import SAM2Base
 
-from ISAT.segment_any.sam2.utils.transforms import SAM2Transforms
+from .utils.transforms import SAM2Transforms
 
 
 class SAM2ImagePredictor:
@@ -77,7 +77,7 @@ class SAM2ImagePredictor:
         Returns:
           (SAM2ImagePredictor): The loaded model.
         """
-        from ISAT.segment_any.sam2.build_sam import build_sam2_hf
+        from .build_sam import build_sam2_hf
 
         sam_model = build_sam2_hf(model_id, **kwargs)
         return cls(sam_model, **kwargs)

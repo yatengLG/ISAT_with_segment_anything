@@ -77,7 +77,7 @@ class SAM2Transforms(nn.Module):
         """
         Perform PostProcessing on output masks.
         """
-        from ISAT.segment_any.sam2.utils.misc import get_connected_components
+        from ...sam2.utils.misc import get_connected_components
 
         masks = masks.float()
         input_masks = masks

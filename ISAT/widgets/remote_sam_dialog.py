@@ -78,6 +78,7 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
         self.sender().setCheckState(state)
         self.lineEdit_host.setEnabled(not self.mainwindow.use_remote_sam)
         self.lineEdit_port.setEnabled(not self.mainwindow.use_remote_sam)
+        self.pushButton_check.setEnabled(not self.mainwindow.use_remote_sam)
 
 class IPv4Validator(QValidator):
     def validate(self, input_str, pos):

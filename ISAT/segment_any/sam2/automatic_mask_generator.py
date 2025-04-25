@@ -11,9 +11,9 @@ import numpy as np
 import torch
 from torchvision.ops.boxes import batched_nms, box_area  # type: ignore
 
-from ISAT.segment_any.sam2.modeling.sam2_base import SAM2Base
-from ISAT.segment_any.sam2.sam2_image_predictor import SAM2ImagePredictor
-from ISAT.segment_any.sam2.utils.amg import (
+from .modeling.sam2_base import SAM2Base
+from .sam2_image_predictor import SAM2ImagePredictor
+from .utils.amg import (
     area_from_rle,
     batch_iterator,
     batched_mask_to_box,
@@ -161,7 +161,7 @@ class SAM2AutomaticMaskGenerator:
         Returns:
           (SAM2AutomaticMaskGenerator): The loaded model.
         """
-        from ISAT.segment_any.sam2.build_sam import build_sam2_hf
+        from .build_sam import build_sam2_hf
 
         sam_model = build_sam2_hf(model_id, **kwargs)
         return cls(sam_model, **kwargs)

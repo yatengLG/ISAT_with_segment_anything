@@ -13,13 +13,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 from iopath.common.file_io import g_pathmgr
 
-from ISAT.segment_any.sam2.modeling.backbones.utils import (
+from .utils import (
     PatchEmbed,
     window_partition,
     window_unpartition,
 )
 
-from ISAT.segment_any.sam2.modeling.sam2_utils import DropPath, MLP
+from ..sam2_utils import DropPath, MLP
 
 
 def do_pool(x: torch.Tensor, pool: nn.Module, norm: nn.Module = None) -> torch.Tensor:

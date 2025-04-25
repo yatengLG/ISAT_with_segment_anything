@@ -218,7 +218,8 @@ class SegAnyVideoThread(QThread):
             total = len(self.mainwindow.files_list) - self.start_frame_idx + 1
 
         with torch.inference_mode(), torch.autocast(self.mainwindow.segany_video.device,
-                                                    dtype=self.mainwindow.segany_video.model_dtype):
+                                                    dtype=self.mainwindow.segany_video.model_dtype,
+                                                    enabled=torch.cuda.is_available()):
 
             if not self.mainwindow.use_segment_anything_video:
                 self.mainwindow.actionVideo_segment.setEnabled(False)

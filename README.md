@@ -10,7 +10,7 @@
     <a href='README-cn.md'><b>[中文]</b></a>
     <a href='README.md'><b>[English]</b></a>
 </p>
-<p align='center'><img src="./display/标注.gif" alt="标注.gif"'></p>
+<p align='center'><img src="./display/标注.gif" alt="标注.gif"></p>
 
 Our tool enables interactive use of [segment anything](https://github.com/facebookresearch/segment-anything) for rapid image segmentation with low RAM requirements (optional bf16 mode).
 

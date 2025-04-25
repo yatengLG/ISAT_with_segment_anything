@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-
+from PIL import Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line, Rect
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
@@ -51,10 +51,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
 
-        # image_data = cv2.imread(image_path)
-        image_data = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), cv2.IMREAD_COLOR)
-        self.image_data = cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB)
-
+        self.image_data = np.array(Image.open(image_path).convert('RGB'))
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
         self.addItem(self.image_item)

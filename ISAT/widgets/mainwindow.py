@@ -178,9 +178,7 @@ class SegAnyThread(QThread):
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
 
-                    # image_data = cv2.imread(image_path)
-                    image_data = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8),cv2.IMREAD_COLOR)
-                    image_data = cv2.cvtColor(image_data, cv2.COLOR_BGR2RGB)
+                    image_data = np.array(Image.open(image_path).convert('RGB'))
                     try:
                         features, original_size, input_size = self.sam_encoder(image_data)
                     except Exception as e:
@@ -1025,13 +1023,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.scene.load_image(file_path)
 
+            if zoomfit:
+                self.view.zoomfit()
+
+            # 判断图像是否旋转
+            exif_info = image_data.getexif()
+            if exif_info and exif_info.get(274, 1) != 1:
+                warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议使用opencv去除EXIF信息后再进行标注'\
+                    if self.cfg['software']['language'] == 'zh' \
+                    else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata with opencv.'
+                QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
+
             if self.use_segment_anything and self.can_be_annotated:
                 self.segany.reset_image()
                 self.seganythread.index = index
                 self.seganythread.start()
                 self.SeganyEnabled()
-            if zoomfit:
-                self.view.zoomfit()
 
             # load label
             if self.can_be_annotated:
@@ -1318,9 +1325,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
-
-
         pass
+
     def change_saturation(self, value):  # 调整图像饱和度
         if self.scene.image_data is not None:
             saturation_scale = value / 100.0

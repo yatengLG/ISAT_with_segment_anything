@@ -14,24 +14,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(640, 320)
+        Dialog.resize(760, 420)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
         Dialog.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(Dialog)
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(20)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.widget = QtWidgets.QWidget(Dialog)
+        self.tabWidget = QtWidgets.QTabWidget(Dialog)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tab)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.widget = QtWidgets.QWidget(self.tab)
         self.widget.setObjectName("widget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -51,46 +47,46 @@ class Ui_Dialog(object):
         self.pushButton_check = QtWidgets.QPushButton(self.widget)
         self.pushButton_check.setObjectName("pushButton_check")
         self.horizontalLayout.addWidget(self.pushButton_check)
-        self.verticalLayout.addWidget(self.widget)
-        self.frame_info = QtWidgets.QFrame(Dialog)
+        self.verticalLayout_2.addWidget(self.widget)
+        self.frame_info = QtWidgets.QFrame(self.tab)
         self.frame_info.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.frame_info.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_info.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_info.setObjectName("frame_info")
         self.gridLayout = QtWidgets.QGridLayout(self.frame_info)
         self.gridLayout.setObjectName("gridLayout")
-        self.label_4 = QtWidgets.QLabel(self.frame_info)
-        self.label_4.setMinimumSize(QtCore.QSize(0, 30))
-        self.label_4.setMaximumSize(QtCore.QSize(60, 16777215))
-        self.label_4.setObjectName("label_4")
-        self.gridLayout.addWidget(self.label_4, 0, 0, 1, 1)
-        self.label_name = QtWidgets.QLabel(self.frame_info)
-        self.label_name.setMinimumSize(QtCore.QSize(0, 30))
-        self.label_name.setText("")
-        self.label_name.setObjectName("label_name")
-        self.gridLayout.addWidget(self.label_name, 0, 1, 1, 1)
-        self.label_5 = QtWidgets.QLabel(self.frame_info)
-        self.label_5.setMinimumSize(QtCore.QSize(0, 30))
-        self.label_5.setMaximumSize(QtCore.QSize(60, 16777215))
-        self.label_5.setObjectName("label_5")
-        self.gridLayout.addWidget(self.label_5, 1, 0, 1, 1)
         self.label_device = QtWidgets.QLabel(self.frame_info)
         self.label_device.setMinimumSize(QtCore.QSize(0, 30))
         self.label_device.setText("")
         self.label_device.setObjectName("label_device")
-        self.gridLayout.addWidget(self.label_device, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_device, 2, 1, 1, 1)
         self.label_6 = QtWidgets.QLabel(self.frame_info)
         self.label_6.setMinimumSize(QtCore.QSize(0, 30))
-        self.label_6.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.label_6.setMaximumSize(QtCore.QSize(80, 16777215))
         self.label_6.setObjectName("label_6")
-        self.gridLayout.addWidget(self.label_6, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_6, 3, 0, 1, 1)
+        self.label_name = QtWidgets.QLabel(self.frame_info)
+        self.label_name.setMinimumSize(QtCore.QSize(0, 30))
+        self.label_name.setText("")
+        self.label_name.setObjectName("label_name")
+        self.gridLayout.addWidget(self.label_name, 1, 1, 1, 1)
         self.label_dtype = QtWidgets.QLabel(self.frame_info)
         self.label_dtype.setMinimumSize(QtCore.QSize(0, 30))
         self.label_dtype.setText("")
         self.label_dtype.setObjectName("label_dtype")
-        self.gridLayout.addWidget(self.label_dtype, 2, 1, 1, 1)
-        self.verticalLayout.addWidget(self.frame_info)
-        self.widget_3 = QtWidgets.QWidget(Dialog)
+        self.gridLayout.addWidget(self.label_dtype, 3, 1, 1, 1)
+        self.label_4 = QtWidgets.QLabel(self.frame_info)
+        self.label_4.setMinimumSize(QtCore.QSize(0, 30))
+        self.label_4.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.label_4.setObjectName("label_4")
+        self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
+        self.label_5 = QtWidgets.QLabel(self.frame_info)
+        self.label_5.setMinimumSize(QtCore.QSize(0, 30))
+        self.label_5.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.label_5.setObjectName("label_5")
+        self.gridLayout.addWidget(self.label_5, 2, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.frame_info)
+        self.widget_3 = QtWidgets.QWidget(self.tab)
         self.widget_3.setObjectName("widget_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -98,7 +94,17 @@ class Ui_Dialog(object):
         self.checkBox_use_remote = QtWidgets.QCheckBox(self.widget_3)
         self.checkBox_use_remote.setObjectName("checkBox_use_remote")
         self.horizontalLayout_3.addWidget(self.checkBox_use_remote)
-        self.verticalLayout.addWidget(self.widget_3)
+        self.verticalLayout_2.addWidget(self.widget_3)
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.tab_2)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.textBrowser = QtWidgets.QTextBrowser(self.tab_2)
+        self.textBrowser.setObjectName("textBrowser")
+        self.verticalLayout_3.addWidget(self.textBrowser)
+        self.tabWidget.addTab(self.tab_2, "")
+        self.verticalLayout.addWidget(self.tabWidget)
         self.widget_2 = QtWidgets.QWidget(Dialog)
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_2)
@@ -112,17 +118,43 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.widget_2)
 
         self.retranslateUi(Dialog)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "SAM Remote encode"))
-        self.label.setText(_translate("Dialog", "SAM Remote Encode"))
+        Dialog.setWindowTitle(_translate("Dialog", "SAM remote encode server"))
         self.label_2.setText(_translate("Dialog", "Host:"))
         self.label_3.setText(_translate("Dialog", "Port"))
         self.pushButton_check.setText(_translate("Dialog", "Check"))
+        self.label_6.setText(_translate("Dialog", "Dtype:"))
         self.label_4.setText(_translate("Dialog", "Model:"))
         self.label_5.setText(_translate("Dialog", "Device:"))
-        self.label_6.setText(_translate("Dialog", "Dtype:"))
         self.checkBox_use_remote.setText(_translate("Dialog", "Use remote sam encode"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Dialog", "Connect remote server"))
+        self.textBrowser.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Times New Roman\'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"># <span style=\" font-weight:600;\">install</span> isat-sam-backend in remote server</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">pip install isat-sam-backend</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"># <span style=\" font-weight:600;\">run</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600; font-style:italic;\"># </span>run<span style=\" font-weight:600; font-style:italic;\"> </span>with<span style=\" font-weight:600; font-style:italic;\"> </span>default<span style=\" font-weight:600; font-style:italic;\"> </span>model<span style=\" font-weight:600; font-style:italic;\"> </span>mobile_sam.pt on local machine (default host: 127.0.0.1, default port: 8000)</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">isat-sam-backend run</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"># or run with more arg</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">isat-sam-backend run --checkpoint [model name] --host [ip] --port [port]</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\"># manage remote model</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\"># </span>list<span style=\" font-style:italic;\"> </span>model<span style=\" font-style:italic;\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">isat-sam-backend model --list</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-style:italic;\"># </span>download<span style=\" font-style:italic;\"> </span>model<span style=\" font-style:italic;\"> </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">isat-sam-backend model --download [model name]</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600; font-style:italic;\"># </span>remove<span style=\" font-weight:600; font-style:italic;\"> </span>model</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">isat-sam-backend model --remove [model name]</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Dialog", "How to use?"))
         self.pushButton_close.setText(_translate("Dialog", "&Close"))

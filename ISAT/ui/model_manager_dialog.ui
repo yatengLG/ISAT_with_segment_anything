@@ -44,7 +44,7 @@
          </font>
         </property>
         <property name="text">
-         <string>SAM Model</string>
+         <string>Local SAM Model</string>
         </property>
        </widget>
       </item>

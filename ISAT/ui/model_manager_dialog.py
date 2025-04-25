@@ -163,7 +163,7 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Model manage"))
-        self.label.setText(_translate("Dialog", "SAM Model"))
+        self.label.setText(_translate("Dialog", "Local SAM Model"))
         self.label_3.setText(_translate("Dialog", "Image"))
         self.label_4.setText(_translate("Dialog", "Video"))
         self.label_5.setText(_translate("Dialog", "Model name"))

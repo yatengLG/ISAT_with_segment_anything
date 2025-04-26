@@ -15,6 +15,7 @@ from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.setting_dialog import SettingDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
+from ISAT.widgets.process_exif_dialog import ProcessExifDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
@@ -683,6 +684,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.video2frames_dialog = Video2FramesDialog(self, self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
         self.annos_validator_dialog = AnnosValidatorDialog(self, self)
+        self.process_exif_dialog = ProcessExifDialog(self, self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -789,6 +791,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.video2frames_dialog.retranslateUi(self.video2frames_dialog)
         self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
         self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
+        self.process_exif_dialog.retranslateUi(self.process_exif_dialog)
         self.setting_dialog.retranslateUi(self.setting_dialog)
 
         # 手动添加翻译 ------
@@ -1029,9 +1032,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # 判断图像是否旋转
             exif_info = image_data.getexif()
             if exif_info and exif_info.get(274, 1) != 1:
-                warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议使用opencv去除EXIF信息后再进行标注'\
+                warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议去除EXIF信息后再进行标注\n你可以使用[菜单栏]-[工具]-[处理exif标签]功能处理图像的旋转问题。'\
                     if self.cfg['software']['language'] == 'zh' \
-                    else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata with opencv.'
+                    else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata.\nYou can use the function of [Process EXIF tag] in [Tools] in [Menu bar] to deal with the problem of images.'
                 QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
 
             if self.use_segment_anything and self.can_be_annotated:
@@ -1380,6 +1383,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def annos_validator(self):
         self.annos_validator_dialog.show()
 
+    def process_exif(self):
+        self.process_exif_dialog.show()
+
     def shortcut(self):
         self.shortcut_dialog.update_ui()
         self.shortcut_dialog.show()
@@ -1499,6 +1505,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
+        self.actionProcess_EXIF_tag.triggered.connect(self.process_exif)
 
         self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)

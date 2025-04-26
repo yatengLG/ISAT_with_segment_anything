@@ -57,7 +57,7 @@
      <x>0</x>
      <y>0</y>
      <width>1600</width>
-     <height>29</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
@@ -150,6 +150,7 @@
     <addaction name="actionVideo_to_frames"/>
     <addaction name="actionAuto_segment_with_bounding_box"/>
     <addaction name="actionAnno_validator"/>
+    <addaction name="actionProcess_EXIF_tag"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -983,6 +984,15 @@
    </property>
    <property name="text">
     <string>Remote SAM</string>
+   </property>
+  </action>
+  <action name="actionProcess_EXIF_tag">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/照片_pic.svg</normaloff>:/icon/icons/照片_pic.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Process EXIF tag</string>
    </property>
   </action>
  </widget>

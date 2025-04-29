@@ -13,6 +13,9 @@ class ProcessExifDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.mainwindow = mainwindow
 
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+
+        self.radioButton_apply_exif.setChecked(True)
         self.pushButton_image_root.clicked.connect(self.open_dir)
         self.pushButton_save_root.clicked.connect(self.open_dir)
         self.pushButton_start.clicked.connect(self.start)
@@ -38,7 +41,11 @@ class ProcessExifDialog(QtWidgets.QDialog, Ui_Dialog):
 
         image_root = self.lineEdit_image_root.text()
         save_root = self.lineEdit_save_root.text()
-        apply_exif = self.checkBox_apply_exif.isChecked()
+        apply_exif = self.radioButton_apply_exif.isChecked()
+
+        if not (image_root or save_root):
+            self.pushButton_start.setEnabled(True)
+            return
 
         images = os.listdir(image_root)
         self.progressBar.setMaximum(len(images))

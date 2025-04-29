@@ -126,7 +126,14 @@
        </spacer>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_apply_exif">
+       <widget class="QRadioButton" name="radioButton_delete_exif">
+        <property name="text">
+         <string>delete EXIF orientation tag</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_apply_exif">
         <property name="text">
          <string>apply EXIF orientation tag</string>
         </property>

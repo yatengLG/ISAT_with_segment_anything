@@ -1085,7 +1085,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="process_exif_dialog.py" line="104"/>
         <source>delete EXIF orientation tag</source>
-        <translation>删除EXIF选中标签</translation>
+        <translation type="unfinished">删除EXIF旋转标签</translation>
     </message>
 </context>
 <context>

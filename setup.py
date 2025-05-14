@@ -63,7 +63,8 @@ setup(
         'tqdm>=4.66.1',
         'fuzzywuzzy',
         'python-Levenshtein',
-        'iopath'
+        'iopath',
+        'orjson'
         ],
 
     classifiers=[

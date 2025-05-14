@@ -71,7 +71,7 @@ HF_MODEL_ID_TO_FILENAMES = {
 def build_sam2(
     config_file,
     ckpt_path=None,
-    device="cuda",
+    device="cuda" if torch.cuda.is_available() else "cpu",
     mode="eval",
     hydra_overrides_extra=[],
     apply_postprocessing=True,

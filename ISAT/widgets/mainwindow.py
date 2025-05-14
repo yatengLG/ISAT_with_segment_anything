@@ -36,9 +36,9 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 import torch
 import cv2  # 调整图像饱和度
-import datetime
 from skimage.draw.draw import polygon
 import requests
+import orjson
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -93,9 +93,11 @@ class SegAnyThread(QThread):
             )
 
             if response.status_code == 200:
-                features = response.json()['features']
-                original_size = tuple(response.json()['original_size'])
-                input_size = tuple(response.json()['input_size'])
+                data = orjson.loads(response.content)
+                features = data["features"]
+                original_size = data["original_size"]
+                input_size = data["input_size"]
+
                 dtype = self.mainwindow.segany.model_dtype
                 device = self.mainwindow.segany.device
 

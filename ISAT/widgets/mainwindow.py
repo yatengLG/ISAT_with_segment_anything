@@ -500,7 +500,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_remote_sam:
             sam_video_tag = False
 
-        print('sam_tag:', sam_tag, 'sam_video_tag: ', sam_video_tag)
+        print('sam_tag:', f'\033[32m{sam_tag}\033[0m' if sam_tag else f'\033[31m{sam_tag}\033[0m',
+              'sam_video_tag: ', f'\033[32m{sam_video_tag}\033[0m' if sam_video_tag else f'\033[31m{sam_video_tag}\033[0m')
         self.setEnabled(True)
         if sam_video_tag:
             self.use_segment_anything_video = True

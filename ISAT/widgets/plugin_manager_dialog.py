@@ -17,6 +17,10 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
+        self.tableWidget.setColumnWidth(0, 100)
+        self.tableWidget.setColumnWidth(1, 250)
+        self.tableWidget.setColumnWidth(2, 150)
+        self.tableWidget.setColumnWidth(3, 150)
 
         self.plugin_dir = 'ISAT/plugins'
         self.plugins = []
@@ -31,11 +35,6 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         if not os.path.exists(self.plugin_dir):
             os.makedirs(self.plugin_dir)
             return
-
-        self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 250)
-        self.tableWidget.setColumnWidth(2, 150)
-        self.tableWidget.setColumnWidth(3, 150)
 
         for plugin_name in os.listdir(self.plugin_dir):
             plugin_path = os.path.join(self.plugin_dir, plugin_name)

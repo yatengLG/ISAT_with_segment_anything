@@ -254,6 +254,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 只有view模式时，才能切换create模式
         if self.mode != STATUSMode.VIEW:
             return
+
+        self.mainwindow.plugin_manager_dialog.trigger_before_annotation_start()
+
         # 否则，切换到绘图模式
         self.change_mode_to_create()
         if self.mainwindow.cfg['software']['create_mode_invisible_polygon']:
@@ -325,16 +328,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                                   group,
                                                   is_crowd,
                                                   note,
-                                                  QtGui.QColor(self.mainwindow.category_color_dict[category]),
+                                                  QtGui.QColor(self.mainwindow.category_color_dict.get(category, '#6F737A')),
                                                   self.top_layer)
+
+                    # 设置为最高图层
+                    self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
+                    for vertex in self.current_graph.vertexs:
+                        vertex.setZValue(len(self.mainwindow.polygons)+1)
 
                     # 添加新polygon
                     self.mainwindow.polygons.append(self.current_graph)
                     self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
-                    # 设置为最高图层
-                    self.current_graph.setZValue(len(self.mainwindow.polygons))
-                    for vertex in self.current_graph.vertexs:
-                        vertex.setZValue(len(self.mainwindow.polygons))
+
                     self.current_graph = None
                 if self.mainwindow.group_select_mode == 'auto':
                     self.mainwindow.current_group += 1
@@ -372,18 +377,21 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                           group,
                                           is_crowd,
                                           note,
-                                          QtGui.QColor(self.mainwindow.category_color_dict[category]),
+                                          QtGui.QColor(self.mainwindow.category_color_dict.get(category, '#6F737A')),
                                           self.top_layer)
             if self.mainwindow.group_select_mode == 'auto':
                 self.mainwindow.current_group += 1
                 self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
-            # 添加新polygon
-            self.mainwindow.polygons.append(self.current_graph)
-            self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+
             # 设置为最高图层
             self.current_graph.setZValue(len(self.mainwindow.polygons))
             for vertex in self.current_graph.vertexs:
                 vertex.setZValue(len(self.mainwindow.polygons))
+
+            # 添加新polygon
+            self.mainwindow.polygons.append(self.current_graph)
+            self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+
         # 选择类别
         # self.mainwindow.category_choice_widget.load_cfg()
         # self.mainwindow.category_choice_widget.show()
@@ -409,6 +417,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 del prompt_point
         self.prompt_points.clear()
         self.update_mask()
+
+        self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
 
     def cancel_draw(self):
         if self.mode == STATUSMode.CREATE:
@@ -771,12 +781,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mainwindow.annos_dock_widget.update_listwidget()
 
     def mousePressEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
-        sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
-        sceneX = 0 if sceneX < 0 else sceneX
-        sceneX = self.width() - 1 if sceneX > self.width() - 1 else sceneX
-        sceneY = 0 if sceneY < 0 else sceneY
-        sceneY = self.height() - 1 if sceneY > self.height() - 1 else sceneY
-
+        pos = event.scenePos()
+        if pos.x() < 0: pos.setX(0)
+        if pos.x() > self.width() - 1: pos.setX(self.width() - 1)
+        if pos.y() < 0: pos.setY(0)
+        if pos.y() > self.height() - 1: pos.setY(self.height() - 1)
         if self.mode == STATUSMode.CREATE:
             # 拖动鼠标描点
             self.last_draw_time = time.time()
@@ -784,9 +793,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-                    self.click_points.append([sceneX, sceneY])
+                    self.click_points.append([pos.x(), pos.y()])
                     self.click_points_mode.append(1)
-                    prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 1)
+                    prompt_point = PromptPoint(pos, 1)
                     prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
@@ -796,23 +805,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         self.current_sam_rect = Rect()
                         self.current_sam_rect.setZValue(2)
                         self.addItem(self.current_sam_rect)
-                        self.current_sam_rect.addPoint(QtCore.QPointF(sceneX, sceneY))
-                        self.current_sam_rect.addPoint(QtCore.QPointF(sceneX, sceneY))
+                        self.current_sam_rect.addPoint(pos)
+                        self.current_sam_rect.addPoint(pos)
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
                     self.current_graph.removePoint(len(self.current_graph.points) - 1)
                     # 添加当前点
-                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_graph.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_graph.addPoint(pos)
                 else:
                     raise ValueError('The draw mode named {} not supported.')
             if event.button() == QtCore.Qt.MouseButton.RightButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-                    self.click_points.append([sceneX, sceneY])
+                    self.click_points.append([pos.x(), pos.y()])
                     self.click_points_mode.append(0)
-                    prompt_point = PromptPoint(QtCore.QPointF(sceneX, sceneY), 0)
+                    prompt_point = PromptPoint(pos, 0)
                     prompt_point.setVisible(self.mainwindow.cfg['software']['show_prompt'])
                     self.prompt_points.append(prompt_point)
                     self.addItem(prompt_point)
@@ -888,15 +897,26 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 移除随鼠标移动的点
                     self.current_line.removePoint(len(self.current_line.points) - 1)
                     # 添加当前点
-                    self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_line.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_line.addPoint(pos)
+
+        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_press(pos)
 
         super(AnnotationScene, self).mousePressEvent(event)
 
     # 拖动鼠标描点
     def mouseReleaseEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
         self.pressd = False
+
+        pos = event.scenePos()
+        if pos.x() < 0: pos.setX(0)
+        if pos.x() > self.width() - 1: pos.setX(self.width() - 1)
+        if pos.y() < 0: pos.setY(0)
+        if pos.y() > self.height() - 1: pos.setY(self.height() - 1)
+
+        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_release(pos)
+
         super(AnnotationScene, self).mouseReleaseEvent(event)
 
     def mouseMoveEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
@@ -964,28 +984,27 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if self.last_draw_time is not None and current_time - self.last_draw_time < self.draw_interval:
                 return  # 时间小于给定值不画点
             self.last_draw_time = current_time
-            sceneX, sceneY = event.scenePos().x(), event.scenePos().y()
-            sceneX = 0 if sceneX < 0 else sceneX
-            sceneX = self.width() - 1 if sceneX > self.width() - 1 else sceneX
-            sceneY = 0 if sceneY < 0 else sceneY
-            sceneY = self.height() - 1 if sceneY > self.height() - 1 else sceneY
 
             if self.current_graph is not None:
                 if self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
                     self.current_graph.removePoint(len(self.current_graph.points) - 1)
                     # 添加当前点
-                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_graph.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_graph.addPoint(QtCore.QPointF(sceneX, sceneY))
+                    self.current_graph.addPoint(pos)
 
             if self.mode == STATUSMode.REPAINT and self.current_line is not None:
                 # 移除随鼠标移动的点
                 self.current_line.removePoint(len(self.current_line.points) - 1)
                 # 添加当前点
-                self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                self.current_line.addPoint(pos)
                 # 添加随鼠标移动的点
-                self.current_line.addPoint(QtCore.QPointF(sceneX, sceneY))
+                self.current_line.addPoint(pos)
+
+            self.mainwindow.plugin_manager_dialog.trigger_on_mouse_pressed_and_mouse_move(pos)
+
+        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_move(pos)
 
         super(AnnotationScene, self).mouseMoveEvent(event)
 

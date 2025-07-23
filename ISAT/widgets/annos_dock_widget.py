@@ -29,7 +29,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow.right_button_menu.exec_(self.listWidget.mapToGlobal(point))
 
     def generate_item_and_itemwidget(self, polygon):
-        color = self.mainwindow.category_color_dict.get(polygon.category, '#000000')
+        color = self.mainwindow.category_color_dict.get(polygon.category, '#6F737A')
         item = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(200, 30))
         item_widget = QtWidgets.QWidget()

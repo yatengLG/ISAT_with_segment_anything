@@ -19,6 +19,7 @@ from ISAT.widgets.process_exif_dialog import ProcessExifDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
+from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, SHORTCUT_FILE
@@ -454,6 +455,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_latest_version_thread.tag.connect(self.latest_version_tip)
         self.check_latest_version_thread.start()
 
+        self.plugin_manager_dialog.trigger_application_start()
+
     def init_segment_anything(self, model_name=None, checked=None):
         if checked is not None and not checked:
             return
@@ -568,11 +571,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model_manager_dialog.update_ui()
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
-        if state == 1:  # 识别完
-            # 如果当前图片刚识别完，需刷新segany状态
-            if self.current_index == index:
-                self.SeganyEnabled()
-
         # 图片识别状态刷新
         if state == 1: color = '#00FF00'
         elif state == 0: color = '#999999'
@@ -598,6 +596,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # if widget is not None:
         #     state_color = widget.findChild(QtWidgets.QLabel, 'state_color')
         #     state_color.setStyleSheet("background-color: {};".format(color))
+
+        if state == 1:  # 识别完
+            # 如果当前图片刚识别完，需刷新segany状态
+            if self.current_index == index:
+                self.SeganyEnabled()
+                self.plugin_manager_dialog.trigger_after_sam_encode_finished(index)
 
     def SeganyEnabled(self):
         """
@@ -679,6 +683,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
         self.remote_sam_dialog = RemoteSamDialog(self, self)
+
+        self.plugin_manager_dialog = PluginManagerDialog(self, self)
 
         self.scene = AnnotationScene(mainwindow=self)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
@@ -788,6 +794,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.category_setting_dialog.retranslateUi(self.category_setting_dialog)
         self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
         self.remote_sam_dialog.retranslateUi(self.remote_sam_dialog)
+        self.plugin_manager_dialog.retranslateUi(self.plugin_manager_dialog)
         self.about_dialog.retranslateUi(self.about_dialog)
         self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
         self.Converter_dialog.retranslateUi(self.Converter_dialog)
@@ -901,6 +908,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.setWindowTitle('*{}'.format(self.current_label.label_path))
 
+        if not is_saved:
+            self.plugin_manager_dialog.trigger_after_annotation_changed()
+
     def open_dir(self):
         dir = QtWidgets.QFileDialog.getExistingDirectory(self)
         if not dir:
@@ -967,12 +977,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for polygon in self.polygons:
             object = polygon.to_object()
             self.current_label.objects.append(object)
-
         self.current_label.note = self.info_dock_widget.lineEdit_note.text()
+
+        self.plugin_manager_dialog.trigger_before_annotations_save()
+
         self.current_label.save_annotation()
         # 保存标注文件的同时保存一份isat配置文件
         self.save_cfg(os.path.join(self.label_root, 'isat.yaml'))
         self.set_saved_state(True)
+
+        self.plugin_manager_dialog.trigger_after_annotations_saved()
 
     def update_group_display(self):
         self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
@@ -1001,6 +1015,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             self.current_index = index
             file_path = os.path.join(self.image_root, self.files_list[index])
+
+            self.plugin_manager_dialog.trigger_before_image_open(file_path)
+
             image_data = Image.open(file_path)
 
             self.png_palette = image_data.getpalette()
@@ -1094,6 +1111,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.actionNext_image.setEnabled(False)
 
+            self.plugin_manager_dialog.trigger_after_image_open()
+
     def prev_image(self):
         if self.scene.mode != STATUSMode.VIEW:
             return
@@ -1159,7 +1178,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             polygon.setEnabled(False)
             for vertex in polygon.vertexs:
                 vertex.setVisible(False)
-            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
+            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#6F737A')))
             polygon.color.setAlpha(255)
             polygon.setBrush(polygon.color)
         self.annos_dock_widget.listWidget.setEnabled(False)
@@ -1212,7 +1231,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for vertex in polygon.vertexs:
                 # vertex.setEnabled(True)
                 vertex.setVisible(polygon.isVisible())
-            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#000000')))
+            polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#6F737A')))
             polygon.color.setAlpha(polygon.nohover_alpha)
             polygon.setBrush(polygon.color)
         self.annos_dock_widget.listWidget.setEnabled(True)
@@ -1454,6 +1473,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_cfg(self.config_file)
         # 保存软件配置
         self.save_software_cfg()
+
+        self.plugin_manager_dialog.trigger_application_shutdown()
+
         self.close()
 
     def closeEvent(self, a0: QtGui.QCloseEvent):
@@ -1504,6 +1526,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionRemote_SAM.triggered.connect(self.remote_sam)
 
+        self.actionPlugins.triggered.connect(self.plugin_manager_dialog.show)
         self.actionConverter.triggered.connect(self.converter)
         self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)

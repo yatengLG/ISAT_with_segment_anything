@@ -279,7 +279,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         for x, y in segmentation:
             point = QtCore.QPointF(x, y)
             self.addPoint(point)
-        color = self.scene().mainwindow.category_color_dict.get(object.category, '#000000')
+        color = self.scene().mainwindow.category_color_dict.get(object.category, '#6F737A')
         self.set_drawed(object.category, object.group, object.iscrowd, object.note, QtGui.QColor(color), object.layer)  # ...
         self.area = object.area
 

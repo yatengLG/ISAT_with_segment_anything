@@ -22,7 +22,7 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
 
-        self.plugin_dir = 'ISAT/plugins'
+        self.plugin_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'plugins')
         self.plugins = []
 
         self.pushButton_close.clicked.connect(self.close)

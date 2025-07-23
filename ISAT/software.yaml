@@ -153,10 +153,10 @@ shortcut:
     key: ''
 software:
   auto_save: false
-  contour_mode: max_only
+  contour_mode: external
   create_mode_invisible_polygon: true
   current_converter: coco
-  language: zh
+  language: en
   mask_alpha: 0.6
   real_time_area: false
   show_edge: true

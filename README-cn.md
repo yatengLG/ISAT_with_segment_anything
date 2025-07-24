@@ -19,8 +19,11 @@
 ---
 
 # 软件特点及安装
-- &#x1F389;: **新功能**: **现在我们支持服务器运算模型 + 本地GUI操作了！** 
-请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/) (待更新，先看英文文档吧😄)
+- &#x1F389;: **V1.4.0版本添加了插件系统。** 可以使用较少量的代码，扩展ISAT的功能。
+  
+    以下是一些插件示例:
+  - [ISAT_plugin_mask_export](https://github.com/yatengLG/ISAT_plugin_mask_export): 仅用240行代码实现的**自动标注**功能（使用yolo目标检测模型）。
+  - [ISAT_plugin_auto_annotate](https://github.com/yatengLG/ISAT_plugin_auto_annotate): 仅用160行代码实现的**mask导出**功能。
 
 ## 安装
 - 新建conda环境（推荐，可选）

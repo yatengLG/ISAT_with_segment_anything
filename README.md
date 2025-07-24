@@ -19,8 +19,11 @@ Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 ---
 
 # Features and Installation
-- &#x1F389;: **New**: **Now we support running annotation models on remote server + local GUI operations！** 
-Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
+- &#x1F389;: **In version 1.4.0, ISAT add a plugin system.** You can use a small amount of code to extend the functionality of ISAT.
+  
+    Here are some official plugin examples:
+  - [ISAT_plugin_mask_export](https://github.com/yatengLG/ISAT_plugin_mask_export): An auto-annotation function based on the YOLO object detection model, implemented with just 240 lines of code.
+  - [ISAT_plugin_auto_annotate](https://github.com/yatengLG/ISAT_plugin_auto_annotate): A mask export function, implemented with just 160 lines of code.
 
 ## Install
 - Create a conda environment(recommended, optional)

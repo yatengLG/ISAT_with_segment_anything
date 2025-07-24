@@ -85,5 +85,6 @@ setup(
         "console_scripts": [
             "isat-sam=ISAT.main:main",
         ],
+        "isat.plugins": []  # 插件注册
     },
 )

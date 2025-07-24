@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 import os
-import importlib
-import inspect
+from importlib.metadata import entry_points
 from ISAT.ui.plugin_manager_dialog import Ui_Dialog
-from ISAT.widgets.plugin_base import PluginBase
 from PyQt5 import QtWidgets, QtCore, QtGui
-import sys
 
 
 class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
@@ -30,49 +27,19 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def load_plugins(self):
         self.tableWidget.setRowCount(0)
-        """从插件目录加载所有插件"""
         print('loading plugins')
-        if not os.path.exists(self.plugin_dir):
-            os.makedirs(self.plugin_dir)
-            return
-
-        for plugin_name in os.listdir(self.plugin_dir):
-            plugin_path = os.path.join(self.plugin_dir, plugin_name)
-            if os.path.isdir(plugin_path):
-                self._load_single_plugin(plugin_path, plugin_name)
+        eps = entry_points().get("isat.plugins", [])
+        for ep in eps:
+            try:
+                plugin_class = ep.load()
+                plugin_instance = plugin_class()
+                plugin_instance.init_plugin(self.mainwindow)
+                self.plugins.append(plugin_instance)
+                print('loaded plugin: ', plugin_instance.get_plugin_name())
+            except Exception as e:
+                print('failed to load plugin [{ep}]: ', e)
 
         self.update_gui()
-
-    def _load_single_plugin(self, plugin_path, plugin_name):
-        """加载单个插件"""
-        init_path = os.path.join(plugin_path, "main.py")
-        module_name = f"plugins.{plugin_name}"
-
-        if os.path.exists(init_path):
-            try:
-                # 动态导入插件模块
-                spec = importlib.util.spec_from_file_location(module_name, init_path)
-                plugin_module = importlib.util.module_from_spec(spec)
-                sys.modules[module_name] = plugin_module
-                spec.loader.exec_module(plugin_module)
-
-                # 查找插件实现类
-                for name, obj in inspect.getmembers(plugin_module):
-                    if inspect.isclass(obj) and issubclass(obj, PluginBase) and obj != PluginBase:
-                        plugin_instance = obj()
-                        self._initialize_plugin(plugin_instance)
-
-            except Exception as e:
-                print(f"Failed to load plugin {plugin_name}: {str(e)}")
-
-    def _initialize_plugin(self, plugin_instance):
-        """初始化插件"""
-        try:
-            plugin_instance.init_plugin(self.mainwindow)
-            self.plugins.append(plugin_instance)
-            print(f"Loaded plugin: {plugin_instance.get_plugin_name()}")
-        except Exception as e:
-            print(f"Failed to initialize plugin: {str(e)}")
 
     def update_gui(self):
         self.tableWidget.setRowCount(0)

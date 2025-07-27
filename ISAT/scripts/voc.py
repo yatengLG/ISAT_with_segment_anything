@@ -13,7 +13,6 @@ import os
 class VOC(ISAT):
     def __init__(self):
         self.keep_crowd = True
-        self.is_instance = False
 
 
     def save_to_voc(self, png_root):
@@ -45,9 +44,14 @@ class VOC(ISAT):
         height = info.height
         depth = info.depth
         note = info.note
-        img = np.zeros(shape=(height, width), dtype=np.uint8)
+        # img = np.zeros(shape=(height, width), dtype=np.uint8)
+        img = np.full(shape=(height, width), fill_value=255, dtype=np.uint8)
 
         objects = sorted(objects, key=lambda obj:obj.layer)
+
+        if self.instance_id:
+            ins_img = np.full(shape=(height, width), fill_value=0, dtype=np.uint8)
+        instance_num_overflow = False
 
         for obj in objects:
             category = obj.category
@@ -63,19 +67,37 @@ class VOC(ISAT):
             bbox = obj.bbox
             segmentation = [(int(p[1]), int(p[0])) for p in segmentation]
 
-            if self.is_instance and group != '':
+            if self.instance_id and group != '':
                 group = int(group)
-                assert 0 <= group < 256, 'When use VOC for segmentation, the group must in [0, 255], but get group={}'.format(group)
-                self.fill_polygon(segmentation, img, color=group)
+                assert 0 <= group, 'The group must larger than -1, but get group={}'.format(group)
+                if not instance_num_overflow and group > 255:
+                    instance_num_overflow = True
+                    print("Group larger than 255, use uint16")
+                    ins_img = ins_img.astype(np.uint16)
+                # assert 0 <= group < 256, 'When use VOC for segmentation, the group must in [0, 255], but get group={}'.format(group)
+                self.fill_polygon(segmentation, ins_img, color=group)
+            
+            index = category_index_dict.get(category, 0)
+            assert 0 <= index < 256, 'When use VOC for segmentation, the number of classifications must in [0, 255], but get {}'.format(index)
+            self.fill_polygon(segmentation, img, color=index)
+
+        if self.instance_id:
+            if instance_num_overflow:
+                ins_img = Image.fromarray(ins_img.astype(np.uint16), mode='I;16')
             else:
-                index = category_index_dict.get(category, 0)
-                assert 0 <= index < 256, 'When use VOC for segmentation, the number of classifications must in [0, 255], but get {}'.format(index)
-                self.fill_polygon(segmentation, img, color=index)
+                ins_img = Image.fromarray(ins_img.astype(np.uint8), mode='L')
+            ins_img.save(png_path[:-4] + "_instanceId.png")
+            ins_img = Image.fromarray(np.array(ins_img, dtype=np.uint8), mode='P')
+            ins_img.putpalette(cmap.flatten())
+            ins_img.save(png_path)
+        
+        if self.semantic_id:
+            sem_img = Image.fromarray(img.astype(np.uint8), mode='L')
+            sem_img.save(png_path[:-4] + "_semanticId.png")
 
-        img = Image.fromarray(img.astype(np.uint8), mode='P')
-
-        img.putpalette(cmap.flatten())
-        img.save(png_path)
+            img = Image.fromarray(img.astype(np.uint8), mode='P')
+            img.putpalette(cmap.flatten())
+            img.save(png_path)
         return True
 
     @staticmethod

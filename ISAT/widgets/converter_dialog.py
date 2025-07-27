@@ -361,28 +361,26 @@ class VOCConverter(Converter, VOC):
 
         # segment cmap when use setting color
         isat_yaml = os.path.join(self.isat_json_root, 'isat.yaml')
-        if not self.is_instance and self.use_setting_color:
-            if os.path.exists(isat_yaml):
-                with open(isat_yaml, 'rb')as f:
-                    cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-                labels = cfg.get('label', [])
-                cmap = np.zeros((len(self.cates), 3), dtype=np.uint8)
+        if os.path.exists(isat_yaml):
+            with open(isat_yaml, 'rb')as f:
+                cfg = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-                for index, label_dict in enumerate(labels):
-                    color = label_dict.get('color', '#000000')
-                    cmap[index] = (ImageColor.getrgb(color))
-            else:
-                self.message.emit(-1, -1, ' ' * 18 + '| Warning: {}.'.format('Not found isat.yaml, will use default color.'))
+            labels = cfg.get('label', [])
+            cmap = np.zeros((len(self.cates), 3), dtype=np.uint8)
 
-        if not self.is_instance:
-            category_index_dict = {}
-            with open(os.path.join(self.voc_png_root, 'classification.txt'), 'w') as f:
-                for index, cate in enumerate(self.cates):
-                    category_index_dict[cate] = index
-                    f.write('{}\n'.format(cate))
+            for index, label_dict in enumerate(labels):
+                color = label_dict.get('color', '#000000')
+                cmap[index] = (ImageColor.getrgb(color))
         else:
-            category_index_dict = None
+            self.message.emit(-1, -1, ' ' * 18 + '| Warning: {}.'.format('Not found isat.yaml, will use default color.'))
+
+        category_index_dict = {}
+        with open(os.path.join(self.voc_png_root, 'classification.txt'), 'w') as f:
+            for index, cate in enumerate(self.cates):
+                category_index_dict[cate] = index
+                f.write('{}:{},{}\n'.format(cmap[index], index, cate))
+                
         # save to voc
         num_annos = len(self.annos)
         for index, (name_without_suffix, anno) in enumerate(self.annos.items()):
@@ -567,9 +565,8 @@ class ConverterDialog(QtWidgets.QDialog, Ui_Dialog):
                 self.converter.message.connect(self.print_message)
                 self.converter.isat_json_root = self.lineEdit_isat2voc_isat_json_root.text()
                 self.converter.voc_png_root = self.lineEdit_isat2voc_voc_png_root.text()
-                self.converter.is_instance = self.checkBox_is_instance.isChecked()
-                self.converter.use_setting_color = self.checkBox_use_setting_color.isChecked()
-                self.checkBox_use_setting_color.setEnabled(not self.checkBox_is_instance.isChecked())
+                self.converter.instance_id = self.checkBox_instance_id.isChecked()
+                self.converter.semantic_id = self.checkBox_semantic_id.isChecked()
                 self.converter.run()
             else:
                 QtWidgets.QMessageBox.warning(self, '', '')

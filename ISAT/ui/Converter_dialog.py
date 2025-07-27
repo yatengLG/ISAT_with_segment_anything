@@ -586,7 +586,7 @@ class Ui_Dialog(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">         [0, 0, 0, ...7, 7, 7]]</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_5.setText(_translate("Dialog", "VOC save annotations to multiple PNG files."))
-        self.label_10.setText(_translate("Dialog", "**The num of classification and the group must in [0, 255]**"))
+        self.label_10.setText(_translate("Dialog", "**The num of classification and the group must in [0, 65535]**"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_VOC), _translate("Dialog", "VOC"))
         self.lineEdit_isat2vocod_isat_json_root.setPlaceholderText(_translate("Dialog", "ISAT jsons root"))
         self.pushButton_isat2vocod_isat_json_root.setText(_translate("Dialog", "json root"))

@@ -8,12 +8,7 @@ import sys
 
 # ubuntu18.04装其他应用时，环境崩了。。。qtapp初始化后，torch调用cuda会卡死，但先调用下cuda就不会卡死。
 import torch
-if torch.version.cuda is not None and torch.cuda.is_available():
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # use GPU
-    device = torch.device("cuda")
-else:
-    os.environ["CUDA_VISIBLE_DEVICES"] = ""   # disable GPU
-    device = torch.device("cpu")
+torch.cuda.init()  # explicit init
 # (知道怎么处理该问题，请反馈下 T.T)
 
 def main():

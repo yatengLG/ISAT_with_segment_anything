@@ -1022,7 +1022,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.png_palette = image_data.getpalette()
             if self.png_palette is not None and file_path.endswith('.png'):
-                self.statusbar.showMessage('This is a label file.')
+                self.statusbar.showMessage('This image might be a label image in VOC format.')
                 self.can_be_annotated = False
             else:
                 self.can_be_annotated = True

@@ -16,6 +16,8 @@ Our tool enables interactive use of [segment anything](https://github.com/facebo
 
 Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
+Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
+
 ---
 
 # Features and Installation

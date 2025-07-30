@@ -16,6 +16,8 @@
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
 
+请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/) (待更新，先看英文文档吧😄)
+
 ---
 
 # 软件特点及安装

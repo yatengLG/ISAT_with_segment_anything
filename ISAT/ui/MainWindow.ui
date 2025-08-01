@@ -668,10 +668,10 @@
     <string>Cancel</string>
    </property>
    <property name="toolTip">
-    <string>Annotate canceled</string>
+    <string>Cancel annotation</string>
    </property>
    <property name="statusTip">
-    <string>Annotate canceled.</string>
+    <string>Cancel annotation.</string>
    </property>
    <property name="shortcut">
     <string>Esc</string>
@@ -686,10 +686,10 @@
     <string>Finish</string>
    </property>
    <property name="toolTip">
-    <string>Annotate finished</string>
+    <string>Finish annotation</string>
    </property>
    <property name="statusTip">
-    <string>Annotate finished.</string>
+    <string>Finish annotation.</string>
    </property>
    <property name="shortcut">
     <string>E</string>
@@ -737,13 +737,19 @@
      <normaloff>:/icon/icons/列表_list-middle.svg</normaloff>:/icon/icons/列表_list-middle.svg</iconset>
    </property>
    <property name="text">
-    <string>Model manage</string>
+    <string>Model manager</string>
+   </property>
+   <property name="iconText">
+    <string>Model manager</string>
+   </property>
+   <property name="toolTip">
+    <string>Model manager</string>
    </property>
    <property name="statusTip">
-    <string>Model manage.</string>
+    <string>Model manager.</string>
    </property>
    <property name="whatsThis">
-    <string>Model manage.</string>
+    <string>Model manager.</string>
    </property>
    <property name="font">
     <font>

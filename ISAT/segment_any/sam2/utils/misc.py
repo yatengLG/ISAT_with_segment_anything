@@ -325,14 +325,14 @@ def fill_holes_in_mask_scores(mask, max_area):
         mask = torch.where(is_hole, 0.1, mask)
     except Exception as e:
         # Skip the post-processing step on removing small holes if the CUDA kernel fails
-        warnings.warn(
-            f"{e}\n\nSkipping the post-processing step due to the error above. You can "
-            "still use SAM 2 and it's OK to ignore the error above, although some post-processing "
-            "functionality may be limited (which doesn't affect the results in most cases; see "
-            "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).",
-            category=UserWarning,
-            stacklevel=2,
-        )
+        # warnings.warn(
+        #     f"{e}\n\nSkipping the post-processing step due to the error above. You can "
+        #     "still use SAM 2 and it's OK to ignore the error above, although some post-processing "
+        #     "functionality may be limited (which doesn't affect the results in most cases; see "
+        #     "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).",
+        #     category=UserWarning,
+        #     stacklevel=2,
+        # )
         mask = input_mask
 
     return mask

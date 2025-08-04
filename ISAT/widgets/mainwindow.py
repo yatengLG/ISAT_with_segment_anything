@@ -657,7 +657,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if is_error:
             QtWidgets.QMessageBox.warning(self, 'warning', message)
 
-        print('Segment video: {}/{}'.format(current, total))
         self.progressbar.setMaximum(total)
         self.progressbar.setValue(current)
         if finished:

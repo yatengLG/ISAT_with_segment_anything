@@ -104,14 +104,14 @@ class SAM2Transforms(nn.Module):
                 masks = torch.where(is_hole, self.mask_threshold - 10.0, masks)
         except Exception as e:
             # Skip the post-processing step if the CUDA kernel fails
-            warnings.warn(
-                f"{e}\n\nSkipping the post-processing step due to the error above. You can "
-                "still use SAM 2 and it's OK to ignore the error above, although some post-processing "
-                "functionality may be limited (which doesn't affect the results in most cases; see "
-                "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).",
-                category=UserWarning,
-                stacklevel=2,
-            )
+            # warnings.warn(
+            #     f"{e}\n\nSkipping the post-processing step due to the error above. You can "
+            #     "still use SAM 2 and it's OK to ignore the error above, although some post-processing "
+            #     "functionality may be limited (which doesn't affect the results in most cases; see "
+            #     "https://github.com/facebookresearch/sam2/blob/main/INSTALL.md).",
+            #     category=UserWarning,
+            #     stacklevel=2,
+            # )
             masks = input_masks
 
         masks = F.interpolate(masks, orig_hw, mode="bilinear", align_corners=False)

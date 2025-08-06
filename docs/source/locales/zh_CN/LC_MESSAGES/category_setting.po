@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/category_setting.rst:2
+msgid "Category Setting"
+msgstr ""
+
+#: ../../source/category_setting.rst:5
+msgid "1. Category Setting"
+msgstr ""
+
+#: ../../source/category_setting.rst:7
+msgid "In ISAT, you can customize category names and their display colors."
+msgstr ""
+
+#: ../../source/category_setting.rst:9
+msgid ""
+"Click the ``Category settings`` button to open the category settings "
+"interface."
+msgstr ""
+
+#: ../../source/category_setting.rst:-1
+msgid "category_setting.png"
+msgstr ""
+
+#: ../../source/category_setting.rst:14
+msgid "The background category is not modifiable in ISAT."
+msgstr ""
+
+#: ../../source/category_setting.rst:17
+msgid "2. Select Category"
+msgstr ""
+
+#: ../../source/category_setting.rst:19
+msgid "Before starting the annotation, you need to select a category."
+msgstr ""
+
+#: ../../source/category_setting.rst:-1
+msgid "category_dock.png"
+msgstr ""
+
+#: ../../source/category_setting.rst:24
+msgid ""
+"If the targets to be annotated belong to the same category,  it can save "
+"a lot of work."
+msgstr ""
+
+#: ../../source/category_setting.rst:27
+msgid "2.1 Category Selection Shortcut"
+msgstr ""
+
+#: ../../source/category_setting.rst:29
+msgid ""
+"Numbers ``[1 - 9]`` are category selection shortcut keys, allowing you to"
+" quickly select the category."
+msgstr ""
+
+#: ../../source/category_setting.rst:32
+msgid "2.2 Quickly Locate the Category"
+msgstr ""
+
+#: ../../source/category_setting.rst:34
+msgid ""
+"ISAT uses a fuzzy matching algorithm to locate the desired category from "
+"a large number of categories."
+msgstr ""
+
+#: ../../source/category_setting.rst:-1
+msgid "category_search.gif"
+msgstr ""
+
+#: ../../source/category_setting.rst:39
+msgid "The shortcuts from 1 to 9 also apply to the filtered categories."
+msgstr ""
+

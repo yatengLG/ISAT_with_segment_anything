@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/install.rst:2
+msgid "Installation"
+msgstr "安装"
+
+#: ../../source/install.rst:5
+msgid "Option 1: Install with Pip"
+msgstr "方式1：使用pip进行安装"
+
+#: ../../source/install.rst:7 ../../source/install.rst:57
+msgid "**Create a new environment** (recommended, optional)"
+msgstr "**创建一个新环境** (推荐, 可选)"
+
+#: ../../source/install.rst:9 ../../source/install.rst:59
+msgid "Use conda create a new environment"
+msgstr "使用conda创建一个新环境"
+
+#: ../../source/install.rst:15 ../../source/install.rst:65
+msgid "activate new environment"
+msgstr "激活新环境"
+
+#: ../../source/install.rst:21
+msgid "**Install ISAT-SAM using pip**"
+msgstr "使用pip安装isat-sam"
+
+#: ../../source/install.rst:23 ../../source/install.rst:73
+msgid ""
+"To use GPU on Windows OS, install pytorch-gpu from `Pytorch "
+"<https://pytorch.org/>`_"
+msgstr "在Windows系统上使用gpu，需要从 `Pytorch <https://pytorch.org/>`_ 官网安装 pytorch-gpu"
+
+#: ../../source/install.rst:29 ../../source/install.rst:79
+msgid "**Run**"
+msgstr "运行"
+
+#: ../../source/install.rst:31 ../../source/install.rst:81
+msgid "Start the application via the command line:"
+msgstr "通过命令行启动ISAT"
+
+#: ../../source/install.rst:37
+msgid "Recommended install isat-sam using pip"
+msgstr "推荐使用pip安装isat-sam"
+
+#: ../../source/install.rst:40
+msgid "Option 2: Install from Source Code"
+msgstr "方式2：从源码安装"
+
+#: ../../source/install.rst:42
+msgid "**Get source code from github**"
+msgstr "从Github上获取源码"
+
+#: ../../source/install.rst:44
+msgid "Use git clone project and then into project"
+msgstr "克隆并进入项目，"
+
+#: ../../source/install.rst:51
+msgid ""
+"Or download zip from `Here "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_,"
+" unzip and into project"
+msgstr "或者，也可以从 这里 <https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_ 下载源码zip文件，解压缩后进入项目"
+
+#: ../../source/install.rst:71
+msgid "**Install dependencies**"
+msgstr "安装依赖项"
+
+#: ../../source/install.rst:87
+msgid "Or"
+msgstr "或者"
+

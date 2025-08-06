@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/书籍1_book-one.svg</file>
     <file>../icons/拼图_puzzle.svg</file>
     <file>../icons/云运行_link-cloud.svg</file>
     <file>../icons/英文_english.svg</file>

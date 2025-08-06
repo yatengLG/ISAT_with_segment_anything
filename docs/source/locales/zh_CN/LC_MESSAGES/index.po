@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/index.rst:2
+msgid "Welcome to ISAT-SAM's documentation!"
+msgstr "欢迎查阅ISAT-SAM的文档！"
+
+#: ../../source/index.rst:4
+msgid ""
+"**ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with "
+"`Segment Anything Model <https://github.com/facebookresearch/segment-"
+"anything>`_"
+msgstr "ISAT-SAM 是一款基于 `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_ 的交互式半自动图像分割标注工具"
+
+#: ../../source/index.rst:-1
+msgid "software.gif"
+msgstr ""
+
+#: ../../source/index.rst:10
+msgid "Features"
+msgstr "特性"
+
+#: ../../source/index.rst:12
+msgid ""
+"Focusing on the field of image segmentation, we strive to create the best"
+" image segmentation annotation software."
+msgstr "专注于图像分割领域，我们致力于打造最好的图像分割标注软件。"
+
+#: ../../source/index.rst:14
+msgid "Better performance and a smoother annotation experience."
+msgstr "更好的性能，更流畅的标注体验。"
+
+#: ../../source/index.rst:15
+msgid ""
+"Utilizes `Segment anything model <https://github.com/facebookresearch"
+"/segment-anything>`_ with point and bounding box prompts to semi-"
+"automatic annotation."
+msgstr "使用SAM的点提示与框提示，进行半自动标注。"
+
+#: ../../source/index.rst:16
+msgid ""
+"Supports `SAM <https://github.com/facebookresearch/segment-anything>`_, "
+"`SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `Sam-HQ"
+" <https://github.com/SysCV/sam-hq>`_, `MobileSAM "
+"<https://github.com/ChaoningZhang/MobileSAM>`_, `EdgeSAM "
+"<https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM "
+"<https://github.com/bowang-lab/MedSAM>`_."
+msgstr "支持 `SAM <https://github.com/facebookresearch/segment-anything>`_, `SAM2 <https://github.com/facebookresearch/segment-anything-2>`_，`Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM <https://github.com/bowang-lab/MedSAM>`_。"
+
+#: ../../source/index.rst:17
+msgid "Supports using remote server for SAM encoding."
+msgstr "支持使用远程服务器进行SAM编码。"
+
+#: ../../source/index.rst:18
+msgid "Supports video annotation."
+msgstr "支持视频标注。"
+
+#: ../../source/index.rst:19
+msgid "Supports plugin extensions."
+msgstr "支持插件扩展。"
+
+#: ../../source/index.rst:22
+msgid "Contents"
+msgstr "内容"
+

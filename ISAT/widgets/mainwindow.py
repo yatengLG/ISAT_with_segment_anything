@@ -1467,6 +1467,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def save_software_cfg(self):
         save_config(self.cfg, self.software_config_file)
 
+    def open_docs(self):
+        try:
+            if self.cfg['software']['language'] == 'en':
+                url = "https://isat-with-segment-anything.readthedocs.io/en/latest/index.html#"
+            else:
+                url = "https://isat-with-segment-anything.readthedocs.io/en/latest/index.html#"
+
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+
+        except Exception:
+            pass
+
     def exit(self):
         # 保存类别配置
         self.save_cfg(self.config_file)
@@ -1536,6 +1548,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.about)
 
         self.actionLanguage.triggered.connect(self.change_language)
+        self.actionDocs.triggered.connect(self.open_docs)
 
         self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
 

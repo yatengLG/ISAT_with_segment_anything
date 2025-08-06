@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/modify.rst:2
+msgid "Modify"
+msgstr ""
+
+#: ../../source/modify.rst:5
+msgid "1. Move and Delete"
+msgstr ""
+
+#: ../../source/modify.rst:7
+msgid "You can move or delete polygons and their vertices."
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "move_and_delete.gif"
+msgstr ""
+
+#: ../../source/modify.rst:12
+msgid "Multiple selection is supported."
+msgstr ""
+
+#: ../../source/modify.rst:15
+msgid "2. Edit"
+msgstr ""
+
+#: ../../source/modify.rst:17
+msgid "Double click polygon or annotations list to open edit interface"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "edit.gif"
+msgstr ""
+
+#: ../../source/modify.rst:23
+msgid "3. Repaint"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "repaint.gif"
+msgstr ""
+
+#: ../../source/modify.rst:28
+msgid "Repaint process:"
+msgstr ""
+
+#: ../../source/modify.rst:30
+msgid "Click the ``Repaint`` button to switch to repaint mode."
+msgstr ""
+
+#: ../../source/modify.rst:31
+msgid "Click on a vertex of polygon to start repaint."
+msgstr ""
+
+#: ../../source/modify.rst:32
+msgid "Click on another vertex of polygon to end repaint."
+msgstr ""
+
+#: ../../source/modify.rst:35
+msgid "4. Adjust the Layer"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "layer.gif"
+msgstr ""
+
+#: ../../source/modify.rst:40
+msgid "Adjust the occlusion status of objects by changing the layer order."
+msgstr ""
+
+#: ../../source/modify.rst:43
+msgid "5. Intersection, Union, Difference, and XOR"
+msgstr ""
+
+#: ../../source/modify.rst:45
+msgid "**Intersection**"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "intersect.gif"
+msgstr ""
+
+#: ../../source/modify.rst:50
+msgid "**Union**"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "union.gif"
+msgstr ""
+
+#: ../../source/modify.rst:55
+msgid "**Difference**"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "subtract.gif"
+msgstr ""
+
+#: ../../source/modify.rst:60
+msgid "**XOR (Symmetric Difference)**"
+msgstr ""
+
+#: ../../source/modify.rst:-1
+msgid "exclude.gif"
+msgstr ""
+
+#: ../../source/modify.rst:65
+msgid "Always use the attributes of the first polygon."
+msgstr ""
+

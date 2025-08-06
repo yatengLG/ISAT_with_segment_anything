@@ -21,6 +21,8 @@ label:
   name: fence
 - color: '#204a87'
   name: hat
+- color: '#813d9c'
+  name: bed
 shortcut:
   actionAbout:
     default_key: ''
@@ -161,6 +163,6 @@ software:
   real_time_area: false
   show_edge: true
   show_prompt: true
-  use_bfloat16: false
-  use_polydp: false
+  use_bfloat16: true
+  use_polydp: true
   vertex_size: 1

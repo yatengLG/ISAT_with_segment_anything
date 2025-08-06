@@ -21,21 +21,21 @@ msgstr ""
 
 #: ../../source/annotation.rst:2
 msgid "Annotate"
-msgstr ""
+msgstr "标注"
 
 #: ../../source/annotation.rst:5
 msgid "1. Start Annotation"
-msgstr ""
+msgstr "1. 开始标注"
 
 #: ../../source/annotation.rst:8
 msgid "1.1 Manual Annotation"
-msgstr ""
+msgstr "1.1 手动标注"
 
 #: ../../source/annotation.rst:10
 msgid ""
 "Click the ``Draw Polygon`` button ``[C]`` in the toolbar to start "
 "manually annotating a polygon."
-msgstr ""
+msgstr "点击工具栏中 ``绘制多边形`` 按钮 ``[C]`` 开始手动标注多边形。"
 
 #: ../../source/annotation.rst:-1
 msgid "draw_polygon_button.png"
@@ -43,17 +43,17 @@ msgstr ""
 
 #: ../../source/annotation.rst:16
 msgid "**Manual annotation offers two methods: clicking and dragging.**"
-msgstr ""
+msgstr "**手动标注提供了两种不同的方式：点击与拖动。**"
 
 #: ../../source/annotation.rst:19
 msgid "1.1.1 Clicking Method"
-msgstr ""
+msgstr "1.1.1 点击方式"
 
 #: ../../source/annotation.rst:21
 msgid ""
 "Clicking is the most common annotation method, with each click adding a "
 "polygon vertex."
-msgstr ""
+msgstr "点击是最常见的标注方式，每次点击鼠标左键，添加一个多边形顶点。"
 
 #: ../../source/annotation.rst:-1
 msgid "clicking.gif"
@@ -61,13 +61,13 @@ msgstr ""
 
 #: ../../source/annotation.rst:27
 msgid "1.1.2 Dragging Method"
-msgstr ""
+msgstr "1.1.2 拖动方式"
 
 #: ../../source/annotation.rst:29
 msgid ""
 "By pressing and holding the left mouse button and dragging the mouse, "
 "(0.15s per point)"
-msgstr ""
+msgstr "按下鼠标左键并拖动鼠标，在拖动轨迹上每隔0.15秒添加一个顶点。"
 
 #: ../../source/annotation.rst:-1
 msgid "dragging.gif"
@@ -75,15 +75,15 @@ msgstr ""
 
 #: ../../source/annotation.rst:34
 msgid "With the Dragging method, you can easily draw curves."
-msgstr ""
+msgstr "通过拖动方式，你可以很轻松的绘制曲线。"
 
 #: ../../source/annotation.rst:37
 msgid "1.2 Semi-automatic Annotation"
-msgstr ""
+msgstr "1.2 半自动标注"
 
 #: ../../source/annotation.rst:39
 msgid "Utilizes SAM with point and bounding box prompts."
-msgstr ""
+msgstr "集成了SAM 点提示与框提示。"
 
 #: ../../source/annotation.rst:-1
 msgid "point_box_prompt_button.png"
@@ -91,13 +91,13 @@ msgstr ""
 
 #: ../../source/annotation.rst:45
 msgid "1.2.1 Point Prompt"
-msgstr ""
+msgstr "1.2.1 点提示"
 
 #: ../../source/annotation.rst:47
 msgid ""
 "Click the ``Segment anything point`` button ``[Q]`` in the toolbar to "
 "start SAM point prompt."
-msgstr ""
+msgstr "点击工具栏中 ``Segment anything 点提示`` 按钮 ``[Q]`` 开始SAM点提示。"
 
 #: ../../source/annotation.rst:-1
 msgid "point_prompts.gif"
@@ -105,13 +105,13 @@ msgstr ""
 
 #: ../../source/annotation.rst:53
 msgid "1.2.2 Box Prompt"
-msgstr ""
+msgstr "1.2.2 框提示"
 
 #: ../../source/annotation.rst:55
 msgid ""
 "Click the ``Segment anything box`` button ``[W]`` in the toolbar to start"
 " SAM box prompt."
-msgstr ""
+msgstr "点击工具栏中 ``Segment anything 框提示`` 按钮 ``[W]`` 开始SAM框提示。"
 
 #: ../../source/annotation.rst:-1
 msgid "box_prompts.gif"
@@ -119,67 +119,67 @@ msgstr ""
 
 #: ../../source/annotation.rst:61
 msgid "2. Finish Annotation"
-msgstr ""
+msgstr "2. 完成标注"
 
 #: ../../source/annotation.rst:63
 msgid ""
 "Click the ``Finish annotation`` button ``[E]`` in the toolbar to end the "
 "annotation."
-msgstr ""
+msgstr "点击工具栏中 ``完成标注`` 按钮 ``[E]`` 结束标注。"
 
 #: ../../source/annotation.rst:65
 msgid ""
 "When using sam, finish annotation will convert the mask into a polygon on"
 " the canvas."
-msgstr ""
+msgstr "当使用SAM进行半自动标注时，完成标注会将画布上的掩码转换为多边形。"
 
 #: ../../source/annotation.rst:67
 msgid ""
 "ISAT offers multiple conversion methods, which you can find in the "
 "settings interface."
-msgstr ""
+msgstr "ISAT提供了多种掩码转换多边形的逻辑，名为轮廓模式，你可以在设置界面中进行设置。"
 
 #: ../../source/annotation.rst:69
 msgid "Contour mode:"
-msgstr ""
+msgstr "轮廓模式"
 
 #: ../../source/annotation.rst:71
 msgid "External contours"
-msgstr ""
+msgstr "只保存外轮廓"
 
 #: ../../source/annotation.rst:72
 msgid "Only max contour"
-msgstr ""
+msgstr "只保存最大轮廓"
 
 #: ../../source/annotation.rst:73
 msgid "All contours"
-msgstr ""
+msgstr "保存所有轮廓"
 
 #: ../../source/annotation.rst:75
 msgid ""
 "For detailed usage, please refer to `Contour mode <other.html#contour-"
 "mode>`_."
-msgstr ""
+msgstr "具体的使用细节，请参考 `轮廓模式 <other.html#contour-mode>`_."
 
 #: ../../source/annotation.rst:78
 msgid "3. Cancel Annotation"
-msgstr ""
+msgstr "3. 取消标注"
 
 #: ../../source/annotation.rst:80
 msgid ""
 "Click the ``Cancel annotation`` button ``[Esc]`` in the toolbar to end "
 "the annotation."
-msgstr ""
+msgstr "点击工具栏中 ``取消标注`` 按钮 ``[Esc]`` 取消标注。"
 
 #: ../../source/annotation.rst:83
 msgid "4. Backspace"
-msgstr ""
+msgstr "4. 回退"
 
 #: ../../source/annotation.rst:85
 msgid ""
 "Click the ``Backspace`` button ``[Z]`` in the toolbar to return to the "
 "previous annotation state."
-msgstr ""
+msgstr "点击工具栏中 ``回退`` 按钮 ``[Z]`` 返回上一个标注状态。"
 
 #: ../../source/annotation.rst:-1
 msgid "backspace.gif"
@@ -187,13 +187,13 @@ msgstr ""
 
 #: ../../source/annotation.rst:91
 msgid "5. Video Annotation"
-msgstr ""
+msgstr "5. 视频标注"
 
 #: ../../source/annotation.rst:93
 msgid ""
 "ISAT uses SAM2 for video annotation, provides the functions of annotating"
 " the next frame, the next five frames, and the entire video."
-msgstr ""
+msgstr "ISAT使用SAM2模型实现视频标注，提供了下一帧，下五帧，所有帧的标注功能。"
 
 #: ../../source/annotation.rst:-1
 msgid "video_annotation.gif"
@@ -201,19 +201,19 @@ msgstr ""
 
 #: ../../source/annotation.rst:98
 msgid "Video annotation process:"
-msgstr ""
+msgstr "视频标注流程："
 
 #: ../../source/annotation.rst:100
 msgid "Select SAM2 or SAM2.1 model."
-msgstr ""
+msgstr "选择SAM2或SAM2.1模型"
 
 #: ../../source/annotation.rst:101
 msgid "Start the video annotation with an already annotated frame."
-msgstr ""
+msgstr "从已标注完成的一帧开始。"
 
 #: ../../source/annotation.rst:102
 msgid ""
 "Click the ``Video segment once`` button or ``Video segment five times`` "
 "button or ``Video segment`` button."
-msgstr ""
+msgstr "点击 ``视频分割1帧``， ``视频分割5帧``, ``视频分割`` 按钮进行视频标注。"
 

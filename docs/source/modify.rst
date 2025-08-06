@@ -14,7 +14,7 @@ You can move or delete polygons and their vertices.
 2. Edit
 ---------------------------------
 
-Double click polygon or annotations list to open edit interface
+Double click polygon or annotations list to open edit interface.
 
 .. image:: ../../display/edit.gif
     :alt: edit.gif

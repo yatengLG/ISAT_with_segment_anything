@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"POT-Creation-Date: 2025-08-06 17:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -21,15 +21,15 @@ msgstr ""
 
 #: ../../source/modify.rst:2
 msgid "Modify"
-msgstr ""
+msgstr "修改"
 
 #: ../../source/modify.rst:5
 msgid "1. Move and Delete"
-msgstr ""
+msgstr "1. 移动和删除"
 
 #: ../../source/modify.rst:7
 msgid "You can move or delete polygons and their vertices."
-msgstr ""
+msgstr "移动或删除多边形以及多边形的顶点。"
 
 #: ../../source/modify.rst:-1
 msgid "move_and_delete.gif"
@@ -37,15 +37,15 @@ msgstr ""
 
 #: ../../source/modify.rst:12
 msgid "Multiple selection is supported."
-msgstr ""
+msgstr "支持多选。按下Ctrl可以多选多边形与顶点。"
 
 #: ../../source/modify.rst:15
 msgid "2. Edit"
-msgstr ""
+msgstr "2. 编辑"
 
 #: ../../source/modify.rst:17
-msgid "Double click polygon or annotations list to open edit interface"
-msgstr ""
+msgid "Double click polygon or annotations list to open edit interface."
+msgstr "通过双击多边形或标注列表中标注项，打开编辑界面。"
 
 #: ../../source/modify.rst:-1
 msgid "edit.gif"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: ../../source/modify.rst:23
 msgid "3. Repaint"
-msgstr ""
+msgstr "3. 重绘"
 
 #: ../../source/modify.rst:-1
 msgid "repaint.gif"
@@ -61,23 +61,23 @@ msgstr ""
 
 #: ../../source/modify.rst:28
 msgid "Repaint process:"
-msgstr ""
+msgstr "重绘流程："
 
 #: ../../source/modify.rst:30
 msgid "Click the ``Repaint`` button to switch to repaint mode."
-msgstr ""
+msgstr "点击工具栏中 ``重绘`` 按钮，切换到重绘模式。"
 
 #: ../../source/modify.rst:31
 msgid "Click on a vertex of polygon to start repaint."
-msgstr ""
+msgstr "点击多边形的一个顶点，开始重绘。"
 
 #: ../../source/modify.rst:32
 msgid "Click on another vertex of polygon to end repaint."
-msgstr ""
+msgstr "点击同一个多边形的另一个顶点，结束重绘。"
 
 #: ../../source/modify.rst:35
 msgid "4. Adjust the Layer"
-msgstr ""
+msgstr "4. 调整图层"
 
 #: ../../source/modify.rst:-1
 msgid "layer.gif"
@@ -85,15 +85,15 @@ msgstr ""
 
 #: ../../source/modify.rst:40
 msgid "Adjust the occlusion status of objects by changing the layer order."
-msgstr ""
+msgstr "通过修改图层顺序来调整目标之间的遮挡关系。"
 
 #: ../../source/modify.rst:43
 msgid "5. Intersection, Union, Difference, and XOR"
-msgstr ""
+msgstr "5. 交集， 并集， 差集 与 异或"
 
 #: ../../source/modify.rst:45
 msgid "**Intersection**"
-msgstr ""
+msgstr "**交集**"
 
 #: ../../source/modify.rst:-1
 msgid "intersect.gif"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: ../../source/modify.rst:50
 msgid "**Union**"
-msgstr ""
+msgstr "**并集**"
 
 #: ../../source/modify.rst:-1
 msgid "union.gif"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: ../../source/modify.rst:55
 msgid "**Difference**"
-msgstr ""
+msgstr "**差集**"
 
 #: ../../source/modify.rst:-1
 msgid "subtract.gif"
@@ -117,7 +117,7 @@ msgstr ""
 
 #: ../../source/modify.rst:60
 msgid "**XOR (Symmetric Difference)**"
-msgstr ""
+msgstr "**异或**"
 
 #: ../../source/modify.rst:-1
 msgid "exclude.gif"
@@ -125,5 +125,5 @@ msgstr ""
 
 #: ../../source/modify.rst:65
 msgid "Always use the attributes of the first polygon."
-msgstr ""
+msgstr "总是使用所选的第一个多边形的属性。"
 

@@ -21,11 +21,11 @@ msgstr ""
 
 #: ../../source/plugin.rst:2
 msgid "Plugin"
-msgstr ""
+msgstr "插件"
 
 #: ../../source/plugin.rst:4
 msgid "Click ``Plugins`` button in right toolbar to open plugins interface."
-msgstr ""
+msgstr "点击右侧工具栏中 ``插件`` 按钮，打开插件界面。"
 
 #: ../../source/plugin.rst:-1
 msgid "plugins.png"
@@ -35,9 +35,9 @@ msgstr ""
 msgid ""
 "All ISAT plugins are released in the form of Python packages. After "
 "installing the plugin, restart ISAT to load the plugin."
-msgstr ""
+msgstr "所有的ISAT插件均以python包的形式发布，安装插件后，重启ISAT来加载插件。"
 
 #: ../../source/plugin.rst:11
 msgid "Activating multiple plugins simultaneously may cause conflicts."
-msgstr ""
+msgstr "同时激活多个插件可能会导致冲突。"
 

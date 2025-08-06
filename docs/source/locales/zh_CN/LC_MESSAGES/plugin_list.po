@@ -21,19 +21,19 @@ msgstr ""
 
 #: ../../source/plugin_list.rst:2
 msgid "Plugin List"
-msgstr ""
+msgstr "插件列表"
 
 #: ../../source/plugin_list.rst:7
 msgid "Plugin"
-msgstr ""
+msgstr "插件"
 
 #: ../../source/plugin_list.rst:8
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
 #: ../../source/plugin_list.rst:9
 msgid "Link"
-msgstr ""
+msgstr "链接"
 
 #: ../../source/plugin_list.rst:11
 msgid "AutoAnnotatePlugin"
@@ -57,9 +57,9 @@ msgstr ""
 
 #: ../../source/plugin_list.rst:19
 msgid "After installing the plugin, restart ISAT to load the plugin."
-msgstr ""
+msgstr "安装插件后，重启ISAT加载插件。"
 
 #: ../../source/plugin_list.rst:21
 msgid "Activating multiple plugins simultaneously may cause conflicts."
-msgstr ""
+msgstr "同时激活多个插件可能会导致冲突。"
 

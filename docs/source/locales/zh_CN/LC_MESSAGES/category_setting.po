@@ -21,21 +21,21 @@ msgstr ""
 
 #: ../../source/category_setting.rst:2
 msgid "Category Setting"
-msgstr ""
+msgstr "类别设置"
 
 #: ../../source/category_setting.rst:5
 msgid "1. Category Setting"
-msgstr ""
+msgstr "1. 类别设置"
 
 #: ../../source/category_setting.rst:7
 msgid "In ISAT, you can customize category names and their display colors."
-msgstr ""
+msgstr "在ISAT中，可以很方便的自定义类别名与显示颜色。"
 
 #: ../../source/category_setting.rst:9
 msgid ""
 "Click the ``Category settings`` button to open the category settings "
 "interface."
-msgstr ""
+msgstr "点击 ``类别设置`` 按钮打开类别设置界面。"
 
 #: ../../source/category_setting.rst:-1
 msgid "category_setting.png"
@@ -43,15 +43,15 @@ msgstr ""
 
 #: ../../source/category_setting.rst:14
 msgid "The background category is not modifiable in ISAT."
-msgstr ""
+msgstr "在ISAT中，不支持修改背景类__background__。"
 
 #: ../../source/category_setting.rst:17
 msgid "2. Select Category"
-msgstr ""
+msgstr "2. 类别选择"
 
 #: ../../source/category_setting.rst:19
 msgid "Before starting the annotation, you need to select a category."
-msgstr ""
+msgstr "标注前，在左侧类别栏中，先选择要标注的类别。"
 
 #: ../../source/category_setting.rst:-1
 msgid "category_dock.png"
@@ -61,27 +61,27 @@ msgstr ""
 msgid ""
 "If the targets to be annotated belong to the same category,  it can save "
 "a lot of work."
-msgstr ""
+msgstr "在有很多同类目标的场景下，先选择类别后标注可以节省很多工作量。"
 
 #: ../../source/category_setting.rst:27
 msgid "2.1 Category Selection Shortcut"
-msgstr ""
+msgstr "2.1 类别选择快捷键"
 
 #: ../../source/category_setting.rst:29
 msgid ""
 "Numbers ``[1 - 9]`` are category selection shortcut keys, allowing you to"
 " quickly select the category."
-msgstr ""
+msgstr "数字键 ``[1 - 9]`` 是类别选择快捷键，可以快速选择类别。"
 
 #: ../../source/category_setting.rst:32
 msgid "2.2 Quickly Locate the Category"
-msgstr ""
+msgstr "2.2 类别筛选"
 
 #: ../../source/category_setting.rst:34
 msgid ""
 "ISAT uses a fuzzy matching algorithm to locate the desired category from "
 "a large number of categories."
-msgstr ""
+msgstr "ISAT通过模糊匹配算法，实现在大量类别中，快速筛选指定类别的功能。"
 
 #: ../../source/category_setting.rst:-1
 msgid "category_search.gif"
@@ -89,5 +89,5 @@ msgstr ""
 
 #: ../../source/category_setting.rst:39
 msgid "The shortcuts from 1 to 9 also apply to the filtered categories."
-msgstr ""
+msgstr "类别选择快捷键 ``[1 - 9]`` 也可以作用于筛选后的类别。"
 

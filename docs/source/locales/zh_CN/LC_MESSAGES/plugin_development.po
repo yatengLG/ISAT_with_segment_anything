@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"POT-Creation-Date: 2025-08-06 18:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: ../../source/plugin_development.rst:2
 msgid "Plugin Development"
-msgstr ""
+msgstr "插件开发"
 
 #: ../../source/plugin_development.rst:5
 msgid "1. Plugin Base Class"
-msgstr ""
+msgstr "1. 插件基类"
 
 #: ../../source/plugin_development.rst:7
 msgid "ISAT.widgets.plugin_base.py"
@@ -33,11 +33,11 @@ msgstr ""
 
 #: ../../source/plugin_development.rst:185
 msgid "PluginBase is the base class for all ISAT plugin classes"
-msgstr ""
+msgstr "PluginBase 是所有 ISAT 插件的基类"
 
 #: ../../source/plugin_development.rst:188
 msgid "2. Plugin Entry Point"
-msgstr ""
+msgstr "2. 插件入口"
 
 #: ../../source/plugin_development.rst:190
 msgid "setup.py"
@@ -45,43 +45,43 @@ msgstr ""
 
 #: ../../source/plugin_development.rst:199
 msgid "All ISAT plugins are released in the form of Python packages."
-msgstr ""
+msgstr "所有 ISAT 插件都以 Python 包的形式发布。"
 
 #: ../../source/plugin_development.rst:201
 msgid ""
 "**Plugin must use setup.py to add the plugin classes to the isat.plugins "
 "entry_points.**"
-msgstr ""
+msgstr "**插件必须使用 setup.py 将插件类添加到 entry_points 的 isat.plugins 中。**"
 
 #: ../../source/plugin_development.rst:204
 msgid "3. Plugin Get ISAT Data"
-msgstr ""
+msgstr "3. 插件获取ISAT数据"
 
 #: ../../source/plugin_development.rst:206
 msgid "The data returned from the events of the plugin base class is limited."
-msgstr ""
+msgstr "从插件基类的事件中获取的数据是有限的。"
 
 #: ../../source/plugin_development.rst:208
 msgid ""
 "Generally, when developing ISAT plugins, you can get ISAT data through "
-"``self.mainwindow``."
-msgstr ""
+"``self.mainwindow`` ."
+msgstr "在开发 ISAT 插件时，可以通过 ``self.mainwindow`` 直接访问ISAT数据。"
 
 #: ../../source/plugin_development.rst:211
 msgid "4. Create Your First Plugin"
-msgstr ""
+msgstr "4. 创建你的第一个插件"
 
 #: ../../source/plugin_development.rst:214
 msgid "4.1 Plugin Project Structure"
-msgstr ""
+msgstr "4.1 插件项目结构"
 
 #: ../../source/plugin_development.rst:216
 msgid "It is recommended to use the following structure as the plugin project."
-msgstr ""
+msgstr "推荐使用下面的文件结构作为插件项目结构。"
 
 #: ../../source/plugin_development.rst:232
 msgid "4.2 Write Plugin"
-msgstr ""
+msgstr "4.2 编写插件"
 
 #: ../../source/plugin_development.rst:234
 msgid "``ProjectName``/``PluginPackage``/``__init__.py``"
@@ -89,19 +89,19 @@ msgstr ""
 
 #: ../../source/plugin_development.rst:236
 msgid "Including information such as version, author, and package description."
-msgstr ""
+msgstr "包含版本，作者，插件描述等信息。"
 
 #: ../../source/plugin_development.rst:244
 msgid "``ProjectName``/``PluginPackage``/``main.py``"
 msgstr ""
 
 #: ../../source/plugin_development.rst:246
-msgid "Implement the plugin class"
-msgstr ""
+msgid "Implement the plugin class."
+msgstr "实现具体的插件类。"
 
 #: ../../source/plugin_development.rst:268
 msgid "4.3 Write the Packaging File"
-msgstr ""
+msgstr "4.3 编写包文件"
 
 #: ../../source/plugin_development.rst:270
 msgid "``ProjectName``/``setup.py``"
@@ -109,15 +109,15 @@ msgstr ""
 
 #: ../../source/plugin_development.rst:308
 msgid "4.4 Packaging"
-msgstr ""
+msgstr "4.4 打包"
 
 #: ../../source/plugin_development.rst:310
 msgid "Package as a source distribution"
-msgstr ""
+msgstr "打包为源码包"
 
 #: ../../source/plugin_development.rst:317
 msgid "Install"
-msgstr ""
+msgstr "安装"
 
 #: ../../source/plugin_development.rst:323
 msgid ""
@@ -126,18 +126,24 @@ msgid ""
 "`MaskExportPlugin <https://github.com/yatengLG/ISAT_plugin_mask_export>`_"
 " to develop your own plugins."
 msgstr ""
+"你可以参考插件：`AutoAnnotatePlugin "
+"<https://github.com/yatengLG/ISAT_plugin_auto_annotate>`_ and "
+"`MaskExportPlugin <https://github.com/yatengLG/ISAT_plugin_mask_export>`_"
+" 开发自己的插件。"
 
 #: ../../source/plugin_development.rst:326
 msgid "4.5 Share"
-msgstr ""
+msgstr "4.5 分享"
 
 #: ../../source/plugin_development.rst:328
 msgid ""
 "You can directly share the package file dist/xxx.tar.gz with others and "
 "then install with:"
-msgstr ""
+msgstr "你可以直接分享打包后的源码包 dist/xxx.tar.gz，然后通过pip 安装："
 
 #: ../../source/plugin_development.rst:334
-msgid "Or upload the package file to pypi, and then install with:"
-msgstr ""
+msgid ""
+"Or upload the package file to `pypi <https://pypi.org/>`_, and then "
+"install with:"
+msgstr "或者，把包上传到 `pypi <https://pypi.org/>`_ 供用户安装使用："
 

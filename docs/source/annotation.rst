@@ -64,15 +64,15 @@ Click the ``Finish annotation`` button ``[E]`` in the toolbar to end the annotat
 
 When using sam, finish annotation will convert the mask into a polygon on the canvas.
 
-ISAT offers multiple conversion methods, which you can find in the settings interface.
+.. tip:: ISAT offers multiple conversion methods, which you can find in the settings interface.
 
-Contour mode:
+         Contour mode:
 
-- External contours
-- Only max contour
-- All contours
+             - External contours
+             - Only max contour
+             - All contours
 
-.. tip:: For detailed usage, please refer to `Contour mode <other.html#contour-mode>`_.
+         For detailed usage, please refer to `Contour mode <other.html#contour-mode>`_.
 
 3. Cancel Annotation
 ---------------------------------

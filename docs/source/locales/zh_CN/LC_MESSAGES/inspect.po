@@ -21,17 +21,17 @@ msgstr ""
 
 #: ../../source/inspect.rst:2
 msgid "Inspect"
-msgstr ""
+msgstr "检查"
 
 #: ../../source/inspect.rst:5
 msgid "1. Preview Annotation Result"
-msgstr ""
+msgstr "1. 预览标注结果"
 
 #: ../../source/inspect.rst:7
 msgid ""
 "Click ``Bit map`` button ``[Space]`` in toolbar to preview semantic and "
 "instance annotation results."
-msgstr ""
+msgstr "点击工具栏中 ``位图`` 按钮 ``[Space]`` 预览语义与实例标注结果。"
 
 #: ../../source/inspect.rst:-1
 msgid "preview.gif"
@@ -39,13 +39,13 @@ msgstr ""
 
 #: ../../source/inspect.rst:13
 msgid "2. Quick Browsing"
-msgstr ""
+msgstr "2. 快速浏览"
 
 #: ../../source/inspect.rst:15
 msgid ""
 "Select a group ID from a dropdown to view the target, supporting quick "
 "switching between different groups via the scroll wheel."
-msgstr ""
+msgstr "从下拉列表中选择指定组id来显示指定目标。支持通过滚轮快速在不同目标间切换。"
 
 #: ../../source/inspect.rst:-1
 msgid "quick_browsing.gif"
@@ -53,14 +53,14 @@ msgstr ""
 
 #: ../../source/inspect.rst:21
 msgid "3. Detail Inspection"
-msgstr ""
+msgstr "3. 细节检查"
 
 #: ../../source/inspect.rst:23
 msgid ""
 "Click ``Prev group`` button ``[~]`` or ``Next group`` button ``[Tab]`` to"
 " switch annotations one by one using group IDs, adapting the view to the "
 "size of the annotation for detailed inspection."
-msgstr ""
+msgstr "点击 ``上一组`` 按钮 ``[~]`` 或 ``下一组`` 按钮 ``[Tab]`` 以组id显示目标的同时，自适应缩放目标，便于检查标注细节。"
 
 #: ../../source/inspect.rst:-1
 msgid "detail_inspection.gif"

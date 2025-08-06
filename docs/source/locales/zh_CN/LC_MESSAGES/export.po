@@ -21,21 +21,21 @@ msgstr ""
 
 #: ../../source/export.rst:2
 msgid "Export"
-msgstr ""
+msgstr "导出"
 
 #: ../../source/export.rst:5
 msgid "1. ISAT Json Format"
-msgstr ""
+msgstr "1. ISAT json格式"
 
 #: ../../source/export.rst:54
 msgid "2. Export as Common Data Formats."
-msgstr ""
+msgstr "2. 导出为通用数据格式"
 
 #: ../../source/export.rst:56
 msgid ""
 "Click ``Converter`` button in Tool in Menu bar to open Converter "
 "interface."
-msgstr ""
+msgstr "点击菜单栏-工具- ``数据转换`` 按钮，打开数据转换界面。"
 
 #: ../../source/export.rst:-1
 msgid "export.png"
@@ -45,7 +45,7 @@ msgstr ""
 msgid ""
 "ISAT provides the conversion functionality between the following data "
 "formats:"
-msgstr ""
+msgstr "ISAT 提供了一下数据格式之间的转换功能："
 
 #: ../../source/export.rst:63
 msgid "ISAT <==> COCO"

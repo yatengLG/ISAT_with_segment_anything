@@ -21,23 +21,23 @@ msgstr ""
 
 #: ../../source/sam_model.rst:2
 msgid "SAM Model"
-msgstr ""
+msgstr "SAM模型"
 
 #: ../../source/sam_model.rst:5
 msgid "1. Manage SAM Model"
-msgstr ""
+msgstr "1. SAM模型管理"
 
 #: ../../source/sam_model.rst:7
 msgid ""
 "Click the ``Model manager`` button in the right toolbar to open the model"
 " manager interface"
-msgstr ""
+msgstr "点击右侧工具栏中 ``模型管理`` 按钮，打开模型管理界面。"
 
 #: ../../source/sam_model.rst:9
 msgid ""
 "Download the required models, and click the radio button in front of the "
 "model list to activate the model."
-msgstr ""
+msgstr "下载需要使用的模型，并点击最左侧按钮激活模型。"
 
 #: ../../source/sam_model.rst:-1
 msgid "model_manager.png"
@@ -45,13 +45,13 @@ msgstr ""
 
 #: ../../source/sam_model.rst:16
 msgid "2. Remote SAM"
-msgstr ""
+msgstr "2. 远程SAM服务器"
 
 #: ../../source/sam_model.rst:18
 msgid ""
 "Click the ``Remote SAM`` button in the right toolbar to open the remote "
 "sam interface"
-msgstr ""
+msgstr "点击右侧工具栏中 ``远程SAM服务器`` 按钮，打开SAM远程编码服务器界面。"
 
 #: ../../source/sam_model.rst:-1
 msgid "remote_sam.png"
@@ -63,56 +63,56 @@ msgid ""
 " backend "
 "<https://github.com/yatengLG/ISAT_with_segment_anything_backend>`_ on the"
 " remote server."
-msgstr ""
+msgstr "使用远程SAM编码服务，需要先在远程服务器上安装 `ISAT with segment anything backend <https://github.com/yatengLG/ISAT_with_segment_anything_backend>`_"
 
 #: ../../source/sam_model.rst:25
 msgid "On the local machine, you also need to run the SAM model for decoding."
-msgstr ""
+msgstr "在本地机器上，也需要运行对应的SAM模型进行解码。"
 
 #: ../../source/sam_model.rst:27
 msgid ""
 "Currently, the entire SAM model needs to be loaded locally. In future "
 "updates, when using the remote SAM, only the decode part needs to be "
 "loaded locally. This work has not been completed yet."
-msgstr ""
+msgstr "当前，使用远程SAM时，本机需要加载整个SAM模型。在未来版本将对此进行优化，使本地只加载解码部分。但该工作尚未完成。"
 
 #: ../../source/sam_model.rst:29
 msgid ""
 "The feature maps of Sam-hq model is too large. Do not use Sam-hq model on"
 " remote server."
-msgstr ""
+msgstr "Sam-hq 模型的特征图太大，在使用远程SAM时，不要使用Sam-hq模型。"
 
 #: ../../source/sam_model.rst:32
 msgid "3. Supported SAM Models"
-msgstr ""
+msgstr "3. 支持的SAM模型"
 
 #: ../../source/sam_model.rst:37
 msgid "Model"
-msgstr ""
+msgstr "模型"
 
 #: ../../source/sam_model.rst:38
 msgid "Checkpoint"
-msgstr ""
+msgstr "权重"
 
 #: ../../source/sam_model.rst:39
 msgid "Memory"
-msgstr ""
+msgstr "内存"
 
 #: ../../source/sam_model.rst:40
 msgid "Memory (bfloat16)"
-msgstr ""
+msgstr "内存(bfloat16)"
 
 #: ../../source/sam_model.rst:41
 msgid "Disk"
-msgstr ""
+msgstr "硬盘"
 
 #: ../../source/sam_model.rst:42
 msgid "Image"
-msgstr ""
+msgstr "图像"
 
 #: ../../source/sam_model.rst:43
 msgid "Video"
-msgstr ""
+msgstr "视频"
 
 #: ../../source/sam_model.rst:45
 msgid "SAM-HQ"
@@ -428,5 +428,5 @@ msgstr ""
 msgid ""
 "If you are running ISAT on a cpu, it is recommended to use the "
 "**sam_hq_vit_tiny.pth** or **mobile_sam.pt** model."
-msgstr ""
+msgstr "如果你在CPU上运行ISAT，推荐使用 **sam_hq_vit_tiny.pth** 或 **mobile_sam.pt** 模型。"
 

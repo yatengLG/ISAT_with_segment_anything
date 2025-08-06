@@ -205,7 +205,7 @@ Plugin Development
 
 The data returned from the events of the plugin base class is limited.
 
-Generally, when developing ISAT plugins, you can get ISAT data through ``self.mainwindow``.
+Generally, when developing ISAT plugins, you can get ISAT data through ``self.mainwindow`` .
 
 4. Create Your First Plugin
 ------------------------------------
@@ -231,7 +231,7 @@ It is recommended to use the following structure as the plugin project.
 4.2 Write Plugin
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-- ``ProjectName``/``PluginPackage``/``__init__.py``
+-   ``ProjectName``/``PluginPackage``/``__init__.py``
 
     Including information such as version, author, and package description.
 
@@ -241,9 +241,9 @@ It is recommended to use the following structure as the plugin project.
         __version__ = "0.0.1"
         __description__ = "A short description of the plugin's functionality."
 
-- ``ProjectName``/``PluginPackage``/``main.py``
+-   ``ProjectName``/``PluginPackage``/``main.py``
 
-    Implement the plugin class
+    Implement the plugin class.
 
     .. code-block:: python
 
@@ -267,7 +267,7 @@ It is recommended to use the following structure as the plugin project.
 4.3 Write the Packaging File
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-- ``ProjectName``/``setup.py``
+-   ``ProjectName``/``setup.py``
 
     .. code-block:: python
 
@@ -307,14 +307,14 @@ It is recommended to use the following structure as the plugin project.
 4.4 Packaging
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-- Package as a source distribution
+-   Package as a source distribution
 
     .. code-block:: shell
 
         cd {ProjectName}
         python setup.py sdist
 
-- Install
+-   Install
 
     .. code-block:: shell
 
@@ -325,15 +325,15 @@ It is recommended to use the following structure as the plugin project.
 4.5 Share
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-You can directly share the package file dist/xxx.tar.gz with others and then install with:
+-  You can directly share the package file dist/xxx.tar.gz with others and then install with:
 
-.. code-block:: shell
+   .. code-block:: shell
 
-   pip install xxx.tar.gz
+      pip install xxx.tar.gz
 
-Or upload the package file to pypi, and then install with:
+-  Or upload the package file to `pypi <https://pypi.org/>`_, and then install with:
 
-.. code-block:: shell
+   .. code-block:: shell
 
-   pip install {package name}
+      pip install {package name}
 

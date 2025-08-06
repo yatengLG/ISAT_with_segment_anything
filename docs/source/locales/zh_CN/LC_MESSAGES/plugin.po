@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/plugin.rst:2
+msgid "Plugin"
+msgstr ""
+
+#: ../../source/plugin.rst:4
+msgid "Click ``Plugins`` button in right toolbar to open plugins interface."
+msgstr ""
+
+#: ../../source/plugin.rst:-1
+msgid "plugins.png"
+msgstr ""
+
+#: ../../source/plugin.rst:9
+msgid ""
+"All ISAT plugins are released in the form of Python packages. After "
+"installing the plugin, restart ISAT to load the plugin."
+msgstr ""
+
+#: ../../source/plugin.rst:11
+msgid "Activating multiple plugins simultaneously may cause conflicts."
+msgstr ""
+

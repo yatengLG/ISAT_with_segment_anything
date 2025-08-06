@@ -1,0 +1,65 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/plugin_list.rst:2
+msgid "Plugin List"
+msgstr ""
+
+#: ../../source/plugin_list.rst:7
+msgid "Plugin"
+msgstr ""
+
+#: ../../source/plugin_list.rst:8
+msgid "Author"
+msgstr ""
+
+#: ../../source/plugin_list.rst:9
+msgid "Link"
+msgstr ""
+
+#: ../../source/plugin_list.rst:11
+msgid "AutoAnnotatePlugin"
+msgstr ""
+
+#: ../../source/plugin_list.rst:12 ../../source/plugin_list.rst:16
+msgid "yatengLG"
+msgstr ""
+
+#: ../../source/plugin_list.rst:13
+msgid "https://github.com/yatengLG/ISAT_plugin_auto_annotate"
+msgstr ""
+
+#: ../../source/plugin_list.rst:15
+msgid "MaskExportPlugin"
+msgstr ""
+
+#: ../../source/plugin_list.rst:17
+msgid "https://github.com/yatengLG/ISAT_plugin_mask_export"
+msgstr ""
+
+#: ../../source/plugin_list.rst:19
+msgid "After installing the plugin, restart ISAT to load the plugin."
+msgstr ""
+
+#: ../../source/plugin_list.rst:21
+msgid "Activating multiple plugins simultaneously may cause conflicts."
+msgstr ""
+

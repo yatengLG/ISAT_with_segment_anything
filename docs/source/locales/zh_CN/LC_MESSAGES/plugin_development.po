@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/plugin_development.rst:2
+msgid "Plugin Development"
+msgstr ""
+
+#: ../../source/plugin_development.rst:5
+msgid "1. Plugin Base Class"
+msgstr ""
+
+#: ../../source/plugin_development.rst:7
+msgid "ISAT.widgets.plugin_base.py"
+msgstr ""
+
+#: ../../source/plugin_development.rst:185
+msgid "PluginBase is the base class for all ISAT plugin classes"
+msgstr ""
+
+#: ../../source/plugin_development.rst:188
+msgid "2. Plugin Entry Point"
+msgstr ""
+
+#: ../../source/plugin_development.rst:190
+msgid "setup.py"
+msgstr ""
+
+#: ../../source/plugin_development.rst:199
+msgid "All ISAT plugins are released in the form of Python packages."
+msgstr ""
+
+#: ../../source/plugin_development.rst:201
+msgid ""
+"**Plugin must use setup.py to add the plugin classes to the isat.plugins "
+"entry_points.**"
+msgstr ""
+
+#: ../../source/plugin_development.rst:204
+msgid "3. Plugin Get ISAT Data"
+msgstr ""
+
+#: ../../source/plugin_development.rst:206
+msgid "The data returned from the events of the plugin base class is limited."
+msgstr ""
+
+#: ../../source/plugin_development.rst:208
+msgid ""
+"Generally, when developing ISAT plugins, you can get ISAT data through "
+"``self.mainwindow``."
+msgstr ""
+
+#: ../../source/plugin_development.rst:211
+msgid "4. Create Your First Plugin"
+msgstr ""
+
+#: ../../source/plugin_development.rst:214
+msgid "4.1 Plugin Project Structure"
+msgstr ""
+
+#: ../../source/plugin_development.rst:216
+msgid "It is recommended to use the following structure as the plugin project."
+msgstr ""
+
+#: ../../source/plugin_development.rst:232
+msgid "4.2 Write Plugin"
+msgstr ""
+
+#: ../../source/plugin_development.rst:234
+msgid "``ProjectName``/``PluginPackage``/``__init__.py``"
+msgstr ""
+
+#: ../../source/plugin_development.rst:236
+msgid "Including information such as version, author, and package description."
+msgstr ""
+
+#: ../../source/plugin_development.rst:244
+msgid "``ProjectName``/``PluginPackage``/``main.py``"
+msgstr ""
+
+#: ../../source/plugin_development.rst:246
+msgid "Implement the plugin class"
+msgstr ""
+
+#: ../../source/plugin_development.rst:268
+msgid "4.3 Write the Packaging File"
+msgstr ""
+
+#: ../../source/plugin_development.rst:270
+msgid "``ProjectName``/``setup.py``"
+msgstr ""
+
+#: ../../source/plugin_development.rst:308
+msgid "4.4 Packaging"
+msgstr ""
+
+#: ../../source/plugin_development.rst:310
+msgid "Package as a source distribution"
+msgstr ""
+
+#: ../../source/plugin_development.rst:317
+msgid "Install"
+msgstr ""
+
+#: ../../source/plugin_development.rst:323
+msgid ""
+"You can refer to the plugins: `AutoAnnotatePlugin "
+"<https://github.com/yatengLG/ISAT_plugin_auto_annotate>`_ and "
+"`MaskExportPlugin <https://github.com/yatengLG/ISAT_plugin_mask_export>`_"
+" to develop your own plugins."
+msgstr ""
+
+#: ../../source/plugin_development.rst:326
+msgid "4.5 Share"
+msgstr ""
+
+#: ../../source/plugin_development.rst:328
+msgid ""
+"You can directly share the package file dist/xxx.tar.gz with others and "
+"then install with:"
+msgstr ""
+
+#: ../../source/plugin_development.rst:334
+msgid "Or upload the package file to pypi, and then install with:"
+msgstr ""
+

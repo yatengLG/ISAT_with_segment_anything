@@ -16,7 +16,7 @@ Our tool enables interactive use of [segment anything](https://github.com/facebo
 
 Demo Video：[YouTube](https://www.youtube.com/watch?v=yLdZCPmX-Bc)
 
-Please refers to our latest [Documentation in English](https://isat-with-segment-anything.readthedocs.io/en/latest/index.html) or [中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/)
+Please refers to our latest [Documentation in English](https://isat-sam.readthedocs.io/en/latest/#) or [中文文档](https://isat-sam.readthedocs.io/zh-cn/latest/)
 
 ---
 
@@ -29,7 +29,6 @@ Please refers to our latest [Documentation in English](https://isat-with-segment
   - [ISAT_plugin_mask_export](https://github.com/yatengLG/ISAT_plugin_mask_export) ![PyPI - Version](https://img.shields.io/pypi/v/isat-plugin-mask-export?style=social&logo=pypi)
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/isat-plugin-mask-export?style=social) : A mask export function, implemented with just 160 lines of code.
   
-  **The plugin development doc is coming soon.**
 
 ## Install
 - Create a conda environment(recommended, optional)

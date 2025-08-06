@@ -16,7 +16,7 @@
 
 演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
 
-请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/) (待更新，先看英文文档吧😄)
+请查阅我们最新的[中文文档](https://isat-sam.readthedocs.io/zh-cn/latest/)
 
 ---
 
@@ -29,7 +29,6 @@
   - [ISAT_plugin_mask_export](https://github.com/yatengLG/ISAT_plugin_mask_export) ![PyPI - Version](https://img.shields.io/pypi/v/isat-plugin-mask-export?style=social&logo=pypi)
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/isat-plugin-mask-export?style=social) : 仅用160行代码实现的**mask导出**功能。
   
-  **插件开发文档很快开放**
 
 ## 安装
 - 新建conda环境（推荐，可选）

@@ -1469,11 +1469,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def open_docs(self):
         try:
-            if self.cfg['software']['language'] == 'en':
-                url = "https://isat-with-segment-anything.readthedocs.io/en/latest/index.html#"
-            else:
-                url = "https://isat-with-segment-anything.readthedocs.io/en/latest/index.html#"
-
+            url = "https://isat-sam.readthedocs.io/en/latest/"
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
 
         except Exception:

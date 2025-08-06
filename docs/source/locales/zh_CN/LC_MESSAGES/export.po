@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-05 18:17+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh\n"
+"Language-Team: zh <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/export.rst:2
+msgid "Export"
+msgstr ""
+
+#: ../../source/export.rst:5
+msgid "1. ISAT Json Format"
+msgstr ""
+
+#: ../../source/export.rst:54
+msgid "2. Export as Common Data Formats."
+msgstr ""
+
+#: ../../source/export.rst:56
+msgid ""
+"Click ``Converter`` button in Tool in Menu bar to open Converter "
+"interface."
+msgstr ""
+
+#: ../../source/export.rst:-1
+msgid "export.png"
+msgstr ""
+
+#: ../../source/export.rst:61
+msgid ""
+"ISAT provides the conversion functionality between the following data "
+"formats:"
+msgstr ""
+
+#: ../../source/export.rst:63
+msgid "ISAT <==> COCO"
+msgstr ""
+
+#: ../../source/export.rst:64
+msgid "ISAT <==> YOLO"
+msgstr ""
+
+#: ../../source/export.rst:65
+msgid "ISAT <==> LABELME"
+msgstr ""
+
+#: ../../source/export.rst:66
+msgid "ISAT ===> VOC"
+msgstr ""
+
+#: ../../source/export.rst:67
+msgid "ISAT ===> VOC(object detection)"
+msgstr ""
+

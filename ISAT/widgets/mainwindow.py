@@ -457,9 +457,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.plugin_manager_dialog.trigger_application_start()
 
-    def init_segment_anything(self, model_name=None, checked=None):
+    def init_segment_anything(self, model_path=None, checked=None):
         if checked is not None and not checked:
             return
+        model_name = os.path.basename(model_path)
 
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
@@ -486,7 +487,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.use_segment_anything = False
             self.model_manager_dialog.update_ui()
             return
-        model_path = os.path.join(CHECKPOINT_PATH, model_name)
+
         if not os.path.exists(model_path):
             QtWidgets.QMessageBox.warning(self, 'Warning',
                                           'The checkpoint of [Segment anything] not existed. If you want use quick annotate, please download from {}'.format(

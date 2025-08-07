@@ -60,13 +60,14 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
     def use_remote_sam(self, check_state):
         if check_state == QtCore.Qt.CheckState.Checked:
             model_name = self.label_name.text()
-            if not os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
+            loadl_model_path = os.path.join(CHECKPOINT_PATH, model_name)
+            if not os.path.exists(loadl_model_path):
                 self.mainwindow.use_remote_sam = False
                 QtWidgets.QMessageBox.warning(self, "Error", f"Local model {model_name} does not exist.")
             else:
                 try:
                     self.mainwindow.use_remote_sam = True
-                    self.mainwindow.init_segment_anything(model_name, checked=True)
+                    self.mainwindow.init_segment_anything(loadl_model_path, checked=True)
                 except Exception as e:
                     self.mainwindow.use_remote_sam = False
                     QtWidgets.QMessageBox.warning(self, "Error", f"Init local sam failed.\n {e}")

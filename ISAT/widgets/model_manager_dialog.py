@@ -113,9 +113,14 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.download_thread_dict = {}
+        self.button_group = QtWidgets.QButtonGroup()
+        self.button_group.addButton(self.radioButton_ft_model)
+
         self.init_ui()
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
         self.pushButton_close.clicked.connect(self.close)
+        self.pushButton_open_ft_model.clicked.connect(self.load_fine_tuned_model)
+        self.radioButton_ft_model.clicked.connect(self.use_fine_tune_model)
 
     def init_ui(self):
         font = QtGui.QFont()
@@ -135,8 +140,9 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             # radio
             radio = QtWidgets.QRadioButton()
             radio.setFixedWidth(30)
-            radio.toggled.connect(partial(self.mainwindow.init_segment_anything, model_name))
+            radio.toggled.connect(partial(self.mainwindow.init_segment_anything, os.path.join(CHECKPOINT_PATH, model_name)))
             radio.setEnabled(False)
+            self.button_group.addButton(radio)
             # image seg
             image_segment_label = QtWidgets.QLabel()
             pixmap = QtGui.QPixmap(":/icon/icons/校验-小_check-small.svg") if image_segment else QtGui.QPixmap(":/icon/icons/关闭-小_close-small.svg")
@@ -317,3 +323,45 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             'clear tmp',
             'Remove tmp: [' + '],['.join(remove_list) + ']'
         )
+
+    def load_fine_tuned_model(self):
+        filter = "Checkpoint (*.pt *.pth *.pkl);;All files (*)"
+        path, suffix = QtWidgets.QFileDialog.getOpenFileName(self, caption='Open file', filter=filter)
+        if path:
+            self.lineEdit_ft_model.setText(path)
+            self.radioButton_ft_model.click()
+
+    def use_fine_tune_model(self):
+        model_path = self.lineEdit_ft_model.text()
+        if model_path == '':
+            QtWidgets.QMessageBox.warning(self, 'Warning', 'No checkpoint selected.')
+            return
+
+        supported_model_prefix = (
+            'mobile_sam',
+            'sam_hq_vit_h',
+            'sam_hq_vit_l',
+            'sam_hq_vit_b',
+            'sam_hq_vit_tiny',
+            'sam_vit_h',
+            'sam_vit_l',
+            'sam_vit_b',
+            'edge_sam',
+            'sam-med2d_b',
+            'sam2_hiera_large',
+            'sam2_hiera_base_plus',
+            'sam2_hiera_small',
+            'sam2_hiera_tiny',
+            'sam2.1_hiera_large',
+            'sam2.1_hiera_base_plus',
+            'sam2.1_hiera_small',
+            'sam2.1_hiera_tiny',
+        )
+
+        if model_path and os.path.basename(model_path).startswith(supported_model_prefix):
+            self.mainwindow.init_segment_anything(model_path)
+            return True
+        else:
+            QtWidgets.QMessageBox.warning(self, 'warning',
+                                          "Checkpoint's name must start with: \n    {}".format('\n    '.join(supported_model_prefix)))
+        return False

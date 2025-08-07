@@ -1,4 +1,4 @@
-<h1 align='center'>ISAT_with_segment_anything</h1>
+<h1 align='center'>ISAT_with_segment_anything [isat-sam]</h1>
 <h2 align='center'>一款基于SAM的交互式半自动图像分割标注工具</h2>
 <p align='center'>
     <a href='https://github.com/yatengLG/ISAT_with_segment_anything' target="_blank"><img alt="GitHub forks" src="https://img.shields.io/github/stars/yatengLG/ISAT_with_segment_anything"></a>
@@ -10,17 +10,15 @@
     <a href='README-cn.md'><b>[中文]</b></a>
     <a href='README.md'><b>[English]</b></a>
 </p>
-<p align='center'><img src="./display/标注.gif" alt="标注.gif"></p>
+<p align='center'><img src="./display/software.gif" alt="software.gif"></p>
 
-集成[segment anything](https://github.com/facebookresearch/segment-anything)及bf16模式，实现低显存图片分割快速标注。
+专注于图像分割领域，我们致力于打造最好的图像分割标注软件。
 
-演示视频：[bilibili](https://www.bilibili.com/video/BV1or4y1R7EJ/)
-
-请查阅我们最新的[中文文档](https://isat-sam.readthedocs.io/zh-cn/latest/)
+请查阅我们最新的[中文文档](https://isat-sam.readthedocs.io/zh-cn/latest/) 或 [Documentation in English](https://isat-sam.readthedocs.io/en/latest/#)
 
 ---
 
-# 软件特点及安装
+# 更新
 - &#x1F389;: **V1.4.0版本添加了插件系统。** 可以使用较少量的代码，扩展ISAT的功能。
   
     以下是一些插件示例:
@@ -28,27 +26,29 @@
  ![Pepy Total Downloads](https://img.shields.io/pepy/dt/isat-plugin-auto-annotate?style=social) : 仅用240行代码实现的**自动标注**功能（使用yolo模型）。
   - [ISAT_plugin_mask_export](https://github.com/yatengLG/ISAT_plugin_mask_export) ![PyPI - Version](https://img.shields.io/pypi/v/isat-plugin-mask-export?style=social&logo=pypi)
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/isat-plugin-mask-export?style=social) : 仅用160行代码实现的**mask导出**功能。
-  
 
-## 安装
+- 其他版本以及更新日志，请查阅[发布页](https://github.com/yatengLG/ISAT_with_segment_anything/releases)
+
+# 安装
+
 - 新建conda环境（推荐，可选）
-```shell
-# 创建环境
-conda create -n isat_env python=3.8
-
-# 激活环境
-conda activate isat_env
-```
+    ```shell
+    # 创建环境
+    conda create -n isat_env python=3.8
+    
+    # 激活环境
+    conda activate isat_env
+    ```
 
 - 安装
-```shell
-pip install isat-sam
-```
+    ```shell
+    pip install isat-sam
+    ```
 
 - 运行
-```shell
-isat-sam
-```
+    ```shell
+    isat-sam
+    ```
 
 # Star History
 

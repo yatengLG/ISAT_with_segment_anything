@@ -387,9 +387,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
 
             # 设置为最高图层
-            self.current_graph.setZValue(len(self.mainwindow.polygons))
+            self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
             for vertex in self.current_graph.vertexs:
-                vertex.setZValue(len(self.mainwindow.polygons))
+                vertex.setZValue(len(self.mainwindow.polygons)+1)
 
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)

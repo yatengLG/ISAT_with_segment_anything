@@ -72,7 +72,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
                 value.setY(0)
             if value.y() > self.scene().height()-1:
                 value.setY(self.scene().height()-1)
-            index = self.polygon.vertexs.index(self)
+            index = self.polygon.vertices.index(self)
             self.polygon.movePoint(index, value)
 
         return super(Vertex, self).itemChange(change, value)
@@ -103,7 +103,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.hover_alpha = 150
         self.nohover_alpha = 80
         self.points = []
-        self.vertexs = []
+        self.vertices = []
         self.category = ''
         self.group = 0
         self.iscrowd = 0
@@ -129,7 +129,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
         self.scene().addItem(vertex)
-        self.vertexs.append(vertex)
+        self.vertices.append(vertex)
         vertex.setPos(point)
 
     def movePoint(self, index, point):
@@ -147,22 +147,22 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         if not self.points:
             return
         self.points.pop(index)
-        vertex = self.vertexs.pop(index)
+        vertex = self.vertices.pop(index)
         self.scene().removeItem(vertex)
         del vertex
         self.redraw()
 
     def delete(self):
         self.points.clear()
-        while self.vertexs:
-            vertex = self.vertexs.pop()
+        while self.vertices:
+            vertex = self.vertices.pop()
             self.scene().removeItem(vertex)
             del vertex
 
     def moveVertex(self, index, point):
-        if not 0 <= index < len(self.vertexs):
+        if not 0 <= index < len(self.vertices):
             return
-        vertex = self.vertexs[index]
+        vertex = self.vertices[index]
         vertex.setEnabled(False)
         vertex.setPos(point)
         vertex.setEnabled(True)
@@ -236,7 +236,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
-        for vertex in self.vertexs:
+        for vertex in self.vertices:
             vertex_color = self.color
             vertex_color.setAlpha(255)
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
@@ -259,9 +259,9 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.setBrush(self.color)
         if layer is not None:
             self.setZValue(layer)
-            for vertex in self.vertexs:
+            for vertex in self.vertices:
                 vertex.setZValue(layer)
-        for vertex in self.vertexs:
+        for vertex in self.vertices:
             vertex.setColor(color)
 
     def calculate_area(self):
@@ -346,7 +346,7 @@ class LineVertex(QtWidgets.QGraphicsPathItem):
                 value.setY(0)
             if value.y() > self.scene().height()-1:
                 value.setY(self.scene().height()-1)
-            index = self.polygon.vertexs.index(self)
+            index = self.polygon.vertices.index(self)
             self.polygon.movePoint(index, value)
 
         return super(LineVertex, self).itemChange(change, value)
@@ -358,7 +358,7 @@ class Line(QtWidgets.QGraphicsPathItem):
         # self.hover_alpha = 150
         # self.nohover_alpha = 80
         self.points = []
-        self.vertexs = []
+        self.vertices = []
         self.color = QtGui.QColor('#ff0000')
         pen = QtGui.QPen(self.color, self.line_width)
         pen.setStyle(QtCore.Qt.PenStyle.DotLine)
@@ -370,7 +370,7 @@ class Line(QtWidgets.QGraphicsPathItem):
         vertex = LineVertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
         self.scene().addItem(vertex)
-        self.vertexs.append(vertex)
+        self.vertices.append(vertex)
         vertex.setPos(point)
 
     def movePoint(self, index, point):
@@ -383,15 +383,15 @@ class Line(QtWidgets.QGraphicsPathItem):
         if not self.points:
             return
         self.points.pop(index)
-        vertex = self.vertexs.pop(index)
+        vertex = self.vertices.pop(index)
         self.scene().removeItem(vertex)
         del vertex
         self.redraw()
 
     def delete(self):
         self.points.clear()
-        while self.vertexs:
-            vertex = self.vertexs.pop()
+        while self.vertices:
+            vertex = self.vertices.pop()
             self.scene().removeItem(vertex)
             del vertex
 
@@ -454,7 +454,7 @@ class RectVertex(QtWidgets.QGraphicsPathItem):
                 value.setY(0)
             if value.y() > self.scene().height()-1:
                 value.setY(self.scene().height()-1)
-            index = self.rect.vertexs.index(self)
+            index = self.rect.vertices.index(self)
             self.rect.movePoint(index, value)
 
         return super(RectVertex, self).itemChange(change, value)
@@ -465,7 +465,7 @@ class Rect(QtWidgets.QGraphicsRectItem):
         super().__init__(parent=None)
         self.line_width = 1
         self.points = []
-        self.vertexs = []
+        self.vertices = []
         self.color = QtGui.QColor('#ff0000')
 
     def addPoint(self, point):
@@ -473,7 +473,7 @@ class Rect(QtWidgets.QGraphicsRectItem):
         vertex = RectVertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
         self.scene().addItem(vertex)
-        self.vertexs.append(vertex)
+        self.vertices.append(vertex)
         vertex.setPos(point)
 
     def movePoint(self, index, point):
@@ -486,15 +486,15 @@ class Rect(QtWidgets.QGraphicsRectItem):
         if not self.points:
             return
         self.points.pop(index)
-        vertex = self.vertexs.pop(index)
+        vertex = self.vertices.pop(index)
         self.scene().removeItem(vertex)
         del vertex
         self.redraw()
 
     def delete(self):
         self.points.clear()
-        while self.vertexs:
-            vertex = self.vertexs.pop()
+        while self.vertices:
+            vertex = self.vertices.pop()
             self.scene().removeItem(vertex)
             del vertex
 

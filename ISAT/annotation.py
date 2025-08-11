@@ -9,6 +9,18 @@ from typing import List
 
 
 class Object:
+    """
+    A class to represent an annotation object.
+
+    category: The category of the object.
+    group: The group of the object.
+    segmentation: The vertices of the object.
+    area: The area of the object.
+    layer: The layer of the object.
+    bbox: The bbox of the object.
+    iscrowd: The crowd tag of the object.
+    note: The note of the object.
+    """
     def __init__(self, category:str, group:int, segmentation, area, layer, bbox, iscrowd=0, note=''):
         self.category = category
         self.group = group

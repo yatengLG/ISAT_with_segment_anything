@@ -154,7 +154,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                     polygon.setSelected(False)
 
     def set_polygon_show(self, polygon):
-        for vertex in polygon.vertexs:
+        for vertex in polygon.vertices:
             vertex.setVisible(self.sender().checkState())
         polygon.setVisible(self.sender().checkState())
 
@@ -191,10 +191,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                                 if polygon.group == int(selected_group)]
         if not polygons_in_group:
             return
-        min_x = min(min(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
-        min_y = min(min(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
-        max_x = max(max(vertex.x() for vertex in polygon.vertexs) for polygon in polygons_in_group)
-        max_y = max(max(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
+        min_x = min(min(vertex.x() for vertex in polygon.vertices) for polygon in polygons_in_group)
+        min_y = min(min(vertex.y() for vertex in polygon.vertices) for polygon in polygons_in_group)
+        max_x = max(max(vertex.x() for vertex in polygon.vertices) for polygon in polygons_in_group)
+        max_y = max(max(vertex.y() for vertex in polygon.vertices) for polygon in polygons_in_group)
         margin = 20
         bounding_rect = QtCore.QRectF(min_x - margin, min_y - margin, max_x - min_x + 2*margin, max_y - min_y + 2*margin)
         self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.AspectRatioMode.KeepAspectRatio)

@@ -1180,7 +1180,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # to semantic
         for polygon in self.polygons:
             polygon.setEnabled(False)
-            for vertex in polygon.vertexs:
+            for vertex in polygon.vertices:
                 vertex.setVisible(False)
             polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#6F737A')))
             polygon.color.setAlpha(255)
@@ -1203,7 +1203,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # to instance
         for polygon in self.polygons:
             polygon.setEnabled(False)
-            for vertex in polygon.vertexs:
+            for vertex in polygon.vertices:
                 vertex.setVisible(False)
             if polygon.group != '':
                 index = int(polygon.group)
@@ -1232,7 +1232,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # to label
         for polygon in self.polygons:
             polygon.setEnabled(True)
-            for vertex in polygon.vertexs:
+            for vertex in polygon.vertices:
                 # vertex.setEnabled(True)
                 vertex.setVisible(polygon.isVisible())
             polygon.change_color(QtGui.QColor(self.category_color_dict.get(polygon.category, '#6F737A')))

@@ -336,7 +336,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                     # 设置为最高图层
                     self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
-                    for vertex in self.current_graph.vertexs:
+                    for vertex in self.current_graph.vertices:
                         vertex.setZValue(len(self.mainwindow.polygons)+1)
 
                     # 添加新polygon
@@ -388,7 +388,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
             # 设置为最高图层
             self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
-            for vertex in self.current_graph.vertexs:
+            for vertex in self.current_graph.vertices:
                 vertex.setZValue(len(self.mainwindow.polygons)+1)
 
             # 添加新polygon
@@ -472,14 +472,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 del item
             elif isinstance(item, Vertex):
                 polygon = item.polygon
-                if polygon.vertexs:
-                    index = polygon.vertexs.index(item)
+                if polygon.vertices:
+                    index = polygon.vertices.index(item)
                     item.polygon.removePoint(index)
                 else:
                     self.removeItem(item)
                     del item
                 # 如果剩余顶点少于三个，删除多边形
-                if len(polygon.vertexs) < 3:
+                if len(polygon.vertices) < 3:
                     if polygon in self.mainwindow.polygons:
                         self.mainwindow.polygons.remove(polygon)
                         self.mainwindow.annos_dock_widget.listwidget_remove_polygon(polygon)
@@ -520,7 +520,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 p.setZValue(p.zValue() - 1)
 
         current_polygon.setZValue(max_layer)
-        for vertex in current_polygon.vertexs:
+        for vertex in current_polygon.vertices:
             vertex.setZValue(max_layer)
         self.mainwindow.set_saved_state(False)
 
@@ -540,7 +540,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     p.setZValue(p.zValue() + 1)
 
             current_polygon.setZValue(1)
-            for vertex in current_polygon.vertexs:
+            for vertex in current_polygon.vertices:
                 vertex.setZValue(1)
         self.mainwindow.set_saved_state(False)
 
@@ -552,7 +552,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
-                for point in item.vertexs:
+                for point in item.vertices:
                     x, y = point.x(), point.y()
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
 
@@ -564,13 +564,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.current_graph = None
             elif isinstance(item, Vertex):
                 polygon = item.polygon
-                index = polygon.vertexs.index(item)
+                index = polygon.vertices.index(item)
                 point = QtCore.QPointF(item.x(), item.y())
 
                 polygon.points.insert(index, point)
                 vertex = Vertex(self, polygon.color, self.mainwindow.cfg['software']['vertex_size'] * 2)
                 self.addItem(vertex)
-                polygon.vertexs.insert(index, vertex)
+                polygon.vertices.insert(index, vertex)
                 vertex.setPos(point)
 
     # 感谢[XieDeWu](https://github.com/XieDeWu)提的有关交、并、差、异或的[建议](https://github.com/yatengLG/ISAT_with_segment_anything/issues/167)。
@@ -586,8 +586,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             color = self.selected_polygons_list[0].color
 
             try:
-                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
-                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertices])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertices])
                 return_shapely = polygon1_shapely.union(polygon2_shapely)
             except Exception as e:
                 QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
@@ -629,8 +629,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             layer = self.selected_polygons_list[0].zValue()
             color = self.selected_polygons_list[0].color
             try:
-                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
-                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertices])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertices])
                 return_shapely = polygon1_shapely.difference(polygon2_shapely)
             except Exception as e:
                 QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
@@ -684,8 +684,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             layer = self.selected_polygons_list[0].zValue()
             color = self.selected_polygons_list[0].color
             try:
-                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
-                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertices])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertices])
                 return_shapely = polygon1_shapely.intersection(polygon2_shapely)
             except Exception as e:
                 QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
@@ -739,8 +739,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             layer = self.selected_polygons_list[0].zValue()
             color = self.selected_polygons_list[0].color
             try:
-                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertexs])
-                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertexs])
+                polygon1_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[0].vertices])
+                polygon2_shapely = shapely.Polygon([(point.x(), point.y()) for point in self.selected_polygons_list[1].vertices])
                 return_shapely = polygon1_shapely.symmetric_difference(polygon2_shapely)
             except Exception as e:
                 QtWidgets.QMessageBox.warning(self.mainwindow, 'Warning', 'Polygon warning: {}'.format(e))
@@ -862,9 +862,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_line.addPoint(self.repaint_end_vertex.pos())
 
                     repaint_polygon = self.repaint_start_vertex.polygon
-                    repaint_start_index = repaint_polygon.vertexs.index(self.repaint_start_vertex)
-                    repaint_end_index = repaint_polygon.vertexs.index(self.repaint_end_vertex)
-                    replace_points = [QtCore.QPointF(vertex.pos()) for vertex in self.current_line.vertexs]
+                    repaint_start_index = repaint_polygon.vertices.index(self.repaint_start_vertex)
+                    repaint_end_index = repaint_polygon.vertices.index(self.repaint_end_vertex)
+                    replace_points = [QtCore.QPointF(vertex.pos()) for vertex in self.current_line.vertices]
 
                     if repaint_start_index > repaint_end_index:
                         record = repaint_start_index
@@ -874,16 +874,16 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                     # 这里永远替换数量最少的顶点
                     distance = abs(repaint_end_index - repaint_start_index)
-                    if len(repaint_polygon.vertexs) - distance < distance:
+                    if len(repaint_polygon.vertices) - distance < distance:
                         # 替换两端的点
                         points = ([vertex.pos() for vertex in
-                                  repaint_polygon.vertexs[repaint_start_index + 1: repaint_end_index]]
+                                  repaint_polygon.vertices[repaint_start_index + 1: repaint_end_index]]
                                   + replace_points[::-1])
                     else:
                         # 替换中间的点
-                        points = ([vertex.pos() for vertex in repaint_polygon.vertexs[:repaint_start_index]] +
+                        points = ([vertex.pos() for vertex in repaint_polygon.vertices[:repaint_start_index]] +
                                   replace_points +
-                                  [vertex.pos() for vertex in repaint_polygon.vertexs[repaint_end_index + 1:]])
+                                  [vertex.pos() for vertex in repaint_polygon.vertices[repaint_end_index + 1:]])
                     repaint_polygon.delete()
                     for point in points:
                         repaint_polygon.addPoint(point)

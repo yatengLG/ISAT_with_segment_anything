@@ -4,12 +4,12 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QThread, pyqtSignal
 from ISAT.ui.Converter_dialog import Ui_Dialog
-from ISAT.scripts.isat import ISAT
-from ISAT.scripts.coco import COCO
-from ISAT.scripts.yolo import YOLO
-from ISAT.scripts.labelme import LABELME
-from ISAT.scripts.voc import VOC
-from ISAT.scripts.voc_detection import VOCDetect
+from ISAT.formats.isat import ISAT
+from ISAT.formats.coco import COCO
+from ISAT.formats.yolo import YOLO
+from ISAT.formats.labelme import LABELME
+from ISAT.formats.voc import VOC
+from ISAT.formats.voc_detection import VOCDetect
 import os
 import yaml
 import imgviz

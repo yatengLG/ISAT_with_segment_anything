@@ -460,7 +460,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_segment_anything(self, model_path=None, checked=None):
         if checked is not None and not checked:
             return
-        model_name = os.path.basename(model_path)
+
+        if model_path is None:
+            model_name = model_path
+        else:
+            model_name = os.path.basename(model_path)
 
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
@@ -776,7 +780,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/en'))
         language_icon = QtGui.QIcon()
         icon_path = ":/icon/icons/中文_chinese.svg" if language == 'en' else ":/icon/icons/英文_english.svg"
-        language_icon.addPixmap(QtGui.QPixmap(icon_path), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        language_icon.addPixmap(QtGui.QPixmap(icon_path), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionLanguage.setIcon(language_icon)
         language_tool_tip = '中文' if language == 'en' else 'English'
         self.actionLanguage.setToolTip(language_tool_tip)
@@ -1221,7 +1225,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.setEnabled(False)
         self.map_mode = MAPMode.INSTANCE
         instance_icon = QtGui.QIcon()
-        instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionBit_map.setIcon(instance_icon)
 
     def change_bit_map_to_label(self):
@@ -1244,7 +1248,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.setEnabled(True)
         self.map_mode = MAPMode.LABEL
         label_icon = QtGui.QIcon()
-        label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionBit_map.setIcon(label_icon)
 
     def change_bit_map(self):
@@ -1305,7 +1309,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['contour_mode'] = contour_mode
         self.save_software_cfg()
 
-    def change_mask_aplha(self, value):
+    def change_mask_alpha(self, value):
         value = value / 10
         self.scene.mask_alpha = value
         self.scene.update_mask()
@@ -1359,7 +1363,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             hsv_image[:, :, 1] = np.clip(hsv_image[:, :, 1] * saturation_scale, 0, 255)
             image_hsv = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2RGB)
             height, width, channels = self.scene.image_data.shape
-            pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(image_hsv.data, width, height, channels * width, QtGui.QImage.Format_RGB888))
+            pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(image_hsv.tobytes(), width, height, channels * width, QtGui.QImage.Format_RGB888))
             self.scene.image_item.setPixmap(pixmap)
         else:
             print('Image data not loaded in AnnotationScene')

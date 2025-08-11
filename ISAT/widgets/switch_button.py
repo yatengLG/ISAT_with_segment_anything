@@ -3,7 +3,7 @@
 # from https://blog.51cto.com/u_15872074/5841477
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import pyqtSignal, QTimer, QRect, QRectF, Qt
+from PyQt5.QtCore import pyqtSignal, QTimer, QRectF, Qt
 from PyQt5.QtGui import QColor, QFont, QPainter, QPainterPath, QPen
 
 

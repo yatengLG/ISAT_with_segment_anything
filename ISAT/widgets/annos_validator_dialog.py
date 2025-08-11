@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author: LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from ISAT.ui.annos_validator import Ui_Dialog
 from shapely.geometry import Polygon
 from shapely.validation import explain_validity

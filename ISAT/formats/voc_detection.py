@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.scripts.isat import ISAT
+from ISAT.formats.isat import ISAT
 from xml.etree import ElementTree as ET
 import tqdm
 import os

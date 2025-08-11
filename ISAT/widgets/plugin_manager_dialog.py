@@ -3,7 +3,7 @@
 import os
 from importlib.metadata import entry_points
 from ISAT.ui.plugin_manager_dialog import Ui_Dialog
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 
 
 class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):

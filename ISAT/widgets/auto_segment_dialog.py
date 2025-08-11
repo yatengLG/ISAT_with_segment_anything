@@ -27,10 +27,10 @@ class AutoSegmentThread(QThread):
     def run(self):
         image_names = []
         cates = set()
-        suffixs = tuple(
+        suffixes = tuple(
             ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
         for f in os.listdir(self.image_dir):
-            if f.lower().endswith(suffixs):
+            if f.lower().endswith(suffixes):
                 image_names.append(f)
         image_names.sort()
         images_num = len(image_names)

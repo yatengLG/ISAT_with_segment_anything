@@ -19,7 +19,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.checkBox_show_prompt.stateChanged.connect(self.mainwindow.change_prompt_visiable)
         self.checkBox_use_bfloat16.stateChanged.connect(self.mainwindow.change_bfloat16_state)
         self.horizontalSlider_vertex_size.valueChanged.connect(self.mainwindow.change_vertex_size)
-        self.horizontalSlider_mask_alpha.valueChanged.connect(self.mainwindow.change_mask_aplha)
+        self.horizontalSlider_mask_alpha.valueChanged.connect(self.mainwindow.change_mask_alpha)
         self.comboBox_contour_mode.currentIndexChanged.connect(self.contour_mode_index_changed)
         self.pushButton_close.clicked.connect(self.close)
 

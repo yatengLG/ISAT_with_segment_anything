@@ -2,7 +2,6 @@
 # @Author  : LG
 
 from abc import ABC, abstractmethod
-import numpy as np
 
 
 class PluginBase(ABC):
@@ -21,7 +20,6 @@ class PluginBase(ABC):
     def enable_plugin(self):
         """
         启动插件
-        :param mainwindow:
         :return:
         """
         pass
@@ -30,7 +28,6 @@ class PluginBase(ABC):
     def disable_plugin(self):
         """
         禁用插件
-        :param mainwindow:
         :return:
         """
         pass

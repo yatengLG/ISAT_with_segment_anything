@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.scripts.isat import ISAT
+from ISAT.formats.isat import ISAT
 import cv2
 import tqdm
 import numpy as np

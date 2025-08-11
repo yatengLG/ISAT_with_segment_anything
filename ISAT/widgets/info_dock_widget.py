@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets
 from ISAT.ui.info_dock import Ui_Form
 
 class InfoDockWidget(QtWidgets.QWidget, Ui_Form):

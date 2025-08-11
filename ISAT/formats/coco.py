@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.scripts.isat import ISAT
+from ISAT.formats.isat import ISAT
 from pycocotools import coco as mscoco
 from pycocotools import mask as mscoco_mask
 from json import dump

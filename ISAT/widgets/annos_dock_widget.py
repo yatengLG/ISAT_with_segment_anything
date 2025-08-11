@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from ISAT.ui.anno_dock import Ui_Form
 import functools
 import re
@@ -197,7 +197,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         max_y = max(max(vertex.y() for vertex in polygon.vertexs) for polygon in polygons_in_group)
         margin = 20
         bounding_rect = QtCore.QRectF(min_x - margin, min_y - margin, max_x - min_x + 2*margin, max_y - min_y + 2*margin)
-        self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.KeepAspectRatio)
+        self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
 
     def go_to_next_group(self):
         current_index = self.comboBox_group_select.currentIndex()

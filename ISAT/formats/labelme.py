@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.scripts.isat import ISAT
+from ISAT.formats.isat import ISAT
 from json import dump, load
 import tqdm
 import os

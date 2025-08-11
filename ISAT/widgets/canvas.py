@@ -37,7 +37,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 拖动鼠标描点
         self.last_draw_time = time.time()
         self.draw_interval = 0.15
-        self.pressd = False
+        self.pressed = False
 
         #
         self.selected_polygons_list = list()
@@ -792,7 +792,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.CREATE:
             # 拖动鼠标描点
             self.last_draw_time = time.time()
-            self.pressd = True
+            self.pressed = True
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
@@ -843,7 +843,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.REPAINT:
             # 拖动鼠标描点
             self.last_draw_time = time.time()
-            self.pressd = True
+            self.pressed = True
 
             if self.repaint_start_vertex is None:
                 # 开始repaint
@@ -910,7 +910,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     # 拖动鼠标描点
     def mouseReleaseEvent(self, event: 'QtWidgets.QGraphicsSceneMouseEvent'):
-        self.pressd = False
+        self.pressed = False
 
         pos = event.scenePos()
         if pos.x() < 0: pos.setX(0)
@@ -982,7 +982,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.mainwindow.labelData.setText('pix: [{}]'.format(data))
 
         # 拖动鼠标描点
-        if self.pressd:  # 拖动鼠标
+        if self.pressed:  # 拖动鼠标
             current_time = time.time()
             if self.last_draw_time is not None and current_time - self.last_draw_time < self.draw_interval:
                 return  # 时间小于给定值不画点

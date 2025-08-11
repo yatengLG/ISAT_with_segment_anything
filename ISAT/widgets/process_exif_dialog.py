@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-import os
 
+import os
 from ISAT.ui.process_exif_dialog import Ui_Dialog
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from PIL import Image, ImageOps
 
 

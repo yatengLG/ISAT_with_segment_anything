@@ -97,10 +97,10 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.current_index = 0
 
             self.mainwindow.image_root = dir
-            self.mainwindow.actionOpen_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+            self.mainwindow.actionImages_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
 
             self.mainwindow.label_root = dir
-            self.mainwindow.actionSave_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+            self.mainwindow.actionLabel_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
 
             if os.path.exists(os.path.join(dir, 'isat.yaml')):
                 # load setting yaml
@@ -133,10 +133,10 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.current_index = 0
 
             self.mainwindow.image_root = dir
-            self.mainwindow.actionOpen_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+            self.mainwindow.actionImages_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
 
             self.mainwindow.label_root = dir
-            self.mainwindow.actionSave_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+            self.mainwindow.actionLabel_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
 
             if os.path.exists(os.path.join(dir, 'isat.yaml')):
                 # load setting yaml

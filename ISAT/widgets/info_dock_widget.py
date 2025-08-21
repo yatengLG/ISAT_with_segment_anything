@@ -13,10 +13,12 @@ class InfoDockWidget(QtWidgets.QWidget, Ui_Form):
         self.lineEdit_note.textChanged.connect(self.note_changed)
 
     def note_changed(self):
+        """Add a note for current image."""
         if self.mainwindow.load_finished:
             self.mainwindow.set_saved_state(False)
 
     def update_widget(self):
+        """Update the information dock widget."""
         if self.mainwindow.current_label is not None:
             self.label_width.setText('{}'.format(self.mainwindow.current_label.width))
             self.label_height.setText('{}'.format(self.mainwindow.current_label.height))

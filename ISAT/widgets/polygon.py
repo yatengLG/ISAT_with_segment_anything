@@ -4,10 +4,11 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
 from ISAT.annotation import Object
 import typing
-from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
+from ISAT.configs import STATUSMode
 
 
 class PromptPoint(QtWidgets.QGraphicsPathItem):
+    """SAM prompt point."""
     def __init__(self, pos, type=0):
         super(PromptPoint, self).__init__()
         self.color = QtGui.QColor('#0000FF') if type==0 else QtGui.QColor('#00FF00')
@@ -24,6 +25,7 @@ class PromptPoint(QtWidgets.QGraphicsPathItem):
 
 
 class Vertex(QtWidgets.QGraphicsPathItem):
+    """Vertex of polygon."""
     def __init__(self, polygon, color, nohover_size=2):
         super(Vertex, self).__init__()
         self.polygon = polygon
@@ -97,6 +99,23 @@ class Vertex(QtWidgets.QGraphicsPathItem):
 
 
 class Polygon(QtWidgets.QGraphicsPolygonItem):
+    """
+    Polygon.
+
+    Attributes:
+        line_width (int): The width of the edge.
+        hover_alpha (int): The alpha value of the polygon when hovering.
+        nohover_alpha (int): the alpha value of the polygon when nohovering.
+        points (list): Record the point pos of the polygon.
+        vertices (list[Vertex]): Record the vertices of the polygon.
+        is_drawing (bool): The flag to indicate if the polygon is drawing.
+
+        category (str): The category of the polygon.
+        group (int): The group of the polygon.
+        iscrowd (bool): The flag to indicate if the polygon is crowd.
+        note (str): The note of the polygon.
+        area (float): The area of the polygon.
+    """
     def __init__(self):
         super(Polygon, self).__init__(parent=None)
         self.line_width = 1
@@ -106,11 +125,10 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.vertices = []
         self.category = ''
         self.group = 0
-        self.iscrowd = 0
+        self.iscrowd = False
         self.note = ''
         self.area = 0
 
-        self.rxmin, self.rxmax, self.rymin, self.rymax = 0, 0, 0, 0 # 用于绘画完成后，记录多边形的各边界，此处与points对应
         self.color = QtGui.QColor('#ff0000')
         self.is_drawing = True
         pen = QtGui.QPen(self.color, self.line_width)
@@ -124,7 +142,13 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.setZValue(1e5)
 
-    def addPoint(self, point):
+    def addPoint(self, point: QtCore.QPointF):
+        """
+        Add a vertex to the polygon.
+
+        Arguments:
+            point (QtCore.QPointF): The vertex to add.
+        """
         self.points.append(point)
         vertex = Vertex(self, self.color, self.scene().mainwindow.cfg['software']['vertex_size'] * 2)
         # 添加路径点
@@ -132,7 +156,14 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.vertices.append(vertex)
         vertex.setPos(point)
 
-    def movePoint(self, index, point):
+    def movePoint(self, index: int, point: QtCore.QPointF):
+        """
+        Move the point at the given index to the given point. The point is saved in self.points.
+
+        Arguments:
+            index (int): The index of the vertex to move.
+            point (QtCore.QPointF): The point to move to.
+        """
         if not 0 <= index < len(self.points):
             return
         self.points[index] = self.mapFromScene(point)
@@ -144,6 +175,12 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             self.scene().mainwindow.set_saved_state(False)
 
     def removePoint(self, index):
+        """
+        Remove a vertex from the polygon.
+
+        Arguments:
+            index (int): The index of the vertex to remove.
+        """
         if not self.points:
             return
         self.points.pop(index)
@@ -153,6 +190,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.redraw()
 
     def delete(self):
+        """Delete the polygon."""
         self.points.clear()
         while self.vertices:
             vertex = self.vertices.pop()
@@ -160,6 +198,13 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             del vertex
 
     def moveVertex(self, index, point):
+        """
+        Move the vertex at the given index to the given point. The vertex is saved in self.vertices.
+
+        Arguments:
+            index (int): The index of the vertex to move.
+            point (QtCore.QPointF): The point to move to.
+        """
         if not 0 <= index < len(self.vertices):
             return
         vertex = self.vertices[index]
@@ -224,12 +269,9 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
     def redraw(self):
         if len(self.points) < 1:
             return
-        xs = [p.x() for p in self.points]
-        ys = [p.y() for p in self.points]
-        self.rxmin, self.rymin, self.rxmax, self.rymax = min(xs), min(ys), max(xs), max(ys)
         self.setPolygon(QtGui.QPolygonF(self.points))
 
-    def change_color(self, color):
+    def change_color(self, color: QtGui.QColor):
         self.color = color
         if not self.scene().mainwindow.cfg['software']['show_edge']:
             color.setAlpha(0)
@@ -242,7 +284,18 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
             vertex.setBrush(vertex_color)
 
-    def set_drawed(self, category, group, iscrowd, note, color:QtGui.QColor, layer=None):
+    def set_drawed(self, category: str, group: int, iscrowd: bool, note: str, color:QtGui.QColor, layer: int=None):
+        """
+        Set attributes for polygon and set is_drawing attribute to False.
+
+        Arguments:
+            category: category of the polygon.
+            group: group of the polygon.
+            iscrowd: whether the polygon is crowd.
+            note: note of the polygon.
+            color: color of the polygon.
+            layer: layer of the polygon in scene.
+        """
         self.is_drawing = False
         self.category = category
         if isinstance(group, str):
@@ -264,7 +317,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         for vertex in self.vertices:
             vertex.setColor(color)
 
-    def calculate_area(self):
+    def calculate_area(self) -> float:
+        """calculate area of polygon"""
         area = 0
         num_points = len(self.points)
         for i in range(num_points):
@@ -274,16 +328,23 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             area += d
         return abs(area) / 2
 
-    def load_object(self, object):
-        segmentation = object.segmentation
+    def load_object(self, obj):
+        """
+        load attributes from Object of Annotation.
+
+        Arguments:
+            obj (Object): Object of Annotation.
+        """
+        segmentation = obj.segmentation
         for x, y in segmentation:
             point = QtCore.QPointF(x, y)
             self.addPoint(point)
-        color = self.scene().mainwindow.category_color_dict.get(object.category, '#6F737A')
-        self.set_drawed(object.category, object.group, object.iscrowd, object.note, QtGui.QColor(color), object.layer)  # ...
-        self.area = object.area
+        color = self.scene().mainwindow.category_color_dict.get(obj.category, '#6F737A')
+        self.set_drawed(obj.category, obj.group, obj.iscrowd, obj.note, QtGui.QColor(color), obj.layer)  # ...
+        self.area = obj.area
 
-    def to_object(self):
+    def to_object(self) -> Object:
+        """Convert to Object of Annotation."""
         if self.is_drawing:
             return None
         segmentation = []
@@ -304,9 +365,12 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
 
 class LineVertex(QtWidgets.QGraphicsPathItem):
-    def __init__(self, polygon, color, nohover_size=2):
+    """
+    The vertex of a Line for repaint mode.
+    """
+    def __init__(self, line, color, nohover_size=2):
         super(LineVertex, self).__init__()
-        self.polygon = polygon
+        self.line = line
         self.color = color
         self.color.setAlpha(255)
         self.nohover_size = nohover_size
@@ -346,12 +410,16 @@ class LineVertex(QtWidgets.QGraphicsPathItem):
                 value.setY(0)
             if value.y() > self.scene().height()-1:
                 value.setY(self.scene().height()-1)
-            index = self.polygon.vertices.index(self)
-            self.polygon.movePoint(index, value)
+            index = self.line.vertices.index(self)
+            self.line.movePoint(index, value)
 
         return super(LineVertex, self).itemChange(change, value)
 
+
 class Line(QtWidgets.QGraphicsPathItem):
+    """
+    The guideline for repaint mode.
+    """
     def __init__(self):
         super().__init__(parent=None)
         self.line_width = 1
@@ -398,9 +466,6 @@ class Line(QtWidgets.QGraphicsPathItem):
     def redraw(self):
         if len(self.points) < 1:
             return
-        xs = [p.x() for p in self.points]
-        ys = [p.y() for p in self.points]
-        self.rxmin, self.rymin, self.rxmax, self.rymax = min(xs), min(ys), max(xs), max(ys)
 
         line_path = QtGui.QPainterPath()
         if self.points:
@@ -412,6 +477,9 @@ class Line(QtWidgets.QGraphicsPathItem):
 
 
 class RectVertex(QtWidgets.QGraphicsPathItem):
+    """
+    The vertex of the prompt rect for sam box prompt.
+    """
     def __init__(self, rect, color, nohover_size=2):
         super(RectVertex, self).__init__()
         self.rect = rect
@@ -461,6 +529,9 @@ class RectVertex(QtWidgets.QGraphicsPathItem):
 
 
 class Rect(QtWidgets.QGraphicsRectItem):
+    """
+    The prompt rect for sam box prompt.
+    """
     def __init__(self):
         super().__init__(parent=None)
         self.line_width = 1

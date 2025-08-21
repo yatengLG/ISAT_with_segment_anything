@@ -9,21 +9,26 @@ osplatform = platform.system()
 
 
 class GPUResource_Thread(QThread):
+    """
+    The thread for monitoring GPU0 resources.
+
+    Arguments:
+        gpu_id (int): The id of the GPU device to monitor. default 0.
+    """
     message = pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, gpu_id: int=0):
         super(GPUResource_Thread, self).__init__()
-        self.gpu_id = None
-        self.callback = None
+        self.gpu_id = gpu_id
 
         if osplatform == 'Windows':
-            self.command = 'nvidia-smi -q -d MEMORY -i 0 | findstr'
+            self.command = 'nvidia-smi -q -d MEMORY -i {} | findstr'.format(self.gpu_id)
         elif osplatform == 'Linux':
-            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
+            self.command = 'nvidia-smi -q -d MEMORY -i {} | grep'.format(self.gpu_id)
         elif osplatform == 'Darwin':
-            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
+            self.command = 'nvidia-smi -q -d MEMORY -i {} | grep'.format(self.gpu_id)
         else:
-            self.command = 'nvidia-smi -q -d MEMORY -i 0 | grep'
+            self.command = 'nvidia-smi -q -d MEMORY -i {} | grep'.format(self.gpu_id)
         try:
             r = os.popen('{} Total'.format(self.command)).readline()
             self.total = r.split(':')[-1].strip().split(' ')[0]
@@ -45,5 +50,3 @@ class GPUResource_Thread(QThread):
         self.wait()
         self.message.emit("Ground filter thread | Thread exited.")
 
-    def set_callback(self, callback):
-        self.callback = callback

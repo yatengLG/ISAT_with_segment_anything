@@ -40,7 +40,7 @@ class Converter(QThread, ISAT):
             self.message.emit(index+1, num_json_files,
                               '{:>8d}/{:<8d} | Loading ISAT json {}'.format(index + 1, num_json_files, file))
             try:
-                anno = self._load_one_isat_json(os.path.join(self.isat_json_root, file))
+                anno = self.load_one_isat_json(os.path.join(self.isat_json_root, file))
                 self.annos[self.remove_file_suffix(file)] = anno
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
@@ -78,7 +78,7 @@ class Converter(QThread, ISAT):
                               '{:>8d}/{:<8d} | Converting to {}'.format(index + 1, num_annos,
                                                                         name_without_suffix + 'json'))
             try:
-                self._save_one_isat_json(anno,
+                self.save_one_isat_json(anno,
                                          os.path.join(self.isat_json_root, '{}.json'.format(name_without_suffix)))
 
             except Exception as e:
@@ -207,7 +207,7 @@ class YOLOConverter(Converter, YOLO):
                               '{:>8d}/{:<8d} | Loading from {}'.format(index + 1, num_img_files,
                                                                        name_without_suffix + '.txt'))
             try:
-                anno = self._load_one_yolo_txt(image_path, txt_path, class_dict)
+                anno = self.load_one_yolo_txt(image_path, txt_path, class_dict)
                 self.annos[name_without_suffix] = anno
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
@@ -252,7 +252,7 @@ class YOLOConverter(Converter, YOLO):
                 self.message.emit(index + 1, num_annos,
                                   '{:>8d}/{:<8d} | Save yolo txt to {}'.format(index + 1, num_annos,
                                                                            name_without_suffix + '.txt'))
-                self._save_one_yolo_txt(anno, txt_path, cates_index_dict)
+                self.save_one_yolo_txt(anno, txt_path, cates_index_dict)
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
         self.message.emit(-1, -1, ' ' * 18 + '| Finished.')
@@ -293,7 +293,7 @@ class LABELMEConverter(Converter, LABELME):
                               '{:>8d}/{:<8d} | Loading from {}'.format(index + 1, num_json_files,
                                                                        name_without_suffix + '.json'))
             try:
-                anno = self._load_one_labelme_json(os.path.join(self.labelme_json_root, file))
+                anno = self.load_one_labelme_json(os.path.join(self.labelme_json_root, file))
                 self.annos[name_without_suffix] = anno
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
@@ -331,7 +331,7 @@ class LABELMEConverter(Converter, LABELME):
                               '{:>8d}/{:<8d} | Save LABELME json to {}'.format(index + 1, num_annos,
                                                                        name_without_suffix + '.json'))
             try:
-                self._save_one_labelme_json(anno, json_path)
+                self.save_one_labelme_json(anno, json_path)
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
 
@@ -395,7 +395,7 @@ class VOCConverter(Converter, VOC):
                 self.message.emit(index + 1, num_annos,
                                   '{:>8d}/{:<8d} | Save voc png to {}'.format(index + 1, num_annos,
                                                                            name_without_suffix + '.png'))
-                self._save_one_voc_png(anno, png_path, cmap, category_index_dict)
+                self.save_one_voc_png(anno, png_path, cmap, category_index_dict)
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))
 
@@ -431,7 +431,7 @@ class VOCConverterForDetection(Converter, VOCDetect):
                 self.message.emit(index + 1, num_annos,
                                   '{:>8d}/{:<8d} | Save voc png to {}'.format(index + 1, num_annos,
                                                                            name_without_suffix + '.png'))
-                self._save_one_voc_xml(anno, xml_path)
+                self.save_one_voc_xml(anno, xml_path)
 
             except Exception as e:
                 self.message.emit(-1, -1, ' ' * 18 + '| Error: {}.'.format(e))

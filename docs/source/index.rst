@@ -25,3 +25,4 @@ Contents
    install
    usage
    plugin
+   api

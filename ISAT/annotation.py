@@ -5,23 +5,24 @@ import os
 from PIL import Image
 import numpy as np
 from json import load, dump
-from typing import List
+from typing import List, Union
 
+__all__ = ['Object', 'Annotation']
 
 class Object:
-    """
-    A class to represent an annotation object.
+    r"""A class to represent an annotation object.
 
-    category: The category of the object.
-    group: The group of the object.
-    segmentation: The vertices of the object.
-    area: The area of the object.
-    layer: The layer of the object.
-    bbox: The bbox of the object.
-    iscrowd: The crowd tag of the object.
-    note: The note of the object.
+    Arguments:
+        category (str): The category of the object.
+        group (int): The group of the object.
+        segmentation (list | tuple): The vertices of the object.[(x1, y1), (x2, y2), ...]
+        area (float): The area of the object.
+        layer (int): The layer of the object.
+        bbox (list | tuple): The bbox of the object. [xmin, ymin, xmax, ymax]
+        iscrowd (bool): The crowd tag of the object.
+        note (str): The note of the object.
     """
-    def __init__(self, category:str, group:int, segmentation, area, layer, bbox, iscrowd=0, note=''):
+    def __init__(self, category: str, group: int, segmentation: Union[list, tuple], area: float, layer: int, bbox: Union[list, tuple], iscrowd: bool=False, note: str=''):
         self.category = category
         self.group = group
         self.segmentation = segmentation
@@ -33,7 +34,23 @@ class Object:
 
 
 class Annotation:
-    def __init__(self, image_path, label_path):
+    r"""A class to represent an annotation containing many objects.
+
+    Arguments:
+        image_path (str): The path to the image.
+        label_path (str): The path to the label file.
+
+    Attributes:
+        description (str): Always 'ISAT'.
+        img_folder (str): The path to the folder where the images are located.
+        img_name (str): The name of the image.
+        label_path (str): The path to the label file.
+        note (str): The note of the image.
+        height (int): The height of the image.
+        width (int): The width of the image.
+        depth (int): The depth of the image.
+    """
+    def __init__(self, image_path:str, label_path:str):
         img_folder, img_name = os.path.split(image_path)
         self.description = 'ISAT'
         self.img_folder = img_folder
@@ -52,9 +69,12 @@ class Annotation:
             print('Warning: Except image has 2 or 3 ndim, but get {}.'.format(image.ndim))
         del image
 
-        self.objects:List[Object,...] = []
+        self.objects:List[Object, ] = []
 
     def load_annotation(self):
+        r"""
+        Load annotation from self.label_path
+        """
         if os.path.exists(self.label_path):
             with open(self.label_path, 'r', encoding='utf-8') as f:
                 dataset = load(f)
@@ -79,7 +99,8 @@ class Annotation:
                         group = obj.get('group', 0)
                         if group is None: group = 0
                         segmentation = obj.get('segmentation', [])
-                        iscrowd = obj.get('iscrowd', 0)
+                        iscrowd = obj.get('iscrowd', False)
+                        iscrowd = iscrowd if isinstance(iscrowd, bool) else bool(iscrowd)
                         note = obj.get('note', '')
                         area = obj.get('area', 0)
                         layer = obj.get('layer', 2)
@@ -92,6 +113,9 @@ class Annotation:
         return self
 
     def save_annotation(self):
+        r"""
+        Save annotation to self.label_path
+        """
         dataset = {}
         dataset['info'] = {}
         dataset['info']['description'] = self.description

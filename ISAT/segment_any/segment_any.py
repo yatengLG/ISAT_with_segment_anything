@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-
+from typing import Union
 
 import torch
 import numpy as np
-import timm
 import platform
 from PIL import Image
 from collections import OrderedDict
@@ -15,6 +14,20 @@ osplatform = platform.system()
 
 
 class SegAny:
+    """
+    Segment Anything model class.
+
+    Arguments:
+        checkpoint: checkpoint path.
+        use_bfloat16: model dtype is bfloat16. default is True.
+
+    Attributes:
+        checkpoint (str): checkpoint path.
+        model_dtype (torch.dtype): model dtype. eg: torch.bfloat16, torch.float32
+        model_source (str): model source. eg: mobile_sam, sam_hq, sam2, sam2.1, ...
+        model_type (str): model type. eg: vit_b, vit_t, hiera_small, ...
+        predictor (SamPredictor): Sam Predictor.
+    """
     def __init__(self, checkpoint:str, use_bfloat16:bool=True):
         print('--' * 20)
         print('* Init SAM... *')
@@ -106,22 +119,38 @@ class SegAny:
         sam = sam.eval().to(self.model_dtype)
 
         sam.to(device=self.device)
-        self.predictor_with_point_prompt = SamPredictor(sam)
+        self.predictor = SamPredictor(sam)
         print('* Init SAM finished *')
         print('--'*20)
         self.image = None
 
-    def set_image(self, image):
+    def set_image(self, image: np.ndarray) -> None:
+        """
+        Set image to segment.
+
+        Arguments:
+            image (np.ndarray): The image to segment.
+        """
         with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
             self.image = image
-            self.predictor_with_point_prompt.set_image(image)
+            self.predictor.set_image(image)
 
-    def reset_image(self):
-        self.predictor_with_point_prompt.reset_image()
+    def reset_image(self) -> None:
+        """
+        Reset image to segment.
+        """
+        self.predictor.reset_image()
         self.image = None
         torch.cuda.empty_cache()
 
-    def predict_with_point_prompt(self, input_point, input_label):
+    def predict_with_point_prompt(self, input_point: Union[list, np.ndarray], input_label: Union[list, np.ndarray]) -> torch.Tensor:
+        """
+        Segment with point prompt.
+
+        Arguments:
+            input_point (list | np.ndarray): The input points. [(x1, y1), (x2, y2), ...]
+            input_label (list | np.ndarray): The label of points, support value 0 or 1. [0, 0, ...]
+        """
         with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
 
             if 'sam2' not in self.model_type:
@@ -131,7 +160,7 @@ class SegAny:
                 input_point = input_point
                 input_label = input_label
 
-            masks, scores, logits = self.predictor_with_point_prompt.predict(
+            masks, scores, logits = self.predictor.predict(
                 point_coords=input_point,
                 point_labels=input_label,
                 multimask_output=True,
@@ -140,7 +169,7 @@ class SegAny:
                 return masks
 
             mask_input = logits[np.argmax(scores), :, :]  # Choose the model's best mask
-            masks, _, _ = self.predictor_with_point_prompt.predict(
+            masks, _, _ = self.predictor.predict(
                 point_coords=input_point,
                 point_labels=input_label,
                 mask_input=mask_input[None, :, :],
@@ -149,9 +178,15 @@ class SegAny:
             torch.cuda.empty_cache()
             return masks
 
-    def predict_with_box_prompt(self, box):
+    def predict_with_box_prompt(self, box: Union[list, np.ndarray]) -> torch.Tensor:
+        """
+        Segment with box prompt.
+
+        Arguments:
+            box (list | np.ndarray): [xmin, ymin, xmax, ymax]
+        """
         with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
-            masks, scores, logits = self.predictor_with_point_prompt.predict(
+            masks, scores, logits = self.predictor.predict(
                 box=box,
                 multimask_output=False,
             )
@@ -160,6 +195,20 @@ class SegAny:
 
 
 class SegAnyVideo:
+    """
+    Segment Anything model class for video segmentation. Only SAM2 or SAM2.1 model.
+
+    Arguments:
+        checkpoint: checkpoint path.
+        use_bfloat16: model dtype is bfloat16. default is True.
+
+    Attributes:
+        checkpoint (str): checkpoint path.
+        model_dtype (torch.dtype): model dtype. eg: torch.bfloat16, torch.float32
+        model_source (str): model source. sam2 or sam2.1 .
+        model_type (str): model type. eg: hiera_tiny, hiera_small, hiera_base_plus or hiera_large.
+        predictor (SamPredictor): Sam Predictor.
+    """
     def __init__(self, checkpoint: str, use_bfloat16: bool = True):
         print('--'*20)
         print('* Init SAM for video... *')
@@ -203,12 +252,22 @@ class SegAnyVideo:
 
     def init_state(
             self,
-            image_root,
-            image_name_list,
-            offload_video_to_cpu=True,
-            offload_state_to_cpu=True,
-            async_loading_frames=False,
-    ):
+            image_root: str,
+            image_name_list: list,
+            offload_video_to_cpu: bool=True,
+            offload_state_to_cpu: bool=True,
+            async_loading_frames: bool=False,
+    ) -> None:
+        """
+        Init state for video segmentation. Need read all images.
+
+        Arguments:
+            image_root (str): The directory of images.
+            image_name_list (list): list of image file names to segment.
+            offload_video_to_cpu (bool): offload frames to CPU.
+            offload_state_to_cpu (bool): offload state to CPU.
+            async_loading_frames (bool): asynchronize loading frames.
+        """
         with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
 
             img_mean = (0.485, 0.456, 0.406)
@@ -297,7 +356,7 @@ class SegAnyVideo:
 
             print('init state finished.')
 
-    def reset_state(self):
+    def reset_state(self) -> None:
         """Remove all input points or mask in all frames throughout the video."""
         self._reset_tracking_results(self.inference_state)
         # Remove all object ids
@@ -340,7 +399,15 @@ class SegAnyVideo:
         video_width, video_height = img_pil.size  # the original video size
         return img, video_height, video_width
 
-    def add_new_mask(self, frame_idx, ann_obj_id, mask):
+    def add_new_mask(self, frame_idx: int, ann_obj_id: int, mask: Union[torch.Tensor, np.ndarray]) -> None:
+        """
+        Add new mask prompt for video segmentation.
+
+        Arguments:
+            frame_idx (int): Frame index.
+            ann_obj_id (int): Object ID.
+            mask (torch.Tensor | np.ndarray): New mask prompt.
+        """
         with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
             self.predictor.add_new_mask(
                 inference_state=self.inference_state,

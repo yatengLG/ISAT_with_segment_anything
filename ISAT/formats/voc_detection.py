@@ -8,23 +8,42 @@ import os
 
 
 class VOCDetect(ISAT):
+    """
+    VOC format for object detection
+
+    Attributes:
+        keep_crowd (bool): keep the crowded objects
+    """
     def __init__(self):
         self.keep_crowd = True
 
-    def save_to_XML(self, xml_root):
+    def save_to_XML(self, xml_root: str) -> bool:
+        """
+        Save annotations to the directory of voc xml files.
+
+        Arguments:
+            xml_root (str): the directory to save the voc xml files
+        """
         os.makedirs(xml_root, exist_ok=True)
 
         pbar = tqdm.tqdm(self.annos.items())
         for name_without_suffix, anno in pbar:
             xml_path = os.path.join(xml_root, name_without_suffix + '.xml')
             try:
-                self._save_one_voc_xml(anno, xml_path)
+                self.save_one_voc_xml(anno, xml_path)
                 pbar.set_description('Save xml to {}'.format(name_without_suffix + '.xml'))
             except Exception as e:
                 raise '{} {}'.format(name_without_suffix, e)
         return True
 
-    def _save_one_voc_xml(self, anno, xml_path):
+    def save_one_voc_xml(self, anno: ISAT.ANNO, xml_path: str) -> bool:
+        """
+        Save annotation to one voc xml file.
+
+        Arguments:
+            anno (ISAT.ANNO): the annotation
+            xml_path (str): the xml file path
+        """
         annotation = ET.Element('annotation')
         tree = ET.ElementTree(annotation)
         folder = ET.Element('folder')

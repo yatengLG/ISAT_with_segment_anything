@@ -22,10 +22,9 @@ from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
 from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
-from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, SHORTCUT_FILE
+from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, CONTOURMode
 from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
-from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 import os
 from PIL import Image
 import functools
@@ -62,7 +61,16 @@ class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
         """)
 
 
-def calculate_area(points):
+def calculate_area(points: list) -> float:
+    """
+    Calculate the area of an array of points.
+
+    Arguments:
+        points: Vertices of polygon. [(x1, y1), (x2, y2), ...]
+
+    Returns:
+        The area of the polygon.
+    """
     area = 0
     num_points = len(points)
     for i in range(num_points):
@@ -74,6 +82,17 @@ def calculate_area(points):
 
 
 class SegAnyThread(QThread):
+    """
+    Thread for encoder of the SAM model.
+
+    Arguments:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): Get attributes and functions from mainwindow.
+
+    Attributes:
+        tag (pyqtSignal): Signal.
+        results_dict (dict): Dictionary of results. {image_index: {"feature": np.ndarray or tensor, ...}, ...}
+        index: Current image index.
+    """
     tag = pyqtSignal(int, int, str)
 
     def __init__(self, mainwindow):
@@ -84,6 +103,12 @@ class SegAnyThread(QThread):
 
     @torch.no_grad()
     def sam_encoder(self, image: np.ndarray):
+        """
+        SAM encoder.
+
+        Arguments:
+            image : Image to be encoded.
+        """
         if self.mainwindow.use_remote_sam:
             shape = ",".join(map(str, image.shape))
             dtype = image.dtype.name
@@ -131,28 +156,28 @@ class SegAnyThread(QThread):
                 # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
                 if 'sam2' in self.mainwindow.segany.model_type:
                     _orig_hw = tuple([image.shape[:2]])
-                    input_image = self.mainwindow.segany.predictor_with_point_prompt._transforms(image)
-                    input_image = input_image[None, ...].to(self.mainwindow.segany.predictor_with_point_prompt.device)
-                    backbone_out = self.mainwindow.segany.predictor_with_point_prompt.model.forward_image(input_image)
-                    _, vision_feats, _, _ = self.mainwindow.segany.predictor_with_point_prompt.model._prepare_backbone_features(backbone_out)
-                    if self.mainwindow.segany.predictor_with_point_prompt.model.directly_add_no_mem_embed:
-                        vision_feats[-1] = vision_feats[-1] + self.mainwindow.segany.predictor_with_point_prompt.model.no_mem_embed
+                    input_image = self.mainwindow.segany.predictor._transforms(image)
+                    input_image = input_image[None, ...].to(self.mainwindow.segany.predictor.device)
+                    backbone_out = self.mainwindow.segany.predictor.model.forward_image(input_image)
+                    _, vision_feats, _, _ = self.mainwindow.segany.predictor.model._prepare_backbone_features(backbone_out)
+                    if self.mainwindow.segany.predictor.model.directly_add_no_mem_embed:
+                        vision_feats[-1] = vision_feats[-1] + self.mainwindow.segany.predictor.model.no_mem_embed
                     feats = [
                         feat.permute(1, 2, 0).view(1, -1, *feat_size)
-                        for feat, feat_size in zip(vision_feats[::-1], self.mainwindow.segany.predictor_with_point_prompt._bb_feat_sizes[::-1])
+                        for feat, feat_size in zip(vision_feats[::-1], self.mainwindow.segany.predictor._bb_feat_sizes[::-1])
                     ][::-1]
                     _features = {"image_embed": feats[-1], "high_res_feats": tuple(feats[:-1])}
                     return _features, _orig_hw, _orig_hw
                 else:
-                    input_image = self.mainwindow.segany.predictor_with_point_prompt.transform.apply_image(image)
-                    input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor_with_point_prompt.device)
+                    input_image = self.mainwindow.segany.predictor.transform.apply_image(image)
+                    input_image_torch = torch.as_tensor(input_image, device=self.mainwindow.segany.predictor.device)
                     input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[None, :, :, :]
 
                     original_size = image.shape[:2]
                     input_size = tuple(input_image_torch.shape[-2:])
 
-                    input_image = self.mainwindow.segany.predictor_with_point_prompt.model.preprocess(input_image_torch)
-                    features = self.mainwindow.segany.predictor_with_point_prompt.model.image_encoder(input_image)
+                    input_image = self.mainwindow.segany.predictor.model.preprocess(input_image_torch)
+                    features = self.mainwindow.segany.predictor.model.image_encoder(input_image)
                     return features, original_size, input_size
 
     def run(self):
@@ -202,6 +227,17 @@ class SegAnyThread(QThread):
 
 
 class SegAnyVideoThread(QThread):
+    """
+    Thread for video segmentation of the SAM model.
+
+    Arguments:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): Get attributes and functions from mainwindow.
+
+    Attributes:
+        tag (pyqtSignal): Signal.
+        start_frame_idx (int): The index of the start frame of the video.
+        max_frame_num_to_track (int): The maximum number of frames to track.
+    """
     tag = pyqtSignal(int, int, bool, bool, str)    # current, total, finished, is_error, message
 
     def __init__(self, mainwindow):
@@ -357,6 +393,16 @@ class SegAnyVideoThread(QThread):
 
 
 class InitSegAnyThread(QThread):
+    """
+    Thread for init SAM model.
+
+    Arguments:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): Get attributes and functions from mainwindow.
+
+    Attributes:
+        tag (pyqtSignal): Signal.
+        model_path: Checkpoint file path.
+    """
     tag = pyqtSignal(bool, bool)
 
     def __init__(self, mainwindow):
@@ -386,6 +432,15 @@ class InitSegAnyThread(QThread):
 
 
 class CheckLatestVersionThread(QThread):
+    """
+    Thread for checking latest version.
+
+    Arguments:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): Get attributes and functions from mainwindow.
+
+    Attributes:
+        tag (pyqtSignal): Signal.
+    """
     tag = pyqtSignal(bool, str)
     def __init__(self, mainwindow):
         super(CheckLatestVersionThread, self).__init__()
@@ -404,6 +459,29 @@ class CheckLatestVersionThread(QThread):
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    """
+    The main window of ISAT, also contains most of the core functions.
+
+    Attributes:
+        image_root (str): Image root.
+        label_root (str): Label root.
+        files_list (list): List of images names.
+        current_index (int): Current index for current image in files_list.
+        current_group (int): Recode the current group. Default is 1.
+        config_file (str): Categories config file path. Default is ISAT/isat.yaml.
+        software_config_file (str): Software config file path. Default is ISAT/software.yaml.
+        saved (bool): The state of whether the annotations are written to disk.
+        can_be_annotated (bool): The state of whether the annotation can be annotated. The png image with palette be used for VOC format, these can't be annotated.
+        load_finished (bool): The state of whether the image load finished.
+        polygons (list): List of polygons. These will be saved to disk as annotations.
+        instance_cmap (np.ndarray): The color array. (N, 3), numpy.uint8
+        map_mode (MAPMode): The map mode, means the current displayed state in the scene, which include 'LABEL', 'SEMANTIC' and 'INSTANCE'.
+        current_label (Annotation): The current annotation.
+        use_segment_anything (bool): The state of whether the SAM model can be used.
+        use_segment_anything_video (bool): The state of whether the SAM model can be used to video segmentation.
+        use_remote_sam (bool): The state of whether the remote sam is being used.
+        group_select_mode (bool): The mode of group. Default is 'auto'.
+    """
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
@@ -413,14 +491,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.files_list: list = []
         self.current_index = None
-        self.current_file_index: int = None
 
-        self.current_label = '__background__'
         self.current_group = 1
 
         self.config_file = CONFIG_FILE
         self.software_config_file = SOFTWARE_CONFIG_FILE
-        self.shortcut_config_file = SHORTCUT_FILE
 
         self.saved = True
 
@@ -428,14 +503,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.load_finished = False
         self.polygons: list = []
 
-        self.png_palette = None # 图像拥有调色盘，说明是单通道的标注png文件
         self.instance_cmap = imgviz.label_colormap()
         self.map_mode = MAPMode.LABEL
         # 标注目标
         self.current_label: Annotation = None
         self.use_segment_anything = False
         self.use_segment_anything_video = False
-        self.gpu_resource_thread = None
         self.use_remote_sam = False
 
         # 新增 手动/自动 group选择
@@ -457,14 +530,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.plugin_manager_dialog.trigger_application_start()
 
-    def init_segment_anything(self, model_path=None, checked=None):
-        if checked is not None and not checked:
-            return
+    def init_segment_anything(self, model_path: str=None):
+        """
+        Initialize segment anything model.
 
+        Arguments:
+            model_path (str): The path of the checkpoint file.
+        """
         if model_path is None:
-            model_name = model_path
-        else:
-            model_name = os.path.basename(model_path)
+            if self.use_segment_anything:
+                model_path = self.segany.checkpoint
+            else:
+                return
+
+        model_name = os.path.basename(model_path)
 
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
@@ -472,11 +551,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if isinstance(self.sender(), QtWidgets.QAction):
                     self.sender().setChecked(False)
                 return
-        if model_name is None:
-            if self.use_segment_anything:
-                model_name = os.path.split(self.segany.checkpoint)[-1]
-            else:
-                return
+
         # 等待sam线程完成
         self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
@@ -505,6 +580,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setEnabled(False)
 
     def init_sam_finish(self, sam_tag:bool, sam_video_tag:bool):
+        """
+        Triggered when SAM finish is finished. Then start thread of sam encoder and video segmentation.
+
+        .. warning::
+
+            Do not call this function manually
+
+        Arguments:
+            sam_tag (bool): The state of whether SAM can be used.
+            sam_video_tag (bool): The state of whether video segmentation can be used.
+        """
         if self.use_remote_sam:
             sam_video_tag = False
 
@@ -543,10 +629,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.use_segment_anything = True
             if self.use_segment_anything:
                 if self.segany.device != 'cpu':
-                    if self.gpu_resource_thread is None:
-                        self.gpu_resource_thread = GPUResource_Thread()
-                        self.gpu_resource_thread.message.connect(self.labelGPUResource.setText)
-                        self.gpu_resource_thread.start()
+                    gpu_resource_thread = GPUResource_Thread()
+                    gpu_resource_thread.message.connect(self.labelGPUResource.setText)
+                    gpu_resource_thread.start()
                 else:
                     self.labelGPUResource.setText('cpu')
             else:
@@ -576,6 +661,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.model_manager_dialog.update_ui()
 
     def sam_encoder_finish(self, index:int, state:int, message:str):
+        """
+        Triggered when sam encoder is finished.
+
+        .. warning::
+
+            Do not call this function manually
+
+        Arguments:
+            index (int): The index of image.
+            state (int): The state of sam encoder result. 0 - delete; 1 - success; 2 - working; 3 - error.
+            message (str): Error message.
+        """
         # 图片识别状态刷新
         if state == 1: color = '#00FF00'
         elif state == 0: color = '#999999'
@@ -609,11 +706,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.plugin_manager_dialog.trigger_after_sam_encode_finished(index)
 
     def SeganyEnabled(self):
-        """
-        segany激活
-        判断当前图片是否缓存特征图，如果存在特征图，设置segany参数，并开放半自动标注
-        :return:
-        """
+        """If current image has cached feature map by SAM encoder thread, enable semi-automatic annotation."""
         if not self.use_segment_anything:
             self.actionSegment_anything_point.setEnabled(False)
             self.actionSegment_anything_box.setEnabled(False)
@@ -627,24 +720,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if features is not None and original_size is not None and input_size is not None:
             if self.segany.model_source == 'sam_hq':
                 features, interm_features = features
-                self.segany.predictor_with_point_prompt.interm_features = interm_features
-            self.segany.predictor_with_point_prompt.features = features
-            self.segany.predictor_with_point_prompt.original_size = original_size
-            self.segany.predictor_with_point_prompt.input_size = input_size
-            self.segany.predictor_with_point_prompt.is_image_set = True
+                self.segany.predictor.interm_features = interm_features
+            self.segany.predictor.features = features
+            self.segany.predictor.original_size = original_size
+            self.segany.predictor.input_size = input_size
+            self.segany.predictor.is_image_set = True
             # sam2
-            self.segany.predictor_with_point_prompt._orig_hw = list(original_size)
-            self.segany.predictor_with_point_prompt._features = features
-            self.segany.predictor_with_point_prompt._is_image_set = True
+            self.segany.predictor._orig_hw = list(original_size)
+            self.segany.predictor._features = features
+            self.segany.predictor._is_image_set = True
 
             self.actionSegment_anything_point.setEnabled(True)
             self.actionSegment_anything_box.setEnabled(True)
         else:
-            self.segany.predictor_with_point_prompt.reset_image()
+            self.segany.predictor.reset_image()
             self.actionSegment_anything_point.setEnabled(False)
             self.actionSegment_anything_box.setEnabled(False)
 
-    def seg_video_start(self, max_frame_num_to_track=None):
+    def seg_video_start(self, max_frame_num_to_track: int=None):
+        """
+        Start video segmentation.
+
+        Arguments:
+            max_frame_num_to_track (int): The maximum number of frames to track. Default: None, all frames.
+        """
         if self.current_index == None:
             return
 
@@ -658,7 +757,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.segany_video_thread.max_frame_num_to_track=max_frame_num_to_track
         self.segany_video_thread.start()
 
-    def seg_video_finish(self, current, total, finished, is_error, message):
+    def seg_video_finish(self, current: int, total: int, finished: bool, is_error: bool, message: str):
+        """
+        Triggered when video segmentation finished.
+
+        .. warning::
+
+            Do not call this function manually
+
+        Arguments:
+            current (int): The index of current frame to segmentation.
+            total (int): The total number of frames.
+            finished (bool): The state of whether current frame is finished.
+            is_error (bool): The state of whether current frame error.
+            message (str): Error message.current, total, finished, is_error, message. int, int, bool, bool, str
+        """
         if is_error:
             QtWidgets.QMessageBox.warning(self, 'warning', message)
 
@@ -773,7 +886,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.modeState.setVisible(is_message)
         self.progressbar.setVisible(not is_message)
 
-    def translate(self, language='zh'):
+    def translate(self, language: str='zh'):
         if language == 'zh':
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/zh_CN'))
         else:
@@ -916,6 +1029,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plugin_manager_dialog.trigger_after_annotation_changed()
 
     def open_dir(self):
+        """
+        Open image root. Update file list and show the first image.
+
+        .. tip::
+
+            The label root will set same as the image root.
+
+            If exist 'isat.yaml' under label root, will reload it.
+        """
         dir = QtWidgets.QFileDialog.getExistingDirectory(self)
         if not dir:
             return
@@ -960,6 +1082,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.show_image(self.current_index)
 
     def save_dir(self):
+        """Open label root."""
         dir = QtWidgets.QFileDialog.getExistingDirectory(self)
         if not dir:
             return
@@ -975,6 +1098,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index)
 
     def save(self):
+        """Save annotations to disk."""
         if self.current_label is None:
             return
         self.current_label.objects.clear()
@@ -995,7 +1119,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def update_group_display(self):
         self.categories_dock_widget.lineEdit_currentGroup.setText(str(self.current_group))
 
-    def show_image(self, index:int, zoomfit:bool=True):
+    def show_image(self, index: int, zoomfit: bool=True):
+        """
+        Show image and load annotations if exists.
+
+        Arguments:
+            index (int): Index of image.
+            zoomfit (bool): Zoomfit.
+        """
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
@@ -1024,8 +1155,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             image_data = Image.open(file_path)
 
-            self.png_palette = image_data.getpalette()
-            if self.png_palette is not None and file_path.endswith('.png'):
+            png_palette = image_data.getpalette()
+            if png_palette is not None and file_path.endswith('.png'):
                 self.statusbar.showMessage('This image might be a label image in VOC format.')
                 self.can_be_annotated = False
             else:
@@ -1118,6 +1249,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plugin_manager_dialog.trigger_after_image_open()
 
     def prev_image(self):
+        """Previous image."""
         if self.scene.mode != STATUSMode.VIEW:
             return
         if self.current_index is None:
@@ -1129,6 +1261,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(current_index)
 
     def next_image(self):
+        """Next image."""
         if self.scene.mode != STATUSMode.VIEW:
             return
         if self.current_index is None:
@@ -1139,16 +1272,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.show_image(current_index)
 
-    def jump_to(self):
-        index = self.files_dock_widget.lineEdit_jump.text()
-        if index:
-            if not index.isdigit():
-                if index in self.files_list:
-                    index = self.files_list.index(index)+1
+    def jump_to(self, index_or_name: str = None):
+        """
+        Jump to the image.
+
+        Arguments:
+            index_or_name (str): Index or name of the image. Index in (1, len(self.files_list)); name with suffix.
+        """
+        if index_or_name is None:
+            index_or_name = self.files_dock_widget.lineEdit_jump.text()
+        if index_or_name:
+            if not index_or_name.isdigit():
+                if index_or_name in self.files_list:
+                    index = self.files_list.index(index_or_name)+1
                 else:
-                    QtWidgets.QMessageBox.warning(self, 'Warning', 'Don`t exist image named: {}'.format(index))
+                    QtWidgets.QMessageBox.warning(self, 'Warning', 'Don`t exist image named: {}'.format(index_or_name))
                     self.files_dock_widget.lineEdit_jump.clear()
                     return
+            else:
+                index = int(index_or_name)
             index = int(index)-1
             if 0 <= index < len(self.files_list):
                 self.show_image(index)
@@ -1159,22 +1301,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.files_dock_widget.lineEdit_jump.clearFocus()
                 return
 
-    def cancel_draw(self):
-        self.scene.cancel_draw()
-
     def category_setting(self):
         self.category_setting_dialog.load_cfg()
         self.category_setting_dialog.show()
-
-    def add_new_object(self, category, group, segmentation, area, layer, bbox):
-        if self.current_label is None:
-            return
-        object = Object(category=category, group=group, segmentation=segmentation, area=area, layer=layer, bbox=bbox)
-        self.current_label.objects.append(object)
-
-    def delete_object(self, index:int):
-        if 0 <= index < len(self.current_label.objects):
-            del self.current_label.objects[index]
 
     def change_bit_map_to_semantic(self):
         # to semantic
@@ -1252,6 +1381,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionBit_map.setIcon(label_icon)
 
     def change_bit_map(self):
+        """
+        Change the map mode, means the current displayed state in the scene.
+
+        LABEL -> SEMANTIC -> INSTANCE -> LABEL -> SEMANTIC -> ....
+        """
         self.set_labels_visible(True)
         if self.scene.mode == STATUSMode.CREATE:
             self.scene.cancel_draw()
@@ -1266,25 +1400,40 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             pass
 
-    def set_labels_visible(self, visible=None):
+    def set_labels_visible(self, visible: bool=None):
+        """
+        Set polygons visible in scene.
+
+        Arguments:
+            visible (bool) : True or False
+        """
         if visible is None:
             visible = not self.annos_dock_widget.checkBox_visible.isChecked()
         self.annos_dock_widget.set_all_polygon_visible(visible)
 
     def model_manage(self):
+        """Open the model management interface."""
         self.model_manager_dialog.show()
 
     def remote_sam(self):
+        """Open the remote SAM model interface."""
         self.remote_sam_dialog.show()
 
-    def change_bfloat16_state(self, check_state):
+    def change_bfloat16_state(self, check_state: QtCore.Qt.CheckState):
+        """Change SAM model dtype. bfloat16 <=> float32."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['use_bfloat16'] = checked
         self.init_segment_anything()
         self.model_manager_dialog.update_ui()
         self.save_software_cfg()
 
-    def change_contour_mode(self, contour_mode='max_only'):
+    def change_contour_mode(self, contour_mode: str='max_only'):
+        """
+        Change contour mode. It has an effect when converting sam masks to polygons.
+
+        Arguments:
+            contour_mode (str) : contour mode. which include 'max_only' 'external' and 'all'.
+        """
         if contour_mode == 'max_only':
             self.scene.change_contour_mode_to_save_max_only()
         elif contour_mode == 'external':
@@ -1309,7 +1458,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg['software']['contour_mode'] = contour_mode
         self.save_software_cfg()
 
-    def change_mask_alpha(self, value):
+    def change_mask_alpha(self, value: int):
+        """
+        Change mask alpha.
+
+        Arguments:
+            value (int) : mask alpha. [0, 10]
+        """
         value = value / 10
         self.scene.mask_alpha = value
         self.scene.update_mask()
@@ -1317,38 +1472,54 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         self.setting_dialog.label_mask_alpha.setText('{}'.format(value))
 
-    def change_vertex_size(self, value):
+    def change_vertex_size(self, value: int):
+        """
+        Change vertex size.
+
+        Arguments:
+            value (int) : vertex size. [0, 5]
+        """
         self.cfg['software']['vertex_size'] = value
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
         self.setting_dialog.label_vertex_size.setText('{}'.format(value))
 
-    def change_auto_save_state(self, check_state):
+    def change_auto_save_state(self, check_state: QtCore.Qt.CheckState):
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['auto_save'] = checked
         self.save_software_cfg()
 
-    def change_real_time_area_state(self, check_state):
+    def change_real_time_area_state(self, check_state: QtCore.Qt.CheckState):
+        """
+        Change real time area state.
+
+        .. tip::
+
+            The area of the polygon can be viewed in the edit interface.(double click polygon to open.)
+        """
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['real_time_area'] = checked
         self.save_software_cfg()
 
-    def change_edge_state(self, check_state):
+    def change_edge_state(self, check_state: QtCore.Qt.CheckState):
+        """Show edge of polygons."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['show_edge'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_approx_polygon_state(self, check_state):  # 是否使用多边形拟合，来减少多边形顶点
+    def change_approx_polygon_state(self, check_state: QtCore.Qt.CheckState):  # 是否使用多边形拟合，来减少多边形顶点
+        """Change polygon state. It has an effect when converting sam masks to polygons, can reduce the number of vertices of the polygon."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['use_polydp'] = checked
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_create_mode_invisible_polygon_state(self, check_state):
+    def change_create_mode_invisible_polygon_state(self, check_state: QtCore.Qt.CheckState):
+        """Invisible polygons in the create mode."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['create_mode_invisible_polygon'] = checked
         self.save_software_cfg()
@@ -1356,7 +1527,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.show_image(self.current_index, zoomfit=False)
         pass
 
-    def change_saturation(self, value):  # 调整图像饱和度
+    def change_saturation(self, value: int):  # 调整图像饱和度
+        """Only acts on display, don't acts on SAM model."""
         if self.scene.image_data is not None:
             saturation_scale = value / 100.0
             hsv_image = cv2.cvtColor(self.scene.image_data, cv2.COLOR_RGB2HSV)
@@ -1368,7 +1540,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             print('Image data not loaded in AnnotationScene')
 
-    def change_prompt_visiable(self, check_state):
+    def change_prompt_visiable(self, check_state: QtCore.Qt.CheckState):
+        """Show SAM propmt point."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg['software']['show_prompt'] = checked
         self.save_software_cfg()
@@ -1379,6 +1552,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #     self.show_image(self.current_index)
 
     def converter(self):
+        """Open data converter interface."""
         current_converter = self.cfg['software'].get('current_converter', 'coco')
         if current_converter == 'coco':
             current_converter_tab = self.Converter_dialog.tab_COCO
@@ -1398,9 +1572,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Converter_dialog.show()
 
     def video2frames(self):
+        """Open video to farames interface. Split the video to frames."""
         self.video2frames_dialog.show()
 
     def auto_segment(self):
+        """Open auto segment interface. Convert object detection data to segment data."""
         if self.use_segment_anything:
             self.auto_segment_dialog.show()
         else:
@@ -1410,20 +1586,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_validator_dialog.show()
 
     def process_exif(self):
+        """Open process exif interface. Deal with the rotation problem of pictures with EXIF tags."""
         self.process_exif_dialog.show()
 
     def shortcut(self):
+        """Open shortcut interface."""
         self.shortcut_dialog.update_ui()
         self.shortcut_dialog.show()
 
     def about(self):
+        """Open about interface."""
         self.about_dialog.show()
 
     def setting(self):
+        """Open setting interface."""
         # self.setting_dialog.update_ui()
         self.setting_dialog.show()
 
-    def screen_shot(self, type='scene'):
+    def screen_shot(self, type: str='scene'):
+        """
+        Screenshot.
+
+        Arguments:
+            type (str) : 'scene' or 'window'
+        """
         # image_name = "ISAT-{}-{}.png".format(type, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
         if self.current_index is not None and self.files_list:
             current_image = self.files_list[self.current_index]
@@ -1464,17 +1650,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             return
 
-    def save_cfg(self, config_file):
+    def save_cfg(self, config_file: str):
+        """
+        Save categories config to disk.
+
+        Arguments:
+            config_file (str) : Path to config file.
+        """
         # 只保存类别配置
         cfg = {'label': self.cfg.get('label', [])}
         save_config(cfg, config_file)
 
     def save_software_cfg(self):
+        """
+        Save all config to disk.
+        """
         save_config(self.cfg, self.software_config_file)
 
     def open_docs(self):
+        """Open the docs."""
         try:
-            url = "https://isat-sam.readthedocs.io/en/latest/"
+            if self.cfg['software']['language'] == 'zh':
+                url = "https://isat-sam.readthedocs.io/zh-cn/latest/"
+            else:
+                url = "https://isat-sam.readthedocs.io/en/latest/"
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
 
         except Exception:
@@ -1576,7 +1775,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionIntersect.setEnabled(False)
         self.actionExclude.setEnabled(False)
 
-    def load_actions_shortcut(self, default=False):
+    def load_actions_shortcut(self, default: bool=False):
+        """
+        Load shortcut
+
+        Arguments:
+            default (bool): load default shortcut if True.
+        """
         shortcut_cfg = self.cfg['shortcut']
         for action in shortcut_cfg:
 
@@ -1592,7 +1797,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             except Exception as e:
                 pass
 
-    def latest_version_tip(self, is_latest_version, latest_version):
+    def latest_version_tip(self, is_latest_version: bool, latest_version: str):
+        """
+        Check whether it is the latest version.
+
+        Arguments:
+            is_latest_version (bool): Whether it is the latest version.
+            latest_version (str): The latest version.
+        """
         if not is_latest_version:
             if self.cfg['software']['language'] == 'zh':
                 title = ''

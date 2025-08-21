@@ -11,26 +11,35 @@ import os
 
 class ISAT:
     """
-    The ISAT (Image Segmentation Annotation Tool) format provides a structured approach for representing image annotations
-    File Naming: Each image has a corresponding .json file named after the image file (without the image extension)
-        ['info']: Contains metadata about the dataset and image
-            ['description']: Always 'ISAT'
-            ['folder']: The directory where the images are stored
-            ['name']: The name of the image file
-            ['width'], ['height'], ['depth']: The dimensions of the image; depth is assumed to be 3 for RGB images
-            ['note']: An optional field for any additional notes related to the image
-        ['objects']: Lists all the annotated objects in the image
-            ['category']: The class label of the object.
-            ['group']: An identifier that groups objects based on overlapping bounding boxes. If an object's bounding box is within another, they share the same group number.
-            ['segmentation']: A list of [x, y] coordinates forming the polygon around the object
-            ['area']: The area covered by the object in pixels
-            ['layer']: A float indicating the sequence of the object. It increments within the same group, starting at 1.0
-            ['bbox']: The bounding box coordinates in the format [x_min, y_min, x_max, y_max]
-            ['iscrowd']: A boolean value indicating if the object is part of a crowd
-            ['note']: An optional field for any additional notes related to the object
+    The ISAT format provides a structured approach for representing image annotations.
+
+    File Naming: Each image has a corresponding .json file named after the image file (without the image extension).
+
+    Attributes:
+        annos (dict): Dictionary of image annotations. {name: ANNO}
+        cates (tuple): categories.
+
     """
     class ANNO:
+        r"""Annotation class.
+
+        Attributes:
+            info (INFO): INFO class.
+            objs (tuple[OBJ, ...]): tuple of OBJs.
+
+        """
         class INFO:
+            r"""Contains metadata about the dataset and image.
+
+            Attributes:
+                description (str): Always "ISAT".
+                folder (str): The directory where the images are stored.
+                name (str): The name of the image file
+                width (int): The dimensions of the image.
+                height (int): The dimensions of the image.
+                depth (int): The dimensions of the image; depth is assumed to be 3 for RGB images.
+                note: An optional field for any additional notes related to the image.
+            """
             description = ''
             folder = ''
             name = ''
@@ -39,21 +48,38 @@ class ISAT:
             depth = None
             note = ''
         class OBJ:
+            r"""Lists all the annotated objects in the image.
+
+            Attributes:
+                category (str): The class label of the object.
+                group (int): An identifier that groups objects based on overlapping bounding boxes. If an object's bounding box is within another, they share the same group number.
+                segmentation (list | tuple): A list of [x, y] coordinates forming the polygon around the object.
+                area (float): The area covered by the object in pixels.
+                layer (int): A float indicating the sequence of the object. It increments within the same group, starting at 1.0 .
+                bbox (list | tuple): The bounding box coordinates in the format [x_min, y_min, x_max, y_max].
+                iscrowd (bool): A boolean value indicating if the object is part of a crowd.
+                note (str): An optional field for any additional notes related to the object.
+            """
             category = ''
             group = None
             segmentation = None
             area = None
             layer = None
             bbox = None
-            iscrowd = None
+            iscrowd = False
             note = ''
         info:INFO
-        objs:Tuple[OBJ] = ()
+        objs:Tuple[OBJ, ...] = ()
 
     annos:Dict[str, ANNO] = {}  # name, ANNO (the name without the suffix)
     cates:Tuple[str] = ()
 
-    def read_from_ISAT(self, json_root):
+    def read_from_ISAT(self, json_root: str) -> bool:
+        r"""Load annotations from a directory of json files.
+
+        Arguments:
+            json_root (str): The directory of json files.
+        """
         self.annos.clear()
         self.cates = ()
 
@@ -68,18 +94,24 @@ class ISAT:
         pbar = tqdm.tqdm([file for file in os.listdir(json_root) if file.endswith('.json')])
         for file in pbar:
             pbar.set_description('Load ISAT from {}'.format(file))
-            anno = self._load_one_isat_json(os.path.join(json_root, file))
+            anno = self.load_one_isat_json(os.path.join(json_root, file))
             self.annos[self.remove_file_suffix(file)] = anno
         return True
 
-    def save_to_ISAT(self, json_root):
+    def save_to_ISAT(self, json_root: str) -> bool:
+        r"""
+        Save annotations to the directory of json files.
+
+        Arguments:
+            json_root (str): The directory of json files.
+        """
         os.makedirs(json_root, exist_ok=True)
 
         pbar = tqdm.tqdm(self.annos.items())
         for name_without_suffix, Anno in pbar:
             json_name = name_without_suffix + '.json'
             pbar.set_description('Save ISAT to {}'.format(json_name))
-            self._save_one_isat_json(Anno, os.path.join(json_root, json_name))
+            self.save_one_isat_json(Anno, os.path.join(json_root, json_name))
 
         # 类别文件
         cmap = imgviz.label_colormap()
@@ -97,10 +129,26 @@ class ISAT:
 
         return True
 
-    def remove_file_suffix(self, file_name):
+    def remove_file_suffix(self, file_name: str) -> str:
+        r"""
+        Remove the file suffix from the file name.
+
+        Arguments:
+            file_name (str): The file name.
+        Returns:
+            str: The file name without the file suffix.
+        """
         return os.path.splitext(file_name)[0]
 
-    def _load_one_isat_json(self, json_path) -> ANNO:
+    def load_one_isat_json(self, json_path: str) -> ANNO:
+        r"""
+        Load annotation from a json file.
+
+        Arguments:
+            json_path (str): The file path.
+        Returns:
+            ANNO: The instance of the ANNO.
+        """
         anno = self.ANNO()
         with open(json_path, 'r', encoding='utf-8') as f:
             dataset = load(f)
@@ -131,7 +179,7 @@ class ISAT:
                 group = obj.get('group', 0)
                 if group is None: group = 0
                 segmentation = obj.get('segmentation', [])
-                iscrowd = obj.get('iscrowd', 0)
+                iscrowd = obj.get('iscrowd', False)
                 note = obj.get('note', '')
                 area = obj.get('area', 0)
                 layer = obj.get('layer', 2)
@@ -151,7 +199,14 @@ class ISAT:
             anno.objs = tuple(objs)
         return anno
 
-    def _save_one_isat_json(self, anno:ANNO, save_path):
+    def save_one_isat_json(self, anno:ANNO, save_path:str) -> bool:
+        r"""
+        Save annotation to a json file.
+
+        Arguments:
+            anno (ANNO): The instance of the ANNO.
+            save_path (str): The ISAT json file path.
+        """
         anno.info.description = 'ISAT'
         dataset = {}
         dataset['info'] = {}

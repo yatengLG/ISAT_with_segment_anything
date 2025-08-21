@@ -2,11 +2,23 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtCore
+from PySide6.scripts.qtpy2cpp_lib import qt
+
 from ISAT.ui.anno_dock import Ui_Form
 import functools
 import re
+from ISAT.widgets.polygon import Polygon
+
 
 class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
+    """
+    Annotations dock widget.
+
+    Attributes:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): main window
+        polygon_item_dict (dict): polygon and QListWidgetItem dict. {polygon: item}
+
+    """
     def __init__(self, mainwindow):
         super(AnnosDockWidget, self).__init__()
         self.setupUi(self)
@@ -22,13 +34,18 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.button_prev_group.clicked.connect(self.go_to_prev_group)
 
         self.listWidget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
-        self.listWidget.customContextMenuRequested.connect(
-            self.right_button_menu)
+        self.listWidget.customContextMenuRequested.connect(self.right_button_menu)
 
     def right_button_menu(self, point):
         self.mainwindow.right_button_menu.exec_(self.listWidget.mapToGlobal(point))
 
-    def generate_item_and_itemwidget(self, polygon):
+    def generate_item_and_itemwidget(self, polygon: Polygon) -> (QtWidgets.QListWidgetItem, QtWidgets.QWidget):
+        """
+        The item of annotations list widget.
+
+        Arguments:
+            polygon (Polygon): polygon
+        """
         color = self.mainwindow.category_color_dict.get(polygon.category, '#6F737A')
         item = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(200, 30))
@@ -69,6 +86,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         return item, item_widget
 
     def update_listwidget(self):
+        """Update the annotations list widget."""
         current_group_id = self.comboBox_group_select.currentText()
         self.listWidget.clear()
         self.polygon_item_dict.clear()
@@ -93,27 +111,34 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         else:
             self.comboBox_group_select.setCurrentIndex(0)
 
-    def listwidget_add_polygon(self, polygon):
+    def listwidget_add_polygon(self, polygon: Polygon):
+        """
+        Add a new item to the list widget.
+
+        Arguments:
+            polygon (Polygon): polygon
+        """
         item, item_widget = self.generate_item_and_itemwidget(polygon)
         self.listWidget.addItem(item)
         self.listWidget.setItemWidget(item, item_widget)
         self.polygon_item_dict[polygon] = item
         self.mainwindow.set_saved_state(False)
 
-    def listwidget_remove_polygon(self, polygon):
+    def listwidget_remove_polygon(self, polygon: Polygon):
+        """
+        Remove a item from the list widget.
+
+        Arguments:
+            polygon (Polygon): polygon
+        """
         item = self.polygon_item_dict[polygon]
         self.listWidget.removeItemWidget(item)
         self.listWidget.takeItem(self.listWidget.row(item))
         del self.polygon_item_dict[polygon]
         self.mainwindow.set_saved_state(False)
 
-    def listwidget_update_polygon(self, polygon):
-        _, item_widget = self.generate_item_and_itemwidget(polygon)
-        item = self.polygon_item_dict[polygon]
-        self.listWidget.setItemWidget(item, item_widget)
-        self.mainwindow.set_saved_state(False)
-
-    def set_selected(self, polygon):
+    def set_selected(self, polygon: Polygon):
+        """Set item selected."""
         item = self.polygon_item_dict[polygon]
         if polygon.isSelected():
             if not item.isSelected():
@@ -124,6 +149,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 item.setSelected(False)
 
     def set_polygon_selected(self):
+        """Set polygon selected on canvas."""
         items = self.listWidget.selectedItems()
         have_selected = True if items else False
         if have_selected:
@@ -153,12 +179,24 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 if polygon.isSelected():
                     polygon.setSelected(False)
 
-    def set_polygon_show(self, polygon):
+    def set_polygon_show(self, polygon: Polygon):
+        """
+        Set polygon visible.
+
+        Arguments:
+            polygon (Polygon): polygon
+        """
         for vertex in polygon.vertices:
             vertex.setVisible(self.sender().checkState())
         polygon.setVisible(self.sender().checkState())
 
     def set_all_polygon_visible(self, visible:bool=None):
+        """
+        Set all polygon visible.
+
+        Arguments:
+            visible (bool): visible flag
+        """
         visible = self.checkBox_visible.isChecked() if visible is None else visible
         for index in range(self.listWidget.count()):
             item = self.listWidget.item(index)
@@ -168,6 +206,11 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.checkBox_visible.setChecked(visible)
 
     def set_group_polygon_visible(self):
+        """
+        Set group polygon visible.
+
+        The group is self.comboBox_group_select.currentText()
+        """
         selected_group = self.comboBox_group_select.currentText()
 
         for polygon, item in self.polygon_item_dict.items():
@@ -181,6 +224,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 check_box.setChecked(False)
 
     def zoom_to_group(self):
+        """Zoom to suitable size of group."""
         selected_group = self.comboBox_group_select.currentText()
         if selected_group == '':
             return
@@ -200,6 +244,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow.view.fitInView(bounding_rect, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
 
     def go_to_next_group(self):
+        """Show next group."""
         current_index = self.comboBox_group_select.currentIndex()
         max_index = self.comboBox_group_select.count() - 1
         if current_index < max_index:
@@ -223,6 +268,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 pass
 
     def go_to_prev_group(self):
+        """Show previous group."""
         current_index = self.comboBox_group_select.currentIndex()
         if current_index > 0:
             self.comboBox_group_select.setCurrentIndex(current_index - 1)

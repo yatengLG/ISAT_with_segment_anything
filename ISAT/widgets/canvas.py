@@ -3,7 +3,7 @@
 from PIL import Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line, Rect
-from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
+from ISAT.configs import STATUSMode, DRAWMode, CONTOURMode
 import numpy as np
 import cv2
 import time  # 拖动鼠标描点
@@ -11,6 +11,40 @@ import shapely
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
+    """
+    Annotation Scene.
+
+    Arguments:
+        mainwindow (ISAT.widgets.mainwindow.MainWindow): ISAT main window
+
+    Attributes:
+        image_item (QtWidgets.QGraphicsPixmapItem): Image pixmap item.
+        mask_item (QtWidgets.QGraphicsPixmapItem): SAM mask pixmap item.
+        image_data (np.ndarray): Image data.
+        current_graph (Polygon): The polygon being annotated.
+        current_sam_rect (Rect): The box for SAM box prompt.
+        current_line (Line): The line for repaint mode.
+        mode (STATUSMode): STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT.
+        draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX
+        contour_mode (CONTOURMode): The mode for convert sam mask to polygon.
+        click_points (list): The click points for sam point prompt.
+        click_points_mode (list): The tag for sam point prompt.
+        prompt_points (list[PromptPoint, ...]): The prompt points for sam point prompt.
+        masks (np.ndarray): The masks output by sam model.
+        mask_alpha (float): The alpha value for the masks.
+        guide_line_x (QtWidgets.QGraphicsLineItem): The guideline.
+        guide_line_y (QtWidgets.QGraphicsLineItem):The guideline.
+
+        last_draw_time: Counter for the dragging annotation method, used by draw polygon and repaint.
+        draw_interval (float): Interval for the dragging annotation method.
+        pressed (bool): The tag for mouse pressed.
+
+        selected_polygons_list (list): The list of polygons selected.
+
+        repaint_start_vertex (Vertex): The start vertex for repaint.
+        repaint_end_vertex (Vertex): The end vertex for repaint.
+        hovered_vertex (Vertex): The hovered vertex for repaint.
+    """
     def __init__(self, mainwindow):
         super(AnnotationScene, self).__init__()
         self.mainwindow = mainwindow
@@ -21,7 +55,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.current_sam_rect: Rect = None
         self.current_line: Line = None
         self.mode = STATUSMode.VIEW
-        self.click = CLICKMode.POSITIVE
         self.draw_mode = DRAWMode.SEGMENTANYTHING           # 默认使用segment anything进行快速标注
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL       # 默认SAM只保留外轮廓
         self.click_points = []                              # SAM point prompt
@@ -29,7 +62,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.prompt_points = []
         self.masks: np.ndarray = None
         self.mask_alpha = 0.5
-        self.top_layer = 1
 
         self.guide_line_x: QtWidgets.QGraphicsLineItem = None
         self.guide_line_y: QtWidgets.QGraphicsLineItem = None
@@ -47,6 +79,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.hovered_vertex:Vertex = None
 
     def load_image(self, image_path: str):
+        """
+        Load image.
+
+        :param image_path: The image path.
+        :return:
+        """
         self.clear()
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
@@ -67,6 +105,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.change_mode_to_view()
 
     def unload_image(self):
+        """Unload image and clear scene."""
         self.clear()
         self.setSceneRect(QtCore.QRectF())
         self.mainwindow.polygons.clear()
@@ -75,6 +114,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.current_graph = None
 
     def change_mode_to_create(self):
+        """Change to create mode."""
         if self.image_item is None:
             return
         self.mode = STATUSMode.CREATE
@@ -114,6 +154,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         """)
 
     def change_mode_to_view(self):
+        """Change to view mode."""
         self.mode = STATUSMode.VIEW
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
@@ -150,6 +191,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         """)
 
     def change_mode_to_edit(self):
+        """Change to edit mode."""
         self.mode = STATUSMode.EDIT
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
@@ -186,6 +228,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         """)
 
     def change_mode_to_repaint(self):
+        """Change to repaint mode."""
         self.mode = STATUSMode.REPAINT
         self.repaint_start_vertex = None
         self.repaint_end_vertex = None
@@ -226,34 +269,35 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             color: white;
         """)
 
-    def change_click_to_positive(self):
-        self.click = CLICKMode.POSITIVE
-
-    def change_click_to_negative(self):
-        self.click = CLICKMode.NEGATIVE
-
     def change_contour_mode_to_save_all(self):
+        """Change to save all contour mode for convert masks to polygons."""
         self.contour_mode = CONTOURMode.SAVE_ALL
 
     def change_contour_mode_to_save_max_only(self):
+        """Change to save max contour mode for convert masks to polygons."""
         self.contour_mode = CONTOURMode.SAVE_MAX_ONLY
 
     def change_contour_mode_to_save_external(self):
+        """Change to save external contour mode for convert masks to polygons."""
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL
 
     def start_segment_anything(self):
+        """Start segmenting anything with point prompt."""
         self.draw_mode = DRAWMode.SEGMENTANYTHING
         self.start_draw()
 
     def start_segment_anything_box(self):
+        """Start segmenting anything with box prompt."""
         self.draw_mode = DRAWMode.SEGMENTANYTHING_BOX
         self.start_draw()
 
     def start_draw_polygon(self):
+        """Start drawing polygon."""
         self.draw_mode = DRAWMode.POLYGON
         self.start_draw()
 
     def start_draw(self):
+        """Try change to create mode and add a empty polygon for annotation ops."""
         # 只有view模式时，才能切换create模式
         if self.mode != STATUSMode.VIEW:
             return
@@ -271,7 +315,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.addItem(self.current_graph)
 
     def finish_draw(self):
-
+        """Finish annotation. Convert masks to polygons when using sam, if the number of vertices less than 3, delete polygon."""
         if self.current_graph is None:
             return
 
@@ -332,12 +376,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                                   is_crowd,
                                                   note,
                                                   QtGui.QColor(self.mainwindow.category_color_dict.get(category, '#6F737A')),
-                                                  self.top_layer)
-
-                    # 设置为最高图层
-                    self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
-                    for vertex in self.current_graph.vertices:
-                        vertex.setZValue(len(self.mainwindow.polygons)+1)
+                                                  len(self.mainwindow.polygons)+1)
 
                     # 添加新polygon
                     self.mainwindow.polygons.append(self.current_graph)
@@ -381,15 +420,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                                           is_crowd,
                                           note,
                                           QtGui.QColor(self.mainwindow.category_color_dict.get(category, '#6F737A')),
-                                          self.top_layer)
+                                          len(self.mainwindow.polygons)+1)
             if self.mainwindow.group_select_mode == 'auto':
                 self.mainwindow.current_group += 1
                 self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
-
-            # 设置为最高图层
-            self.current_graph.setZValue(len(self.mainwindow.polygons)+1)
-            for vertex in self.current_graph.vertices:
-                vertex.setZValue(len(self.mainwindow.polygons)+1)
 
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)
@@ -424,6 +458,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
 
     def cancel_draw(self):
+        """Cancel draw. Remove the drawing polygons and masks, prompt points, prompt box eg."""
         if self.mode == STATUSMode.CREATE:
             if self.current_graph is not None:
                 self.current_graph.delete()  # 清除所有路径
@@ -459,6 +494,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.update_mask()
 
     def delete_selected_graph(self):
+        """Delete selected graph. Graph can be polygons or vertices, support multiple selection modes by pressing the CTRL key."""
         deleted_layer = None
         for item in self.selectedItems():
             if isinstance(item, Polygon) and (item in self.mainwindow.polygons):
@@ -495,6 +531,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     p.setZValue(p.zValue() - 1)
 
     def edit_polygon(self):
+        """Edit the selected polygon. Open edit window then edit the attributes of the polygon."""
         selectd_items = self.selectedItems()
         selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
         if len(selectd_items) < 1:
@@ -507,6 +544,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.category_edit_widget.show()
 
     def move_polygon_to_top(self):
+        """Move the selected polygon to top layer."""
         selectd_items = self.selectedItems()
         selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
         if len(selectd_items) < 1:
@@ -525,6 +563,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.set_saved_state(False)
 
     def move_polygon_to_bottom(self):
+        """Move the selected polygon to bottom layer."""
         selectd_items = self.selectedItems()
         selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
 
@@ -545,6 +584,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.set_saved_state(False)
 
     def copy_item(self):
+        """Copy selected polygon. The copied polygon has the sam attributes with ori polygon."""
         for item in self.selectedItems():
             if isinstance(item, Polygon):
                 index = self.mainwindow.polygons.index(item)
@@ -562,19 +602,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 item.setSelected(False)
                 self.current_graph.setSelected(True)
                 self.current_graph = None
-            elif isinstance(item, Vertex):
-                polygon = item.polygon
-                index = polygon.vertices.index(item)
-                point = QtCore.QPointF(item.x(), item.y())
-
-                polygon.points.insert(index, point)
-                vertex = Vertex(self, polygon.color, self.mainwindow.cfg['software']['vertex_size'] * 2)
-                self.addItem(vertex)
-                polygon.vertices.insert(index, vertex)
-                vertex.setPos(point)
 
     # 感谢[XieDeWu](https://github.com/XieDeWu)提的有关交、并、差、异或的[建议](https://github.com/yatengLG/ISAT_with_segment_anything/issues/167)。
     def polygons_union(self):
+        """Union. Only support two polygons. Always use the attributes of the first polygon."""
         if len(self.selected_polygons_list) == 2:
             index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
 
@@ -619,6 +650,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.mainwindow.annos_dock_widget.update_listwidget()
 
     def polygons_difference(self):
+        """Subtract. Only support two polygons. Always use the attributes of the first polygon."""
         if len(self.selected_polygons_list) == 2:
             index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
 
@@ -674,6 +706,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mainwindow.annos_dock_widget.update_listwidget()
 
     def polygons_intersection(self):
+        """Intersect. Only support two polygons. Always use the attributes of the first polygon."""
         if len(self.selected_polygons_list) == 2:
             index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
 
@@ -729,6 +762,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mainwindow.annos_dock_widget.update_listwidget()
 
     def polygons_symmetric_difference(self):
+        """Exclude. Only support two polygons. Always use the attributes of the first polygon."""
         if len(self.selected_polygons_list) == 2:
             index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
 
@@ -1012,6 +1046,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         super(AnnotationScene, self).mouseMoveEvent(event)
 
     def update_mask(self):
+        """Update the mask output of sam."""
         if not self.mainwindow.use_segment_anything:
             return
         if self.image_data is None:
@@ -1056,6 +1091,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mask_item.setPixmap(mask_pixmap)
 
     def backspace(self):
+        """Backspace to the previous annotation state. Only work with create mode."""
         if self.mode == STATUSMode.CREATE:
             # 返回上一步操作
             if self.draw_mode == DRAWMode.SEGMENTANYTHING:

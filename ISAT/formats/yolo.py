@@ -10,17 +10,25 @@ import os
 
 class YOLO(ISAT):
     """
+    YOLO format
+
     YOLO use txt to save annotations. Every line container a annotation.
     format: class_index, x1, y1, x2, y2, x3, y3, ....
 
-    save_to_YOLO:
-        针对多个一个目标包含多个多边形的情况，参考了yolo8 coco2yolo的转换代码，在多边形之间拉一条直线，将多个多边形组合为单个多边形进行保存。
-        源代码地址: https://github.com/ultralytics/JSON2YOLO/blob/c38a43f342428849c75c103c6d060012a83b5392/general_json2yolo.py
+    For cases where a single object contains multiple polygons, referring to the conversion code of YOLOv8 `general_json2yolo.py <https://github.com/ultralytics/JSON2YOLO/blob/c38a43f342428849c75c103c6d060012a83b5392/general_json2yolo.py>`_, a straight line is drawn between the polygons to combine the multiple polygons into a single polygon for saving.
     """
     def __init__(self):
         self.keep_crowd = True
 
-    def read_from_YOLO(self, img_root, txt_root, class_dict=None):
+    def read_from_YOLO(self, img_root: str, txt_root: str, class_dict: dict=None) -> bool:
+        """
+        Load annotations from the directory of YOLO txt files.
+
+        Arguments:
+            img_root (str): The directory of images.
+            txt_root (str): The directory of YOLO txt files.
+            class_dict (dict): A dictionary that maps class index to class name. {index: category} .
+        """
         self.annos.clear()
         self.cates = ()
 
@@ -34,7 +42,7 @@ class YOLO(ISAT):
             if not os.path.exists(txt_path):
                 continue
 
-            anno = self._load_one_yolo_txt(image_path, txt_path, class_dict)
+            anno = self.load_one_yolo_txt(image_path, txt_path, class_dict)
             self.annos[name_without_suffix] = anno
             pbar.set_description('Load yolo txt {}'.format(name_without_suffix+'.txt'))
 
@@ -51,7 +59,13 @@ class YOLO(ISAT):
             self.cates = tuple(class_set)
         return True
 
-    def save_to_YOLO(self, txt_root):
+    def save_to_YOLO(self, txt_root: str) -> bool:
+        """
+        Save annotations to the directory of YOLO txt files.
+
+        Arguments:
+            txt_root: The directory of YOLO txt files.
+        """
         os.makedirs(txt_root, exist_ok=True)
         cates_index_dict = {cat:index for index, cat in enumerate(self.cates)}
 
@@ -64,7 +78,7 @@ class YOLO(ISAT):
             txt_path = os.path.join(txt_root, name_without_suffix+'.txt')
             pbar.set_description('Integrate {}'.format(name_without_suffix))
             try:
-                self._save_one_yolo_txt(anno, txt_path, cates_index_dict)
+                self.save_one_yolo_txt(anno, txt_path, cates_index_dict)
                 pbar.set_description('Save yolo to {}'.format(name_without_suffix+'.txt'))
 
             except Exception as e:
@@ -155,7 +169,18 @@ class YOLO(ISAT):
         """Check if two objects belong to the same group"""
         return all(bbox_1[idx] >= bbox_2[idx] for idx in [0, 1]) and all(bbox_1[idx] <= bbox_2[idx] for idx in [2, 3])
 
-    def _load_one_yolo_txt(self, image_path, txt_path, class_dict=None):
+    def load_one_yolo_txt(self, image_path: str, txt_path: str, class_dict: dict=None) -> ISAT.ANNO:
+        """
+        Load annotations from the directory of yolo txt files.
+
+        Arguments:
+            image_path (str): image path.
+            txt_path (str): txt path.
+            class_dict (dict): class dictionary. {index: category} .
+
+        Returns:
+            ISAT.ANNO: The instance of the ANNO.
+        """
 
         anno = self.ANNO()
         anno.info = self.ANNO.INFO()
@@ -210,7 +235,15 @@ class YOLO(ISAT):
         anno.objs = tuple(objects)
         return anno
 
-    def _save_one_yolo_txt(self, anno, save_path, cates_index_dict):
+    def save_one_yolo_txt(self, anno: ISAT.ANNO, save_path: str, cates_index_dict: dict) -> bool:
+        """
+        Save annotation to one YOLO txt file
+
+        Arguments:
+            anno (ISAT.ANNO): the annotation.
+            save_path (str): the path of the txt file.
+            cates_index_dict (dict): the cates index dictionary. {category: index} .
+        """
         with open(save_path, 'w', encoding='utf-8') as f:
             objects = anno.objs
 

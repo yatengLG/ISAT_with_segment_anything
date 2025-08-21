@@ -16,27 +16,8 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
 
         self.setAcceptDrops(True)
 
-    def generate_item_and_itemwidget(self, file_name):
-        item = QtWidgets.QListWidgetItem()
-        item.setSizeHint(QtCore.QSize(200, 30))
-        item_widget = QtWidgets.QWidget()
-        layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(9, 1, 9, 1)
-
-        state_color = QtWidgets.QLabel()
-        state_color.setFixedWidth(5)
-        state_color.setStyleSheet("background-color: {};".format('#999999'))
-        state_color.setObjectName('state_color')
-        layout.addWidget(state_color)
-
-        category = QtWidgets.QLabel(file_name)
-        category.setObjectName('category')
-        layout.addWidget(category)
-
-        item_widget.setLayout(layout)
-        return item, item_widget
-
     def update_widget(self):
+        """Update the file list widget."""
         self.listWidget.clear()
         if self.mainwindow.files_list is None:
             return
@@ -54,9 +35,11 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
         self.label_all.setText('{}'.format(len(self.mainwindow.files_list)))
 
     def set_select(self, row):
+        """Set the current file highlight."""
         self.listWidget.setCurrentRow(row)
 
     def listwidget_doubleclick(self):
+        """Double-click the file list item to open the image."""
         row = self.listWidget.currentRow()
         self.mainwindow.show_image(row)
 
@@ -67,6 +50,7 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             event.ignore()
 
     def dropEvent(self, event):
+        """Support drop event for open a image file or image directory."""
         if len(event.mimeData().urls()) != 1:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'Only support one path or dir.')
             return

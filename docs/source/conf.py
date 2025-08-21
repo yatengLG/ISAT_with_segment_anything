@@ -5,6 +5,9 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../'))
 
 project = 'ISAT-SAM'
 copyright = '2025, Shuwei Ji and Hongyuan Zhang'
@@ -13,7 +16,22 @@ author = 'Shuwei Ji and Hongyuan Zhang'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.duration']
+extensions = [
+    'sphinx.ext.duration',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',  # 支持 Google/NumPy 风格注释
+]
+
+autodoc_default_options = {
+    'members': True,          # 提取类成员
+    'member-order': 'bysource', # 按源码顺序排列
+    'special-members': '', # 提取特殊方法（如 __init__）
+    'undoc-members': False,   # 不提取无文档的成员（避免干扰）
+    'exclude-members': '__weakref__' # 排除不需要的成员
+}
+autodoc_typehints = 'description'
+
+napoleon_google_docstring = True
 
 templates_path = ['_templates']
 exclude_patterns = []

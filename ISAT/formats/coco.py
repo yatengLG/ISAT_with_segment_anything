@@ -9,12 +9,25 @@ import cv2
 import tqdm
 import numpy as np
 
+__all__ = ['COCO']
 
 class COCO(ISAT):
+    r"""
+    COCO format
+
+    Attributes:
+        keep_crowd (bool): keep the crowded objects
+    """
     def __init__(self):
         self.keep_crowd = True
 
-    def read_from_coco(self, annotation_file):
+    def read_from_coco(self, annotation_file: str) -> bool:
+        r"""
+        Load annotations from a COCO json file.
+
+        Arguments:
+            annotation_file (str): coco json annotations file.
+        """
         self.annos.clear()
         self.cates = ()
 
@@ -48,13 +61,13 @@ class COCO(ISAT):
 
                 segmentations = anno_coco.get('segmentation', [])    # 多个polygon
                 area = anno_coco.get('area', None)                   # coco中，area是组面积，isat中是单个polygon面积
-                iscrowd = anno_coco.get('iscrowd', None)
+                iscrowd = anno_coco.get('iscrowd', False)
                 image_id = anno_coco.get('image_id', None)
                 bbox = anno_coco.get('bbox', [])
                 category_id = anno_coco.get('category_id', None)
                 id = anno_coco.get('id', None)
 
-                if iscrowd == 0:
+                if iscrowd is False:
                     # polygon
                     for segmentation in segmentations:
                         xs = segmentation[::2]
@@ -73,7 +86,7 @@ class COCO(ISAT):
 
                         objs.append(obj)
 
-                elif iscrowd == 1 and self.keep_crowd:
+                elif iscrowd is True and self.keep_crowd:
                     if isinstance(segmentations, dict) and 'counts' in segmentations:
                         # RLE
                         rles = mscoco_mask.frPyObjects(segmentations, height, width)
@@ -121,8 +134,14 @@ class COCO(ISAT):
             self.annos[self.remove_file_suffix(file_name)] = anno
         return True
 
-    def save_to_coco(self, annotation_file, cates: tuple=()):
+    def save_to_coco(self, annotation_file: str, cates: tuple=()) -> bool:
+        r"""
+        Save annotations to a COCO json file.
 
+        Arguments:
+            annotation_file (str): coco json annotations file.
+            cates (tuple): coco cates.
+        """
         coco_anno = {}
         # info
         coco_anno['info'] = {}

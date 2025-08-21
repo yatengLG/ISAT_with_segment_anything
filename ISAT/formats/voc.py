@@ -8,15 +8,28 @@ from PIL import Image
 import imgviz
 from skimage.draw.draw import polygon
 import os
+from typing import Union
 
 
 class VOC(ISAT):
+    """
+    VOC format
+
+    Attributes:
+        keep_crowd (bool): keep the crowded objects
+        is_instance (bool): mark if an object is instance or sematic
+    """
     def __init__(self):
         self.keep_crowd = True
         self.is_instance = False
 
+    def save_to_voc(self, png_root: str) -> bool:
+        """
+        Save annotations to the directory of voc png files.
 
-    def save_to_voc(self, png_root):
+        Arguments:
+            png_root (str): the directory to save the voc png files.
+        """
         os.makedirs(png_root, exist_ok=True)
 
         # cmap
@@ -31,12 +44,19 @@ class VOC(ISAT):
         for name_without_suffix, anno in pbar:
             pbar.set_description('Save to {}'.format(name_without_suffix + '.png'))
             png_path = os.path.join(png_root, name_without_suffix + '.png')
-            self._save_one_voc_png(anno, png_path, cmap, category_index_dict)
-
+            self.save_one_voc_png(anno, png_path, cmap, category_index_dict)
         return True
 
+    def save_one_voc_png(self, anno:ISAT.ANNO, png_path: str, cmap: np.ndarray, category_index_dict=None) -> bool:
+        """
+        Save annotation to a VOC png file.
 
-    def _save_one_voc_png(self, anno:ISAT.ANNO, png_path, cmap, category_index_dict=None):
+        Arguments:
+            anno (ISAT.ANNO): the annotation.
+            png_path (str): the path of the png file.
+            cmap (np.ndarray): color map. shape [n, 3]
+            category_index_dict (dict): the category index dict. {index: category}.
+        """
         info = anno.info
         objects = anno.objs
 
@@ -79,7 +99,15 @@ class VOC(ISAT):
         return True
 
     @staticmethod
-    def fill_polygon(segmentation, img: np.ndarray, color: int):
+    def fill_polygon(segmentation: Union[list, tuple], img: np.ndarray, color: int):
+        """
+        fill polygon with color on image.
+
+        Arguments:
+            segmentation (Union[list, tuple]): the vertices of the polygon. [(x1, y1), (x2, y2), ...] .
+            img (np.ndarray): the image.
+            color (int): the color of the polygon. save image as mode 'P' with PIL.
+        """
         xs = [x for x, y in segmentation]
         ys = [y for x, y in segmentation]
         rr, cc = polygon(xs, ys, img.shape)

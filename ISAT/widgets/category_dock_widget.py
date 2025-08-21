@@ -31,6 +31,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.category_choice_shortcuts[shortcut] = i-1 if i != 0 else 9
 
     def choice_category(self):
+        """Shortcut function for category choice."""
         index = self.category_choice_shortcuts.get(self.sender(), 0)
         try:
             item = self.listWidget.item(index)
@@ -40,6 +41,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
         except: pass
 
     def update_widget(self):
+        """Update list widget."""
         self.listWidget.clear()
         btngroup = QtWidgets.QButtonGroup(self)
         labels = self.mainwindow.cfg.get('label', [])
@@ -87,36 +89,60 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.listWidget.addItem(item)
             self.listWidget.setItemWidget(item, widget)
 
-    def radio_choice(self, index):
+    def radio_choice(self, index: int):
+        """
+        Triggered when radio button selected and set current category.
+
+        Arguments:
+            index: Index of list widget item.
+        """
         if isinstance(self.sender(), QtWidgets.QRadioButton):
             if self.sender().isChecked():
                 self.mainwindow.current_category = self.sender().text()
                 self.listWidget.setCurrentRow(index)
 
-    def item_choice(self, item):
+    def item_choice(self, item: QtWidgets.QListWidgetItem):
+        """
+        Triggered when an item in the category list is clicked.Will trigger radio button.
+
+        Arguments:
+            item: Item to be checked.
+        """
         widget = self.listWidget.itemWidget(item)
         label_radio = widget.findChild(QtWidgets.QRadioButton, 'label_radio')
         label_radio.setChecked(True)
 
     def update_current_group(self, text):
-        # Update the current_group variable when the text in the QLineEdit changes
+        """
+        Update the current_group variable when the text in the QLineEdit changes.
+
+        Arguments:
+            text (str): The text of QLineEdit.
+        """
         try:
             self.mainwindow.current_group = int(text)
         except ValueError:
             pass
 
     def increase_current_group(self):
-        # Increase the current_group variable and update the QLineEdit text
+        """Increase the current_group variable and update the QLineEdit text"""
         self.mainwindow.current_group += 1
         self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
 
     def decrease_current_group(self):
-        # Decrease the current_group variable and update the QLineEdit text
+        """Decrease the current_group variable and update the QLineEdit text"""
         if self.mainwindow.current_group > 1:
             self.mainwindow.current_group -= 1
             self.lineEdit_currentGroup.setText(str(self.mainwindow.current_group))
 
     def toggle_group_mode(self):
+        """
+        Toggle group mode.
+
+        - auto: Group id auto add 1 when add a new polygon.
+        - manual: Manual set group id.
+        - track: Group id changed with the group of current polygons when use [TAB] or [`] to check.
+        """
         _translate = QtCore.QCoreApplication.translate
         if self.mainwindow.group_select_mode == 'auto':
             self.mainwindow.group_select_mode = 'manual'

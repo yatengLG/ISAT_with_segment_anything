@@ -14,6 +14,14 @@ import os
 
 
 class DownloadThread(QThread):
+    """
+    Thread for downloading checkpoint.
+
+    Attributes:
+        urls (list): Url list, which include: 'huggingface' and 'modelscope'.
+        name (str): Checkpoint name.
+        pause (bool): Pause download.
+    """
     tag = pyqtSignal(float, float)
 
     def __init__(self, parent=None):
@@ -106,7 +114,9 @@ class DownloadThread(QThread):
         except Exception as e:
             print('Error when move {} to {}, {}'.format(from_path, to_path, e))
 
+
 class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
+    """Model manager interface."""
     def __init__(self, parent, mainwindow):
         super(ModelManagerDialog, self).__init__(parent)
         self.mainwindow = mainwindow
@@ -204,7 +214,6 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             self.gridLayout.addWidget(memory_label, index, 4, 1, 1)
             self.gridLayout.addWidget(params_label, index, 5, 1, 1)
             self.gridLayout.addWidget(ops_button, index, 6, 1, 1)
-
 
     def update_ui(self):
         for index, (model_name, info_dict) in enumerate(model_dict.items()):

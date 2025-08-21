@@ -8,10 +8,22 @@ import os
 
 
 class LABELME(ISAT):
+    """
+    LABELME format
+
+    Attributes:
+        keep_crowd (bool): keep the crowded objects
+    """
     def __init__(self):
         self.keep_crowd = True
 
-    def read_from_LABELME(self, json_root):
+    def read_from_LABELME(self, json_root: str) -> bool:
+        """
+        Load annotations from the directory of labelme json files.
+
+        Arguments:
+            json_root (str): the directory of label json files.
+        """
         self.annos.clear()
         self.cates = ()
 
@@ -21,7 +33,7 @@ class LABELME(ISAT):
         for file in pbar:
             name_without_suffix = self.remove_file_suffix(file)
             pbar.set_description('Load labelme json {}'.format(name_without_suffix+'.json'))
-            anno = self._load_one_labelme_json(os.path.join(json_root, file))
+            anno = self.load_one_labelme_json(os.path.join(json_root, file))
             self.annos[name_without_suffix] = anno
 
         class_set = set()
@@ -34,21 +46,34 @@ class LABELME(ISAT):
         self.cates = tuple(class_set)
         return True
 
-    def save_to_LABELME(self, json_root):
+    def save_to_LABELME(self, json_root: str) -> bool:
+        """
+        Save annotations to the directory of labelme json files.
+
+        Arguments:
+            json_root (str): the directory of label json files.
+        """
         os.makedirs(json_root, exist_ok=True)
 
         pbar = tqdm.tqdm(self.annos.items())
         for name_without_suffix, anno in pbar:
             json_path = os.path.join(json_root, name_without_suffix + '.json')
             try:
-                self._save_one_labelme_json(anno, json_path)
+                self.save_one_labelme_json(anno, json_path)
                 pbar.set_description('Save labelme to {}'.format(name_without_suffix+'.json'))
 
             except Exception as e:
                 raise '{} {}'.format(name_without_suffix, e)
         return True
 
-    def _save_one_labelme_json(self, anno:ISAT.ANNO, json_path):
+    def save_one_labelme_json(self, anno:ISAT.ANNO, json_path) -> bool:
+        """
+        Save annotation to a json file.
+
+        Arguments:
+            anno (ISAT.ANNO): the annotation.
+            json_path (str): the path to save the json file.
+        """
         labelme_anno = {}
         labelme_anno['version'] = "5.2.0.post4 | ISAT to LabelMe"
         labelme_anno['imagePath'] = anno.info.name
@@ -85,7 +110,16 @@ class LABELME(ISAT):
             dump(labelme_anno, f, indent=4, ensure_ascii=False)
         return True
 
-    def _load_one_labelme_json(self, json_path):
+    def load_one_labelme_json(self, json_path: str) -> ISAT.ANNO:
+        """
+        Load annotation from a labelme json file.
+
+        Arguments:
+            json_path (str): the path to save the json file.
+
+        Returns:
+            ISAT.ANNO: the annotation.
+        """
         anno = self.ANNO()
         anno.info = self.ANNO.INFO()
 
@@ -115,7 +149,7 @@ class LABELME(ISAT):
                 obj.area = shape.get('area', 0)
                 obj.layer = shape.get('layer', 1)
                 obj.bbox = shape.get('bbox', [])
-                obj.iscrowd = shape.get('iscrowd', 0)
+                obj.iscrowd = shape.get('iscrowd', False)
                 obj.note = shape.get('note', '')
 
                 objs.append(obj)

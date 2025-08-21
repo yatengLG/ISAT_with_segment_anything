@@ -21,6 +21,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
     def load_cfg(self):
+        """Load the cfg and update the interface."""
         self.listWidget.clear()
 
         labels = self.mainwindow.cfg.get('label', [])
@@ -70,7 +71,7 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
             self.lineEdit_category.setText('{}'.format(self.polygon.category))
             self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.spinBox_group.setValue(self.polygon.group)
-            iscrowd = QtCore.Qt.CheckState.Checked if self.polygon.iscrowd == 1 else QtCore.Qt.CheckState.Unchecked
+            iscrowd = QtCore.Qt.CheckState.Checked if self.polygon.iscrowd else QtCore.Qt.CheckState.Unchecked
             self.checkBox_iscrowded.setCheckState(iscrowd)
             self.lineEdit_note.setText('{}'.format(self.polygon.note))
             self.label_layer.setText('{}'.format(self.polygon.zValue()))
@@ -78,17 +79,24 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         if self.listWidget.count() == 0:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'Please set categorys before tagging.')
 
-    def get_category(self, item):
+    def get_category(self, item: QtWidgets.QListWidgetItem):
+        """
+        Triggered when category item selected.
+
+        Arguments:
+            item: category item.
+        """
         widget = self.listWidget.itemWidget(item)
         label_category = widget.findChild(QtWidgets.QLabel, 'label_category')
         self.lineEdit_category.setText(label_category.text())
         self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
     def apply(self):
+        """Set attributes of polygon."""
         category = self.lineEdit_category.text()
         group = self.spinBox_group.value()
 
-        is_crowd = int(self.checkBox_iscrowded.isChecked())
+        is_crowd = self.checkBox_iscrowded.isChecked()
         note = self.lineEdit_note.text()
         if not category:
             QtWidgets.QMessageBox.warning(self, 'Warning', 'Please select one category before submitting.')

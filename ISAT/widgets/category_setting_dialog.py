@@ -16,7 +16,17 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.init_connect()
 
-    def get_item_and_widget(self, category, color: str):
+    def get_item_and_widget(self, category: str, color: str) -> (QtWidgets.QListWidgetItem, QtWidgets.QWidget):
+        """
+        Return item and item widget for given category and color.
+
+        Arguments:
+            category: category name
+            color: color name
+
+        Returns:
+            The item of category list widget and the widget of the item.
+        """
         item = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(200, 40))
 
@@ -30,7 +40,7 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         color_button = QtWidgets.QPushButton()
         color_button.setStyleSheet('QWidget {background-color: %s}' % color)
         color_button.setFixedWidth(50)
-        color_button.clicked.connect(self.edit_category_item_color)
+        color_button.clicked.connect(self.choice_color)
         color_button.setObjectName('color')
         # 删除
         delete_button = QtWidgets.QPushButton()
@@ -48,18 +58,14 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         widget.setLayout(layout)
         return item, widget
 
-    def edit_category_item_color(self):
-        button = self.sender()
-        color = QtWidgets.QColorDialog.getColor()
-        if color.isValid():
-            button.setStyleSheet('QWidget {background-color: %s}' % (color.name()))
-
     def remove_category_item(self):
+        """Remove category item."""
         button = self.sender()
         row = self.category_list_widget.indexAt(button.parent().pos()).row()
         self.category_list_widget.takeItem(row)
 
     def load_cfg(self):
+        """Load the cfg and update the interface."""
         self.label_config_file.setText(self.mainwindow.config_file)
         self.category_list_widget.clear()
 
@@ -69,6 +75,7 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
             self.category_list_widget.setItemWidget(item, item_widget)
 
     def add_new_category(self):
+        """Add a new category item."""
         category = self.category_input.text()
         color = self.color_button.palette().button().color().name()
         if category:
@@ -78,11 +85,14 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.category_input.clear()
 
     def choice_color(self):
+        """Triggered by color button. Select a new color for the category."""
+        button = self.sender()
         color = QtWidgets.QColorDialog.getColor()
         if color.isValid():
-            self.color_button.setStyleSheet('QWidget {background-color: %s}' % color.name())
+            button.setStyleSheet('QWidget {background-color: %s}' % color.name())
 
     def import_cfg(self):
+        """Import cfg from yaml file."""
         file, _ = QtWidgets.QFileDialog.getOpenFileName(self, filter='Yaml File(*.yaml)')
         if file:
             self.mainwindow.config_file = file
@@ -91,6 +101,7 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.load_cfg()
 
     def export_cfg(self):
+        """Export cfg to yaml file."""
         file, _ = QtWidgets.QFileDialog.getSaveFileName(self, filter='Yaml File(*.yaml)')
         if not file.endswith('.yaml'):
             file += '.yaml'
@@ -99,6 +110,7 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.load_cfg()
 
     def apply(self):
+        """Apply setting of categories."""
         cfg = load_config(self.mainwindow.config_file)
         cfg['label'] = []
         for index in range(self.category_list_widget.count()):

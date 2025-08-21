@@ -1,0 +1,230 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-21 17:34+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/_api/ISAT.segment_any.rst:2
+msgid "ISAT.segment\\_any package"
+msgstr ""
+
+#: ../../source/_api/ISAT.segment_any.rst:5
+msgid "Submodules"
+msgstr ""
+
+#: ../../source/_api/ISAT.segment_any.rst:8
+msgid "ISAT.segment\\_any.gpu\\_resource module"
+msgstr ""
+
+#: ISAT.segment_any.gpu_resource.GPUResource_Thread:1 of
+msgid "Bases: :py:class:`~PyQt5.QtCore.QThread`"
+msgstr ""
+
+#: ISAT.segment_any.gpu_resource.GPUResource_Thread:1 of
+msgid "The thread for monitoring GPU0 resources."
+msgstr ""
+
+#: ISAT.segment_any.gpu_resource.GPUResource_Thread
+#: ISAT.segment_any.segment_any.SegAny
+#: ISAT.segment_any.segment_any.SegAny.predict_with_box_prompt
+#: ISAT.segment_any.segment_any.SegAny.predict_with_point_prompt
+#: ISAT.segment_any.segment_any.SegAny.set_image
+#: ISAT.segment_any.segment_any.SegAnyVideo
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state of
+msgid "Parameters"
+msgstr ""
+
+#: ISAT.segment_any.gpu_resource.GPUResource_Thread:3 of
+msgid "The id of the GPU device to monitor. default 0."
+msgstr ""
+
+#: ../../source/_api/ISAT.segment_any.rst:16
+msgid "ISAT.segment\\_any.model\\_zoo module"
+msgstr ""
+
+#: ../../source/_api/ISAT.segment_any.rst:24
+msgid "ISAT.segment\\_any.segment\\_any module"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:1
+#: ISAT.segment_any.segment_any.SegAnyVideo:1 of
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:1 of
+msgid "Segment Anything model class."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:3 ISAT.segment_any.segment_any.SegAny:8
+#: ISAT.segment_any.segment_any.SegAnyVideo:3
+#: ISAT.segment_any.segment_any.SegAnyVideo:8 of
+msgid "checkpoint path."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:4
+#: ISAT.segment_any.segment_any.SegAnyVideo:4 of
+msgid "model dtype is bfloat16. default is True."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny ISAT.segment_any.segment_any.SegAnyVideo
+#: of
+msgid "type"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:10
+#: ISAT.segment_any.segment_any.SegAny:22
+#: ISAT.segment_any.segment_any.SegAny:28
+#: ISAT.segment_any.segment_any.SegAnyVideo:10
+#: ISAT.segment_any.segment_any.SegAnyVideo:22
+#: ISAT.segment_any.segment_any.SegAnyVideo:28 of
+msgid "str"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:14
+#: ISAT.segment_any.segment_any.SegAnyVideo:14 of
+msgid "model dtype. eg: torch.bfloat16, torch.float32"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:16
+#: ISAT.segment_any.segment_any.SegAnyVideo:16 of
+msgid "torch.dtype"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:20 of
+msgid "model source. eg: mobile_sam, sam_hq, sam2, sam2.1, ..."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:26 of
+msgid "model type. eg: vit_b, vit_t, hiera_small, ..."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:32
+#: ISAT.segment_any.segment_any.SegAnyVideo:32 of
+msgid "Sam Predictor."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny:34
+#: ISAT.segment_any.segment_any.SegAnyVideo:34 of
+msgid "SamPredictor"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.set_image:1 of
+msgid "Set image to segment."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.set_image:3 of
+msgid "The image to segment."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_box_prompt
+#: ISAT.segment_any.segment_any.SegAny.predict_with_point_prompt
+#: ISAT.segment_any.segment_any.SegAny.reset_image
+#: ISAT.segment_any.segment_any.SegAny.set_image
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state
+#: ISAT.segment_any.segment_any.SegAnyVideo.reset_state of
+msgid "Return type"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.reset_image:1 of
+msgid "Reset image to segment."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_point_prompt:1 of
+msgid "Segment with point prompt."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_point_prompt:3 of
+msgid "The input points. [(x1, y1), (x2, y2), ...]"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_point_prompt:5 of
+msgid "The label of points, support value 0 or 1. [0, 0, ...]"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_box_prompt:1 of
+msgid "Segment with box prompt."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAny.predict_with_box_prompt:3 of
+msgid "[xmin, ymin, xmax, ymax]"
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo:1 of
+msgid ""
+"Segment Anything model class for video segmentation. Only SAM2 or SAM2.1 "
+"model."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo:20 of
+msgid "model source. sam2 or sam2.1 ."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo:26 of
+msgid "model type. eg: hiera_tiny, hiera_small, hiera_base_plus or hiera_large."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:1 of
+msgid "Init state for video segmentation. Need read all images."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:3 of
+msgid "The directory of images."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:5 of
+msgid "list of image file names to segment."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:7 of
+msgid "offload frames to CPU."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:9 of
+msgid "offload state to CPU."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.init_state:11 of
+msgid "asynchronize loading frames."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.reset_state:1 of
+msgid "Remove all input points or mask in all frames throughout the video."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask:1 of
+msgid "Add new mask prompt for video segmentation."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask:3 of
+msgid "Frame index."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask:5 of
+msgid "Object ID."
+msgstr ""
+
+#: ISAT.segment_any.segment_any.SegAnyVideo.add_new_mask:7 of
+msgid "New mask prompt."
+msgstr ""
+
+#: ../../source/_api/ISAT.segment_any.rst:32
+msgid "Module contents"
+msgstr ""
+

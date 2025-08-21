@@ -1,0 +1,1778 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-21 17:34+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/_api/ISAT.widgets.rst:2
+msgid "ISAT.widgets package"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:5
+msgid "Submodules"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:8
+msgid "ISAT.widgets.about\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.about_dialog.AboutDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.about_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:16
+msgid "ISAT.widgets.annos\\_dock\\_widget module"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QWidget`, "
+":py:class:`~ISAT.ui.anno_dock.Ui_Form`"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:1 of
+msgid "Annotations dock widget."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:5 of
+msgid "main window"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget
+#: ISAT.widgets.canvas.AnnotationScene
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread
+#: ISAT.widgets.mainwindow.InitSegAnyThread ISAT.widgets.mainwindow.MainWindow
+#: ISAT.widgets.mainwindow.SegAnyThread
+#: ISAT.widgets.mainwindow.SegAnyVideoThread
+#: ISAT.widgets.model_manager_dialog.DownloadThread
+#: ISAT.widgets.polygon.Polygon of
+msgid "type"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:7 of
+msgid "ISAT.widgets.mainwindow.MainWindow"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:11 of
+#, python-brace-format
+msgid "polygon and QListWidgetItem dict. {polygon: item}"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget:13
+#: ISAT.widgets.mainwindow.SegAnyThread:16 of
+msgid "dict"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.generate_item_and_itemwidget:1
+#: of
+msgid "The item of annotations list widget."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.generate_item_and_itemwidget
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_add_polygon
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_remove_polygon
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_all_polygon_visible
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_polygon_show
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_selected
+#: ISAT.widgets.canvas.AnnotationScene
+#: ISAT.widgets.canvas.AnnotationScene.load_image
+#: ISAT.widgets.canvas.AnnotationScene.mouseMoveEvent
+#: ISAT.widgets.canvas.AnnotationScene.mousePressEvent
+#: ISAT.widgets.canvas.AnnotationScene.mouseReleaseEvent
+#: ISAT.widgets.canvas.AnnotationView.wheelEvent
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.item_choice
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.radio_choice
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.update_current_group
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.closeEvent
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.get_category
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread
+#: ISAT.widgets.mainwindow.InitSegAnyThread
+#: ISAT.widgets.mainwindow.MainWindow.change_approx_polygon_state
+#: ISAT.widgets.mainwindow.MainWindow.change_auto_save_state
+#: ISAT.widgets.mainwindow.MainWindow.change_bfloat16_state
+#: ISAT.widgets.mainwindow.MainWindow.change_contour_mode
+#: ISAT.widgets.mainwindow.MainWindow.change_create_mode_invisible_polygon_state
+#: ISAT.widgets.mainwindow.MainWindow.change_edge_state
+#: ISAT.widgets.mainwindow.MainWindow.change_mask_alpha
+#: ISAT.widgets.mainwindow.MainWindow.change_prompt_visiable
+#: ISAT.widgets.mainwindow.MainWindow.change_real_time_area_state
+#: ISAT.widgets.mainwindow.MainWindow.change_saturation
+#: ISAT.widgets.mainwindow.MainWindow.change_vertex_size
+#: ISAT.widgets.mainwindow.MainWindow.closeEvent
+#: ISAT.widgets.mainwindow.MainWindow.init_sam_finish
+#: ISAT.widgets.mainwindow.MainWindow.init_segment_anything
+#: ISAT.widgets.mainwindow.MainWindow.jump_to
+#: ISAT.widgets.mainwindow.MainWindow.latest_version_tip
+#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish
+#: ISAT.widgets.mainwindow.MainWindow.save_cfg
+#: ISAT.widgets.mainwindow.MainWindow.screen_shot
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_start
+#: ISAT.widgets.mainwindow.MainWindow.set_labels_visible
+#: ISAT.widgets.mainwindow.MainWindow.set_saved_state
+#: ISAT.widgets.mainwindow.MainWindow.show_image
+#: ISAT.widgets.mainwindow.MainWindow.statusbar_change_status
+#: ISAT.widgets.mainwindow.MainWindow.translate
+#: ISAT.widgets.mainwindow.SegAnyThread
+#: ISAT.widgets.mainwindow.SegAnyThread.sam_encoder
+#: ISAT.widgets.mainwindow.SegAnyVideoThread
+#: ISAT.widgets.mainwindow.calculate_area
+#: ISAT.widgets.model_manager_dialog.ModelManagerDialog.download_process
+#: ISAT.widgets.plugin_base.PluginBase.after_sam_encode_finished_event
+#: ISAT.widgets.plugin_base.PluginBase.before_image_open_event
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_move_event
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_press_event
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_pressed_and_mouse_move_event
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_release_event
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog.trigger_after_sam_encode_finished
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog.trigger_on_mouse_move
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog.trigger_on_mouse_press
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog.trigger_on_mouse_pressed_and_mouse_move
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog.trigger_on_mouse_release
+#: ISAT.widgets.polygon.LineVertex.itemChange
+#: ISAT.widgets.polygon.Polygon.addPoint
+#: ISAT.widgets.polygon.Polygon.change_color
+#: ISAT.widgets.polygon.Polygon.hoverEnterEvent
+#: ISAT.widgets.polygon.Polygon.hoverLeaveEvent
+#: ISAT.widgets.polygon.Polygon.itemChange
+#: ISAT.widgets.polygon.Polygon.load_object
+#: ISAT.widgets.polygon.Polygon.mouseDoubleClickEvent
+#: ISAT.widgets.polygon.Polygon.movePoint
+#: ISAT.widgets.polygon.Polygon.moveVertex
+#: ISAT.widgets.polygon.Polygon.removePoint
+#: ISAT.widgets.polygon.Polygon.set_drawed
+#: ISAT.widgets.polygon.RectVertex.itemChange
+#: ISAT.widgets.polygon.Vertex.hoverEnterEvent
+#: ISAT.widgets.polygon.Vertex.hoverLeaveEvent
+#: ISAT.widgets.polygon.Vertex.itemChange of
+msgid "Parameters"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.generate_item_and_itemwidget:3
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_add_polygon:3
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_remove_polygon:3
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_polygon_show:3 of
+msgid "polygon"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.generate_item_and_itemwidget
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget
+#: ISAT.widgets.mainwindow.calculate_area
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_author
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_description
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_name
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_version
+#: ISAT.widgets.polygon.Polygon.calculate_area
+#: ISAT.widgets.polygon.Polygon.to_object of
+msgid "Return type"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.update_listwidget:1 of
+msgid "Update the annotations list widget."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_add_polygon:1 of
+msgid "Add a new item to the list widget."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.listwidget_remove_polygon:1
+#: of
+msgid "Remove a item from the list widget."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_selected:1 of
+msgid "Set item selected."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_polygon_selected:1 of
+msgid "Set polygon selected on canvas."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_polygon_show:1 of
+msgid "Set polygon visible."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_all_polygon_visible:1 of
+msgid "Set all polygon visible."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_all_polygon_visible:3 of
+msgid "visible flag"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_group_polygon_visible:1
+#: of
+msgid "Set group polygon visible."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.set_group_polygon_visible:3
+#: of
+msgid "The group is self.comboBox_group_select.currentText()"
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.zoom_to_group:1 of
+msgid "Zoom to suitable size of group."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.go_to_next_group:1 of
+msgid "Show next group."
+msgstr ""
+
+#: ISAT.widgets.annos_dock_widget.AnnosDockWidget.go_to_prev_group:1 of
+msgid "Show previous group."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:24
+msgid "ISAT.widgets.annos\\_validator\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.annos_validator_dialog.AnnosValidatorDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.annos_validator.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:32
+msgid "ISAT.widgets.auto\\_segment\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.auto_segment_dialog.AutoSegmentThread:1
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread:1
+#: ISAT.widgets.mainwindow.InitSegAnyThread:1
+#: ISAT.widgets.mainwindow.SegAnyThread:1
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:1
+#: ISAT.widgets.model_manager_dialog.DownloadThread:1 of
+msgid "Bases: :py:class:`~PyQt5.QtCore.QThread`"
+msgstr ""
+
+#: ISAT.widgets.auto_segment_dialog.AutoSegmentDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.auto_segment.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:40
+msgid "ISAT.widgets.canvas module"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QGraphicsScene`"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:1 of
+msgid "Annotation Scene."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:3 of
+msgid "ISAT main window"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:8 of
+msgid "Image pixmap item."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:10
+#: ISAT.widgets.canvas.AnnotationScene:16 of
+msgid "QtWidgets.QGraphicsPixmapItem"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:14 of
+msgid "SAM mask pixmap item."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:20 of
+msgid "Image data."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:22
+#: ISAT.widgets.canvas.AnnotationScene:82 ISAT.widgets.mainwindow.MainWindow:73
+#: of
+msgid "np.ndarray"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:26 of
+msgid "The polygon being annotated."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:28 of
+msgid "Polygon"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:32 of
+msgid "The box for SAM box prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:34 of
+msgid "Rect"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:38 of
+msgid "The line for repaint mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:40 of
+msgid "Line"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:44 of
+msgid "STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:46 of
+msgid "STATUSMode"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:50 of
+msgid "draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:52 of
+msgid "ISAT.configs.DRAWMode"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:56 of
+msgid "The mode for convert sam mask to polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:58 of
+msgid "CONTOURMode"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:62 of
+msgid "The click points for sam point prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:64
+#: ISAT.widgets.canvas.AnnotationScene:70
+#: ISAT.widgets.canvas.AnnotationScene:122
+#: ISAT.widgets.mainwindow.MainWindow:19 ISAT.widgets.mainwindow.MainWindow:67
+#: ISAT.widgets.model_manager_dialog.DownloadThread:7
+#: ISAT.widgets.polygon.Polygon:25 of
+msgid "list"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:68 of
+msgid "The tag for sam point prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:74 of
+msgid "The prompt points for sam point prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:76 of
+msgid "list[PromptPoint, ...]"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:80 of
+msgid "The masks output by sam model."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:86 of
+msgid "The alpha value for the masks."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:88
+#: ISAT.widgets.canvas.AnnotationScene:110 ISAT.widgets.polygon.Polygon:67 of
+msgid "float"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:92
+#: ISAT.widgets.canvas.AnnotationScene:98 of
+msgid "The guideline."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:94
+#: ISAT.widgets.canvas.AnnotationScene:100 of
+msgid "QtWidgets.QGraphicsLineItem"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:104 of
+msgid ""
+"Counter for the dragging annotation method, used by draw polygon and "
+"repaint."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:108 of
+msgid "Interval for the dragging annotation method."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:114 of
+msgid "The tag for mouse pressed."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:116
+#: ISAT.widgets.mainwindow.MainWindow:49 ISAT.widgets.mainwindow.MainWindow:55
+#: ISAT.widgets.mainwindow.MainWindow:61 ISAT.widgets.mainwindow.MainWindow:91
+#: ISAT.widgets.mainwindow.MainWindow:97 ISAT.widgets.mainwindow.MainWindow:103
+#: ISAT.widgets.mainwindow.MainWindow:109
+#: ISAT.widgets.model_manager_dialog.DownloadThread:19
+#: ISAT.widgets.polygon.Polygon:37 ISAT.widgets.polygon.Polygon:55 of
+msgid "bool"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:120 of
+msgid "The list of polygons selected."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:126 of
+msgid "The start vertex for repaint."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:128
+#: ISAT.widgets.canvas.AnnotationScene:134
+#: ISAT.widgets.canvas.AnnotationScene:140 of
+msgid "Vertex"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:132 of
+msgid "The end vertex for repaint."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene:138 of
+msgid "The hovered vertex for repaint."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.load_image:1 of
+msgid "Load image."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.load_image:3 of
+msgid "The image path."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.load_image
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget
+#: ISAT.widgets.mainwindow.calculate_area
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_author
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_description
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_name
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_version of
+msgid "Returns"
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.unload_image:1 of
+msgid "Unload image and clear scene."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_mode_to_create:1 of
+msgid "Change to create mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_mode_to_view:1 of
+msgid "Change to view mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_mode_to_edit:1 of
+msgid "Change to edit mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_mode_to_repaint:1 of
+msgid "Change to repaint mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_all:1 of
+msgid "Change to save all contour mode for convert masks to polygons."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_max_only:1
+#: of
+msgid "Change to save max contour mode for convert masks to polygons."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_external:1
+#: of
+msgid "Change to save external contour mode for convert masks to polygons."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.start_segment_anything:1 of
+msgid "Start segmenting anything with point prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.start_segment_anything_box:1 of
+msgid "Start segmenting anything with box prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.start_draw_polygon:1 of
+msgid "Start drawing polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.start_draw:1 of
+msgid "Try change to create mode and add a empty polygon for annotation ops."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.finish_draw:1 of
+msgid ""
+"Finish annotation. Convert masks to polygons when using sam, if the "
+"number of vertices less than 3, delete polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.cancel_draw:1 of
+msgid ""
+"Cancel draw. Remove the drawing polygons and masks, prompt points, prompt"
+" box eg."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.delete_selected_graph:1 of
+msgid ""
+"Delete selected graph. Graph can be polygons or vertices, support "
+"multiple selection modes by pressing the CTRL key."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.edit_polygon:1 of
+msgid ""
+"Edit the selected polygon. Open edit window then edit the attributes of "
+"the polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.move_polygon_to_top:1 of
+msgid "Move the selected polygon to top layer."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.move_polygon_to_bottom:1 of
+msgid "Move the selected polygon to bottom layer."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.copy_item:1 of
+msgid ""
+"Copy selected polygon. The copied polygon has the sam attributes with ori"
+" polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.polygons_union:1 of
+msgid ""
+"Union. Only support two polygons. Always use the attributes of the first "
+"polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.polygons_difference:1 of
+msgid ""
+"Subtract. Only support two polygons. Always use the attributes of the "
+"first polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.polygons_intersection:1 of
+msgid ""
+"Intersect. Only support two polygons. Always use the attributes of the "
+"first polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.polygons_symmetric_difference:1 of
+msgid ""
+"Exclude. Only support two polygons. Always use the attributes of the "
+"first polygon."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.update_mask:1 of
+msgid "Update the mask output of sam."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.backspace:1 of
+msgid "Backspace to the previous annotation state. Only work with create mode."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationView:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QGraphicsView`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:48
+msgid "ISAT.widgets.category\\_dock\\_widget module"
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QWidget`, "
+":py:class:`~ISAT.ui.category_dock.Ui_Form`"
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.choice_category:1 of
+msgid "Shortcut function for category choice."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.update_widget:1 of
+msgid "Update list widget."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.radio_choice:1 of
+msgid "Triggered when radio button selected and set current category."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.radio_choice:3 of
+msgid "Index of list widget item."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.item_choice:1 of
+msgid ""
+"Triggered when an item in the category list is clicked.Will trigger radio"
+" button."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.item_choice:3 of
+msgid "Item to be checked."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.update_current_group:1
+#: of
+msgid "Update the current_group variable when the text in the QLineEdit changes."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.update_current_group:3
+#: of
+msgid "The text of QLineEdit."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.increase_current_group:1
+#: of
+msgid "Increase the current_group variable and update the QLineEdit text"
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.decrease_current_group:1
+#: of
+msgid "Decrease the current_group variable and update the QLineEdit text"
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.toggle_group_mode:1
+#: of
+msgid "Toggle group mode."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.toggle_group_mode:3
+#: of
+msgid "auto: Group id auto add 1 when add a new polygon."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.toggle_group_mode:4
+#: of
+msgid "manual: Manual set group id."
+msgstr ""
+
+#: ISAT.widgets.category_dock_widget.CategoriesDockWidget.toggle_group_mode:5
+#: of
+msgid ""
+"track: Group id changed with the group of current polygons when use [TAB]"
+" or [`] to check."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:56
+msgid "ISAT.widgets.category\\_edit\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.category_edit.Ui_Dialog`"
+msgstr ""
+
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.load_cfg:1
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.load_cfg:1 of
+msgid "Load the cfg and update the interface."
+msgstr ""
+
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.get_category:1 of
+msgid "Triggered when category item selected."
+msgstr ""
+
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.get_category:3 of
+msgid "category item."
+msgstr ""
+
+#: ISAT.widgets.category_edit_dialog.CategoryEditDialog.apply:1 of
+msgid "Set attributes of polygon."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:64
+msgid "ISAT.widgets.category\\_setting\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.category_setting_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget:1
+#: of
+msgid "Return item and item widget for given category and color."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget:3
+#: of
+msgid "category name"
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget:4
+#: of
+msgid "color name"
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.get_item_and_widget:6
+#: of
+msgid "The item of category list widget and the widget of the item."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.remove_category_item:1
+#: of
+msgid "Remove category item."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.add_new_category:1
+#: of
+msgid "Add a new category item."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.choice_color:1 of
+msgid "Triggered by color button. Select a new color for the category."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.import_cfg:1 of
+msgid "Import cfg from yaml file."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.export_cfg:1 of
+msgid "Export cfg to yaml file."
+msgstr ""
+
+#: ISAT.widgets.category_setting_dialog.CategorySettingDialog.apply:1 of
+msgid "Apply setting of categories."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:72
+msgid "ISAT.widgets.converter\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.Converter:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtCore.QThread`, "
+":py:class:`~ISAT.formats.isat.ISAT`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.COCOConverter:1 of
+msgid ""
+"Bases: :py:class:`~ISAT.widgets.converter_dialog.Converter`, "
+":py:class:`~ISAT.formats.coco.COCO`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.YOLOConverter:1 of
+msgid ""
+"Bases: :py:class:`~ISAT.widgets.converter_dialog.Converter`, "
+":py:class:`~ISAT.formats.yolo.YOLO`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.LABELMEConverter:1 of
+msgid ""
+"Bases: :py:class:`~ISAT.widgets.converter_dialog.Converter`, "
+":py:class:`~ISAT.formats.labelme.LABELME`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.VOCConverter:1 of
+msgid ""
+"Bases: :py:class:`~ISAT.widgets.converter_dialog.Converter`, "
+":py:class:`~ISAT.formats.voc.VOC`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.VOCConverterForDetection:1 of
+msgid ""
+"Bases: :py:class:`~ISAT.widgets.converter_dialog.Converter`, "
+":py:class:`~ISAT.formats.voc_detection.VOCDetect`"
+msgstr ""
+
+#: ISAT.widgets.converter_dialog.ConverterDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.Converter_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:80
+msgid "ISAT.widgets.files\\_dock\\_widget module"
+msgstr ""
+
+#: ISAT.widgets.files_dock_widget.FilesDockWidget:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QWidget`, "
+":py:class:`~ISAT.ui.file_dock.Ui_Form`"
+msgstr ""
+
+#: ISAT.widgets.files_dock_widget.FilesDockWidget.update_widget:1 of
+msgid "Update the file list widget."
+msgstr ""
+
+#: ISAT.widgets.files_dock_widget.FilesDockWidget.set_select:1 of
+msgid "Set the current file highlight."
+msgstr ""
+
+#: ISAT.widgets.files_dock_widget.FilesDockWidget.listwidget_doubleclick:1 of
+msgid "Double-click the file list item to open the image."
+msgstr ""
+
+#: ISAT.widgets.files_dock_widget.FilesDockWidget.dropEvent:1 of
+msgid "Support drop event for open a image file or image directory."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:88
+msgid "ISAT.widgets.info\\_dock\\_widget module"
+msgstr ""
+
+#: ISAT.widgets.info_dock_widget.InfoDockWidget:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QWidget`, "
+":py:class:`~ISAT.ui.info_dock.Ui_Form`"
+msgstr ""
+
+#: ISAT.widgets.info_dock_widget.InfoDockWidget.note_changed:1 of
+msgid "Add a note for current image."
+msgstr ""
+
+#: ISAT.widgets.info_dock_widget.InfoDockWidget.update_widget:1 of
+msgid "Update the information dock widget."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:96
+msgid "ISAT.widgets.mainwindow module"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.QtBoxStyleProgressBar:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QProgressBar`"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.calculate_area:1 of
+msgid "Calculate the area of an array of points."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.calculate_area:3 of
+msgid "Vertices of polygon. [(x1, y1), (x2, y2), ...]"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.calculate_area:5 ISAT.widgets.polygon.Polygon:65 of
+msgid "The area of the polygon."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyThread:1 of
+msgid "Thread for encoder of the SAM model."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread:3
+#: ISAT.widgets.mainwindow.InitSegAnyThread:3
+#: ISAT.widgets.mainwindow.SegAnyThread:3
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:3 of
+msgid "Get attributes and functions from mainwindow."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread:8
+#: ISAT.widgets.mainwindow.InitSegAnyThread:8
+#: ISAT.widgets.mainwindow.SegAnyThread:8
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:8 of
+msgid "Signal."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread:10
+#: ISAT.widgets.mainwindow.InitSegAnyThread:10
+#: ISAT.widgets.mainwindow.SegAnyThread:10
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:10 of
+msgid "pyqtSignal"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyThread:14 of
+#, python-brace-format
+msgid ""
+"Dictionary of results. {image_index: {\"feature\": np.ndarray or tensor, "
+"...}, ...}"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyThread:20 of
+msgid "Current image index."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyThread.sam_encoder:1 of
+msgid "SAM encoder."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyThread.sam_encoder:3 of
+msgid "Image to be encoded."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:1 of
+msgid "Thread for video segmentation of the SAM model."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:14 of
+msgid "The index of the start frame of the video."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:25 ISAT.widgets.mainwindow.MainWindow:31
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:16
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:22 ISAT.widgets.polygon.Polygon:7
+#: ISAT.widgets.polygon.Polygon:13 ISAT.widgets.polygon.Polygon:19
+#: ISAT.widgets.polygon.Polygon:49 of
+msgid "int"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.SegAnyVideoThread:20 of
+msgid "The maximum number of frames to track."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.InitSegAnyThread:1 of
+msgid "Thread for init SAM model."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.InitSegAnyThread:14 of
+msgid "Checkpoint file path."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.CheckLatestVersionThread:1 of
+msgid "Thread for checking latest version."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QMainWindow`, "
+":py:class:`~ISAT.ui.MainWindow.Ui_MainWindow`"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:1 of
+msgid "The main window of ISAT, also contains most of the core functions."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:5 of
+msgid "Image root."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:7 ISAT.widgets.mainwindow.MainWindow:13
+#: ISAT.widgets.mainwindow.MainWindow:37 ISAT.widgets.mainwindow.MainWindow:43
+#: ISAT.widgets.model_manager_dialog.DownloadThread:13
+#: ISAT.widgets.polygon.Polygon:43 ISAT.widgets.polygon.Polygon:61 of
+msgid "str"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:11 of
+msgid "Label root."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:17 of
+msgid "List of images names."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:23 of
+msgid "Current index for current image in files_list."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:29 of
+msgid "Recode the current group. Default is 1."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:35 of
+msgid "Categories config file path. Default is ISAT/isat.yaml."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:41 of
+msgid "Software config file path. Default is ISAT/software.yaml."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:47 of
+msgid "The state of whether the annotations are written to disk."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:53 of
+msgid ""
+"The state of whether the annotation can be annotated. The png image with "
+"palette be used for VOC format, these can't be annotated."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:59 of
+msgid "The state of whether the image load finished."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:65 of
+msgid "List of polygons. These will be saved to disk as annotations."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:71 of
+msgid "The color array. (N, 3), numpy.uint8"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:77 of
+msgid ""
+"The map mode, means the current displayed state in the scene, which "
+"include 'LABEL', 'SEMANTIC' and 'INSTANCE'."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:79 of
+msgid "MAPMode"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:83 of
+msgid "The current annotation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:85 of
+msgid "Annotation"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:89 of
+msgid "The state of whether the SAM model can be used."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:95 of
+msgid "The state of whether the SAM model can be used to video segmentation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:101 of
+msgid "The state of whether the remote sam is being used."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow:107 of
+msgid "The mode of group. Default is 'auto'."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_segment_anything:1 of
+msgid "Initialize segment anything model."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_segment_anything:3 of
+msgid "The path of the checkpoint file."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_sam_finish:1 of
+msgid ""
+"Triggered when SAM finish is finished. Then start thread of sam encoder "
+"and video segmentation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_sam_finish:5
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish:5
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:5 of
+msgid "Do not call this function manually"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_sam_finish:7 of
+msgid "The state of whether SAM can be used."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.init_sam_finish:9 of
+msgid "The state of whether video segmentation can be used."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish:1 of
+msgid "Triggered when sam encoder is finished."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish:7 of
+msgid "The index of image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish:9 of
+msgid ""
+"The state of sam encoder result. 0 - delete; 1 - success; 2 - working; 3 "
+"- error."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish:11 of
+msgid "Error message."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.SeganyEnabled:1 of
+msgid ""
+"If current image has cached feature map by SAM encoder thread, enable "
+"semi-automatic annotation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_start:1 of
+msgid "Start video segmentation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_start:3 of
+msgid "The maximum number of frames to track. Default: None, all frames."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:1 of
+msgid "Triggered when video segmentation finished."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:7 of
+msgid "The index of current frame to segmentation."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:9 of
+msgid "The total number of frames."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:11 of
+msgid "The state of whether current frame is finished."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:13 of
+msgid "The state of whether current frame error."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.seg_video_finish:15 of
+msgid ""
+"Error message.current, total, finished, is_error, message. int, int, "
+"bool, bool, str"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.open_dir:1 of
+msgid "Open image root. Update file list and show the first image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.open_dir:5 of
+msgid "The label root will set same as the image root."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.open_dir:7 of
+msgid "If exist 'isat.yaml' under label root, will reload it."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.save_dir:1 of
+msgid "Open label root."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.save:1 of
+msgid "Save annotations to disk."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.show_image:1 of
+msgid "Show image and load annotations if exists."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.show_image:3 of
+msgid "Index of image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.show_image:5 of
+msgid "Zoomfit."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.prev_image:1 of
+msgid "Previous image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.next_image:1 of
+msgid "Next image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.jump_to:1 of
+msgid "Jump to the image."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.jump_to:3 of
+msgid ""
+"Index or name of the image. Index in (1, len(self.files_list)); name with"
+" suffix."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_bit_map:1 of
+msgid "Change the map mode, means the current displayed state in the scene."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_bit_map:3 of
+msgid "LABEL -> SEMANTIC -> INSTANCE -> LABEL -> SEMANTIC -> ...."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.set_labels_visible:1 of
+msgid "Set polygons visible in scene."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.set_labels_visible:3 of
+msgid "True or False"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.model_manage:1 of
+msgid "Open the model management interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.remote_sam:1 of
+msgid "Open the remote SAM model interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_bfloat16_state:1 of
+msgid "Change SAM model dtype. bfloat16 <=> float32."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_contour_mode:1 of
+msgid ""
+"Change contour mode. It has an effect when converting sam masks to "
+"polygons."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_contour_mode:3 of
+msgid "contour mode. which include 'max_only' 'external' and 'all'."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_mask_alpha:1 of
+msgid "Change mask alpha."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_mask_alpha:3 of
+msgid "mask alpha. [0, 10]"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_vertex_size:1 of
+msgid "Change vertex size."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_vertex_size:3 of
+msgid "vertex size. [0, 5]"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_real_time_area_state:1 of
+msgid "Change real time area state."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_real_time_area_state:5 of
+msgid ""
+"The area of the polygon can be viewed in the edit interface.(double click"
+" polygon to open.)"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_edge_state:1 of
+msgid "Show edge of polygons."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_approx_polygon_state:1 of
+msgid ""
+"Change polygon state. It has an effect when converting sam masks to "
+"polygons, can reduce the number of vertices of the polygon."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_create_mode_invisible_polygon_state:1
+#: of
+msgid "Invisible polygons in the create mode."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_saturation:1 of
+msgid "Only acts on display, don't acts on SAM model."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.change_prompt_visiable:1 of
+msgid "Show SAM propmt point."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.converter:1 of
+msgid "Open data converter interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.video2frames:1 of
+msgid "Open video to farames interface. Split the video to frames."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.auto_segment:1 of
+msgid ""
+"Open auto segment interface. Convert object detection data to segment "
+"data."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.process_exif:1 of
+msgid ""
+"Open process exif interface. Deal with the rotation problem of pictures "
+"with EXIF tags."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.shortcut:1 of
+msgid "Open shortcut interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.about:1 of
+msgid "Open about interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.setting:1 of
+msgid "Open setting interface."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.screen_shot:1 of
+msgid "Screenshot."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.screen_shot:3 of
+msgid "'scene' or 'window'"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.save_cfg:1 of
+msgid "Save categories config to disk."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.save_cfg:3 of
+msgid "Path to config file."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.save_software_cfg:1 of
+msgid "Save all config to disk."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.open_docs:1 of
+msgid "Open the docs."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:1 of
+msgid "Load shortcut"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:3 of
+msgid "load default shortcut if True."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.latest_version_tip:1 of
+msgid "Check whether it is the latest version."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.latest_version_tip:3 of
+msgid "Whether it is the latest version."
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.latest_version_tip:5 of
+msgid "The latest version."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:104
+msgid "ISAT.widgets.model\\_manager\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.DownloadThread:1 of
+msgid "Thread for downloading checkpoint."
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.DownloadThread:5 of
+msgid "Url list, which include: 'huggingface' and 'modelscope'."
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.DownloadThread:11 of
+msgid "Checkpoint name."
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.DownloadThread:17 of
+msgid "Pause download."
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.ModelManagerDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.model_manager_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ISAT.widgets.model_manager_dialog.ModelManagerDialog:1 of
+msgid "Model manager interface."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:112
+msgid "ISAT.widgets.plugin\\_base module"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase:1 of
+msgid "Bases: :py:class:`~abc.ABC`"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase:1 of
+msgid "Base class for all plugins."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.init_plugin:1 of
+msgid "Be used to plugin initialization."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.init_plugin:3 of
+msgid "s"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.init_plugin:3 of
+msgid "Arguments:"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.init_plugin:4 of
+msgid "mainwindow (MainWindow): Get attributes and functions from mainwindow."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.enable_plugin:1 of
+msgid "Enable plugin"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.disable_plugin:1 of
+msgid "Disable plugin"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_author:1 of
+msgid "Get plugin author."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_author:3 of
+msgid "Plugin author."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_version:1 of
+msgid "Get plugin version."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_version:3 of
+msgid "Plugin version."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_description:1 of
+msgid "Get plugin description."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_description:3 of
+msgid "Plugin description."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_name:1 of
+msgid "Get plugin name."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.get_plugin_name:3 of
+msgid "Plugin name. Default is the plugin class name."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.before_image_open_event:1 of
+msgid "当图片打开前调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.before_image_open_event:3 of
+msgid "The path of the image."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_image_open_event:1 of
+msgid "当图片打开后调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.before_annotation_start_event:1 of
+msgid "当开始标注前调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_annotation_created_event:1 of
+msgid "当标注创建完成后调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_annotation_changed_event:1 of
+msgid "当标注发生变化后调用，包括创建新标注，拖动顶点，移动多边形，改变多边形属性等"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.before_annotations_save_event:1 of
+msgid "当保存标注文件前调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_annotations_saved_event:1 of
+msgid "当保存标注文件后调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_sam_encode_finished_event:1 of
+msgid ""
+"当sam编码完成后调用 "
+"注意ISAT在单独线程对前后图像进行预编码，通过self.mainwindow.seganythread.results_dict中获取编码结果"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.after_sam_encode_finished_event:4 of
+msgid "Index of the image which has been encoded."
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_move_event:1 of
+msgid "当鼠标移动时调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_move_event:3
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_press_event:3
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_pressed_and_mouse_move_event:3
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_release_event:3 of
+msgid "坐标，限制在图像范围内"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_press_event:1 of
+msgid "当鼠标按下时调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_release_event:1 of
+msgid "当鼠标释放时调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.on_mouse_pressed_and_mouse_move_event:1
+#: of
+msgid "当鼠标拖动时调用"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.application_start_event:1 of
+msgid "软件启动后触发"
+msgstr ""
+
+#: ISAT.widgets.plugin_base.PluginBase.application_shutdown_event:1 of
+msgid "软件关闭前触发"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:120
+msgid "ISAT.widgets.plugin\\_manager\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.plugin_manager_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ISAT.widgets.plugin_manager_dialog.PluginManagerDialog:1 of
+msgid "Plugin manager interface, also include most of all functions of plugin."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:128
+msgid "ISAT.widgets.polygon module"
+msgstr ""
+
+#: ISAT.widgets.polygon.Line:1 ISAT.widgets.polygon.LineVertex:1
+#: ISAT.widgets.polygon.PromptPoint:1 ISAT.widgets.polygon.RectVertex:1
+#: ISAT.widgets.polygon.Vertex:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QGraphicsPathItem`"
+msgstr ""
+
+#: ISAT.widgets.polygon.PromptPoint:1 of
+msgid "SAM prompt point."
+msgstr ""
+
+#: ISAT.widgets.polygon.Vertex:1 of
+msgid "Vertex of polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QGraphicsPolygonItem`"
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:1 of
+msgid "Polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:5 of
+msgid "The width of the edge."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:11 of
+msgid "The alpha value of the polygon when hovering."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:17 of
+msgid "the alpha value of the polygon when nohovering."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:23 of
+msgid "Record the point pos of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:29 of
+msgid "Record the vertices of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:31 of
+msgid "list[Vertex]"
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:35 of
+msgid "The flag to indicate if the polygon is drawing."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:41 of
+msgid "The category of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:47 of
+msgid "The group of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:53 of
+msgid "The flag to indicate if the polygon is crowd."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon:59 of
+msgid "The note of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.addPoint:1 of
+msgid "Add a vertex to the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.addPoint:3 of
+msgid "The vertex to add."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.movePoint:1 of
+msgid ""
+"Move the point at the given index to the given point. The point is saved "
+"in self.points."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.movePoint:3
+#: ISAT.widgets.polygon.Polygon.moveVertex:3 of
+msgid "The index of the vertex to move."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.movePoint:5
+#: ISAT.widgets.polygon.Polygon.moveVertex:5 of
+msgid "The point to move to."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.removePoint:1 of
+msgid "Remove a vertex from the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.removePoint:3 of
+msgid "The index of the vertex to remove."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.delete:1 of
+msgid "Delete the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.moveVertex:1 of
+msgid ""
+"Move the vertex at the given index to the given point. The vertex is "
+"saved in self.vertices."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:1 of
+msgid "Set attributes for polygon and set is_drawing attribute to False."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:3 of
+msgid "category of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:4 of
+msgid "group of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:5 of
+msgid "whether the polygon is crowd."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:6 of
+msgid "note of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:7 of
+msgid "color of the polygon."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.set_drawed:8 of
+msgid "layer of the polygon in scene."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.calculate_area:1 of
+msgid "calculate area of polygon"
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.load_object:1 of
+msgid "load attributes from Object of Annotation."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.load_object:3 of
+msgid "Object of Annotation."
+msgstr ""
+
+#: ISAT.widgets.polygon.Polygon.to_object:1 of
+msgid "Convert to Object of Annotation."
+msgstr ""
+
+#: ISAT.widgets.polygon.LineVertex:1 of
+msgid "The vertex of a Line for repaint mode."
+msgstr ""
+
+#: ISAT.widgets.polygon.Line:1 of
+msgid "The guideline for repaint mode."
+msgstr ""
+
+#: ISAT.widgets.polygon.RectVertex:1 of
+msgid "The vertex of the prompt rect for sam box prompt."
+msgstr ""
+
+#: ISAT.widgets.polygon.Rect:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QGraphicsRectItem`"
+msgstr ""
+
+#: ISAT.widgets.polygon.Rect:1 of
+msgid "The prompt rect for sam box prompt."
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:136
+msgid "ISAT.widgets.process\\_exif\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.process_exif_dialog.ProcessExifDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.process_exif_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:144
+msgid "ISAT.widgets.remote\\_sam\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.remote_sam_dialog.RemoteSamDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.remote_sam_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ISAT.widgets.remote_sam_dialog.IPv4Validator:1 of
+msgid "Bases: :py:class:`~PyQt5.QtGui.QValidator`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:152
+msgid "ISAT.widgets.right\\_button\\_menu module"
+msgstr ""
+
+#: ISAT.widgets.right_button_menu.RightButtonMenu:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QMenu`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:160
+msgid "ISAT.widgets.setting\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.setting_dialog.SettingDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.setting_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:168
+msgid "ISAT.widgets.shortcut\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.shortcut_dialog.ShortcutDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.shortcut_dialog.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:176
+msgid "ISAT.widgets.switch\\_button module"
+msgstr ""
+
+#: ISAT.widgets.switch_button.SwitchBtn:1 of
+msgid "Bases: :py:class:`~PyQt5.QtWidgets.QWidget`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:184
+msgid "ISAT.widgets.video\\_to\\_frames\\_dialog module"
+msgstr ""
+
+#: ISAT.widgets.video_to_frames_dialog.Video2FramesDialog:1 of
+msgid ""
+"Bases: :py:class:`~PyQt5.QtWidgets.QDialog`, "
+":py:class:`~ISAT.ui.video_to_frames.Ui_Dialog`"
+msgstr ""
+
+#: ../../source/_api/ISAT.widgets.rst:192
+msgid "Module contents"
+msgstr ""
+

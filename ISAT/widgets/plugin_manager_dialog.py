@@ -7,6 +7,7 @@ from PyQt5 import QtWidgets, QtCore
 
 
 class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
+    """Plugin manager interface, also include most of all functions of plugin."""
     def __init__(self, parent, mainwindow):
         super(PluginManagerDialog, self).__init__(parent)
         self.mainwindow = mainwindow
@@ -19,7 +20,6 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.tableWidget.setColumnWidth(2, 150)
         self.tableWidget.setColumnWidth(3, 150)
 
-        self.plugin_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'plugins')
         self.plugins = []
 
         self.pushButton_close.clicked.connect(self.close)
@@ -98,27 +98,27 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             if plugin.enabled:
                 plugin.after_annotations_saved_event()
 
-    def trigger_after_sam_encode_finished(self, index):
+    def trigger_after_sam_encode_finished(self, index: int):
         for plugin in self.plugins:
             if plugin.enabled:
                 plugin.after_sam_encode_finished_event(index)
 
-    def trigger_on_mouse_move(self, scene_pos):
+    def trigger_on_mouse_move(self, scene_pos: QtCore.QPointF):
         for plugin in self.plugins:
             if plugin.enabled:
                 plugin.on_mouse_move_event(scene_pos)
 
-    def trigger_on_mouse_release(self, scene_pos):
+    def trigger_on_mouse_release(self, scene_pos: QtCore.QPointF):
         for plugin in self.plugins:
             if plugin.enabled:
                 plugin.on_mouse_release_event(scene_pos)
 
-    def trigger_on_mouse_press(self, scene_pos):
+    def trigger_on_mouse_press(self, scene_pos: QtCore.QPointF):
         for plugin in self.plugins:
             if plugin.enabled:
                 plugin.on_mouse_press_event(scene_pos)
 
-    def trigger_on_mouse_pressed_and_mouse_move(self, scene_pos):
+    def trigger_on_mouse_pressed_and_mouse_move(self, scene_pos: QtCore.QPointF):
         for plugin in self.plugins:
             if plugin.enabled:
                 plugin.on_mouse_pressed_and_mouse_move_event(scene_pos)

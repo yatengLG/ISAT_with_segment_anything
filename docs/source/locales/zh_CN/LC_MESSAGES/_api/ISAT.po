@@ -1,0 +1,226 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-21 17:34+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/_api/ISAT.rst:2
+msgid "ISAT package"
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:5
+msgid "Subpackages"
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:15
+msgid "Submodules"
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:18
+msgid "ISAT.annotation module"
+msgstr ""
+
+#: ISAT.annotation.Annotation:1 ISAT.annotation.Object:1 of
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: ISAT.annotation.Object:1 of
+msgid "A class to represent an annotation object."
+msgstr ""
+
+#: ISAT.annotation.Annotation ISAT.annotation.Object ISAT.configs.load_config
+#: ISAT.configs.save_config of
+msgid "Parameters"
+msgstr ""
+
+#: ISAT.annotation.Object:3 of
+msgid "The category of the object."
+msgstr ""
+
+#: ISAT.annotation.Object:5 of
+msgid "The group of the object."
+msgstr ""
+
+#: ISAT.annotation.Object:7 of
+msgid "The vertices of the object.[(x1, y1), (x2, y2), ...]"
+msgstr ""
+
+#: ISAT.annotation.Object:9 of
+msgid "The area of the object."
+msgstr ""
+
+#: ISAT.annotation.Object:11 of
+msgid "The layer of the object."
+msgstr ""
+
+#: ISAT.annotation.Object:13 of
+msgid "The bbox of the object. [xmin, ymin, xmax, ymax]"
+msgstr ""
+
+#: ISAT.annotation.Object:15 of
+msgid "The crowd tag of the object."
+msgstr ""
+
+#: ISAT.annotation.Object:17 of
+msgid "The note of the object."
+msgstr ""
+
+#: ISAT.annotation.Annotation:1 of
+msgid "A class to represent an annotation containing many objects."
+msgstr ""
+
+#: ISAT.annotation.Annotation:3 of
+msgid "The path to the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation:5 ISAT.annotation.Annotation:28 of
+msgid "The path to the label file."
+msgstr ""
+
+#: ISAT.annotation.Annotation:10 of
+msgid "Always 'ISAT'."
+msgstr ""
+
+#: ISAT.annotation.Annotation of
+msgid "type"
+msgstr ""
+
+#: ISAT.annotation.Annotation:12 ISAT.annotation.Annotation:18
+#: ISAT.annotation.Annotation:24 ISAT.annotation.Annotation:30
+#: ISAT.annotation.Annotation:36 of
+msgid "str"
+msgstr ""
+
+#: ISAT.annotation.Annotation:16 of
+msgid "The path to the folder where the images are located."
+msgstr ""
+
+#: ISAT.annotation.Annotation:22 of
+msgid "The name of the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation:34 of
+msgid "The note of the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation:40 of
+msgid "The height of the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation:42 ISAT.annotation.Annotation:48
+#: ISAT.annotation.Annotation:54 of
+msgid "int"
+msgstr ""
+
+#: ISAT.annotation.Annotation:46 of
+msgid "The width of the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation:52 of
+msgid "The depth of the image."
+msgstr ""
+
+#: ISAT.annotation.Annotation.load_annotation:1 of
+msgid "Load annotation from self.label_path"
+msgstr ""
+
+#: ISAT.annotation.Annotation.save_annotation:1 of
+msgid "Save annotation to self.label_path"
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:26
+msgid "ISAT.configs module"
+msgstr ""
+
+#: ISAT.configs.load_config:1 of
+msgid "Load config file"
+msgstr ""
+
+#: ISAT.configs.load_config:3 ISAT.configs.save_config:5 of
+msgid "config file path"
+msgstr ""
+
+#: ISAT.configs.load_config of
+msgid "Returns"
+msgstr ""
+
+#: ISAT.configs.load_config:6 ISAT.configs.save_config:3 of
+msgid "config dict"
+msgstr ""
+
+#: ISAT.configs.load_config ISAT.configs.save_config of
+msgid "Return type"
+msgstr ""
+
+#: ISAT.configs.save_config:1 of
+msgid "Save config file"
+msgstr ""
+
+#: ISAT.configs.CONTOURMode:1 ISAT.configs.DRAWMode:1 ISAT.configs.MAPMode:1
+#: ISAT.configs.STATUSMode:1 of
+msgid "Bases: :py:class:`~enum.Enum`"
+msgstr ""
+
+#: ISAT.configs.STATUSMode:1 of
+msgid "The status mode"
+msgstr ""
+
+#: ISAT.configs.DRAWMode:1 of
+msgid "The draw mode."
+msgstr ""
+
+#: ../../docstring ISAT.configs.DRAWMode.POLYGON:1 of
+msgid "Manually draw polygon"
+msgstr ""
+
+#: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING:1 of
+msgid "Segment anything with point prompt."
+msgstr ""
+
+#: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING_BOX:1 of
+msgid "Segment anything with box prompt."
+msgstr ""
+
+#: ISAT.configs.MAPMode:1 of
+msgid "Canvas show map mode"
+msgstr ""
+
+#: ISAT.configs.CONTOURMode:1 of
+msgid "Contour Mode - ways to convert masks to polygons."
+msgstr ""
+
+#: ../../docstring ISAT.configs.CONTOURMode.SAVE_MAX_ONLY:1 of
+msgid "Only save max contour."
+msgstr ""
+
+#: ../../docstring ISAT.configs.CONTOURMode.SAVE_EXTERNAL:1 of
+msgid "Only save external contour."
+msgstr ""
+
+#: ../../docstring ISAT.configs.CONTOURMode.SAVE_ALL:1 of
+msgid "Only save all contour."
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:34
+msgid "ISAT.main module"
+msgstr ""
+
+#: ../../source/_api/ISAT.rst:42
+msgid "Module contents"
+msgstr ""
+

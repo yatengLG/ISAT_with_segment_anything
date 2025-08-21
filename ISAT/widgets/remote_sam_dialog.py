@@ -67,7 +67,7 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
             else:
                 try:
                     self.mainwindow.use_remote_sam = True
-                    self.mainwindow.init_segment_anything(loadl_model_path, checked=True)
+                    self.mainwindow.init_segment_anything(loadl_model_path)
                 except Exception as e:
                     self.mainwindow.use_remote_sam = False
                     QtWidgets.QMessageBox.warning(self, "Error", f"Init local sam failed.\n {e}")

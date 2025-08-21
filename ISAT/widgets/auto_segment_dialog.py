@@ -122,7 +122,7 @@ class AutoSegmentThread(QThread):
                     object['area'] = None
                     object['layer'] = group + 1
                     object['bbox'] = [xmin, ymin, xmax, ymax]
-                    object['iscrowd'] = 0
+                    object['iscrowd'] = False
                     object['note'] = ''
                     dataset['objects'].append(object)
 

@@ -2,8 +2,6 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets, QtCore
-from PySide6.scripts.qtpy2cpp_lib import qt
-
 from ISAT.ui.anno_dock import Ui_Form
 import functools
 import re

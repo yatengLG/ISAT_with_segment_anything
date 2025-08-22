@@ -531,13 +531,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.plugin_manager_dialog.trigger_application_start()
 
-    def init_segment_anything(self, model_path: str=None):
+    def init_segment_anything(self, model_path: str=None, checked: bool=True):
         """
         Initialize segment anything model.
 
         Arguments:
             model_path (str): The path of the checkpoint file.
+            checked (bool): If not checked, skip.
         """
+        if not checked:
+            return
+
         if model_path is None:
             if self.use_segment_anything:
                 model_path = self.segany.checkpoint

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-import os
+
+import sys
 from importlib.metadata import entry_points
 from ISAT.ui.plugin_manager_dialog import Ui_Dialog
 from PyQt5 import QtWidgets, QtCore
@@ -28,7 +29,10 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def load_plugins(self):
         self.tableWidget.setRowCount(0)
         print('loading plugins')
-        eps = entry_points().get("isat.plugins", [])
+        if sys.version_info >= (3, 10):
+            eps = entry_points().select(group="isat.plugins")
+        else:
+            eps = entry_points().get("isat.plugins", [])
         for ep in eps:
             try:
                 plugin_class = ep.load()

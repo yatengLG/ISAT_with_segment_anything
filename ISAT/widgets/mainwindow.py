@@ -428,6 +428,7 @@ class InitSegAnyThread(QThread):
                     print('Init SAM2 video Error: ', e)
                     sam_video_tag = False
 
+        sam_video_tag = sam_tag and sam_video_tag
         self.tag.emit(sam_tag, sam_video_tag)
 
 
@@ -606,7 +607,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany_video_thread.tag.connect(self.seg_video_finish)
 
             # sam2 建议使用bfloat16
-            if self.segany.model_dtype == torch.float32:
+            if self.segany_video.model_dtype == torch.float32:
                 if self.cfg['software']['language'] == 'zh':
                     QtWidgets.QMessageBox.warning(self,
                                                   'warning',
@@ -1046,9 +1047,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_segment_anything:
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
-            try:
+            if self.use_segment_anything_video:
                 self.segany_video.inference_state = {}
-            except: pass
 
         self.files_list.clear()
         self.files_dock_widget.listWidget.clear()

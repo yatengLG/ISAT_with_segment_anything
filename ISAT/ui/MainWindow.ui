@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../icons.qrc">
-    <normaloff>:/icon/icons/ISAT13_100.svg</normaloff>:/icon/icons/ISAT13_100.svg</iconset>
+    <normaloff>:/icon/icons/ISAT_new_128.svg</normaloff>:/icon/icons/ISAT_new_128.svg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -521,7 +521,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/ISAT13.svg</normaloff>:/icon/icons/ISAT13.svg</iconset>
+     <normaloff>:/icon/icons/ISAT_new_32.svg</normaloff>:/icon/icons/ISAT_new_32.svg</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -996,6 +996,12 @@
    </property>
    <property name="text">
     <string>Remote SAM</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionProcess_EXIF_tag">

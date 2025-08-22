@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>240</height>
+    <width>840</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>240</height>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
-    <height>300</height>
+    <width>900</width>
+    <height>350</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -54,51 +54,60 @@
        <number>10</number>
       </property>
       <property name="leftMargin">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>10</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QWidget" name="widget_2" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="leftMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <item>
           <widget class="QLabel" name="label">
            <property name="minimumSize">
             <size>
-             <width>180</width>
-             <height>180</height>
+             <width>256</width>
+             <height>256</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>180</width>
-             <height>180</height>
+             <width>256</width>
+             <height>256</height>
             </size>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../icons.qrc">:/icon/icons/ISAT11_100.svg</pixmap>
+            <pixmap resource="../icons.qrc">:/icon/icons/ISAT_new_256.svg</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -108,22 +117,36 @@
          <item>
           <widget class="QWidget" name="widget_3" native="true">
            <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>10</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_3">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>60</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Times New Roman</family>
-                <pointsize>20</pointsize>
+                <pointsize>32</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
                </font>
               </property>
               <property name="text">
-               <string>ISAT with Segment anything</string>
+               <string>ISAT with Segment Anything</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -135,19 +158,19 @@
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>25</height>
+                <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>25</height>
+                <height>16777215</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Times New Roman</family>
-                <pointsize>12</pointsize>
+                <pointsize>24</pointsize>
                </font>
               </property>
               <property name="statusTip">
@@ -181,11 +204,14 @@
               <property name="font">
                <font>
                 <family>Times New Roman</family>
-                <pointsize>12</pointsize>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Open source on &lt;a href=&quot;https://github.com/yatengLG/ISAT_with_segment_anything&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Main contributor &lt;a href=&quot;https://github.com/Alias-z&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;Alias-z&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;ISAT Copyright (C) 2022 &lt;a href=&quot;https://github.com/yatengLG&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;yatengLG&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Open source on &lt;a href=&quot;https://github.com/yatengLG/ISAT_with_segment_anything&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Main contributor &lt;a href=&quot;https://github.com/Alias-z&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Alias-z&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Copyright (C) 2022 &lt;a href=&quot;https://github.com/yatengLG&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;yatengLG&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
               </property>
               <property name="openExternalLinks">
                <bool>true</bool>
@@ -200,18 +226,30 @@
       </item>
       <item>
        <widget class="QWidget" name="widget_4" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>45</height>
+         </size>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="leftMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <item>
           <spacer name="horizontalSpacer">

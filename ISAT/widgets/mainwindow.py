@@ -1818,3 +1818,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 text = f'<html><head/><body><p align=\"center\">New version <b>{latest_version}</b> released!</p><p align=\"center\">Check the update content on <a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a></p></body></html>'
 
             QtWidgets.QMessageBox.information(self, title, text)
+
+    @staticmethod
+    def create_app_shortcut():
+        import sys
+        desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+        python_path = sys.executable
+        pkg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        main_path = os.path.join(pkg_root, 'ISAT/main.py')
+
+        if osplatform == 'Windows':
+            try:
+                with open(os.path.join(desktop_path, 'ISAT.bat'), 'w') as f:
+                    f.write("""@echo off
+set PROJECT_ROOT="{}"
+cd /d %PROJECT_ROOT%
+set PYTHONPATH=%PROJECT_ROOT%;%PYTHONPATH%
+
+{} {}
+                    """.format(pkg_root, python_path, main_path))
+            except Exception as e:
+                print("Create app shortcut error: {}".format(e))
+
+        elif osplatform == 'Linux':
+            pass
+        elif osplatform == 'Darwin':
+            pass
+        else:
+            pass

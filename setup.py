@@ -46,26 +46,7 @@ setup(
     include_package_data=True,
 
     python_requires=">=3.8",                            # python 版本要求
-    install_requires=[
-        'imgviz',
-        'scikit-image',
-        'numpy',
-        'opencv_python_headless',
-        'pillow',
-        'pyqt5',
-        'pyyaml',
-        'torch>=2.1.1',
-        'torchvision',
-        'pycocotools',
-        'timm',
-        'shapely',
-        'hydra-core>=1.3.2',
-        'tqdm>=4.66.1',
-        'fuzzywuzzy',
-        'python-Levenshtein',
-        'iopath',
-        'orjson'
-        ],
+    install_requires=get_install_requires(),
 
     classifiers=[
         "Intended Audience :: Developers",              # 目标用户:开发者

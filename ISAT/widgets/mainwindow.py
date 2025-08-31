@@ -1017,6 +1017,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # shortcut
         self.load_actions_shortcut(default=False)
 
+    def load_actions_shortcut(self, default: bool=False):
+        """
+        Load shortcut
+
+        Arguments:
+            default (bool): load default shortcut if True.
+        """
+        shortcut_cfg = self.cfg['shortcut']
+        for action in shortcut_cfg:
+
+            default_key = shortcut_cfg[action]['default_key']
+            if default:
+                shortcut_cfg[action]['key'] = default_key
+            key = shortcut_cfg[action]['key']
+            try:
+                if key is not None:
+                    eval('self.' + action).setShortcut(QtGui.QKeySequence(key))
+                else:
+                    eval('self.' + action).setShortcut(QtGui.QKeySequence(0))
+            except Exception as e:
+                pass
+
     def set_saved_state(self, is_saved:bool):
         if not is_saved:
             if self.cfg['software']['auto_save']:
@@ -1696,6 +1718,67 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def closeEvent(self, a0: QtGui.QCloseEvent):
         self.exit()
 
+    def latest_version_tip(self, is_latest_version: bool, latest_version: str):
+        """
+        Check whether it is the latest version.
+
+        Arguments:
+            is_latest_version (bool): Whether it is the latest version.
+            latest_version (str): The latest version.
+        """
+        if not is_latest_version:
+            if self.cfg['software']['language'] == 'zh':
+                title = ''
+                text = f'<html><head/><body><p align=\"center\">新版本<b>{latest_version}</b>已发布!</p><p align=\"center\">请在<a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a>上查看更新内容</p></body></html>'
+            else:
+                title = ''
+                text = f'<html><head/><body><p align=\"center\">New version <b>{latest_version}</b> released!</p><p align=\"center\">Check the update content on <a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a></p></body></html>'
+
+            QtWidgets.QMessageBox.information(self, title, text)
+
+    @staticmethod
+    def create_desktop_shortcut():
+        import sys
+        desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+        python_path = sys.executable
+        pkg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        main_path = os.path.join(pkg_root, 'ISAT/main.py')
+        icon_path = os.path.join(pkg_root, 'ISAT/ISAT_new_64.svg')
+
+        if osplatform == 'Windows':
+            try:
+                with open(os.path.join(desktop_path, 'ISAT.bat'), 'w') as f:
+                    f.write("""@echo off
+set PROJECT_ROOT="{}"
+cd /d %PROJECT_ROOT%
+set PYTHONPATH=%PROJECT_ROOT%;%PYTHONPATH%
+
+{} {}
+                    """.format(pkg_root, python_path, main_path))
+            except Exception as e:
+                print("Create app shortcut error: {}".format(e))
+
+        elif osplatform == 'Linux':
+            try:
+                with open(os.path.join(os.path.expanduser('~'), '.local/share/applications/ISAT.desktop'),
+                          'w') as f:
+                    f.write("""[Desktop Entry]
+Name=ISAT
+Type=Application
+Comment=ISAT with segment anything
+Exec=env PYTHONPATH={} {} {}
+Terminal=false
+Icon={}
+Categories=Development;System;
+                    """.format(pkg_root, python_path, main_path, icon_path))
+            except Exception as e:
+                print("Create app shortcut error: {}".format(e))
+
+        elif osplatform == 'Darwin':
+            pass
+        else:
+            pass
+
     def init_connect(self):
         self.actionImages_dir.triggered.connect(self.open_dir)
         self.actionLabel_dir.triggered.connect(self.save_dir)
@@ -1753,6 +1836,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.actionLanguage.triggered.connect(self.change_language)
         self.actionDocs.triggered.connect(self.open_docs)
+        self.actionCreate_a_desktop_shortcut.triggered.connect(self.create_desktop_shortcut)
 
         self.annos_dock_widget.listWidget.doubleClicked.connect(self.scene.edit_polygon)
 
@@ -1778,71 +1862,3 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSubtract.setEnabled(False)
         self.actionIntersect.setEnabled(False)
         self.actionExclude.setEnabled(False)
-
-    def load_actions_shortcut(self, default: bool=False):
-        """
-        Load shortcut
-
-        Arguments:
-            default (bool): load default shortcut if True.
-        """
-        shortcut_cfg = self.cfg['shortcut']
-        for action in shortcut_cfg:
-
-            default_key = shortcut_cfg[action]['default_key']
-            if default:
-                shortcut_cfg[action]['key'] = default_key
-            key = shortcut_cfg[action]['key']
-            try:
-                if key is not None:
-                    eval('self.' + action).setShortcut(QtGui.QKeySequence(key))
-                else:
-                    eval('self.' + action).setShortcut(QtGui.QKeySequence(0))
-            except Exception as e:
-                pass
-
-    def latest_version_tip(self, is_latest_version: bool, latest_version: str):
-        """
-        Check whether it is the latest version.
-
-        Arguments:
-            is_latest_version (bool): Whether it is the latest version.
-            latest_version (str): The latest version.
-        """
-        if not is_latest_version:
-            if self.cfg['software']['language'] == 'zh':
-                title = ''
-                text = f'<html><head/><body><p align=\"center\">新版本<b>{latest_version}</b>已发布!</p><p align=\"center\">请在<a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a>上查看更新内容</p></body></html>'
-            else:
-                title = ''
-                text = f'<html><head/><body><p align=\"center\">New version <b>{latest_version}</b> released!</p><p align=\"center\">Check the update content on <a href=\"https://github.com/yatengLG/ISAT_with_segment_anything/releases\">Github</a></p></body></html>'
-
-            QtWidgets.QMessageBox.information(self, title, text)
-
-    @staticmethod
-    def create_app_shortcut():
-        import sys
-        desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
-        python_path = sys.executable
-        pkg_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        main_path = os.path.join(pkg_root, 'ISAT/main.py')
-
-        if osplatform == 'Windows':
-            try:
-                with open(os.path.join(desktop_path, 'ISAT.bat'), 'w') as f:
-                    f.write("""@echo off
-set PROJECT_ROOT="{}"
-cd /d %PROJECT_ROOT%
-set PYTHONPATH=%PROJECT_ROOT%;%PYTHONPATH%
-
-{} {}
-                    """.format(pkg_root, python_path, main_path))
-            except Exception as e:
-                print("Create app shortcut error: {}".format(e))
-
-        elif osplatform == 'Linux':
-            pass
-        elif osplatform == 'Darwin':
-            pass
-        else:
-            pass

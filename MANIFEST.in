@@ -1,4 +1,5 @@
 include ISAT/checkpoints/mobile_sam.pt
+include ISAT/ISAT_new_64.svg
 recursive-include ISAT/segment_any *.py
 recursive-include ISAT/widgets *
 recursive-include ISAT/ui *

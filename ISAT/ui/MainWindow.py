@@ -363,6 +363,8 @@ class Ui_MainWindow(object):
         icon41.addPixmap(QtGui.QPixmap(":/icon/icons/书籍1_book-one.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionDocs.setIcon(icon41)
         self.actionDocs.setObjectName("actionDocs")
+        self.actionCreate_a_desktop_shortcut = QtWidgets.QAction(MainWindow)
+        self.actionCreate_a_desktop_shortcut.setObjectName("actionCreate_a_desktop_shortcut")
         self.menuFile.addAction(self.actionImages_dir)
         self.menuFile.addAction(self.actionLabel_dir)
         self.menuFile.addSeparator()
@@ -387,6 +389,7 @@ class Ui_MainWindow(object):
         self.menuAbout.addAction(self.actionLanguage)
         self.menuAbout.addAction(self.actionShortcut)
         self.menuAbout.addAction(self.actionDocs)
+        self.menuAbout.addAction(self.actionCreate_a_desktop_shortcut)
         self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionAbout)
         self.menuTools.addSeparator()
@@ -611,3 +614,5 @@ class Ui_MainWindow(object):
         self.actionProcess_EXIF_tag.setText(_translate("MainWindow", "Process EXIF tag"))
         self.actionPlugins.setText(_translate("MainWindow", "Plugins"))
         self.actionDocs.setText(_translate("MainWindow", "Docs"))
+        self.actionCreate_a_desktop_shortcut.setText(_translate("MainWindow", "Create a desktop shortcut"))
+

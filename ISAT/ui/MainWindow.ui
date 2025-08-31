@@ -131,6 +131,7 @@
     <addaction name="actionLanguage"/>
     <addaction name="actionShortcut"/>
     <addaction name="actionDocs"/>
+    <addaction name="actionCreate_a_desktop_shortcut"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -1029,6 +1030,11 @@
    </property>
    <property name="text">
     <string>Docs</string>
+   </property>
+  </action>
+  <action name="actionCreate_a_desktop_shortcut">
+   <property name="text">
+    <string>Create a desktop shortcut</string>
    </property>
   </action>
  </widget>

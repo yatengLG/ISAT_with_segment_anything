@@ -16,3 +16,4 @@ fuzzywuzzy
 python-Levenshtein
 iopath
 orjson
+pydicom

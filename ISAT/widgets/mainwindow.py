@@ -39,6 +39,53 @@ import cv2  # 调整图像饱和度
 from skimage.draw.draw import polygon
 import requests
 import orjson
+import pydicom
+
+
+def get_windowed_image(ds):
+    # Apply Rescale Slope and Rescale Intercept if they exist
+    pixel_array = ds.pixel_array.astype(float)
+    rescale_slope = ds.get("RescaleSlope", 1)
+    rescale_intercept = ds.get("RescaleIntercept", 0)
+    if rescale_slope != 1 or rescale_intercept != 0:
+        pixel_array = pixel_array * rescale_slope + rescale_intercept
+
+    # Check for windowing information in the DICOM metadata
+    window_center = ds.get("WindowCenter", None)
+    window_width = ds.get("WindowWidth", None)
+
+    if window_center is None or window_width is None:
+        # If no windowing info, use the full dynamic range
+        window_min = pixel_array.min()
+        window_max = pixel_array.max()
+    else:
+        # Handle possible multi-valued tags by taking the first value
+        if isinstance(window_center, pydicom.multival.MultiValue):
+            window_center = window_center[0]
+        if isinstance(window_width, pydicom.multival.MultiValue):
+            window_width = window_width[0]
+        
+        window_min = window_center - window_width / 2
+        window_max = window_center + window_width / 2
+
+    # Apply windowing
+    pixel_array = np.clip(pixel_array, window_min, window_max)
+
+    # Normalize to 0-255
+    if window_max > window_min:
+        pixel_array = ((pixel_array - window_min) / (window_max - window_min)) * 255.0
+    else: # Handle case where all pixels are the same
+        pixel_array.fill(128)
+        
+    # Handle Photometric Interpretation
+    photometric_interpretation = ds.get("PhotometricInterpretation", "MONOCHROME2")
+    if photometric_interpretation == "MONOCHROME1":
+        pixel_array = 255.0 - pixel_array
+
+    # Convert to 8-bit unsigned integer
+    image_8bit = pixel_array.astype(np.uint8)
+    
+    return image_8bit
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -1082,7 +1129,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         files = []
         suffixs = tuple(['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
         for f in os.listdir(dir):
-            if f.lower().endswith(suffixs):
+            if f.lower().endswith(suffixs) or f.lower().endswith('.dcm'):
                 # f = os.path.join(dir, f)
                 files.append(f)
         files = sorted(files)
@@ -1179,14 +1226,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             self.plugin_manager_dialog.trigger_before_image_open(file_path)
 
-            image_data = Image.open(file_path)
-
-            png_palette = image_data.getpalette()
-            if png_palette is not None and file_path.endswith('.png'):
-                self.statusbar.showMessage('This image might be a label image in VOC format.')
-                self.can_be_annotated = False
-            else:
+            if file_path.lower().endswith('.dcm'):
+                ds = pydicom.dcmread(file_path)
+                image_data = Image.fromarray(get_windowed_image(ds))
                 self.can_be_annotated = True
+            else:
+                image_data = Image.open(file_path)
+                png_palette = image_data.getpalette()
+                if png_palette is not None and file_path.endswith('.png'):
+                    self.statusbar.showMessage('This image might be a label image in VOC format.')
+                    self.can_be_annotated = False
+                else:
+                    self.can_be_annotated = True
 
             if self.can_be_annotated:
                 self.actionPolygon.setEnabled(True)

@@ -6,8 +6,55 @@ from PIL import Image
 import numpy as np
 from json import load, dump
 from typing import List, Union
+import pydicom
 
 __all__ = ['Object', 'Annotation']
+
+
+def get_windowed_image(ds):
+    # Apply Rescale Slope and Rescale Intercept if they exist
+    pixel_array = ds.pixel_array.astype(float)
+    rescale_slope = ds.get("RescaleSlope", 1)
+    rescale_intercept = ds.get("RescaleIntercept", 0)
+    if rescale_slope != 1 or rescale_intercept != 0:
+        pixel_array = pixel_array * rescale_slope + rescale_intercept
+
+    # Check for windowing information in the DICOM metadata
+    window_center = ds.get("WindowCenter", None)
+    window_width = ds.get("WindowWidth", None)
+
+    if window_center is None or window_width is None:
+        # If no windowing info, use the full dynamic range
+        window_min = pixel_array.min()
+        window_max = pixel_array.max()
+    else:
+        # Handle possible multi-valued tags by taking the first value
+        if isinstance(window_center, pydicom.multival.MultiValue):
+            window_center = window_center[0]
+        if isinstance(window_width, pydicom.multival.MultiValue):
+            window_width = window_width[0]
+
+        window_min = window_center - window_width / 2
+        window_max = window_center + window_width / 2
+
+    # Apply windowing
+    pixel_array = np.clip(pixel_array, window_min, window_max)
+
+    # Normalize to 0-255
+    if window_max > window_min:
+        pixel_array = ((pixel_array - window_min) / (window_max - window_min)) * 255.0
+    else:  # Handle case where all pixels are the same
+        pixel_array.fill(128)
+
+    # Handle Photometric Interpretation
+    photometric_interpretation = ds.get("PhotometricInterpretation", "MONOCHROME2")
+    if photometric_interpretation == "MONOCHROME1":
+        pixel_array = 255.0 - pixel_array
+
+    # Convert to 8-bit unsigned integer
+    image_8bit = pixel_array.astype(np.uint8)
+
+    return image_8bit
 
 class Object:
     r"""A class to represent an annotation object.
@@ -57,8 +104,10 @@ class Annotation:
         self.img_name = img_name
         self.label_path = label_path
         self.note = ''
+        self.image_path = image_path
+        self._img_data = None
 
-        image = np.array(Image.open(image_path))
+        image = self.get_img_data()
         if image.ndim == 3:
             self.height, self.width, self.depth = image.shape
         elif image.ndim == 2:
@@ -67,9 +116,20 @@ class Annotation:
         else:
             self.height, self.width, self.depth = image.shape[:, :3]
             print('Warning: Except image has 2 or 3 ndim, but get {}.'.format(image.ndim))
-        del image
 
         self.objects:List[Object, ] = []
+
+    def get_img_data(self):
+        if self._img_data is None:
+            if self.image_path.lower().endswith('.dcm'):
+                ds = pydicom.dcmread(self.image_path)
+                image_data = get_windowed_image(ds)
+                # convert to RGB
+                self._img_data = np.stack([image_data, image_data, image_data], axis=-1)
+            else:
+                image = Image.open(self.image_path).convert('RGB')
+                self._img_data = np.array(image)
+        return self._img_data
 
     def load_annotation(self):
         r"""

@@ -70,7 +70,7 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             suffixs = tuple(
                 ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
             for f in os.listdir(dir):
-                if f.lower().endswith(suffixs):
+                if f.lower().endswith(suffixs) or f.lower().endswith('.dcm'):
                     # f = os.path.join(dir, f)
                     files.append(f)
             files = sorted(files)
@@ -107,7 +107,7 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
 
             dir, file = os.path.split(path)
             files = []
-            if path.lower().endswith(suffixs):
+            if path.lower().endswith(suffixs) or path.lower().endswith('.dcm'):
                 files = [file]
 
             self.mainwindow.files_list = files

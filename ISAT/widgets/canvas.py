@@ -156,10 +156,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.image_item.setPixmap(pixmap)
             self.setSceneRect(self.image_item.boundingRect())
         else:
-            image = Image.open(image_path)
+            image_data = self.mainwindow.current_label.get_img_data()
             if self.mainwindow.can_be_annotated:
-                image = image.convert('RGB')
-            self.image_data = np.array(image)
+                self.image_data = image_data
+            else:
+                self.image_data = image_data
+
             self.image_item = QtWidgets.QGraphicsPixmapItem()
             self.image_item.setZValue(0)
             self.addItem(self.image_item)
@@ -167,7 +169,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mask_item.setZValue(1)
             self.addItem(self.mask_item)
 
-            self.image_item.setPixmap(QtGui.QPixmap(image_path))
+            height, width, channel = self.image_data.shape
+            bytes_per_line = 3 * width
+            q_image = QtGui.QImage(self.image_data.data, width, height, bytes_per_line,
+                                   QtGui.QImage.Format_RGB888)
+            self.image_item.setPixmap(QtGui.QPixmap.fromImage(q_image))
             self.setSceneRect(self.image_item.boundingRect())
         self.change_mode_to_view()
 

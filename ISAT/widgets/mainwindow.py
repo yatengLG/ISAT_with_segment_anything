@@ -1189,13 +1189,28 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if file_path.lower().endswith('.dcm'):
                 self.can_be_annotated = True
             else:
-                image = Image.open(file_path)
-                png_palette = image.getpalette()
-                if png_palette is not None and file_path.endswith('.png'):
-                    self.statusbar.showMessage('This image might be a label image in VOC format.')
-                    self.can_be_annotated = False
-                else:
-                    self.can_be_annotated = True
+                try:
+                    image = Image.open(file_path)
+                    png_palette = image.getpalette()
+                    if png_palette is not None and file_path.endswith('.png'):
+                        self.statusbar.showMessage('This image might be a label image in VOC format.')
+                        self.can_be_annotated = False
+                    else:
+                        self.can_be_annotated = True
+                except Exception as e:
+                    # stausbar show error
+                    self.statusbar.showMessage(str(e), 5000)
+                    return
+
+            # load label
+            if self.can_be_annotated:
+                self.current_group = 1
+                _, name = os.path.split(file_path)
+                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
+                self.current_label = Annotation(file_path, label_path)
+                self.current_label.get_img_data()
+                # 载入数据
+                self.current_label.load_annotation()
 
             if self.can_be_annotated:
                 self.actionPolygon.setEnabled(True)
@@ -1235,15 +1250,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.seganythread.start()
                 self.SeganyEnabled()
 
-            # load label
             if self.can_be_annotated:
-                self.current_group = 1
-                _, name = os.path.split(file_path)
-                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
-                self.current_label = Annotation(file_path, label_path)
-                # 载入数据
-                self.current_label.load_annotation()
-
                 for object in self.current_label.objects:
                     try:
                         group = int(object.group)

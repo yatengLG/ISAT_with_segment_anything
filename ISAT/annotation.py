@@ -107,29 +107,44 @@ class Annotation:
         self.image_path = image_path
         self._img_data = None
 
-        image = self.get_img_data()
-        if image.ndim == 3:
-            self.height, self.width, self.depth = image.shape
-        elif image.ndim == 2:
-            self.height, self.width = image.shape
-            self.depth = 0
-        else:
-            self.height, self.width, self.depth = image.shape[:, :3]
-            print('Warning: Except image has 2 or 3 ndim, but get {}.'.format(image.ndim))
+        # Defer image loading to get_img_data()
+        self.width = 0
+        self.height = 0
+        self.depth = 0
 
         self.objects:List[Object, ] = []
 
-    def get_img_data(self):
+    def get_img_data(self, to_rgb=False):
         if self._img_data is None:
             if self.image_path.lower().endswith('.dcm'):
                 ds = pydicom.dcmread(self.image_path)
                 image_data = get_windowed_image(ds)
-                # convert to RGB
                 self._img_data = np.stack([image_data, image_data, image_data], axis=-1)
             else:
-                image = Image.open(self.image_path).convert('RGB')
-                self._img_data = np.array(image)
-        return self._img_data
+                self._img_data = Image.open(self.image_path)
+
+        if self.width == 0 or self.height == 0:
+            if isinstance(self._img_data, np.ndarray):
+                image = self._img_data
+                if image.ndim == 3:
+                    self.height, self.width, self.depth = image.shape
+                elif image.ndim == 2:
+                    self.height, self.width = image.shape
+                    self.depth = 1
+            else: # PIL Image
+                self.width, self.height = self._img_data.size
+                self.depth = len(self._img_data.getbands())
+
+        if to_rgb:
+            if isinstance(self._img_data, np.ndarray):
+                return self._img_data # DICOM data is already RGB numpy array
+            else: # PIL Image
+                return np.array(self._img_data.convert('RGB'))
+        else:
+            if isinstance(self._img_data, np.ndarray):
+                 return self._img_data
+            else: # PIL Image
+                return np.array(self._img_data)
 
     def load_annotation(self):
         r"""

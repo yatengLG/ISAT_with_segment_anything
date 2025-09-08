@@ -209,12 +209,7 @@ class SegAnyThread(QThread):
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
 
-                    if image_path.lower().endswith('.dcm'):
-                        ds = pydicom.dcmread(image_path)
-                        image_data = get_windowed_image(ds)
-                        image_data = np.stack([image_data,image_data,image_data],axis=-1)
-                    else:
-                        image_data = np.array(Image.open(image_path).convert('RGB'))
+                    image_data = self.mainwindow.current_label.get_img_data(to_rgb=True)
                     try:
                         features, original_size, input_size = self.sam_encoder(image_data)
                     except Exception as e:
@@ -1208,9 +1203,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 _, name = os.path.split(file_path)
                 label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
                 self.current_label = Annotation(file_path, label_path)
-                self.current_label.get_img_data()
                 # 载入数据
                 self.current_label.load_annotation()
+                # get image data and info
+                self.current_label.get_img_data()
 
             if self.can_be_annotated:
                 self.actionPolygon.setEnabled(True)

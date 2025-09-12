@@ -25,6 +25,7 @@ from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.configs import STATUSMode, MAPMode, load_config, save_config, CONFIG_FILE, SOFTWARE_CONFIG_FILE, CHECKPOINT_PATH, ISAT_ROOT, CONTOURMode
 from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
+from ISAT.utils.dicom import load_dcm_as_image
 import os
 from PIL import Image
 import functools
@@ -39,8 +40,6 @@ import cv2  # 调整图像饱和度
 from skimage.draw.draw import polygon
 import requests
 import orjson
-import pydicom
-from ISAT.annotation import get_windowed_image
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -209,7 +208,10 @@ class SegAnyThread(QThread):
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
 
-                    image_data = self.mainwindow.current_label.get_img_data(to_rgb=True)
+                    if image_path.lower().endswith('.dcm'):
+                        image_data = np.array(load_dcm_as_image(image_path).convert('RGB'))
+                    else:
+                        image_data = np.array(Image.open(image_path).convert('RGB'))
                     try:
                         features, original_size, input_size = self.sam_encoder(image_data)
                     except Exception as e:
@@ -1182,31 +1184,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plugin_manager_dialog.trigger_before_image_open(file_path)
 
             if file_path.lower().endswith('.dcm'):
-                self.can_be_annotated = True
+                image_data = load_dcm_as_image(file_path)
             else:
-                try:
-                    image = Image.open(file_path)
-                    png_palette = image.getpalette()
-                    if png_palette is not None and file_path.endswith('.png'):
-                        self.statusbar.showMessage('This image might be a label image in VOC format.')
-                        self.can_be_annotated = False
-                    else:
-                        self.can_be_annotated = True
-                except Exception as e:
-                    # stausbar show error
-                    self.statusbar.showMessage(str(e), 5000)
-                    return
+                image_data = Image.open(file_path)
 
-            # load label
-            if self.can_be_annotated:
-                self.current_group = 1
-                _, name = os.path.split(file_path)
-                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
-                self.current_label = Annotation(file_path, label_path)
-                # 载入数据
-                self.current_label.load_annotation()
-                # get image data and info
-                self.current_label.get_img_data()
+            png_palette = image_data.getpalette()
+            if png_palette is not None and file_path.endswith('.png'):
+                self.statusbar.showMessage('This image might be a label image in VOC format.')
+                self.can_be_annotated = False
+            else:
+                self.can_be_annotated = True
 
             if self.can_be_annotated:
                 self.actionPolygon.setEnabled(True)
@@ -1231,14 +1218,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.view.zoomfit()
 
             # 判断图像是否旋转
-            if not file_path.lower().endswith('.dcm'):
-                image_data = Image.open(file_path)
-                exif_info = image_data.getexif()
-                if exif_info and exif_info.get(274, 1) != 1:
-                    warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议去除EXIF信息后再进行标注\n你可以使用[菜单栏]-[工具]-[处理exif标签]功能处理图像的旋转问题。'\
-                        if self.cfg['software']['language'] == 'zh' \
-                        else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata.\nYou can use the function of [Process EXIF tag] in [Tools] in [Menu bar] to deal with the problem of images.'
-                    QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
+            exif_info = image_data.getexif()
+            if exif_info and exif_info.get(274, 1) != 1:
+                warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议去除EXIF信息后再进行标注\n你可以使用[菜单栏]-[工具]-[处理exif标签]功能处理图像的旋转问题。'\
+                    if self.cfg['software']['language'] == 'zh' \
+                    else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata.\nYou can use the function of [Process EXIF tag] in [Tools] in [Menu bar] to deal with the problem of images.'
+                QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
 
             if self.use_segment_anything and self.can_be_annotated:
                 self.segany.reset_image()
@@ -1246,7 +1231,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.seganythread.start()
                 self.SeganyEnabled()
 
+            # load label
             if self.can_be_annotated:
+                self.current_group = 1
+                _, name = os.path.split(file_path)
+                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
+                self.current_label = Annotation(file_path, label_path)
+                # 载入数据
+                self.current_label.load_annotation()
+
                 for object in self.current_label.objects:
                     try:
                         group = int(object.group)

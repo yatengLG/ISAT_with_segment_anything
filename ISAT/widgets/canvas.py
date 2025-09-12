@@ -4,11 +4,11 @@ from PIL import Image
 from PyQt5 import QtWidgets, QtGui, QtCore
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line, Rect
 from ISAT.configs import STATUSMode, DRAWMode, CONTOURMode
+from ISAT.utils.dicom import load_dcm_as_image
 import numpy as np
 import cv2
 import time  # 拖动鼠标描点
 import shapely
-import pydicom
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
@@ -90,8 +90,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
 
-        self.image_data = self.mainwindow.current_label.get_img_data(to_rgb=True)
-
+        if image_path.lower().endswith('.dcm'):
+            image = load_dcm_as_image(image_path)
+        else:
+            image = Image.open(image_path)
+        if self.mainwindow.can_be_annotated:
+            image = image.convert('RGB')
+        self.image_data = np.array(image)
         self.image_item = QtWidgets.QGraphicsPixmapItem()
         self.image_item.setZValue(0)
         self.addItem(self.image_item)
@@ -101,9 +106,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         height, width, channel = self.image_data.shape
         bytes_per_line = channel * width
-        q_image = QtGui.QImage(self.image_data.data, width, height, bytes_per_line,
+        q_image = QtGui.QImage(self.image_data.tobytes(), width, height, bytes_per_line,
                                QtGui.QImage.Format_RGB888)
         self.image_item.setPixmap(QtGui.QPixmap.fromImage(q_image))
+        # self.image_item.setPixmap(QtGui.QPixmap(image_path))
         self.setSceneRect(self.image_item.boundingRect())
         self.change_mode_to_view()
 
@@ -599,7 +605,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     x, y = point.x(), point.y()
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
 
-                self.current_graph.set_drawed(item.category, item.group, item.iscrowd, item.note, item.color, item.zValue())
+                self.current_graph.set_drawed(item.category, item.group, item.iscrowd, item.note, item.color, int(item.zValue()))
                 self.mainwindow.polygons.insert(index, self.current_graph)
                 self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
                 item.setSelected(False)
@@ -1087,7 +1093,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         else:
             mask_image = np.zeros(self.image_data.shape, dtype=np.uint8)
             mask_image = cv2.addWeighted(self.image_data, 1, mask_image, 0, 0)
-        mask_image = QtGui.QImage(mask_image[:], mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
+        mask_image = QtGui.QImage(mask_image.tobytes(), mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
                                   QtGui.QImage.Format_RGB888)
         mask_pixmap = QtGui.QPixmap(mask_image)
         if self.mask_item is not None:

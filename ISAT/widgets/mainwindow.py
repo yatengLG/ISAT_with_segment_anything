@@ -40,52 +40,7 @@ from skimage.draw.draw import polygon
 import requests
 import orjson
 import pydicom
-
-
-def get_windowed_image(ds):
-    # Apply Rescale Slope and Rescale Intercept if they exist
-    pixel_array = ds.pixel_array.astype(float)
-    rescale_slope = ds.get("RescaleSlope", 1)
-    rescale_intercept = ds.get("RescaleIntercept", 0)
-    if rescale_slope != 1 or rescale_intercept != 0:
-        pixel_array = pixel_array * rescale_slope + rescale_intercept
-
-    # Check for windowing information in the DICOM metadata
-    window_center = ds.get("WindowCenter", None)
-    window_width = ds.get("WindowWidth", None)
-
-    if window_center is None or window_width is None:
-        # If no windowing info, use the full dynamic range
-        window_min = pixel_array.min()
-        window_max = pixel_array.max()
-    else:
-        # Handle possible multi-valued tags by taking the first value
-        if isinstance(window_center, pydicom.multival.MultiValue):
-            window_center = window_center[0]
-        if isinstance(window_width, pydicom.multival.MultiValue):
-            window_width = window_width[0]
-        
-        window_min = window_center - window_width / 2
-        window_max = window_center + window_width / 2
-
-    # Apply windowing
-    pixel_array = np.clip(pixel_array, window_min, window_max)
-
-    # Normalize to 0-255
-    if window_max > window_min:
-        pixel_array = ((pixel_array - window_min) / (window_max - window_min)) * 255.0
-    else: # Handle case where all pixels are the same
-        pixel_array.fill(128)
-        
-    # Handle Photometric Interpretation
-    photometric_interpretation = ds.get("PhotometricInterpretation", "MONOCHROME2")
-    if photometric_interpretation == "MONOCHROME1":
-        pixel_array = 255.0 - pixel_array
-
-    # Convert to 8-bit unsigned integer
-    image_8bit = pixel_array.astype(np.uint8)
-    
-    return image_8bit
+from ISAT.annotation import get_windowed_image
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -254,7 +209,7 @@ class SegAnyThread(QThread):
 
                     image_path = os.path.join(self.mainwindow.image_root, self.mainwindow.files_list[index])
 
-                    image_data = np.array(Image.open(image_path).convert('RGB'))
+                    image_data = self.mainwindow.current_label.get_img_data(to_rgb=True)
                     try:
                         features, original_size, input_size = self.sam_encoder(image_data)
                     except Exception as e:
@@ -1227,17 +1182,31 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.plugin_manager_dialog.trigger_before_image_open(file_path)
 
             if file_path.lower().endswith('.dcm'):
-                ds = pydicom.dcmread(file_path)
-                image_data = Image.fromarray(get_windowed_image(ds))
                 self.can_be_annotated = True
             else:
-                image_data = Image.open(file_path)
-                png_palette = image_data.getpalette()
-                if png_palette is not None and file_path.endswith('.png'):
-                    self.statusbar.showMessage('This image might be a label image in VOC format.')
-                    self.can_be_annotated = False
-                else:
-                    self.can_be_annotated = True
+                try:
+                    image = Image.open(file_path)
+                    png_palette = image.getpalette()
+                    if png_palette is not None and file_path.endswith('.png'):
+                        self.statusbar.showMessage('This image might be a label image in VOC format.')
+                        self.can_be_annotated = False
+                    else:
+                        self.can_be_annotated = True
+                except Exception as e:
+                    # stausbar show error
+                    self.statusbar.showMessage(str(e), 5000)
+                    return
+
+            # load label
+            if self.can_be_annotated:
+                self.current_group = 1
+                _, name = os.path.split(file_path)
+                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
+                self.current_label = Annotation(file_path, label_path)
+                # 载入数据
+                self.current_label.load_annotation()
+                # get image data and info
+                self.current_label.get_img_data()
 
             if self.can_be_annotated:
                 self.actionPolygon.setEnabled(True)
@@ -1262,12 +1231,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.view.zoomfit()
 
             # 判断图像是否旋转
-            exif_info = image_data.getexif()
-            if exif_info and exif_info.get(274, 1) != 1:
-                warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议去除EXIF信息后再进行标注\n你可以使用[菜单栏]-[工具]-[处理exif标签]功能处理图像的旋转问题。'\
-                    if self.cfg['software']['language'] == 'zh' \
-                    else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata.\nYou can use the function of [Process EXIF tag] in [Tools] in [Menu bar] to deal with the problem of images.'
-                QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
+            if not file_path.lower().endswith('.dcm'):
+                image_data = Image.open(file_path)
+                exif_info = image_data.getexif()
+                if exif_info and exif_info.get(274, 1) != 1:
+                    warning_info = '这幅图像包含EXIF元数据，且图像的方向已被旋转.\n建议去除EXIF信息后再进行标注\n你可以使用[菜单栏]-[工具]-[处理exif标签]功能处理图像的旋转问题。'\
+                        if self.cfg['software']['language'] == 'zh' \
+                        else 'This image has EXIF metadata, and the image orientation is rotated.\nSuggest labeling after removing the EXIF metadata.\nYou can use the function of [Process EXIF tag] in [Tools] in [Menu bar] to deal with the problem of images.'
+                    QtWidgets.QMessageBox.warning(self, 'Warning', warning_info, QtWidgets.QMessageBox.Ok)
 
             if self.use_segment_anything and self.can_be_annotated:
                 self.segany.reset_image()
@@ -1275,15 +1246,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.seganythread.start()
                 self.SeganyEnabled()
 
-            # load label
             if self.can_be_annotated:
-                self.current_group = 1
-                _, name = os.path.split(file_path)
-                label_path = os.path.join(self.label_root, '.'.join(name.split('.')[:-1]) + '.json')
-                self.current_label = Annotation(file_path, label_path)
-                # 载入数据
-                self.current_label.load_annotation()
-
                 for object in self.current_label.objects:
                     try:
                         group = int(object.group)

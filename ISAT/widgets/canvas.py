@@ -90,85 +90,21 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
 
-        if image_path.lower().endswith('.dcm'):
-            ds = pydicom.dcmread(image_path)
-            # Apply Rescale Slope and Rescale Intercept if they exist
-            pixel_array = ds.pixel_array.astype(float)
-            rescale_slope = ds.get("RescaleSlope", 1)
-            rescale_intercept = ds.get("RescaleIntercept", 0)
-            if rescale_slope != 1 or rescale_intercept != 0:
-                pixel_array = pixel_array * rescale_slope + rescale_intercept
+        self.image_data = self.mainwindow.current_label.get_img_data(to_rgb=True)
 
-            # Check for windowing information in the DICOM metadata
-            window_center = ds.get("WindowCenter", None)
-            window_width = ds.get("WindowWidth", None)
+        self.image_item = QtWidgets.QGraphicsPixmapItem()
+        self.image_item.setZValue(0)
+        self.addItem(self.image_item)
+        self.mask_item = QtWidgets.QGraphicsPixmapItem()
+        self.mask_item.setZValue(1)
+        self.addItem(self.mask_item)
 
-            if window_center is None or window_width is None:
-                # If no windowing info, use the full dynamic range
-                window_min = pixel_array.min()
-                window_max = pixel_array.max()
-            else:
-                # Handle possible multi-valued tags by taking the first value
-                if isinstance(window_center, pydicom.multival.MultiValue):
-                    window_center = window_center[0]
-                if isinstance(window_width, pydicom.multival.MultiValue):
-                    window_width = window_width[0]
-                
-                window_min = window_center - window_width / 2
-                window_max = window_center + window_width / 2
-
-            # Apply windowing
-            pixel_array = np.clip(pixel_array, window_min, window_max)
-
-            # Normalize to 0-255
-            if window_max > window_min:
-                pixel_array = ((pixel_array - window_min) / (window_max - window_min)) * 255.0
-            else: # Handle case where all pixels are the same
-                pixel_array.fill(128)
-                
-            # Handle Photometric Interpretation
-            photometric_interpretation = ds.get("PhotometricInterpretation", "MONOCHROME2")
-            if photometric_interpretation == "MONOCHROME1":
-                pixel_array = 255.0 - pixel_array
-
-            # Convert to 8-bit unsigned integer
-            image_8bit = pixel_array.astype(np.uint8)
-            
-            # Convert to RGB if needed
-            if len(image_8bit.shape) == 2:
-                image_data = np.stack([image_8bit] * 3, axis=-1)
-            else:
-                image_data = image_8bit
-                
-            self.image_data = image_data
-            height, width = image_data.shape[:2]
-            bytes_per_line = 3 * width
-            qimage = QtGui.QImage(image_data.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
-            pixmap = QtGui.QPixmap(qimage)
-            
-            self.image_item = QtWidgets.QGraphicsPixmapItem()
-            self.image_item.setZValue(0)
-            self.addItem(self.image_item)
-            self.mask_item = QtWidgets.QGraphicsPixmapItem()
-            self.mask_item.setZValue(1)
-            self.addItem(self.mask_item)
-
-            self.image_item.setPixmap(pixmap)
-            self.setSceneRect(self.image_item.boundingRect())
-        else:
-            image = Image.open(image_path)
-            if self.mainwindow.can_be_annotated:
-                image = image.convert('RGB')
-            self.image_data = np.array(image)
-            self.image_item = QtWidgets.QGraphicsPixmapItem()
-            self.image_item.setZValue(0)
-            self.addItem(self.image_item)
-            self.mask_item = QtWidgets.QGraphicsPixmapItem()
-            self.mask_item.setZValue(1)
-            self.addItem(self.mask_item)
-
-            self.image_item.setPixmap(QtGui.QPixmap(image_path))
-            self.setSceneRect(self.image_item.boundingRect())
+        height, width, channel = self.image_data.shape
+        bytes_per_line = channel * width
+        q_image = QtGui.QImage(self.image_data.data, width, height, bytes_per_line,
+                               QtGui.QImage.Format_RGB888)
+        self.image_item.setPixmap(QtGui.QPixmap.fromImage(q_image))
+        self.setSceneRect(self.image_item.boundingRect())
         self.change_mode_to_view()
 
     def unload_image(self):

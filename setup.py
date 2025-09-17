@@ -15,19 +15,6 @@ def get_version():
         FileExistsError('ISAT/__init__.py not exists.')
 
 
-def get_install_requires():
-    requirements_file = 'requirements.txt'
-    requirements_list = []
-    if os.path.exists(requirements_file):
-        with open(requirements_file) as f:
-            lines = f.readlines()
-            for line in lines:
-                line = line.rstrip('\n')
-                if line != '':
-                    requirements_list.append(line)
-    return requirements_list
-
-
 setup(
     name="isat-sam",                                        # 包名
     version=get_version(),                                  # 版本号
@@ -46,7 +33,27 @@ setup(
     include_package_data=True,
 
     python_requires=">=3.8",                            # python 版本要求
-    install_requires=get_install_requires(),
+    install_requires=[                                  # 必须直接指明，不然pip包不会自动安装
+        'imgviz',
+        'scikit-image',
+        'numpy',
+        'opencv_python_headless',
+        'pillow',
+        'pyqt5',
+        'pyyaml',
+        'torch>=2.1.1',
+        'torchvision',
+        'pycocotools',
+        'timm',
+        'shapely',
+        'hydra-core>=1.3.2',
+        'tqdm>=4.66.1',
+        'fuzzywuzzy',
+        'python-Levenshtein',
+        'iopath',
+        'orjson',
+        'pydicom'
+        ],
 
     classifiers=[
         "Intended Audience :: Developers",              # 目标用户:开发者

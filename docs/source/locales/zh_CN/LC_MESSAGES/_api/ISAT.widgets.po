@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-21 17:34+0800\n"
+"POT-Creation-Date: 2025-09-18 15:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -1049,6 +1049,10 @@ msgstr ""
 msgid "The path of the checkpoint file."
 msgstr ""
 
+#: ISAT.widgets.mainwindow.MainWindow.init_segment_anything:5 of
+msgid "If not checked, skip."
+msgstr ""
+
 #: ISAT.widgets.mainwindow.MainWindow.init_sam_finish:1 of
 msgid ""
 "Triggered when SAM finish is finished. Then start thread of sam encoder "
@@ -1125,6 +1129,14 @@ msgstr ""
 msgid ""
 "Error message.current, total, finished, is_error, message. int, int, "
 "bool, bool, str"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:1 of
+msgid "Load shortcut"
+msgstr ""
+
+#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:3 of
+msgid "load default shortcut if True."
 msgstr ""
 
 #: ISAT.widgets.mainwindow.MainWindow.open_dir:1 of
@@ -1318,14 +1330,6 @@ msgstr ""
 
 #: ISAT.widgets.mainwindow.MainWindow.open_docs:1 of
 msgid "Open the docs."
-msgstr ""
-
-#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:1 of
-msgid "Load shortcut"
-msgstr ""
-
-#: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut:3 of
-msgid "load default shortcut if True."
 msgstr ""
 
 #: ISAT.widgets.mainwindow.MainWindow.latest_version_tip:1 of

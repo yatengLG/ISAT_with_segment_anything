@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-18 15:15+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/_api/ISAT.utils.rst:2
+msgid "ISAT.utils package"
+msgstr ""
+
+#: ../../source/_api/ISAT.utils.rst:5
+msgid "Submodules"
+msgstr ""
+
+#: ../../source/_api/ISAT.utils.rst:8
+msgid "ISAT.utils.dicom module"
+msgstr ""
+
+#: ISAT.utils.dicom.load_dcm_as_image:1 of
+msgid "Load dcm file as a PIL Image."
+msgstr ""
+
+#: ISAT.utils.dicom.load_dcm_as_image of
+msgid "Parameters"
+msgstr ""
+
+#: ISAT.utils.dicom.load_dcm_as_image:3 of
+msgid "path to dicom file"
+msgstr ""
+
+#: ISAT.utils.dicom.load_dcm_as_image of
+msgid "Returns"
+msgstr ""
+
+#: ISAT.utils.dicom.load_dcm_as_image:6 of
+msgid "Image (PIL.Image)"
+msgstr ""
+
+#: ../../source/_api/ISAT.utils.rst:16
+msgid "Module contents"
+msgstr ""
+

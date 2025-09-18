@@ -9,6 +9,7 @@ Subpackages
 
    ISAT.formats
    ISAT.segment_any
+   ISAT.utils
    ISAT.widgets
 
 Submodules

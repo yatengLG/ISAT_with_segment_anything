@@ -8,6 +8,15 @@ from PIL import Image
 
 
 def load_dcm_as_image(ds_file):
+    r"""
+    Load dcm file as a PIL Image.
+
+    Arguments:
+        ds_file (str): path to dicom file
+
+    Returns:
+        Image (PIL.Image)
+    """
     ds = pydicom.dcmread(ds_file)
     # Apply Rescale Slope and Rescale Intercept if they exist
     pixel_array = ds.pixel_array.astype(float)

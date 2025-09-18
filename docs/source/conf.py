@@ -45,5 +45,14 @@ gettext_compact = False
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+    'logo_only': False,
+    'navigation_depth': 6,
+    'style_external_links': True,
+    'style_nav_header_background': '#2980B9',
+}
+html_logo = "_static/ISAT_new_64.svg"
+html_favicon = "_static/ISAT_new_64.svg"
+html_show_sourcelink = True
 html_static_path = ['_static']
 

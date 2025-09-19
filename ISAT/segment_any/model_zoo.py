@@ -5,7 +5,7 @@ model_dict = {
     'mobile_sam.pt':
         {
             'urls': [
-                'https://huggingface.co/yateng/isat_checkpoints/resolve/main/mobile_sam.pt',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/mobile_sam.pt',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/mobile_sam.pt'
             ],
             'memory': '534M',
@@ -17,7 +17,7 @@ model_dict = {
     'sam_hq_vit_h.pth':
         {
             'urls': [
-                'https://huggingface.co/lkeab/hq-sam/resolve/main/sam_hq_vit_h.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_hq_vit_h.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_hq_vit_h.pth'
             ],
             'memory': '6464M',
@@ -29,7 +29,7 @@ model_dict = {
     'sam_hq_vit_l.pth':
         {
             'urls': [
-                'https://huggingface.co/lkeab/hq-sam/resolve/main/sam_hq_vit_l.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_hq_vit_l.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_hq_vit_l.pth'
             ],
             'memory': '5016M',
@@ -41,7 +41,7 @@ model_dict = {
     'sam_hq_vit_b.pth':
         {
             'urls': [
-                'https://huggingface.co/lkeab/hq-sam/resolve/main/sam_hq_vit_b.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_hq_vit_b.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_hq_vit_b.pth'
             ],
             'memory': '3304M',
@@ -53,7 +53,7 @@ model_dict = {
     'sam_hq_vit_tiny.pth':
         {
             'urls': [
-                'https://huggingface.co/lkeab/hq-sam/resolve/main/sam_hq_vit_tiny.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_hq_vit_tiny.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_hq_vit_tiny.pth'
             ],
             'memory': '598M',
@@ -65,7 +65,7 @@ model_dict = {
     'sam_vit_h_4b8939.pth':
         {
             'urls': [
-                'https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_vit_h_4b8939.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_vit_h_4b8939.pth'
             ],
             'memory': '6462M',
@@ -77,7 +77,7 @@ model_dict = {
     'sam_vit_l_0b3195.pth':
         {
             'urls': [
-                'https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_vit_l_0b3195.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_vit_l_0b3195.pth'
             ],
             'memory': '5016M',
@@ -89,7 +89,7 @@ model_dict = {
     'sam_vit_b_01ec64.pth':
         {
             'urls': [
-                'https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/sam_vit_b_01ec64.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/sam_vit_b_01ec64.pth'
             ],
             'memory': '3302M',
@@ -101,7 +101,7 @@ model_dict = {
     'edge_sam.pth':
         {
             'urls': [
-                'https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/edge_sam.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/edge_sam.pth'
             ],
             'memory': '360M',
@@ -113,7 +113,7 @@ model_dict = {
     'edge_sam_3x.pth':
         {
             'urls': [
-                'https://huggingface.co/spaces/chongzhou/EdgeSAM/resolve/main/weights/edge_sam_3x.pth',
+                'https://huggingface.co/yatengLG/ISAT_with_segment_anything_checkpoints/resolve/main/edge_sam_3x.pth',
                 'https://www.modelscope.cn/api/v1/models/yatengLG/ISAT_with_segment_anything_checkpoints/repo?Revision=master&FilePath=checkpoints/edge_sam_3x.pth'
             ],
             'memory': '360M',

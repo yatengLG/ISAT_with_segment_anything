@@ -44,13 +44,14 @@ class DownloadThread(QThread):
                 os.mkdir(tmp_root)
 
             # 寻找最佳下载链接
+            print('Getting the best download url ...')
             best_time = 1e8
             best_url = self.urls[0]
             for url in self.urls:
                 try:
                     start_time = time.time()
                     req = request.Request(url, headers={"Range": "bytes=0-10"})
-                    request.urlopen(req, timeout=5)
+                    request.urlopen(req, timeout=3)
                     cost_time = time.time() - start_time
                 except:
                     cost_time = 1e8
@@ -72,6 +73,7 @@ class DownloadThread(QThread):
                 total_size = int(response.headers['Content-Length'])
             except Exception as e:
                 print('When download {} from {}, {}'.format(self.name, best_url, e))
+                self.tag.emit(-1, -1)
                 return
             # 存在缓存
             if downloaded_size != 0:
@@ -300,7 +302,8 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     def delete(self, model_name):
         button = self.sender()
         try:
-            os.remove(os.path.join(CHECKPOINT_PATH, model_name))
+            if os.path.exists(os.path.join(CHECKPOINT_PATH, model_name)):
+                os.remove(os.path.join(CHECKPOINT_PATH, model_name))
             button.setText('download')
             button.setStyleSheet('QWidget {color: %s}' % 'green')
             button.setEnabled(False)

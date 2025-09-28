@@ -24,10 +24,15 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         self.plugins = []
 
         self.pushButton_close.clicked.connect(self.close)
+        self.pushButton_reload.clicked.connect(self.load_plugins)
         self.load_plugins()
 
     def load_plugins(self):
         self.tableWidget.setRowCount(0)
+        for plugin in self.plugins:
+            plugin.disable_plugin()
+        self.plugins = []
+
         print('loading plugins')
         if sys.version_info >= (3, 10):
             eps = entry_points().select(group="isat.plugins")

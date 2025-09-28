@@ -1083,32 +1083,32 @@ p, li { white-space: pre-wrap; }
         <translation>删除EXIF旋转标签</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="79"/>
+        <location filename="plugin_manager_dialog.py" line="82"/>
         <source>Plugins</source>
         <translation>插件</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="81"/>
+        <location filename="plugin_manager_dialog.py" line="84"/>
         <source>Activate</source>
         <translation>激活</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="83"/>
+        <location filename="plugin_manager_dialog.py" line="86"/>
         <source>Name</source>
         <translation>插件名</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="85"/>
+        <location filename="plugin_manager_dialog.py" line="88"/>
         <source>Author</source>
         <translation>作者</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="87"/>
+        <location filename="plugin_manager_dialog.py" line="90"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="plugin_manager_dialog.py" line="89"/>
+        <location filename="plugin_manager_dialog.py" line="92"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
@@ -1125,17 +1125,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="model_manager_dialog.py" line="215"/>
         <source>Load the fine tuned SAM model.</source>
-        <translation></translation>
+        <translation>加载fine tuned后的SAM模型。</translation>
     </message>
     <message>
         <location filename="model_manager_dialog.py" line="216"/>
         <source>Open</source>
-        <translation></translation>
+        <translation>打开</translation>
     </message>
     <message>
         <location filename="model_manager_dialog.py" line="217"/>
         <source>Only fine-tuned models of [sam], [sam2], [sam2.1], [mobile-sam], [sam-hq], [edge-sam] and [sam-med2d] are supported.</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="plugin_manager_dialog.py" line="93"/>
+        <source>Reload</source>
+        <translation>重新加载</translation>
     </message>
 </context>
 <context>

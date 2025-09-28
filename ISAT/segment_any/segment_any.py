@@ -9,6 +9,8 @@ from PIL import Image
 from collections import OrderedDict
 import os
 from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
+from ISAT.utils.dicom import load_dcm_as_image
+
 
 osplatform = platform.system()
 
@@ -389,7 +391,10 @@ class SegAnyVideo:
 
     @staticmethod
     def _load_img_as_tensor(img_path, image_size):
-        img_pil = Image.open(img_path)
+        if img_path.lower().endswith('.dcm'):
+            img_pil = load_dcm_as_image(img_path)
+        else:
+            img_pil = Image.open(img_path)
         img_np = np.array(img_pil.convert("RGB").resize((image_size, image_size)))
         if img_np.dtype == np.uint8:  # np.uint8 is expected for JPEG images
             img_np = img_np / 255.0

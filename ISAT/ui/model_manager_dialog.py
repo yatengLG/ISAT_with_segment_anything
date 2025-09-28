@@ -151,6 +151,7 @@ class Ui_Dialog(object):
         self.radioButton_ft_model = QtWidgets.QRadioButton(self.widget_6)
         self.radioButton_ft_model.setMinimumSize(QtCore.QSize(30, 0))
         self.radioButton_ft_model.setMaximumSize(QtCore.QSize(30, 16777215))
+        self.radioButton_ft_model.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.radioButton_ft_model.setText("")
         self.radioButton_ft_model.setObjectName("radioButton_ft_model")
         self.horizontalLayout_5.addWidget(self.radioButton_ft_model)

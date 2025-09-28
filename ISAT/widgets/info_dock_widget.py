@@ -4,6 +4,7 @@
 from PyQt5 import QtWidgets
 from ISAT.ui.info_dock import Ui_Form
 
+
 class InfoDockWidget(QtWidgets.QWidget, Ui_Form):
     def __init__(self, mainwindow):
         super(InfoDockWidget, self).__init__()
@@ -20,7 +21,7 @@ class InfoDockWidget(QtWidgets.QWidget, Ui_Form):
     def update_widget(self):
         """Update the information dock widget."""
         if self.mainwindow.current_label is not None:
-            self.label_width.setText('{}'.format(self.mainwindow.current_label.width))
-            self.label_height.setText('{}'.format(self.mainwindow.current_label.height))
-            self.label_depth.setText('{}'.format(self.mainwindow.current_label.depth))
+            self.label_width.setText("{}".format(self.mainwindow.current_label.width))
+            self.label_height.setText("{}".format(self.mainwindow.current_label.height))
+            self.label_depth.setText("{}".format(self.mainwindow.current_label.depth))
             self.lineEdit_note.setText(self.mainwindow.current_label.note)

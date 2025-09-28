@@ -22,7 +22,7 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_close.clicked.connect(self.close)
 
     def open_dir(self):
-        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='Open dir')
+        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption="Open dir")
         if dir:
             self.lineEdit_json_root.setText(dir)
             self.pushButton_start.setEnabled(True)
@@ -32,7 +32,7 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def validate(self):
         root = self.lineEdit_json_root.text()
-        json_files = [f for f in os.listdir(root) if f.endswith('.json')]
+        json_files = [f for f in os.listdir(root) if f.endswith(".json")]
 
         if len(json_files) < 1:
             self.progressBar.setMaximum(1)
@@ -45,24 +45,28 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
         for index, json_file in enumerate(json_files):
             json_file_path = os.path.join(root, json_file)
             try:
-                with open(json_file_path, 'r', encoding='utf-8') as f:
+                with open(json_file_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    info = data['info']
-                    width = info['width']
-                    height = info['height']
+                    info = data["info"]
+                    width = info["width"]
+                    height = info["height"]
 
-                    objects = data['objects']
+                    objects = data["objects"]
                     for obj_index, obj in enumerate(objects):
-                        points = obj['segmentation']
-                        bbox = obj['bbox']
+                        points = obj["segmentation"]
+                        bbox = obj["bbox"]
 
                         # 检查多边形顶点数量
                         if len(points) < 3:
                             self.textBrowser.append(
-                                ' Error  | {} | {} polygon error. Vertex < 3.'
-                                .format(json_file,
-                                        '{}th'.format(
-                                            obj_index) if obj_index < 20 else '{}st'.format(obj_index))
+                                " Error  | {} | {} polygon error. Vertex < 3.".format(
+                                    json_file,
+                                    (
+                                        "{}th".format(obj_index)
+                                        if obj_index < 20
+                                        else "{}st".format(obj_index)
+                                    ),
+                                )
                             )
 
                         else:
@@ -70,11 +74,15 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
                             polyon = Polygon(points)
                             if not polyon.is_valid:
                                 self.textBrowser.append(
-                                    'Warning | {} | {} polygon invalid. {}'
-                                    .format(json_file,
-                                            '{}th'.format(
-                                                obj_index) if obj_index < 20 else '{}st'.format(obj_index),
-                                            explain_validity(polyon))
+                                    "Warning | {} | {} polygon invalid. {}".format(
+                                        json_file,
+                                        (
+                                            "{}th".format(obj_index)
+                                            if obj_index < 20
+                                            else "{}st".format(obj_index)
+                                        ),
+                                        explain_validity(polyon),
+                                    )
                                 )
 
                         xs = [point[0] for point in points]
@@ -83,10 +91,15 @@ class AnnosValidatorDialog(QtWidgets.QDialog, Ui_Dialog):
 
                         if xmin < 0 or xmax > width or ymin < 0 or ymax > height:
                             self.textBrowser.append(
-                                'Warning | {} | {} polygon warning. {}'
-                                .format(json_file,
-                                        '{}th'.format(obj_index) if obj_index < 20 else '{}st'.format(obj_index),
-                                        'Out of the image')
+                                "Warning | {} | {} polygon warning. {}".format(
+                                    json_file,
+                                    (
+                                        "{}th".format(obj_index)
+                                        if obj_index < 20
+                                        else "{}st".format(obj_index)
+                                    ),
+                                    "Out of the image",
+                                )
                             )
             except Exception as e:
                 self.textBrowser.append(

@@ -17,10 +17,13 @@ class YOLO(ISAT):
 
     For cases where a single object contains multiple polygons, referring to the conversion code of YOLOv8 `general_json2yolo.py <https://github.com/ultralytics/JSON2YOLO/blob/c38a43f342428849c75c103c6d060012a83b5392/general_json2yolo.py>`_, a straight line is drawn between the polygons to combine the multiple polygons into a single polygon for saving.
     """
+
     def __init__(self):
         self.keep_crowd = True
 
-    def read_from_YOLO(self, img_root: str, txt_root: str, class_dict: dict=None) -> bool:
+    def read_from_YOLO(
+        self, img_root: str, txt_root: str, class_dict: dict = None
+    ) -> bool:
         """
         Load annotations from the directory of YOLO txt files.
 
@@ -37,14 +40,16 @@ class YOLO(ISAT):
         pbar = tqdm.tqdm(img_files)
         for img_name in pbar:
             name_without_suffix = self.remove_file_suffix(img_name)
-            txt_path = os.path.join(txt_root, name_without_suffix+'.txt')
+            txt_path = os.path.join(txt_root, name_without_suffix + ".txt")
             image_path = os.path.join(img_root, img_name)
             if not os.path.exists(txt_path):
                 continue
 
             anno = self.load_one_yolo_txt(image_path, txt_path, class_dict)
             self.annos[name_without_suffix] = anno
-            pbar.set_description('Load yolo txt {}'.format(name_without_suffix+'.txt'))
+            pbar.set_description(
+                "Load yolo txt {}".format(name_without_suffix + ".txt")
+            )
 
         # cates
         if class_dict is not None:
@@ -67,22 +72,26 @@ class YOLO(ISAT):
             txt_root: The directory of YOLO txt files.
         """
         os.makedirs(txt_root, exist_ok=True)
-        cates_index_dict = {cat:index for index, cat in enumerate(self.cates)}
+        cates_index_dict = {cat: index for index, cat in enumerate(self.cates)}
 
-        with open(os.path.join(txt_root, 'classification.txt'), 'w', encoding='utf-8') as f:
+        with open(
+            os.path.join(txt_root, "classification.txt"), "w", encoding="utf-8"
+        ) as f:
             for cat in self.cates:
-                f.write('{}\n'.format(cat))
+                f.write("{}\n".format(cat))
 
         pbar = tqdm.tqdm(self.annos.items())
         for name_without_suffix, anno in pbar:
-            txt_path = os.path.join(txt_root, name_without_suffix+'.txt')
-            pbar.set_description('Integrate {}'.format(name_without_suffix))
+            txt_path = os.path.join(txt_root, name_without_suffix + ".txt")
+            pbar.set_description("Integrate {}".format(name_without_suffix))
             try:
                 self.save_one_yolo_txt(anno, txt_path, cates_index_dict)
-                pbar.set_description('Save yolo to {}'.format(name_without_suffix+'.txt'))
+                pbar.set_description(
+                    "Save yolo to {}".format(name_without_suffix + ".txt")
+                )
 
             except Exception as e:
-                raise '{} {}'.format(name_without_suffix, e)
+                raise "{} {}".format(name_without_suffix, e)
         return True
 
     @staticmethod
@@ -142,7 +151,7 @@ class YOLO(ISAT):
                         s.append(segments[i])
                     else:
                         idx = [0, idx[1] - idx[0]]
-                        s.append(segments[i][idx[0]:idx[1] + 1])
+                        s.append(segments[i][idx[0] : idx[1] + 1])
 
             else:
                 for i in range(len(idx_list) - 1, -1, -1):
@@ -155,7 +164,10 @@ class YOLO(ISAT):
     @staticmethod
     def yolo2isat_segmentation(yolo_seg, img_width, img_height):
         """Convert YOLO segmentation format to ISAT segmentation format"""
-        return [[round(x * img_width), round(y * img_height)] for x, y in zip(yolo_seg[::2], yolo_seg[1::2])]
+        return [
+            [round(x * img_width), round(y * img_height)]
+            for x, y in zip(yolo_seg[::2], yolo_seg[1::2])
+        ]
 
     @staticmethod
     def get_isat_bbox(segmentation):
@@ -165,11 +177,17 @@ class YOLO(ISAT):
         return [int(min(xs)), int(min(ys)), int(max(xs)), int(max(ys))]
 
     @staticmethod
-    def bbox_within(bbox_1, bbox_2):  # 这个函数查看两个物体的边框，如果是包含关系的话分到一个组
+    def bbox_within(
+        bbox_1, bbox_2
+    ):  # 这个函数查看两个物体的边框，如果是包含关系的话分到一个组
         """Check if two objects belong to the same group"""
-        return all(bbox_1[idx] >= bbox_2[idx] for idx in [0, 1]) and all(bbox_1[idx] <= bbox_2[idx] for idx in [2, 3])
+        return all(bbox_1[idx] >= bbox_2[idx] for idx in [0, 1]) and all(
+            bbox_1[idx] <= bbox_2[idx] for idx in [2, 3]
+        )
 
-    def load_one_yolo_txt(self, image_path: str, txt_path: str, class_dict: dict=None) -> ISAT.ANNO:
+    def load_one_yolo_txt(
+        self, image_path: str, txt_path: str, class_dict: dict = None
+    ) -> ISAT.ANNO:
         """
         Load annotations from the directory of yolo txt files.
 
@@ -187,7 +205,10 @@ class YOLO(ISAT):
 
         image = cv2.imread(image_path)  # load the image in BRG scale
 
-        image_width, image_height = image.shape[1], image.shape[0]  # get the image dimensions
+        image_width, image_height = (
+            image.shape[1],
+            image.shape[0],
+        )  # get the image dimensions
 
         if image.ndim == 2:
             image_depth = 1
@@ -197,7 +218,7 @@ class YOLO(ISAT):
             image_depth = None
 
         img_root, img_name = os.path.split(image_path)
-        anno.info.description = ''
+        anno.info.description = ""
         anno.info.folder = img_root
         anno.info.name = img_name
         anno.info.width = image_width
@@ -207,21 +228,31 @@ class YOLO(ISAT):
         objects = []
         group, layer = 1, 1.0  # initialize layer as a floating point number
 
-        with open(txt_path, 'r', encoding='utf-8') as f:
+        with open(txt_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
             for line in lines:
                 obj = self.ANNO.OBJ()
 
                 parts = line.split()  # split each line
                 class_index = int(parts[0])  # get the class index
-                yolo_segmentation = list(map(float, parts[1:]))  # get the yolo_segmentation
-                isat_segmentation = self.yolo2isat_segmentation(yolo_segmentation, image_width,
-                                                                image_height)  # convert yolo_segmentation to isat_segmentation
-                bbox = self.get_isat_bbox(isat_segmentation)  # calculate the bbox from segmentation
-                area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[
-                    1])  # roughly calculate the bbox area as segmentation area, it will be replaced anyway
+                yolo_segmentation = list(
+                    map(float, parts[1:])
+                )  # get the yolo_segmentation
+                isat_segmentation = self.yolo2isat_segmentation(
+                    yolo_segmentation, image_width, image_height
+                )  # convert yolo_segmentation to isat_segmentation
+                bbox = self.get_isat_bbox(
+                    isat_segmentation
+                )  # calculate the bbox from segmentation
+                area = (bbox[2] - bbox[0]) * (
+                    bbox[3] - bbox[1]
+                )  # roughly calculate the bbox area as segmentation area, it will be replaced anyway
 
-                obj.category = class_index if class_dict is None else class_dict.get(class_index, 'UNKNOW')
+                obj.category = (
+                    class_index
+                    if class_dict is None
+                    else class_dict.get(class_index, "UNKNOW")
+                )
                 obj.group = group
                 obj.segmentation = isat_segmentation
                 obj.area = area
@@ -235,7 +266,9 @@ class YOLO(ISAT):
         anno.objs = tuple(objects)
         return anno
 
-    def save_one_yolo_txt(self, anno: ISAT.ANNO, save_path: str, cates_index_dict: dict) -> bool:
+    def save_one_yolo_txt(
+        self, anno: ISAT.ANNO, save_path: str, cates_index_dict: dict
+    ) -> bool:
         """
         Save annotation to one YOLO txt file
 
@@ -244,7 +277,7 @@ class YOLO(ISAT):
             save_path (str): the path of the txt file.
             cates_index_dict (dict): the cates index dictionary. {category: index} .
         """
-        with open(save_path, 'w', encoding='utf-8') as f:
+        with open(save_path, "w", encoding="utf-8") as f:
             objects = anno.objs
 
             objects_groups = [obj.group for obj in objects]
@@ -258,7 +291,9 @@ class YOLO(ISAT):
 
                 # 同category
                 for cat in cats:
-                    objs_with_cat = [obj for obj in objs_with_group if obj.category == cat]
+                    objs_with_cat = [
+                        obj for obj in objs_with_group if obj.category == cat
+                    ]
                     crowds = [obj.iscrowd for obj in objs_with_group]
                     crowds = set(crowds)
                     # 同iscrowd
@@ -268,16 +303,21 @@ class YOLO(ISAT):
                     for obj in objs_with_cat:
                         if not self.keep_crowd and obj.iscrowd:
                             continue
-                        segmentation = [[x / anno.info.width, y / anno.info.height] for x, y in obj.segmentation]
+                        segmentation = [
+                            [x / anno.info.width, y / anno.info.height]
+                            for x, y in obj.segmentation
+                        ]
                         segmentation = [c for xy in segmentation for c in xy]
                         segmentations.append(segmentation)
 
                     if len(segmentations) > 1:
                         segmentations = self.merge_multi_segment(segmentations)
-                        segmentations = (np.concatenate(segmentations, axis=0)).reshape(-1).tolist()
+                        segmentations = (
+                            (np.concatenate(segmentations, axis=0)).reshape(-1).tolist()
+                        )
                     else:
                         segmentations = segmentations[0]
 
-                    s = '{}' + ' {}' * len(segmentations) + '\n'
+                    s = "{}" + " {}" * len(segmentations) + "\n"
                     f.write(s.format(class_index, *segmentations))
         return True

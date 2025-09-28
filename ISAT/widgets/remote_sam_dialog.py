@@ -8,6 +8,7 @@ from ISAT.configs import CHECKPOINT_PATH
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QValidator
 
+
 class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, parent, mainwindow):
         super(RemoteSamDialog, self).__init__(parent)
@@ -31,11 +32,15 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
         try:
             response = requests.get(f"http://{host}:{port}/api/info")
             if response.status_code != 200:
-                QtWidgets.QMessageBox.warning(self, "Error", f"Could not connect to remote Sam, status_code: {response.status_code}")
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    "Error",
+                    f"Could not connect to remote Sam, status_code: {response.status_code}",
+                )
                 return
-            checkpoint = response.json()['checkpoint']
-            device = response.json()['device']
-            dtype = response.json()['dtype']
+            checkpoint = response.json()["checkpoint"]
+            device = response.json()["device"]
+            dtype = response.json()["dtype"]
 
             try:
                 model_name = os.path.split(checkpoint)[-1]
@@ -63,27 +68,36 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
             loadl_model_path = os.path.join(CHECKPOINT_PATH, model_name)
             if not os.path.exists(loadl_model_path):
                 self.mainwindow.use_remote_sam = False
-                QtWidgets.QMessageBox.warning(self, "Error", f"Local model {model_name} does not exist.")
+                QtWidgets.QMessageBox.warning(
+                    self, "Error", f"Local model {model_name} does not exist."
+                )
             else:
                 try:
                     self.mainwindow.use_remote_sam = True
                     self.mainwindow.init_segment_anything(loadl_model_path)
                 except Exception as e:
                     self.mainwindow.use_remote_sam = False
-                    QtWidgets.QMessageBox.warning(self, "Error", f"Init local sam failed.\n {e}")
+                    QtWidgets.QMessageBox.warning(
+                        self, "Error", f"Init local sam failed.\n {e}"
+                    )
 
         else:
             self.mainwindow.use_remote_sam = False
 
-        state = QtCore.Qt.CheckState.Checked if self.mainwindow.use_remote_sam else QtCore.Qt.CheckState.Unchecked
+        state = (
+            QtCore.Qt.CheckState.Checked
+            if self.mainwindow.use_remote_sam
+            else QtCore.Qt.CheckState.Unchecked
+        )
         self.sender().setCheckState(state)
         self.lineEdit_host.setEnabled(not self.mainwindow.use_remote_sam)
         self.lineEdit_port.setEnabled(not self.mainwindow.use_remote_sam)
         self.pushButton_check.setEnabled(not self.mainwindow.use_remote_sam)
 
+
 class IPv4Validator(QValidator):
     def validate(self, input_str, pos):
-        parts = input_str.split('.')
+        parts = input_str.split(".")
         if len(parts) > 4:
             # 返回 Invalid + 原始输入 + 光标位置
             return (QValidator.Invalid, input_str, pos)

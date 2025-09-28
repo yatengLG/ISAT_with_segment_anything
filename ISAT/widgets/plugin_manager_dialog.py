@@ -9,13 +9,16 @@ from PyQt5 import QtWidgets, QtCore
 
 class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
     """Plugin manager interface, also include most of all functions of plugin."""
+
     def __init__(self, parent, mainwindow):
         super(PluginManagerDialog, self).__init__(parent)
         self.mainwindow = mainwindow
         self.setupUi(self)
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.tableWidget.resizeColumnsToContents()
-        self.tableWidget.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(
+            4, QtWidgets.QHeaderView.Stretch
+        )
         self.tableWidget.setColumnWidth(0, 100)
         self.tableWidget.setColumnWidth(1, 250)
         self.tableWidget.setColumnWidth(2, 150)
@@ -33,7 +36,7 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             plugin.disable_plugin()
         self.plugins = []
 
-        print('loading plugins')
+        print("loading plugins")
         if sys.version_info >= (3, 10):
             eps = entry_points().select(group="isat.plugins")
         else:
@@ -44,9 +47,9 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
                 plugin_instance = plugin_class()
                 plugin_instance.init_plugin(self.mainwindow)
                 self.plugins.append(plugin_instance)
-                print('loaded plugin: ', plugin_instance.get_plugin_name())
+                print("loaded plugin: ", plugin_instance.get_plugin_name())
             except Exception as e:
-                print('failed to load plugin [{ep}]: ', e)
+                print("failed to load plugin [{ep}]: ", e)
 
         self.update_gui()
 
@@ -55,20 +58,36 @@ class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         row = 0
         for plugin_instance in self.plugins:
             activate_checkbox = QtWidgets.QCheckBox()
-            activate_checkbox.stateChanged.connect(plugin_instance.activate_state_changed)
-            plugin_name_item = QtWidgets.QTableWidgetItem(plugin_instance.get_plugin_name())
-            plugin_author_item = QtWidgets.QTableWidgetItem(plugin_instance.get_plugin_author())
+            activate_checkbox.stateChanged.connect(
+                plugin_instance.activate_state_changed
+            )
+            plugin_name_item = QtWidgets.QTableWidgetItem(
+                plugin_instance.get_plugin_name()
+            )
+            plugin_author_item = QtWidgets.QTableWidgetItem(
+                plugin_instance.get_plugin_author()
+            )
             plugin_author_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            plugin_version_item = QtWidgets.QTableWidgetItem(plugin_instance.get_plugin_version())
+            plugin_version_item = QtWidgets.QTableWidgetItem(
+                plugin_instance.get_plugin_version()
+            )
             plugin_version_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            plugin_description_item = QtWidgets.QTableWidgetItem(plugin_instance.get_plugin_description())
+            plugin_description_item = QtWidgets.QTableWidgetItem(
+                plugin_instance.get_plugin_description()
+            )
 
             self.tableWidget.insertRow(self.tableWidget.rowCount())
             self.tableWidget.setCellWidget(row, 0, activate_checkbox)
             self.tableWidget.setItem(row, 1, plugin_name_item)
-            self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(plugin_author_item))
-            self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(plugin_version_item))
-            self.tableWidget.setItem(row, 4, QtWidgets.QTableWidgetItem(plugin_description_item))
+            self.tableWidget.setItem(
+                row, 2, QtWidgets.QTableWidgetItem(plugin_author_item)
+            )
+            self.tableWidget.setItem(
+                row, 3, QtWidgets.QTableWidgetItem(plugin_version_item)
+            )
+            self.tableWidget.setItem(
+                row, 4, QtWidgets.QTableWidgetItem(plugin_description_item)
+            )
 
             row += 1
 

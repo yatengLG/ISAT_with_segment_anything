@@ -16,7 +16,9 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.init_connect()
 
-    def get_item_and_widget(self, category: str, color: str) -> (QtWidgets.QListWidgetItem, QtWidgets.QWidget):
+    def get_item_and_widget(
+        self, category: str, color: str
+    ) -> (QtWidgets.QListWidgetItem, QtWidgets.QWidget):
         """
         Return item and item widget for given category and color.
 
@@ -35,20 +37,20 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         category_label = QtWidgets.QLabel()
         category_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         category_label.setText(category)
-        category_label.setObjectName('category')
+        category_label.setObjectName("category")
         # 颜色
         color_button = QtWidgets.QPushButton()
-        color_button.setStyleSheet('QWidget {background-color: %s}' % color)
+        color_button.setStyleSheet("QWidget {background-color: %s}" % color)
         color_button.setFixedWidth(50)
         color_button.clicked.connect(self.choice_color)
-        color_button.setObjectName('color')
+        color_button.setObjectName("color")
         # 删除
         delete_button = QtWidgets.QPushButton()
-        delete_button.setText('delete')
+        delete_button.setText("delete")
         delete_button.setFixedWidth(80)
         delete_button.clicked.connect(self.remove_category_item)
 
-        if category == '__background__':
+        if category == "__background__":
             color_button.setEnabled(False)
             delete_button.setEnabled(False)
 
@@ -89,11 +91,13 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
         button = self.sender()
         color = QtWidgets.QColorDialog.getColor()
         if color.isValid():
-            button.setStyleSheet('QWidget {background-color: %s}' % color.name())
+            button.setStyleSheet("QWidget {background-color: %s}" % color.name())
 
     def import_cfg(self):
         """Import cfg from yaml file."""
-        file, _ = QtWidgets.QFileDialog.getOpenFileName(self, filter='Yaml File(*.yaml)')
+        file, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, filter="Yaml File(*.yaml)"
+        )
         if file:
             self.mainwindow.config_file = file
             self.mainwindow.actionSetting.setStatusTip("Config yaml: {}".format(file))
@@ -102,9 +106,11 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def export_cfg(self):
         """Export cfg to yaml file."""
-        file, _ = QtWidgets.QFileDialog.getSaveFileName(self, filter='Yaml File(*.yaml)')
-        if not file.endswith('.yaml'):
-            file += '.yaml'
+        file, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self, filter="Yaml File(*.yaml)"
+        )
+        if not file.endswith(".yaml"):
+            file += ".yaml"
         if file:
             self.mainwindow.save_cfg(file)
         self.load_cfg()
@@ -112,14 +118,18 @@ class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):
     def apply(self):
         """Apply setting of categories."""
         cfg = load_config(self.mainwindow.config_file)
-        cfg['label'] = []
+        cfg["label"] = []
         for index in range(self.category_list_widget.count()):
             item = self.category_list_widget.item(index)
             widget = self.category_list_widget.itemWidget(item)
-            category_label = widget.findChild(QtWidgets.QLabel, 'category')
-            color_button = widget.findChild(QtWidgets.QPushButton, 'color')
-            cfg['label'].append(
-                {'name': category_label.text(), 'color': color_button.palette().button().color().name()})
+            category_label = widget.findChild(QtWidgets.QLabel, "category")
+            color_button = widget.findChild(QtWidgets.QPushButton, "color")
+            cfg["label"].append(
+                {
+                    "name": category_label.text(),
+                    "color": color_button.palette().button().color().name(),
+                }
+            )
 
         save_config(cfg, self.mainwindow.config_file)
         self.mainwindow.reload_cfg()

@@ -63,8 +63,8 @@ def load_dcm_as_image(ds_file):
     return Image.fromarray(image_8bit)
 
 
-if __name__ == '__main__':
-    dcm_file = '../../example/images/image-00220.dcm'
+if __name__ == "__main__":
+    dcm_file = "../../example/images/image-00220.dcm"
     img = load_dcm_as_image(dcm_file)
     print(img)
     print(img.size)

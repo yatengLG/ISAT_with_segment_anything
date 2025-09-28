@@ -22,7 +22,7 @@ class ProcessExifDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_close.clicked.connect(self.close)
 
     def open_dir(self):
-        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='Open dir')
+        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption="Open dir")
         if self.sender() == self.pushButton_image_root:
             lineEdit = self.lineEdit_image_root
         elif self.sender() == self.pushButton_save_root:
@@ -51,27 +51,40 @@ class ProcessExifDialog(QtWidgets.QDialog, Ui_Dialog):
         self.progressBar.setMaximum(len(images))
 
         for index, image_name in enumerate(images):
-            self.textBrowser.append('{:>8d} - Processing - {}'.format(index, image_name))
+            self.textBrowser.append(
+                "{:>8d} - Processing - {}".format(index, image_name)
+            )
             try:
                 image = Image.open(os.path.join(image_root, image_name))
             except:
-                self.textBrowser.append('{} Invalid image.'.format(' '*10))
+                self.textBrowser.append("{} Invalid image.".format(" " * 10))
                 image = None
 
             if image is not None:
                 exif_info = image.getexif()
                 if exif_info and exif_info.get(274, 1) != 1:
-                    self.textBrowser.append('{} Has rotation tag.'.format(' ' * 10, ))
+                    self.textBrowser.append(
+                        "{} Has rotation tag.".format(
+                            " " * 10,
+                        )
+                    )
                     if apply_exif:
-                        self.textBrowser.append('{} Ori size    : w-{} h-{}.'.format(' ' * 10, image.width, image.height))
+                        self.textBrowser.append(
+                            "{} Ori size    : w-{} h-{}.".format(
+                                " " * 10, image.width, image.height
+                            )
+                        )
                         image = ImageOps.exif_transpose(image)
-                        self.textBrowser.append('{} Rotated size: w-{} h-{}.'.format(' ' * 10, image.width, image.height))
+                        self.textBrowser.append(
+                            "{} Rotated size: w-{} h-{}.".format(
+                                " " * 10, image.width, image.height
+                            )
+                        )
                     image.save(os.path.join(save_root, image_name))
-                    self.textBrowser.append('{} Resave finished'.format(' '* 10))
+                    self.textBrowser.append("{} Resave finished".format(" " * 10))
                 else:
-                    self.textBrowser.append('{} No rotation tag.'.format(' '*10))
+                    self.textBrowser.append("{} No rotation tag.".format(" " * 10))
 
             self.progressBar.setValue(index + 1)
 
         self.pushButton_start.setEnabled(True)
-

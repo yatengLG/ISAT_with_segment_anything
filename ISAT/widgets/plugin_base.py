@@ -6,16 +6,17 @@ from abc import ABC, abstractmethod
 
 class PluginBase(ABC):
     """Base class for all plugins."""
+
     def __init__(self):
         self.enabled = False
 
     @abstractmethod
     def init_plugin(self, mainwindow):
         """
-        Be used to plugin initialization.
-s
-        Arguments:
-            mainwindow (MainWindow): Get attributes and functions from mainwindow.
+                Be used to plugin initialization.
+        s
+                Arguments:
+                    mainwindow (MainWindow): Get attributes and functions from mainwindow.
         """
         pass
 

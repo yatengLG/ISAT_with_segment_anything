@@ -28,11 +28,11 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             item.setSizeHint(QtCore.QSize(200, 30))
             # item, item_widget = self.generate_item_and_itemwidget(file_name)
 
-            item.setText(f'[{idx + 1}] {file_name}')
+            item.setText(f"[{idx + 1}] {file_name}")
             self.listWidget.addItem(item)
             # self.listWidget.setItemWidget(item, item_widget)
 
-        self.label_all.setText('{}'.format(len(self.mainwindow.files_list)))
+        self.label_all.setText("{}".format(len(self.mainwindow.files_list)))
 
     def set_select(self, row):
         """Set the current file highlight."""
@@ -52,7 +52,9 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
     def dropEvent(self, event):
         """Support drop event for open a image file or image directory."""
         if len(event.mimeData().urls()) != 1:
-            QtWidgets.QMessageBox.warning(self, 'Warning', 'Only support one path or dir.')
+            QtWidgets.QMessageBox.warning(
+                self, "Warning", "Only support one path or dir."
+            )
             return
         # 这里与mainwindow.opend_dir逻辑一致
         path = event.mimeData().urls()[0].toLocalFile()
@@ -68,9 +70,13 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
 
             files = []
             suffixs = tuple(
-                ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+                [
+                    "{}".format(fmt.data().decode("ascii").lower())
+                    for fmt in QtGui.QImageReader.supportedImageFormats()
+                ]
+            )
             for f in os.listdir(dir):
-                if f.lower().endswith(suffixs) or f.lower().endswith('.dcm'):
+                if f.lower().endswith(suffixs) or f.lower().endswith(".dcm"):
                     # f = os.path.join(dir, f)
                     files.append(f)
             files = sorted(files)
@@ -81,14 +87,18 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.current_index = 0
 
             self.mainwindow.image_root = dir
-            self.mainwindow.actionImages_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+            self.mainwindow.actionImages_dir.setStatusTip(
+                "Image root: {}".format(self.mainwindow.image_root)
+            )
 
             self.mainwindow.label_root = dir
-            self.mainwindow.actionLabel_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+            self.mainwindow.actionLabel_dir.setStatusTip(
+                "Label root: {}".format(self.mainwindow.label_root)
+            )
 
-            if os.path.exists(os.path.join(dir, 'isat.yaml')):
+            if os.path.exists(os.path.join(dir, "isat.yaml")):
                 # load setting yaml
-                self.mainwindow.config_file = os.path.join(dir, 'isat.yaml')
+                self.mainwindow.config_file = os.path.join(dir, "isat.yaml")
                 self.mainwindow.reload_cfg()
 
             self.mainwindow.show_image(self.mainwindow.current_index)
@@ -103,11 +113,15 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.files_dock_widget.listWidget.clear()
 
             suffixs = tuple(
-                ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+                [
+                    "{}".format(fmt.data().decode("ascii").lower())
+                    for fmt in QtGui.QImageReader.supportedImageFormats()
+                ]
+            )
 
             dir, file = os.path.split(path)
             files = []
-            if path.lower().endswith(suffixs) or path.lower().endswith('.dcm'):
+            if path.lower().endswith(suffixs) or path.lower().endswith(".dcm"):
                 files = [file]
 
             self.mainwindow.files_list = files
@@ -117,14 +131,18 @@ class FilesDockWidget(QtWidgets.QWidget, Ui_Form):
             self.mainwindow.current_index = 0
 
             self.mainwindow.image_root = dir
-            self.mainwindow.actionImages_dir.setStatusTip("Image root: {}".format(self.mainwindow.image_root))
+            self.mainwindow.actionImages_dir.setStatusTip(
+                "Image root: {}".format(self.mainwindow.image_root)
+            )
 
             self.mainwindow.label_root = dir
-            self.mainwindow.actionLabel_dir.setStatusTip("Label root: {}".format(self.mainwindow.label_root))
+            self.mainwindow.actionLabel_dir.setStatusTip(
+                "Label root: {}".format(self.mainwindow.label_root)
+            )
 
-            if os.path.exists(os.path.join(dir, 'isat.yaml')):
+            if os.path.exists(os.path.join(dir, "isat.yaml")):
                 # load setting yaml
-                self.mainwindow.config_file = os.path.join(dir, 'isat.yaml')
+                self.mainwindow.config_file = os.path.join(dir, "isat.yaml")
                 self.mainwindow.reload_cfg()
 
             self.mainwindow.show_image(self.mainwindow.current_index)

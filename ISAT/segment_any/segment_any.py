@@ -30,100 +30,127 @@ class SegAny:
         model_type (str): model type. eg: vit_b, vit_t, hiera_small, ...
         predictor (SamPredictor): Sam Predictor.
     """
-    def __init__(self, checkpoint:str, use_bfloat16:bool=True):
-        print('--' * 20)
-        print('* Init SAM... *')
+
+    def __init__(self, checkpoint: str, use_bfloat16: bool = True):
+        print("--" * 20)
+        print("* Init SAM... *")
         self.checkpoint = checkpoint
         self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
         self.model_source = None
-        if 'mobile_sam' in checkpoint:
+        if "mobile_sam" in checkpoint:
             # mobile sam
             from ISAT.segment_any.mobile_sam import sam_model_registry, SamPredictor
+
             self.model_type = "vit_t"
-            self.model_source = 'mobile_sam'
-        elif 'edge_sam' in checkpoint:
+            self.model_source = "mobile_sam"
+        elif "edge_sam" in checkpoint:
             # edge_sam
             from ISAT.segment_any.edge_sam import sam_model_registry, SamPredictor
+
             self.model_type = "edge_sam"
-            self.model_source = 'edge_sam'
-        elif 'sam_hq_vit' in checkpoint:
+            self.model_source = "edge_sam"
+        elif "sam_hq_vit" in checkpoint:
             # sam hq
-            from ISAT.segment_any.segment_anything_hq import sam_model_registry, SamPredictor
-            if 'vit_b' in checkpoint:
+            from ISAT.segment_any.segment_anything_hq import (
+                sam_model_registry,
+                SamPredictor,
+            )
+
+            if "vit_b" in checkpoint:
                 self.model_type = "vit_b"
-            elif 'vit_l' in checkpoint:
+            elif "vit_l" in checkpoint:
                 self.model_type = "vit_l"
-            elif 'vit_h' in checkpoint:
+            elif "vit_h" in checkpoint:
                 self.model_type = "vit_h"
-            elif 'vit_tiny' in checkpoint:
+            elif "vit_tiny" in checkpoint:
                 self.model_type = "vit_tiny"
             else:
-                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
-            self.model_source = 'sam_hq'
+                raise ValueError(
+                    "The checkpoint named {} is not supported.".format(checkpoint)
+                )
+            self.model_source = "sam_hq"
 
-        elif 'sam_vit' in checkpoint:
+        elif "sam_vit" in checkpoint:
             # sam
-            if torch.__version__ > '2.1.1' and osplatform == 'Linux':
+            if torch.__version__ > "2.1.1" and osplatform == "Linux":
                 # 暂时只测试了2.1.1环境下的运行;2.0不确定；1.x不可以
                 # 暂时不使用sam-fast
                 # from ISAT.segment_anything_fast import sam_model_registry as sam_model_registry
                 # from ISAT.segment_anything_fast import SamPredictor
                 # print('segment_anything_fast')
-                from ISAT.segment_any.segment_anything import sam_model_registry, SamPredictor
-                print('segment_anything')
+                from ISAT.segment_any.segment_anything import (
+                    sam_model_registry,
+                    SamPredictor,
+                )
+
+                print("segment_anything")
             else:
                 # windows下，现只支持 2.2.0+dev，且需要其他依赖；等后续正式版本推出后，再进行支持
                 # （如果想提前在windows下试用，可参考https://github.com/pytorch-labs/segment-anything-fast项目进行环境配置）
-                from ISAT.segment_any.segment_anything import sam_model_registry, SamPredictor
-                print('segment_anything')
-            if 'vit_b' in checkpoint:
+                from ISAT.segment_any.segment_anything import (
+                    sam_model_registry,
+                    SamPredictor,
+                )
+
+                print("segment_anything")
+            if "vit_b" in checkpoint:
                 self.model_type = "vit_b"
-            elif 'vit_l' in checkpoint:
+            elif "vit_l" in checkpoint:
                 self.model_type = "vit_l"
-            elif 'vit_h' in checkpoint:
+            elif "vit_h" in checkpoint:
                 self.model_type = "vit_h"
             else:
-                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
-            self.model_source = 'sam'
-        elif 'sam2' in checkpoint:
+                raise ValueError(
+                    "The checkpoint named {} is not supported.".format(checkpoint)
+                )
+            self.model_source = "sam"
+        elif "sam2" in checkpoint:
             from ISAT.segment_any.sam2.build_sam import sam_model_registry
-            from ISAT.segment_any.sam2.sam2_image_predictor import SAM2ImagePredictor as SamPredictor
+            from ISAT.segment_any.sam2.sam2_image_predictor import (
+                SAM2ImagePredictor as SamPredictor,
+            )
+
             # sam2
-            if 'hiera_tiny' in checkpoint:
+            if "hiera_tiny" in checkpoint:
                 model_type = "hiera_tiny"
-            elif 'hiera_small' in checkpoint:
+            elif "hiera_small" in checkpoint:
                 model_type = "hiera_small"
-            elif 'hiera_base_plus' in checkpoint:
-                model_type = 'hiera_base_plus'
-            elif 'hiera_large' in checkpoint:
-                model_type = 'hiera_large'
+            elif "hiera_base_plus" in checkpoint:
+                model_type = "hiera_base_plus"
+            elif "hiera_large" in checkpoint:
+                model_type = "hiera_large"
             else:
-                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+                raise ValueError(
+                    "The checkpoint named {} is not supported.".format(checkpoint)
+                )
             # sam2.1 or sam2
-            model_source = 'sam2.1' if 'sam2.1' in checkpoint else 'sam2'
+            model_source = "sam2.1" if "sam2.1" in checkpoint else "sam2"
             self.model_type = "{}_{}".format(model_source, model_type)
             self.model_source = model_source
 
-        elif 'med2d' in checkpoint:
+        elif "med2d" in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import sam_model_registry
-            from ISAT.segment_any.segment_anything_med2d.predictor_for_isat import Predictor as SamPredictor
+            from ISAT.segment_any.segment_anything_med2d.predictor_for_isat import (
+                Predictor as SamPredictor,
+            )
+
             self.model_type = "vit_b"
-            self.model_source = 'sam_med2d'
+            self.model_source = "sam_med2d"
 
         torch.cuda.empty_cache()
 
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        print('  - device  : {}'.format(self.device))
-        print('  - dtype   : {}'.format(self.model_dtype))
-        print('  - loading : {}'.format(checkpoint))
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print("  - device  : {}".format(self.device))
+        print("  - dtype   : {}".format(self.model_dtype))
+        print("  - loading : {}".format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
         sam = sam.eval().to(self.model_dtype)
 
         sam.to(device=self.device)
         self.predictor = SamPredictor(sam)
-        print('* Init SAM finished *')
-        print('--'*20)
+        print("* Init SAM finished *")
+        print("--" * 20)
         self.image = None
 
     def set_image(self, image: np.ndarray) -> None:
@@ -133,7 +160,9 @@ class SegAny:
         Arguments:
             image (np.ndarray): The image to segment.
         """
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
+        with torch.inference_mode(), torch.autocast(
+            self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()
+        ):
             self.image = image
             self.predictor.set_image(image)
 
@@ -145,7 +174,9 @@ class SegAny:
         self.image = None
         torch.cuda.empty_cache()
 
-    def predict_with_point_prompt(self, input_point: Union[list, np.ndarray], input_label: Union[list, np.ndarray]) -> torch.Tensor:
+    def predict_with_point_prompt(
+        self, input_point: Union[list, np.ndarray], input_label: Union[list, np.ndarray]
+    ) -> torch.Tensor:
         """
         Segment with point prompt.
 
@@ -153,9 +184,11 @@ class SegAny:
             input_point (list | np.ndarray): The input points. [(x1, y1), (x2, y2), ...]
             input_label (list | np.ndarray): The label of points, support value 0 or 1. [0, 0, ...]
         """
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
+        with torch.inference_mode(), torch.autocast(
+            self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()
+        ):
 
-            if 'sam2' not in self.model_type:
+            if "sam2" not in self.model_type:
                 input_point = np.array(input_point)
                 input_label = np.array(input_label)
             else:
@@ -167,7 +200,7 @@ class SegAny:
                 point_labels=input_label,
                 multimask_output=True,
             )
-            if self.model_source == 'sam_med2d':
+            if self.model_source == "sam_med2d":
                 return masks
 
             mask_input = logits[np.argmax(scores), :, :]  # Choose the model's best mask
@@ -187,7 +220,9 @@ class SegAny:
         Arguments:
             box (list | np.ndarray): [xmin, ymin, xmax, ymax]
         """
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
+        with torch.inference_mode(), torch.autocast(
+            self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()
+        ):
             masks, scores, logits = self.predictor.predict(
                 box=box,
                 multimask_output=False,
@@ -211,9 +246,10 @@ class SegAnyVideo:
         model_type (str): model type. eg: hiera_tiny, hiera_small, hiera_base_plus or hiera_large.
         predictor (SamPredictor): Sam Predictor.
     """
+
     def __init__(self, checkpoint: str, use_bfloat16: bool = True):
-        print('--'*20)
-        print('* Init SAM for video... *')
+        print("--" * 20)
+        print("* Init SAM for video... *")
 
         self.checkpoint = checkpoint
         self.model_dtype = torch.bfloat16 if use_bfloat16 else torch.float32
@@ -221,44 +257,47 @@ class SegAnyVideo:
 
         self.inference_state = {}
 
-        if 'sam2' in checkpoint:
+        if "sam2" in checkpoint:
             from ISAT.segment_any.sam2.build_sam import sam_model_registry
+
             # sam2
-            if 'hiera_tiny' in checkpoint:
+            if "hiera_tiny" in checkpoint:
                 model_type = "hiera_tiny"
-            elif 'hiera_small' in checkpoint:
+            elif "hiera_small" in checkpoint:
                 model_type = "hiera_small"
-            elif 'hiera_base_plus' in checkpoint:
-                model_type = 'hiera_base_plus'
-            elif 'hiera_large' in checkpoint:
-                model_type = 'hiera_large'
+            elif "hiera_base_plus" in checkpoint:
+                model_type = "hiera_base_plus"
+            elif "hiera_large" in checkpoint:
+                model_type = "hiera_large"
             else:
-                raise ValueError('The checkpoint named {} is not supported.'.format(checkpoint))
+                raise ValueError(
+                    "The checkpoint named {} is not supported.".format(checkpoint)
+                )
 
             # sam2.1 or sam2
-            model_source = 'sam2.1' if 'sam2.1' in checkpoint else 'sam2'
+            model_source = "sam2.1" if "sam2.1" in checkpoint else "sam2"
             self.model_type = "{}_{}_video".format(model_source, model_type)
             self.model_source = model_source
 
         torch.cuda.empty_cache()
 
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        print('  - device  : {}'.format(self.device))
-        print('  - dtype   : {}'.format(self.model_dtype))
-        print('  - loading : {}'.format(checkpoint))
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print("  - device  : {}".format(self.device))
+        print("  - dtype   : {}".format(self.model_dtype))
+        print("  - loading : {}".format(checkpoint))
         self.predictor = sam_model_registry[self.model_type](checkpoint=checkpoint)
         self.predictor = self.predictor.eval().to(self.model_dtype)
         self.predictor.to(device=self.device)
-        print('* Init SAM for video finished *')
-        print('--'*20)
+        print("* Init SAM for video finished *")
+        print("--" * 20)
 
     def init_state(
-            self,
-            image_root: str,
-            image_name_list: list,
-            offload_video_to_cpu: bool=True,
-            offload_state_to_cpu: bool=True,
-            async_loading_frames: bool=False,
+        self,
+        image_root: str,
+        image_name_list: list,
+        offload_video_to_cpu: bool = True,
+        offload_state_to_cpu: bool = True,
+        async_loading_frames: bool = False,
     ) -> None:
         """
         Init state for video segmentation. Need read all images.
@@ -270,13 +309,17 @@ class SegAnyVideo:
             offload_state_to_cpu (bool): offload state to CPU.
             async_loading_frames (bool): asynchronize loading frames.
         """
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
+        with torch.inference_mode(), torch.autocast(
+            self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()
+        ):
 
             img_mean = (0.485, 0.456, 0.406)
             img_std = (0.229, 0.224, 0.225)
 
             num_frames = len(image_name_list)
-            img_paths = [os.path.join(image_root, frame_name) for frame_name in image_name_list]
+            img_paths = [
+                os.path.join(image_root, frame_name) for frame_name in image_name_list
+            ]
             img_mean = torch.tensor(img_mean, dtype=torch.float32)[:, None, None]
             img_std = torch.tensor(img_std, dtype=torch.float32)[:, None, None]
 
@@ -287,11 +330,19 @@ class SegAnyVideo:
                     img_paths, image_size, offload_video_to_cpu, img_mean, img_std
                 )
                 # return lazy_images, lazy_images.video_height, lazy_images.video_width
-                images, video_height, video_width = lazy_images, lazy_images.video_height, lazy_images.video_width
+                images, video_height, video_width = (
+                    lazy_images,
+                    lazy_images.video_height,
+                    lazy_images.video_width,
+                )
             else:
-                images = torch.zeros(num_frames, 3, image_size, image_size, dtype=torch.float32)
+                images = torch.zeros(
+                    num_frames, 3, image_size, image_size, dtype=torch.float32
+                )
                 for n, img_path in enumerate(img_paths):
-                    images[n], video_height, video_width = self._load_img_as_tensor(img_path, image_size)
+                    images[n], video_height, video_width = self._load_img_as_tensor(
+                        img_path, image_size
+                    )
                 if not offload_video_to_cpu:
                     images = images.cuda()
                     img_mean = img_mean.cuda()
@@ -351,12 +402,14 @@ class SegAnyVideo:
             inference_state["tracking_has_started"] = False
             inference_state["frames_already_tracked"] = {}
             # Warm up the visual backbone and cache the image feature on frame 0
-            self.predictor._get_image_feature(inference_state, frame_idx=0, batch_size=1)
+            self.predictor._get_image_feature(
+                inference_state, frame_idx=0, batch_size=1
+            )
 
             self.inference_state = inference_state
             self.reset_state()
 
-            print('init state finished.')
+            print("init state finished.")
 
     def reset_state(self) -> None:
         """Remove all input points or mask in all frames throughout the video."""
@@ -391,7 +444,7 @@ class SegAnyVideo:
 
     @staticmethod
     def _load_img_as_tensor(img_path, image_size):
-        if img_path.lower().endswith('.dcm'):
+        if img_path.lower().endswith(".dcm"):
             img_pil = load_dcm_as_image(img_path)
         else:
             img_pil = Image.open(img_path)
@@ -404,7 +457,9 @@ class SegAnyVideo:
         video_width, video_height = img_pil.size  # the original video size
         return img, video_height, video_width
 
-    def add_new_mask(self, frame_idx: int, ann_obj_id: int, mask: Union[torch.Tensor, np.ndarray]) -> None:
+    def add_new_mask(
+        self, frame_idx: int, ann_obj_id: int, mask: Union[torch.Tensor, np.ndarray]
+    ) -> None:
         """
         Add new mask prompt for video segmentation.
 
@@ -413,10 +468,12 @@ class SegAnyVideo:
             ann_obj_id (int): Object ID.
             mask (torch.Tensor | np.ndarray): New mask prompt.
         """
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
+        with torch.inference_mode(), torch.autocast(
+            self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()
+        ):
             self.predictor.add_new_mask(
                 inference_state=self.inference_state,
                 frame_idx=frame_idx,
                 obj_id=ann_obj_id,
-                mask=mask
+                mask=mask,
             )

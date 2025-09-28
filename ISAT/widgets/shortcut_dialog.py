@@ -5,6 +5,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 from ISAT.ui.shortcut_dialog import Ui_Dialog
 import functools
 
+
 class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, parent, mainwindow):
         super(ShortcutDialog, self).__init__(parent)
@@ -15,8 +16,8 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_reset.clicked.connect(self.reset_shortcut)
         self.pushButton_close.clicked.connect(self.close)
 
-        self.columns = 3    # action列数
-        self.column_columns = 3 # 每个action有多少列内容[icon, label, QKeySequenceEdit]
+        self.columns = 3  # action列数
+        self.column_columns = 3  # 每个action有多少列内容[icon, label, QKeySequenceEdit]
 
         # 可以自定义快捷键的action列表
         self.actions_list = [
@@ -26,7 +27,6 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             self.mainwindow.actionNext_image,
             self.mainwindow.actionSetting,
             self.mainwindow.actionExit,
-
             self.mainwindow.actionSegment_anything_point,
             self.mainwindow.actionSegment_anything_box,
             self.mainwindow.actionPolygon,
@@ -47,7 +47,6 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             self.mainwindow.actionSubtract,
             self.mainwindow.actionIntersect,
             self.mainwindow.actionExclude,
-
             self.mainwindow.actionPrev_group,
             self.mainwindow.actionNext_group,
             self.mainwindow.actionVisible,
@@ -57,14 +56,11 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             self.mainwindow.actionFit_window,
             self.mainwindow.actionScene_shot,
             self.mainwindow.actionWindow_shot,
-
             # self.mainwindow.actionModel_manage,
-
             # self.mainwindow.actionConverter,
             # self.mainwindow.actionVideo_to_frames,
             # self.mainwindow.actionAuto_segment_with_bounding_box,
             # self.mainwindow.actionAnno_validator,
-
             self.mainwindow.actionLanguage,
             # self.mainwindow.actionShortcut,
             # self.mainwindow.actionAbout,
@@ -85,11 +81,31 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             key_edit.setFocusPolicy(QtCore.Qt.FocusPolicy.ClickFocus)
             key_edit.setFixedSize(150, 30)
             key_edit.setKeySequence(action.shortcut())
-            key_edit.editingFinished.connect(functools.partial(self.shortcut_change_finish, action))
+            key_edit.editingFinished.connect(
+                functools.partial(self.shortcut_change_finish, action)
+            )
 
-            self.gridLayout.addWidget(icon, index// self.columns, index % self.columns * self.column_columns, 1, 1)
-            self.gridLayout.addWidget(label, index// self.columns, index % self.columns * self.column_columns + 1, 1, 1)
-            self.gridLayout.addWidget(key_edit, index// self.columns, index % self.columns * self.column_columns + 2, 1, 1)
+            self.gridLayout.addWidget(
+                icon,
+                index // self.columns,
+                index % self.columns * self.column_columns,
+                1,
+                1,
+            )
+            self.gridLayout.addWidget(
+                label,
+                index // self.columns,
+                index % self.columns * self.column_columns + 1,
+                1,
+                1,
+            )
+            self.gridLayout.addWidget(
+                key_edit,
+                index // self.columns,
+                index % self.columns * self.column_columns + 2,
+                1,
+                1,
+            )
 
     def reset_shortcut(self):
         self.mainwindow.load_actions_shortcut(default=True)
@@ -98,25 +114,26 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
     def shortcut_change_finish(self, action):
         ks = self.sender().keySequence()
 
-        if ks.toString() in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+        if ks.toString() in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
             self.sender().setKeySequence(action.shortcut())
         else:
-            if ks.toString() == 'Backspace':
+            if ks.toString() == "Backspace":
                 ks = QtGui.QKeySequence(0)
 
             action.setShortcut(ks)  # 设置快捷键
-            self.sender().setKeySequence(action.shortcut()) # 同步显示
+            self.sender().setKeySequence(action.shortcut())  # 同步显示
             print("New shortcut [{}] for {}".format(ks.toString(), action.text()))
 
-            for action_str in self.mainwindow.cfg['shortcut']:
+            for action_str in self.mainwindow.cfg["shortcut"]:
                 try:
-                    if eval('self.mainwindow.' + action_str) == action:
-                        self.mainwindow.cfg['shortcut'][action_str]['key'] = ks.toString()
+                    if eval("self.mainwindow." + action_str) == action:
+                        self.mainwindow.cfg["shortcut"][action_str][
+                            "key"
+                        ] = ks.toString()
                         break
-                except Exception:pass
+                except Exception:
+                    pass
 
             self.sender().clearFocus()
 
             self.mainwindow.save_software_cfg()
-
-

@@ -14,8 +14,10 @@ import yaml
 import cv2
 import os
 
+
 class AutoSegmentThread(QThread):
     message = pyqtSignal(int, int, str)
+
     def __init__(self, mainwindow):
         super(AutoSegmentThread, self).__init__()
         self.mainwindow = mainwindow
@@ -28,7 +30,11 @@ class AutoSegmentThread(QThread):
         image_names = []
         cates = set()
         suffixes = tuple(
-            ['{}'.format(fmt.data().decode('ascii').lower()) for fmt in QtGui.QImageReader.supportedImageFormats()])
+            [
+                "{}".format(fmt.data().decode("ascii").lower())
+                for fmt in QtGui.QImageReader.supportedImageFormats()
+            ]
+        )
         for f in os.listdir(self.image_dir):
             if f.lower().endswith(suffixes):
                 image_names.append(f)
@@ -36,103 +42,115 @@ class AutoSegmentThread(QThread):
         images_num = len(image_names)
 
         for index, image_name in enumerate(image_names):
-            self.message.emit(index+1, images_num, '{}'.format(image_name))
+            self.message.emit(index + 1, images_num, "{}".format(image_name))
             image_path = os.path.join(self.image_dir, image_name)
             if self.cancel:
-                self.message.emit(-1, -1, '{}'.format('Cancel!'))
+                self.message.emit(-1, -1, "{}".format("Cancel!"))
                 return
-            xml_name = '.'.join(image_name.split('.')[:-1]) + '.xml'
+            xml_name = ".".join(image_name.split(".")[:-1]) + ".xml"
             xml_path = os.path.join(self.label_dir, xml_name)
             if not os.path.exists(xml_path):
-                self.message.emit(-1, -1, '{}'.format("Don't exist xml file."))
+                self.message.emit(-1, -1, "{}".format("Don't exist xml file."))
                 continue
-            self.message.emit(-1, -1, '{}'.format('Sam encoding...'))
+            self.message.emit(-1, -1, "{}".format("Sam encoding..."))
             # sam
             try:
                 image_data = np.array(Image.open(image_path))
                 self.mainwindow.segany.set_image(image_data)
             except Exception as e:
-                self.message.emit(-1, -1, 'Sam error when encoding image: {}'.format(e))
+                self.message.emit(-1, -1, "Sam error when encoding image: {}".format(e))
                 continue
 
             # xml
             try:
                 tree = ET.parse(xml_path)
                 root = tree.getroot()
-                objs = root.findall('object')
-                size = root.find('size')
-                width = int(size.find('width').text)
-                height = int(size.find('height').text)
-                depth = int(size.find('depth').text)
+                objs = root.findall("object")
+                size = root.find("size")
+                width = int(size.find("width").text)
+                height = int(size.find("height").text)
+                depth = int(size.find("depth").text)
             except Exception as e:
-                self.message.emit(-1, -1, 'Load xml error: {}'.format(e))
+                self.message.emit(-1, -1, "Load xml error: {}".format(e))
                 continue
 
             # isat
             dataset = {}
-            dataset['info'] = {}
-            dataset['info']['description'] = 'ISAT'
-            dataset['info']['folder'] = self.image_dir
-            dataset['info']['name'] = image_name
-            dataset['info']['width'] = width
-            dataset['info']['height'] = height
-            dataset['info']['depth'] = depth
-            dataset['info']['note'] = ''
-            dataset['objects'] = []
+            dataset["info"] = {}
+            dataset["info"]["description"] = "ISAT"
+            dataset["info"]["folder"] = self.image_dir
+            dataset["info"]["name"] = image_name
+            dataset["info"]["width"] = width
+            dataset["info"]["height"] = height
+            dataset["info"]["depth"] = depth
+            dataset["info"]["note"] = ""
+            dataset["objects"] = []
 
             for group, obj in enumerate(objs):
-                name = obj.find('name').text
-                difficult = obj.find('difficult').text
-                bndbox = obj.find('bndbox')
-                xmin = float(bndbox.find('xmin').text)
-                ymin = float(bndbox.find('ymin').text)
-                xmax = float(bndbox.find('xmax').text)
-                ymax = float(bndbox.find('ymax').text)
+                name = obj.find("name").text
+                difficult = obj.find("difficult").text
+                bndbox = obj.find("bndbox")
+                xmin = float(bndbox.find("xmin").text)
+                ymin = float(bndbox.find("ymin").text)
+                xmax = float(bndbox.find("xmax").text)
+                ymax = float(bndbox.find("ymax").text)
 
                 cates.add(name)
 
-                masks = self.mainwindow.segany.predict_with_box_prompt(box=np.array([xmin, ymin, xmax, ymax]))
+                masks = self.mainwindow.segany.predict_with_box_prompt(
+                    box=np.array([xmin, ymin, xmax, ymax])
+                )
 
-                masks = masks.astype('uint8') * 255
+                masks = masks.astype("uint8") * 255
                 h, w = masks.shape[-2:]
                 masks = masks.reshape(h, w)
 
                 if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
                     # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
-                    contours, hierarchy = cv2.findContours(masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
+                    contours, hierarchy = cv2.findContours(
+                        masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
+                    )
                 else:
                     # 当只保留外轮廓或单个mask时，只检测外轮廓
-                    contours, hierarchy = cv2.findContours(masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS)
+                    contours, hierarchy = cv2.findContours(
+                        masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
+                    )
 
                 if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY:
-                    largest_contour = max(contours, key=cv2.contourArea)  # 只保留面积最大的轮廓
+                    largest_contour = max(
+                        contours, key=cv2.contourArea
+                    )  # 只保留面积最大的轮廓
                     contours = [largest_contour]
 
                 for _, contour in enumerate(contours):
                     # polydp
-                    if self.mainwindow.cfg['software']['use_polydp']:
+                    if self.mainwindow.cfg["software"]["use_polydp"]:
                         epsilon_factor = 0.001
                         epsilon = epsilon_factor * cv2.arcLength(contour, True)
                         contour = cv2.approxPolyDP(contour, epsilon, True)
 
                     object = {}
-                    object['category'] = name
-                    object['group'] = group + 1
-                    object['segmentation'] = [(int(point[0][0]), int(point[0][1])) for point in contour]
-                    object['area'] = None
-                    object['layer'] = group + 1
-                    object['bbox'] = [xmin, ymin, xmax, ymax]
-                    object['iscrowd'] = False
-                    object['note'] = ''
-                    dataset['objects'].append(object)
+                    object["category"] = name
+                    object["group"] = group + 1
+                    object["segmentation"] = [
+                        (int(point[0][0]), int(point[0][1])) for point in contour
+                    ]
+                    object["area"] = None
+                    object["layer"] = group + 1
+                    object["bbox"] = [xmin, ymin, xmax, ymax]
+                    object["iscrowd"] = False
+                    object["note"] = ""
+                    dataset["objects"].append(object)
 
             try:
-                save_path = os.path.join(self.save_dir, '.'.join(image_name.split('.')[:-1]) + '.json')
-                with open(save_path, 'w') as f:
+                save_path = os.path.join(
+                    self.save_dir, ".".join(image_name.split(".")[:-1]) + ".json"
+                )
+                with open(save_path, "w") as f:
                     dump(dataset, f, indent=4)
-                self.message.emit(-1, -1, '{}'.format('Save finished!'))
+                self.message.emit(-1, -1, "{}".format("Save finished!"))
             except Exception as e:
-                self.message.emit(-1, -1, 'Save ISAT json error: {}'.format(e))
+                self.message.emit(-1, -1, "Save ISAT json error: {}".format(e))
 
         # 类别文件
         try:
@@ -142,17 +160,19 @@ class AutoSegmentThread(QThread):
             categories = []
             for index, cat in enumerate(cates):
                 r, g, b = cmap[index + 1]
-                categories.append({
-                    'name': cat if isinstance(cat, str) else str(cat),
-                    'color': "#{:02x}{:02x}{:02x}".format(r, g, b)
-                })
-            s = yaml.dump({'label': categories})
-            with open(os.path.join(self.save_dir, 'isat.yaml'), 'w') as f:
+                categories.append(
+                    {
+                        "name": cat if isinstance(cat, str) else str(cat),
+                        "color": "#{:02x}{:02x}{:02x}".format(r, g, b),
+                    }
+                )
+            s = yaml.dump({"label": categories})
+            with open(os.path.join(self.save_dir, "isat.yaml"), "w") as f:
                 f.write(s)
-            self.message.emit(-1, -1, 'Save ISAT yaml finished!')
+            self.message.emit(-1, -1, "Save ISAT yaml finished!")
 
         except Exception as e:
-            self.message.emit(-1, -1, 'Save ISAT yaml error: {}'.format(e))
+            self.message.emit(-1, -1, "Save ISAT yaml error: {}".format(e))
 
 
 class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
@@ -172,7 +192,7 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
         self.init_connect()
 
     def open_dir(self):
-        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption='Open dir')
+        dir = QtWidgets.QFileDialog.getExistingDirectory(self, caption="Open dir")
         if self.sender() == self.pushButton_image_dir:
             lineEdit = self.lineEdit_image_dir
         elif self.sender() == self.pushButton_label_dir:
@@ -195,8 +215,10 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
         self.label_dir = self.lineEdit_label_dir.text()
         self.save_dir = self.lineEdit_save_dir.text()
 
-        if self.image_dir == '' or self.label_dir == '' or self.save_dir == '':
-            self.textBrowser.append('Error: image root / xml root / save root is None. ')
+        if self.image_dir == "" or self.label_dir == "" or self.save_dir == "":
+            self.textBrowser.append(
+                "Error: image root / xml root / save root is None. "
+            )
             return
 
         self.auto_segment_thread.image_dir = self.image_dir
@@ -213,10 +235,26 @@ class AutoSegmentDialog(QtWidgets.QDialog, Ui_Dialog):
         if all > 0:
             self.progressBar.setMaximum(all)
         if message:
-            self.textBrowser.append('{} | {}'.format(
-                '{:>8s}/{:<8s}'.format(str(index), str(all)) if (index > 0 and all > 0) else '{:>8s} {:<8s}'.format('', ''), message))
-            print('{} | {}'.format(
-                '{:>8s}/{:<8s}'.format(str(index), str(all)) if (index > 0 and all > 0) else '{:>8s} {:<8s}'.format('', ''), message))
+            self.textBrowser.append(
+                "{} | {}".format(
+                    (
+                        "{:>8s}/{:<8s}".format(str(index), str(all))
+                        if (index > 0 and all > 0)
+                        else "{:>8s} {:<8s}".format("", "")
+                    ),
+                    message,
+                )
+            )
+            print(
+                "{} | {}".format(
+                    (
+                        "{:>8s}/{:<8s}".format(str(index), str(all))
+                        if (index > 0 and all > 0)
+                        else "{:>8s} {:<8s}".format("", "")
+                    ),
+                    message,
+                )
+            )
 
     def init_connect(self):
         self.pushButton_image_dir.clicked.connect(self.open_dir)

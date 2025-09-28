@@ -14,6 +14,7 @@ class VOCDetect(ISAT):
     Attributes:
         keep_crowd (bool): keep the crowded objects
     """
+
     def __init__(self):
         self.keep_crowd = True
 
@@ -28,12 +29,14 @@ class VOCDetect(ISAT):
 
         pbar = tqdm.tqdm(self.annos.items())
         for name_without_suffix, anno in pbar:
-            xml_path = os.path.join(xml_root, name_without_suffix + '.xml')
+            xml_path = os.path.join(xml_root, name_without_suffix + ".xml")
             try:
                 self.save_one_voc_xml(anno, xml_path)
-                pbar.set_description('Save xml to {}'.format(name_without_suffix + '.xml'))
+                pbar.set_description(
+                    "Save xml to {}".format(name_without_suffix + ".xml")
+                )
             except Exception as e:
-                raise '{} {}'.format(name_without_suffix, e)
+                raise "{} {}".format(name_without_suffix, e)
         return True
 
     def save_one_voc_xml(self, anno: ISAT.ANNO, xml_path: str) -> bool:
@@ -44,31 +47,31 @@ class VOCDetect(ISAT):
             anno (ISAT.ANNO): the annotation
             xml_path (str): the xml file path
         """
-        annotation = ET.Element('annotation')
+        annotation = ET.Element("annotation")
         tree = ET.ElementTree(annotation)
-        folder = ET.Element('folder')
-        folder.text = '{}'.format(anno.info.folder)
+        folder = ET.Element("folder")
+        folder.text = "{}".format(anno.info.folder)
         annotation.append(folder)
 
-        filename = ET.Element('filename')
-        filename.text = '{}'.format(anno.info.name)
+        filename = ET.Element("filename")
+        filename.text = "{}".format(anno.info.name)
         annotation.append(filename)
 
-        explain = ET.Element('explain')
-        explain.text = '{}'.format('XML from ISAT')
+        explain = ET.Element("explain")
+        explain.text = "{}".format("XML from ISAT")
         annotation.append(explain)
 
-        size = ET.Element('size')
-        width = ET.Element('width')
-        width.text = '{}'.format(anno.info.width)
+        size = ET.Element("size")
+        width = ET.Element("width")
+        width.text = "{}".format(anno.info.width)
         size.append(width)
 
-        height = ET.Element('height')
-        height.text = '{}'.format(anno.info.height)
+        height = ET.Element("height")
+        height.text = "{}".format(anno.info.height)
         size.append(height)
 
-        depth = ET.Element('depth')
-        depth.text = '{}'.format(anno.info.depth)
+        depth = ET.Element("depth")
+        depth.text = "{}".format(anno.info.depth)
         size.append(depth)
         annotation.append(size)
 
@@ -100,40 +103,40 @@ class VOCDetect(ISAT):
                 xs = [x for x, y in segmentations]
                 ys = [y for x, y in segmentations]
 
-                object = ET.Element('object')
-                name = ET.Element('name')
+                object = ET.Element("object")
+                name = ET.Element("name")
                 name.text = cat
                 object.append(name)
 
-                pose = ET.Element('pose')
-                pose.text = 'Unspecified'
+                pose = ET.Element("pose")
+                pose.text = "Unspecified"
                 object.append(pose)
 
-                truncated = ET.Element('truncated')
-                truncated.text = '0'
+                truncated = ET.Element("truncated")
+                truncated.text = "0"
                 object.append(truncated)
 
-                difficult = ET.Element('difficult')
-                difficult.text = '0'
+                difficult = ET.Element("difficult")
+                difficult.text = "0"
                 object.append(difficult)
 
-                bndbox = ET.Element('bndbox')
-                xmin = ET.Element('xmin')
-                xmin.text = '{}'.format(int(min(xs)))
+                bndbox = ET.Element("bndbox")
+                xmin = ET.Element("xmin")
+                xmin.text = "{}".format(int(min(xs)))
                 bndbox.append(xmin)
 
-                ymin = ET.Element('ymin')
-                ymin.text = '{}'.format(int(min(ys)))
+                ymin = ET.Element("ymin")
+                ymin.text = "{}".format(int(min(ys)))
                 bndbox.append(ymin)
 
-                xmax = ET.Element('xmax')
-                xmax.text = '{}'.format(int(max(xs)))
+                xmax = ET.Element("xmax")
+                xmax.text = "{}".format(int(max(xs)))
                 bndbox.append(xmax)
 
-                ymax = ET.Element('ymax')
-                ymax.text = '{}'.format(int(max(ys)))
+                ymax = ET.Element("ymax")
+                ymax.text = "{}".format(int(max(ys)))
                 bndbox.append(ymax)
                 object.append(bndbox)
                 annotation.append(object)
-        tree.write(xml_path, encoding='utf-8', xml_declaration=True)
+        tree.write(xml_path, encoding="utf-8", xml_declaration=True)
         return True

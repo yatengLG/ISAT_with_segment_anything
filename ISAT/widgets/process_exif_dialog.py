@@ -2,9 +2,11 @@
 # @Author  : LG
 
 import os
-from ISAT.ui.process_exif_dialog import Ui_Dialog
-from PyQt5 import QtWidgets, QtCore
+
 from PIL import Image, ImageOps
+from PyQt5 import QtCore, QtWidgets
+
+from ISAT.ui.process_exif_dialog import Ui_Dialog
 
 
 class ProcessExifDialog(QtWidgets.QDialog, Ui_Dialog):

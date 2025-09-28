@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.formats.isat import ISAT
-from xml.etree import ElementTree as ET
-import tqdm
 import os
+from xml.etree import ElementTree as ET
+
+import tqdm
+
+from ISAT.formats.isat import ISAT
 
 
 class VOCDetect(ISAT):

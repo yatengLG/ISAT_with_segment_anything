@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from typing import Dict, Tuple
+import os
 from json import dump, load
-import yaml
+from typing import Dict, Tuple
+
 import imgviz
 import tqdm
-import os
+import yaml
 
 
 class ISAT:

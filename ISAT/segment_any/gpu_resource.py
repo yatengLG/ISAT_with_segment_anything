@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5.QtCore import QThread, pyqtSignal
 import os
 import platform
+
+from PyQt5.QtCore import QThread, pyqtSignal
 
 osplatform = platform.system()
 

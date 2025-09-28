@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
-from PIL import Image
-from PyQt5 import QtWidgets, QtGui, QtCore
-from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line, Rect
-from ISAT.configs import STATUSMode, DRAWMode, CONTOURMode
-from ISAT.utils.dicom import load_dcm_as_image
-import numpy as np
-import cv2
 import time  # 拖动鼠标描点
+
+import cv2
+import numpy as np
 import shapely
+from PIL import Image
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from ISAT.configs import CONTOURMode, DRAWMode, STATUSMode
+from ISAT.utils.dicom import load_dcm_as_image
+from ISAT.widgets.polygon import Line, Polygon, PromptPoint, Rect, Vertex
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):

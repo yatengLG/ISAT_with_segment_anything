@@ -2,6 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtWidgets
+
 from ISAT.ui.info_dock import Ui_Form
 
 

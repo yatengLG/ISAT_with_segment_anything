@@ -1,55 +1,49 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+import functools
+import os
+
+import cv2  # 调整图像饱和度
+import imgviz
+import numpy as np
+import orjson
+import requests
+import torch
+from PIL import Image
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThread, pyqtSignal
+from skimage.draw.draw import polygon
+
+import ISAT.icons_rc
+from ISAT.annotation import Annotation, Object
+from ISAT.configs import (CHECKPOINT_PATH, CONFIG_FILE, ISAT_ROOT,
+                          SOFTWARE_CONFIG_FILE, CONTOURMode, MAPMode,
+                          STATUSMode, load_config, save_config)
+from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
+from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.ui.MainWindow import Ui_MainWindow
-from ISAT.widgets.category_setting_dialog import CategorySettingDialog
-from ISAT.widgets.category_edit_dialog import CategoryEditDialog
-from ISAT.widgets.category_dock_widget import CategoriesDockWidget
+from ISAT.utils.dicom import load_dcm_as_image
+from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.annos_dock_widget import AnnosDockWidget
+from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
+from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
+from ISAT.widgets.canvas import AnnotationScene, AnnotationView
+from ISAT.widgets.category_dock_widget import CategoriesDockWidget
+from ISAT.widgets.category_edit_dialog import CategoryEditDialog
+from ISAT.widgets.category_setting_dialog import CategorySettingDialog
+from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.files_dock_widget import FilesDockWidget
 from ISAT.widgets.info_dock_widget import InfoDockWidget
-from ISAT.widgets.right_button_menu import RightButtonMenu
-from ISAT.widgets.shortcut_dialog import ShortcutDialog
-from ISAT.widgets.about_dialog import AboutDialog
-from ISAT.widgets.setting_dialog import SettingDialog
-from ISAT.widgets.converter_dialog import ConverterDialog
-from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
-from ISAT.widgets.process_exif_dialog import ProcessExifDialog
-from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
-from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
 from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
-from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
-from ISAT.widgets.canvas import AnnotationScene, AnnotationView
-from ISAT.configs import (
-    STATUSMode,
-    MAPMode,
-    load_config,
-    save_config,
-    CONFIG_FILE,
-    SOFTWARE_CONFIG_FILE,
-    CHECKPOINT_PATH,
-    ISAT_ROOT,
-    CONTOURMode,
-)
-from ISAT.annotation import Object, Annotation
 from ISAT.widgets.polygon import Polygon, PromptPoint
-from ISAT.utils.dicom import load_dcm_as_image
-import os
-from PIL import Image
-import functools
-import imgviz
-from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
-from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
-import ISAT.icons_rc
-from PyQt5.QtCore import QThread, pyqtSignal
-import numpy as np
-import torch
-import cv2  # 调整图像饱和度
-from skimage.draw.draw import polygon
-import requests
-import orjson
+from ISAT.widgets.process_exif_dialog import ProcessExifDialog
+from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
+from ISAT.widgets.right_button_menu import RightButtonMenu
+from ISAT.widgets.setting_dialog import SettingDialog
+from ISAT.widgets.shortcut_dialog import ShortcutDialog
+from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -560,6 +554,7 @@ class CheckLatestVersionThread(QThread):
     def run(self):
         try:
             import requests
+
             from ISAT import __version__
 
             response = requests.get(f"https://pypi.org/pypi/isat-sam/json", timeout=3)

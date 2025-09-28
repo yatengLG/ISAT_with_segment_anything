@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import QThread, pyqtSignal
-from ISAT.ui.auto_segment import Ui_Dialog
-from ISAT.configs import CONTOURMode
-from xml.etree import ElementTree as ET
-from PIL import Image
-import numpy as np
-from json import dump
-import imgviz
-import yaml
-import cv2
 import os
+from json import dump
+from xml.etree import ElementTree as ET
+
+import cv2
+import imgviz
+import numpy as np
+import yaml
+from PIL import Image
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThread, pyqtSignal
+
+from ISAT.configs import CONTOURMode
+from ISAT.ui.auto_segment import Ui_Dialog
 
 
 class AutoSegmentThread(QThread):

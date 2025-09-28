@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtCore, QtWidgets, QtGui
-from ISAT.annotation import Object
 import typing
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from ISAT.annotation import Object
 from ISAT.configs import STATUSMode
 
 

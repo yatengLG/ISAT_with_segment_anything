@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.formats.isat import ISAT
+from json import dump
+
+import cv2
+import numpy as np
+import tqdm
 from pycocotools import coco as mscoco
 from pycocotools import mask as mscoco_mask
-from json import dump
-import cv2
-import tqdm
-import numpy as np
+
+from ISAT.formats.isat import ISAT
 
 __all__ = ["COCO"]
 

@@ -2,11 +2,13 @@
 # @Author  : LG
 
 import os.path
+
 import requests
-from ISAT.ui.remote_sam_dialog import Ui_Dialog
-from ISAT.configs import CHECKPOINT_PATH
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QValidator
+
+from ISAT.configs import CHECKPOINT_PATH
+from ISAT.ui.remote_sam_dialog import Ui_Dialog
 
 
 class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):

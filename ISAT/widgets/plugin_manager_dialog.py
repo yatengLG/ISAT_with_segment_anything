@@ -3,8 +3,10 @@
 
 import sys
 from importlib.metadata import entry_points
+
+from PyQt5 import QtCore, QtWidgets
+
 from ISAT.ui.plugin_manager_dialog import Ui_Dialog
-from PyQt5 import QtWidgets, QtCore
 
 
 class PluginManagerDialog(QtWidgets.QDialog, Ui_Dialog):

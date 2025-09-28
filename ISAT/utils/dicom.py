@@ -3,8 +3,8 @@
 
 import numpy as np
 import pydicom
-from pydicom.multival import MultiValue
 from PIL import Image
+from pydicom.multival import MultiValue
 
 
 def load_dcm_as_image(ds_file):

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.formats.isat import ISAT
-import cv2
-import tqdm
-import numpy as np
 import os
+
+import cv2
+import numpy as np
+import tqdm
+
+from ISAT.formats.isat import ISAT
 
 
 class YOLO(ISAT):

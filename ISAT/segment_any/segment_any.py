@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
+import os
+import platform
+from collections import OrderedDict
 from typing import Union
 
-import torch
 import numpy as np
-import platform
+import torch
 from PIL import Image
-from collections import OrderedDict
-import os
+
 from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
 from ISAT.utils.dicom import load_dcm_as_image
-
 
 osplatform = platform.system()
 
@@ -39,22 +39,22 @@ class SegAny:
         self.model_source = None
         if "mobile_sam" in checkpoint:
             # mobile sam
-            from ISAT.segment_any.mobile_sam import sam_model_registry, SamPredictor
+            from ISAT.segment_any.mobile_sam import (SamPredictor,
+                                                     sam_model_registry)
 
             self.model_type = "vit_t"
             self.model_source = "mobile_sam"
         elif "edge_sam" in checkpoint:
             # edge_sam
-            from ISAT.segment_any.edge_sam import sam_model_registry, SamPredictor
+            from ISAT.segment_any.edge_sam import (SamPredictor,
+                                                   sam_model_registry)
 
             self.model_type = "edge_sam"
             self.model_source = "edge_sam"
         elif "sam_hq_vit" in checkpoint:
             # sam hq
             from ISAT.segment_any.segment_anything_hq import (
-                sam_model_registry,
-                SamPredictor,
-            )
+                SamPredictor, sam_model_registry)
 
             if "vit_b" in checkpoint:
                 self.model_type = "vit_b"
@@ -79,18 +79,14 @@ class SegAny:
                 # from ISAT.segment_anything_fast import SamPredictor
                 # print('segment_anything_fast')
                 from ISAT.segment_any.segment_anything import (
-                    sam_model_registry,
-                    SamPredictor,
-                )
+                    SamPredictor, sam_model_registry)
 
                 print("segment_anything")
             else:
                 # windows下，现只支持 2.2.0+dev，且需要其他依赖；等后续正式版本推出后，再进行支持
                 # （如果想提前在windows下试用，可参考https://github.com/pytorch-labs/segment-anything-fast项目进行环境配置）
                 from ISAT.segment_any.segment_anything import (
-                    sam_model_registry,
-                    SamPredictor,
-                )
+                    SamPredictor, sam_model_registry)
 
                 print("segment_anything")
             if "vit_b" in checkpoint:
@@ -106,9 +102,8 @@ class SegAny:
             self.model_source = "sam"
         elif "sam2" in checkpoint:
             from ISAT.segment_any.sam2.build_sam import sam_model_registry
-            from ISAT.segment_any.sam2.sam2_image_predictor import (
-                SAM2ImagePredictor as SamPredictor,
-            )
+            from ISAT.segment_any.sam2.sam2_image_predictor import \
+                SAM2ImagePredictor as SamPredictor
 
             # sam2
             if "hiera_tiny" in checkpoint:
@@ -129,10 +124,10 @@ class SegAny:
             self.model_source = model_source
 
         elif "med2d" in checkpoint:
-            from ISAT.segment_any.segment_anything_med2d import sam_model_registry
-            from ISAT.segment_any.segment_anything_med2d.predictor_for_isat import (
-                Predictor as SamPredictor,
-            )
+            from ISAT.segment_any.segment_anything_med2d import \
+                sam_model_registry
+            from ISAT.segment_any.segment_anything_med2d.predictor_for_isat import \
+                Predictor as SamPredictor
 
             self.model_type = "vit_b"
             self.model_source = "sam_med2d"

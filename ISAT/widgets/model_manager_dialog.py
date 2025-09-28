@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import QThread, pyqtSignal
-from ISAT.ui.model_manager_dialog import Ui_Dialog
-from ISAT.configs import CHECKPOINT_PATH
-from ISAT.segment_any.model_zoo import model_dict
-from urllib import request
-from functools import partial
+import os
 import shutil
 import time
-import os
+from functools import partial
+from urllib import request
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThread, pyqtSignal
+
+from ISAT.configs import CHECKPOINT_PATH
+from ISAT.segment_any.model_zoo import model_dict
+from ISAT.ui.model_manager_dialog import Ui_Dialog
 
 
 class DownloadThread(QThread):

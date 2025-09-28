@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore
+import os
+
+import imgviz
+import numpy as np
+import yaml
+from PIL import ImageColor
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QThread, pyqtSignal
-from ISAT.ui.Converter_dialog import Ui_Dialog
-from ISAT.formats.isat import ISAT
+
 from ISAT.formats.coco import COCO
-from ISAT.formats.yolo import YOLO
+from ISAT.formats.isat import ISAT
 from ISAT.formats.labelme import LABELME
 from ISAT.formats.voc import VOC
 from ISAT.formats.voc_detection import VOCDetect
-import os
-import yaml
-import imgviz
-import numpy as np
-from PIL import ImageColor
+from ISAT.formats.yolo import YOLO
+from ISAT.ui.Converter_dialog import Ui_Dialog
 
 
 class Converter(QThread, ISAT):

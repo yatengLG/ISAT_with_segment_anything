@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from ISAT.ui.category_dock import Ui_Form
-from fuzzywuzzy import process
 import functools
+
+from fuzzywuzzy import process
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from ISAT.ui.category_dock import Ui_Form
 
 
 class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):

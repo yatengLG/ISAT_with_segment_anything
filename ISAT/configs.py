@@ -1,6 +1,7 @@
-import yaml
-from enum import Enum
 import os
+from enum import Enum
+
+import yaml
 
 __all__ = [
     "load_config",

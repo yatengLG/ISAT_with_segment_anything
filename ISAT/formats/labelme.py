@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.formats.isat import ISAT
-from json import dump, load
-import tqdm
 import os
+from json import dump, load
+
+import tqdm
+
+from ISAT.formats.isat import ISAT
 
 
 class LABELME(ISAT):

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from ISAT.ui.category_setting_dialog import Ui_Dialog
-from ISAT.configs import *
 import os
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from ISAT.configs import *
+from ISAT.ui.category_setting_dialog import Ui_Dialog
 
 
 class CategorySettingDialog(QtWidgets.QDialog, Ui_Dialog):

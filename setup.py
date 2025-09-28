@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-import os
 import codecs
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 
 def get_version():

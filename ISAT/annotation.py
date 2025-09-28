@@ -2,10 +2,12 @@
 # @Author  : LG
 
 import os
-from PIL import Image
-import numpy as np
-from json import load, dump
+from json import dump, load
 from typing import List, Union
+
+import numpy as np
+from PIL import Image
+
 from ISAT.utils.dicom import load_dcm_as_image
 
 __all__ = ["Object", "Annotation"]

@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from ISAT.formats.isat import ISAT
-import tqdm
-import numpy as np
-from PIL import Image
-import imgviz
-from skimage.draw.draw import polygon
 import os
 from typing import Union
+
+import imgviz
+import numpy as np
+import tqdm
+from PIL import Image
+from skimage.draw.draw import polygon
+
+from ISAT.formats.isat import ISAT
 
 
 class VOC(ISAT):

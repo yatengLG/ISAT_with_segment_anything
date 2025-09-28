@@ -2,9 +2,9 @@
 # @Author  : LG
 # from https://blog.51cto.com/u_15872074/5841477
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import pyqtSignal, QTimer, QRectF, Qt
+from PyQt5.QtCore import QRectF, Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import QColor, QFont, QPainter, QPainterPath, QPen
+from PyQt5.QtWidgets import QWidget
 
 
 class SwitchBtn(QWidget):

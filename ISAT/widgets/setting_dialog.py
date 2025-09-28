@@ -2,6 +2,7 @@
 # @Author  : LG
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from ISAT.ui.setting_dialog import Ui_Dialog
 
 

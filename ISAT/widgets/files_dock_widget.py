@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from ISAT.ui.file_dock import Ui_Form
 import os
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from ISAT.ui.file_dock import Ui_Form
 
 
 class FilesDockWidget(QtWidgets.QWidget, Ui_Form):

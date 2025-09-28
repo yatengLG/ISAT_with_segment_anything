@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore
-from ISAT.ui.anno_dock import Ui_Form
 import functools
 import re
+
+from PyQt5 import QtCore, QtWidgets
+
+from ISAT.ui.anno_dock import Ui_Form
 from ISAT.widgets.polygon import Polygon
 
 

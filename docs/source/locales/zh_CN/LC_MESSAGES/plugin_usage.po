@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 11:49+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/plugin_usage.rst:2
+msgid "Plugin Usage"
+msgstr "插件使用"
+
+#: ../../source/plugin_usage.rst:5
+msgid "Install"
+msgstr "安装"
+
+#: ../../source/plugin_usage.rst:7
+msgid ""
+"All ISAT plugins are released in the form of Python packages, you can "
+"quickly install it via the pip command."
+msgstr "ISAT插件以python包的形式发布，你可以通过pip命令很方便的安装插件。"
+
+#: ../../source/plugin_usage.rst:10
+msgid "For example to install the ``isat-plugin-mask-export``"
+msgstr "例如，安装 ``isat-plugin-mask-export`` 插件"
+
+#: ../../source/plugin_usage.rst:16
+msgid ""
+"For specific plugin usage and installation, please refer to the "
+"instructions provided by the plugin. This should be provided in the page "
+"of the plugin project."
+msgstr "对于特定插件的使用与安装，请参考插件项目页面提供的使用说明。"
+
+#: ../../source/plugin_usage.rst:18
+msgid ""
+"After installing the plugin, click the reload button or restart ISAT to "
+"load the plugin."
+msgstr "安装插件后，点击插件管理页面的重新加载按钮或重启ISAT加载插件。"
+
+#: ../../source/plugin_usage.rst:20
+msgid ""
+"For more plugins, please refer to the `plugin list <plugin_list.html"
+"#plugin-list>`_."
+msgstr "更多插件，请见 `插件列表 <plugin_list.html#plugin-list>`_。"
+
+#: ../../source/plugin_usage.rst:23
+msgid "Usage"
+msgstr "使用"
+
+#: ../../source/plugin_usage.rst:25
+msgid ""
+"Click ``Plugins`` button in right toolbar to open plugins interface, and "
+"then check the boxes of plugins you need to use."
+msgstr "点击右侧工具栏中 ``插件`` 按钮，打开插件界面，然后通过勾选激活要使用的插件。"
+
+#: ../../source/plugin_usage.rst:-1
+msgid "plugins.png"
+msgstr ""
+
+#: ../../source/plugin_usage.rst:30
+msgid "Activating multiple plugins simultaneously may cause conflicts."
+msgstr "同时激活多个插件可能会导致冲突。"
+

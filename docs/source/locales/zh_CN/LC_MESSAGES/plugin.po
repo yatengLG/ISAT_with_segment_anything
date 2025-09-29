@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-28 16:39+0800\n"
+"POT-Creation-Date: 2025-09-29 11:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -22,23 +22,4 @@ msgstr ""
 #: ../../source/plugin.rst:2
 msgid "Plugin"
 msgstr "插件"
-
-#: ../../source/plugin.rst:4
-msgid "Click ``Plugins`` button in right toolbar to open plugins interface."
-msgstr "点击右侧工具栏中 ``插件`` 按钮，打开插件界面。"
-
-#: ../../source/plugin.rst:-1
-msgid "plugins.png"
-msgstr ""
-
-#: ../../source/plugin.rst:9
-msgid ""
-"All ISAT plugins are released in the form of Python packages. After "
-"installing the plugin, click the reload button or restart ISAT to load "
-"the plugin."
-msgstr "所有的ISAT插件均以python包的形式发布，安装插件后，点击重新加载按钮或重启ISAT来加载插件。"
-
-#: ../../source/plugin.rst:11
-msgid "Activating multiple plugins simultaneously may cause conflicts."
-msgstr "同时激活多个插件可能会导致冲突。"
 

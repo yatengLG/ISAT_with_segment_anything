@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 18:08+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/feature_request.rst:2
+msgid "Feature request"
+msgstr "功能请求"
+
+#: ../../source/feature_request.rst:4
+msgid "Thank you for helping us improve ISAT！"
+msgstr "非常感谢你帮助我们改进ISAT!"
+
+#: ../../source/feature_request.rst:7
+msgid "Submit a feature request"
+msgstr "提交功能请求"
+
+#: ../../source/feature_request.rst:9
+msgid "Feature requests are welcome."
+msgstr "欢迎提交功能请求。"
+
+#: ../../source/feature_request.rst:11
+msgid "Before submit, you should:"
+msgstr "在提交前，你应该："
+
+#: ../../source/feature_request.rst:13
+msgid ""
+"**Take a moment to find out whether your idea fits with the scope and "
+"aims of ISAT.**"
+msgstr "花一些时间考虑您的想法是否与ISAT的范围和目标符合。"
+
+#: ../../source/feature_request.rst:14
+msgid "**Make sure there are no simple alternatives.**"
+msgstr "确定没有简单的替代方案。"
+
+#: ../../source/feature_request.rst:15
+msgid ""
+"**Finally, You should have a strong case to convince ISAT’s developers of"
+" the merits of this feature.**"
+msgstr "最后，你应该提供一个强有力的理由来说服ISAT的开发者接收你所提的功能。"
+
+#: ../../source/feature_request.rst:17
+msgid ""
+"You can create a new issue to submit a feature request via the `GitHub "
+"issue <https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_."
+msgstr "你可以在Github上 `创建一个新的issue <https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ 来提交功能请求。"
+
+#: ../../source/feature_request.rst:21
+msgid ""
+"If you just have a simple idea, you can also exchange views in the "
+"`discussion hub "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
+"before request feature."
+msgstr "如果你只是有一个简单的想法，提交功能请求前，可以在 `讨论区 <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ 中进行交流。"
+
+#: ../../source/feature_request.rst:24
+msgid "Template"
+msgstr "模版"
+
+#: ../../source/feature_request.rst:26
+msgid "Please create a feature request using the provided template."
+msgstr "请通过模版来提交功能请求"

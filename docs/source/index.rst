@@ -25,4 +25,5 @@ Contents
    install
    usage
    plugin
+   contact_us
    api

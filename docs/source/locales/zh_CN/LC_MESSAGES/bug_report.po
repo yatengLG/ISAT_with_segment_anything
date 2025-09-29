@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 18:08+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/bug_report.rst:2
+msgid "Bug report"
+msgstr "bug报告"
+
+#: ../../source/bug_report.rst:4
+msgid "Thank you for helping us improve ISAT！"
+msgstr "非常感谢你帮助我们改进ISAT!"
+
+#: ../../source/bug_report.rst:7
+msgid "Submit a bug report"
+msgstr "提交bug报告"
+
+#: ../../source/bug_report.rst:9
+msgid "Before submit, you should:"
+msgstr "在提交前，你应该："
+
+#: ../../source/bug_report.rst:11
+msgid ""
+"**Use the GitHub issue search** - check if the issue has already been "
+"reported."
+msgstr "**使用github issue 查询功能** - 检查是否已经存在相同的bug报告。"
+
+#: ../../source/bug_report.rst:12
+msgid ""
+"**Check if the issue has been fixed** - try to reproduce it using the "
+"latest version in the repository."
+msgstr "**检查bug是否已经修复** - 尝试在最新版的代码库中复现bug。"
+
+#: ../../source/bug_report.rst:13
+msgid ""
+"**Isolate the problem** - Try to reproduce the problem in a minimal "
+"environment."
+msgstr "**隔离bug** - 尝试在最小环境中复现，杜绝其他影响。"
+
+#: ../../source/bug_report.rst:15
+msgid ""
+"You can create a new issue to submit a bug report via the `GitHub issue "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_."
+msgstr ""
+"你可以在Github上 `创建一个新的issue "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ 来提交bug报告。"
+
+#: ../../source/bug_report.rst:19
+msgid ""
+"If you're not sure whether it's a bug, you can try asking questions in "
+"the `discussion hub "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
+"instead of submitting a bug report."
+msgstr "如果不确定是否是bug，可以在 `讨论区 <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ 中进行提问，而不是提交bug报告。"
+
+#: ../../source/bug_report.rst:22
+msgid "Template"
+msgstr "模版"
+
+#: ../../source/bug_report.rst:24
+msgid ""
+"High - quality bug reports are crucial for us to quickly locate and fix "
+"problems."
+msgstr "高质量的bug报告对于定位和修复bug至关重要。"
+
+#: ../../source/bug_report.rst:26
+msgid ""
+"A high quality bug report shouldn’t leave others needing to chase you up "
+"for more information."
+msgstr "一个高质量的bug报告，不应该通过追问才能获得更多信息。"
+
+#: ../../source/bug_report.rst:28
+msgid "Please try to be as detailed as possible in your report."
+msgstr "请在报告中尽可能详细的描述遇到的问题。"
+
+#: ../../source/bug_report.rst:30
+msgid "Please create a bug report using the provided template."
+msgstr "请通过模版来提交bug报告。"

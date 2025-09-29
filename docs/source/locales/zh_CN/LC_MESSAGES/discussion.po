@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Shuwei Ji and Hongyuan Zhang
+# This file is distributed under the same license as the ISAT-SAM package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ISAT-SAM \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-29 18:27+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/discussion.rst:2
+msgid "discussion hub"
+msgstr "讨论中心"
+
+#: ../../source/discussion.rst:4
+msgid ""
+"Welcome to `ISAT community discussion hub "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ !"
+msgstr ""
+"欢迎来到 `ISAT社区讨论中心 "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_"
+
+#: ../../source/discussion.rst:6
+msgid "ISAT uses GitHub Discussions as the community discussion hub."
+msgstr "ISAT使用Github Discussions 作为社区讨论中心。"
+
+#: ../../source/discussion.rst:8
+msgid ""
+"This is the main place for users, contributors, and maintainers to "
+"exchange ideas, ask for help, and discuss project developments."
+msgstr "这是用户、贡献者和维护者交流想法、寻求帮助和讨论项目开发的主要场所。"
+
+#: ../../source/discussion.rst:11
+msgid "Category sections"
+msgstr "板块分类"
+
+#: ../../source/discussion.rst:13
+msgid "Announcements - Updates from maintainers."
+msgstr "公告 - 来自维护者的更新。"
+
+#: ../../source/discussion.rst:14
+msgid "General - Chat about anything and everything here."
+msgstr "通用 - 在这里可以聊任何事情。"
+
+#: ../../source/discussion.rst:15
+msgid "Ideas - Share ideas for new features."
+msgstr "想法 - 分享关于新功能的想法。"
+
+#: ../../source/discussion.rst:16
+msgid "Q&A - Ask the community for help."
+msgstr "问答 - 向社区寻求帮助。"
+
+#: ../../source/discussion.rst:17
+msgid "Show - Show off something you've made."
+msgstr "展示 - 展示你的成果。"
+
+#: ../../source/discussion.rst:18
+msgid "Polls - Take a vote from the community."
+msgstr "投票 - 在社区中进行投票"
+
+#: ../../source/discussion.rst:22
+msgid ""
+"I will receive notifications for all posts in the discussion center as "
+"soon as they are made. So don't worry about not getting feedback when you"
+" post in the discussion area."
+msgstr "所有在讨论区的发帖，我都会第一时间收到提醒。所以不用担心在讨论区发帖得不到反馈。"
+
+#: ../../source/discussion.rst:26
+msgid "Discussion Etiquette"
+msgstr "讨论礼仪"
+
+#: ../../source/discussion.rst:28
+msgid "**What You Should Do**:"
+msgstr "**应该做的**："
+
+#: ../../source/discussion.rst:30
+msgid "Use descriptive titles."
+msgstr "使用描述性的标题。"
+
+#: ../../source/discussion.rst:31
+msgid "Post in the appropriate section."
+msgstr "在对应的板块中发布。"
+
+#: ../../source/discussion.rst:32
+msgid "Provide a detailed description of the problem."
+msgstr "进行清晰详细的描述。"
+
+#: ../../source/discussion.rst:33
+msgid "Mark solutions as accepted."
+msgstr "标记已解决的方案。"
+
+#: ../../source/discussion.rst:34
+msgid "Thank those who offer help."
+msgstr "对提供帮助的人表示感谢。"
+
+#: ../../source/discussion.rst:36
+msgid "**What You Should Not Do**:"
+msgstr "**不应该做的**："
+
+#: ../../source/discussion.rst:38
+msgid "Post repeatedly."
+msgstr "重复发帖。"
+
+#: ../../source/discussion.rst:39
+msgid "Use offensive language."
+msgstr "使用攻击性强的语言。"
+
+#: ../../source/discussion.rst:40
+msgid "Post irrelevant content."
+msgstr "发布无关内容。"
+
+#: ../../source/discussion.rst:41
+msgid "Bump old posts (unless there is new information)."
+msgstr "顶旧贴(除非有新的消息)"
+

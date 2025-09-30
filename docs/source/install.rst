@@ -4,7 +4,7 @@ Installation
 Option 1: Install with Pip
 ------------------------------------
 
-1.  **Create a new environment** (recommended, optional)
+1.  Create a new environment (recommended, optional)
 
     Use conda create a new environment
 
@@ -18,15 +18,17 @@ Option 1: Install with Pip
 
         conda activate isat_env
 
-2.  **Install ISAT-SAM using pip**
-
-    To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
+2.  Install ISAT-SAM using pip
 
     .. code-block:: bash
 
         pip install isat-sam
 
-3.  **Run**
+    .. attention::
+
+        To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
+
+3.  Run
 
     Start the application via the command line:
 
@@ -39,7 +41,7 @@ Option 1: Install with Pip
 Option 2: Install from Source Code
 ------------------------------------
 
-1.  **Get source code from github**
+1.  Get source code from github
 
     Use git clone project and then into project
 
@@ -54,7 +56,7 @@ Option 2: Install from Source Code
 
         cd ISAT_with_segment_anything-master
 
-2.  **Create a new environment** (recommended, optional)
+2.  Create a new environment (recommended, optional)
 
     Use conda create a new environment
 
@@ -68,15 +70,17 @@ Option 2: Install from Source Code
 
         conda activate isat_env
 
-3.  **Install dependencies**
-
-    To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
+3.  Install dependencies
 
     .. code-block:: bash
 
         pip install -r requirements.txt
 
-4.  **Run**
+    .. attention::
+
+        To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
+
+4.  Run
 
     Start the application via the command line:
 

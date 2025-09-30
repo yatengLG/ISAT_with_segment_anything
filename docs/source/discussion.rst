@@ -1,11 +1,15 @@
 discussion hub
 ====================================
 
-Welcome to `ISAT community discussion hub <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ !
-
 ISAT uses GitHub Discussions as the community discussion hub.
 
-This is the main place for users, contributors, and maintainers to exchange ideas, ask for help, and discuss project developments.
+`ISAT community discussion hub <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ is the main place for users, contributors, and maintainers to exchange ideas, ask for help, and discuss project developments.
+
+Welcome to post in the `ISAT community discussion hub <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ !
+
+.. tip::
+
+    I will receive notifications for all posts in the discussion center as soon as they are made. So don't worry about not getting feedback when you post in the discussion area.
 
 1. Category sections
 ------------------------------------
@@ -16,11 +20,6 @@ This is the main place for users, contributors, and maintainers to exchange idea
 * Q&A - Ask the community for help.
 * Show - Show off something you've made.
 * Polls - Take a vote from the community.
-
-.. tip::
-
-    I will receive notifications for all posts in the discussion center as soon as they are made. So don't worry about not getting feedback when you post in the discussion area.
-
 
 2. Discussion Etiquette
 ------------------------------------

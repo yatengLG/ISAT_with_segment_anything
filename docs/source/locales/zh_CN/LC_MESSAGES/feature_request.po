@@ -71,7 +71,7 @@ msgid ""
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "before request feature."
 msgstr ""
-"如果你只是有一个简单的想法，提交功能请求前，可以在 `讨论区 "
+"如果你只是有一个简单的想法，提交功能请求前，可以在 `社区讨论中心 "
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "中进行交流。"
 

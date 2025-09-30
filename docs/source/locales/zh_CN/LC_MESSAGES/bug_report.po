@@ -69,7 +69,7 @@ msgid ""
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "instead of submitting a bug report."
 msgstr ""
-"如果不确定是否是bug，可以在 `讨论区 "
+"如果不确定是否是bug，可以在 `社区讨论中心 "
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "中进行提问，而不是提交bug报告。"
 

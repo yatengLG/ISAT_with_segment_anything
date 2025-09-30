@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 11:43+0800\n"
+"POT-Creation-Date: 2025-09-30 14:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -24,22 +24,25 @@ msgid "discussion hub"
 msgstr "讨论中心"
 
 #: ../../source/discussion.rst:4
-msgid ""
-"Welcome to `ISAT community discussion hub "
-"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ !"
-msgstr ""
-"欢迎来到 `ISAT社区讨论中心 "
-"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_"
-
-#: ../../source/discussion.rst:6
 msgid "ISAT uses GitHub Discussions as the community discussion hub."
 msgstr "ISAT使用Github Discussions 作为社区讨论中心。"
 
+#: ../../source/discussion.rst:6
+msgid ""
+"`ISAT community discussion hub "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ is"
+" the main place for users, contributors, and maintainers to exchange "
+"ideas, ask for help, and discuss project developments."
+msgstr "`ISAT 社区讨论中心 <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ 是用户、贡献者和维护者交流想法、寻求帮助和讨论项目开发的主要场所。"
+
 #: ../../source/discussion.rst:8
 msgid ""
-"This is the main place for users, contributors, and maintainers to "
-"exchange ideas, ask for help, and discuss project developments."
-msgstr "这是用户、贡献者和维护者交流想法、寻求帮助和讨论项目开发的主要场所。"
+"Welcome to post in the `ISAT community discussion hub "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ !"
+msgstr ""
+"欢迎在 `ISAT社区讨论中心 "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
+"发帖！"
 
 #: ../../source/discussion.rst:11
 msgid "1. Category sections"

@@ -3,6 +3,8 @@ Welcome to ISAT-SAM's documentation!
 
 **ISAT-SAM** stands for Interactive Semi-Automatic Annotation Tool with `Segment Anything Model <https://github.com/facebookresearch/segment-anything>`_
 
+You can `access the project <https://github.com/yatengLG/ISAT_with_segment_anything>`_ on GitHub and view the source code.
+
 .. image:: ../../display/software.gif
     :alt: software.gif
 

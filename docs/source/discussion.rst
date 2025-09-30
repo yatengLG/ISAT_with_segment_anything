@@ -7,7 +7,7 @@ ISAT uses GitHub Discussions as the community discussion hub.
 
 This is the main place for users, contributors, and maintainers to exchange ideas, ask for help, and discuss project developments.
 
-Category sections
+1. Category sections
 ------------------------------------
 
 * Announcements - Updates from maintainers.
@@ -22,7 +22,7 @@ Category sections
     I will receive notifications for all posts in the discussion center as soon as they are made. So don't worry about not getting feedback when you post in the discussion area.
 
 
-Discussion Etiquette
+2. Discussion Etiquette
 ------------------------------------
 
 **What You Should Do**:

@@ -48,7 +48,7 @@ Option 2: Install from Source Code
         git clone https://github.com/yatengLG/ISAT_with_segment_anything.git
         cd ISAT_with_segment_anything
 
-    Or download zip from `Here <https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_, unzip and into project
+    Or download zip from `Github <https://github.com/yatengLG/ISAT_with_segment_anything/archive/refs/heads/master.zip>`_ , unzip and into project
 
     .. code-block:: bash
 

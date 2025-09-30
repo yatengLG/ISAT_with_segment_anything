@@ -3,7 +3,7 @@ Bug report
 
 Thank you for helping us improve ISAT！
 
-Submit a bug report
+1. Submit a bug report
 ------------------------------------
 
 Before submit, you should:
@@ -18,7 +18,7 @@ You can create a new issue to submit a bug report via the `GitHub issue <https:/
 
     If you're not sure whether it's a bug, you can try asking questions in the `discussion hub <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ instead of submitting a bug report.
 
-Template
+2. Template
 ------------------------------------
 
 High - quality bug reports are crucial for us to quickly locate and fix problems.

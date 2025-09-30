@@ -1,7 +1,7 @@
 Plugin Usage
 ====================================
 
-Install
+1. Install
 ------------------------------------
 
 All ISAT plugins are released in the form of Python packages, you can quickly install it via the pip command.
@@ -19,7 +19,7 @@ For example to install the ``isat-plugin-mask-export``
 
 For more plugins, please refer to the `plugin list <plugin_list.html#plugin-list>`_.
 
-Usage
+2. Usage
 ------------------------------------
 
 Click ``Plugins`` button in right toolbar to open plugins interface, and then check the boxes of plugins you need to use.

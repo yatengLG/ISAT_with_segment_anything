@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-29 11:49+0800\n"
+"POT-Creation-Date: 2025-09-30 11:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -24,8 +24,8 @@ msgid "Plugin Usage"
 msgstr "插件使用"
 
 #: ../../source/plugin_usage.rst:5
-msgid "Install"
-msgstr "安装"
+msgid "1. Install"
+msgstr "1. 安装"
 
 #: ../../source/plugin_usage.rst:7
 msgid ""
@@ -57,8 +57,8 @@ msgid ""
 msgstr "更多插件，请见 `插件列表 <plugin_list.html#plugin-list>`_。"
 
 #: ../../source/plugin_usage.rst:23
-msgid "Usage"
-msgstr "使用"
+msgid "2. Usage"
+msgstr "2. 使用"
 
 #: ../../source/plugin_usage.rst:25
 msgid ""

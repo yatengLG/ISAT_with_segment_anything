@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-29 18:27+0800\n"
+"POT-Creation-Date: 2025-09-30 11:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -42,8 +42,8 @@ msgid ""
 msgstr "这是用户、贡献者和维护者交流想法、寻求帮助和讨论项目开发的主要场所。"
 
 #: ../../source/discussion.rst:11
-msgid "Category sections"
-msgstr "板块分类"
+msgid "1. Category sections"
+msgstr "1. 板块分类"
 
 #: ../../source/discussion.rst:13
 msgid "Announcements - Updates from maintainers."
@@ -77,8 +77,8 @@ msgid ""
 msgstr "所有在讨论区的发帖，我都会第一时间收到提醒。所以不用担心在讨论区发帖得不到反馈。"
 
 #: ../../source/discussion.rst:26
-msgid "Discussion Etiquette"
-msgstr "讨论礼仪"
+msgid "2. Discussion Etiquette"
+msgstr "2. 讨论礼仪"
 
 #: ../../source/discussion.rst:28
 msgid "**What You Should Do**:"

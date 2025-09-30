@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-29 18:08+0800\n"
+"POT-Creation-Date: 2025-09-30 11:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -28,8 +28,8 @@ msgid "Thank you for helping us improve ISAT！"
 msgstr "非常感谢你帮助我们改进ISAT!"
 
 #: ../../source/bug_report.rst:7
-msgid "Submit a bug report"
-msgstr "提交bug报告"
+msgid "1. Submit a bug report"
+msgstr "1. 提交bug报告"
 
 #: ../../source/bug_report.rst:9
 msgid "Before submit, you should:"
@@ -59,7 +59,8 @@ msgid ""
 "<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_."
 msgstr ""
 "你可以在Github上 `创建一个新的issue "
-"<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ 来提交bug报告。"
+"<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ "
+"来提交bug报告。"
 
 #: ../../source/bug_report.rst:19
 msgid ""
@@ -67,11 +68,14 @@ msgid ""
 "the `discussion hub "
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "instead of submitting a bug report."
-msgstr "如果不确定是否是bug，可以在 `讨论区 <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ 中进行提问，而不是提交bug报告。"
+msgstr ""
+"如果不确定是否是bug，可以在 `讨论区 "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
+"中进行提问，而不是提交bug报告。"
 
 #: ../../source/bug_report.rst:22
-msgid "Template"
-msgstr "模版"
+msgid "2. Template"
+msgstr "2. 模版"
 
 #: ../../source/bug_report.rst:24
 msgid ""

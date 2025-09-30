@@ -3,7 +3,7 @@ Feature request
 
 Thank you for helping us improve ISAT！
 
-Submit a feature request
+1. Submit a feature request
 ------------------------------------
 
 Feature requests are welcome.
@@ -20,7 +20,7 @@ You can create a new issue to submit a feature request via the `GitHub issue <ht
 
     If you just have a simple idea, you can also exchange views in the `discussion hub <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ before request feature.
 
-Template
+2. Template
 ------------------------------------
 
 Please create a feature request using the provided template.

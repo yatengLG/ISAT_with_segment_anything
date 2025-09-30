@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-29 18:08+0800\n"
+"POT-Creation-Date: 2025-09-30 11:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -28,8 +28,8 @@ msgid "Thank you for helping us improve ISAT！"
 msgstr "非常感谢你帮助我们改进ISAT!"
 
 #: ../../source/feature_request.rst:7
-msgid "Submit a feature request"
-msgstr "提交功能请求"
+msgid "1. Submit a feature request"
+msgstr "1. 提交功能请求"
 
 #: ../../source/feature_request.rst:9
 msgid "Feature requests are welcome."
@@ -59,7 +59,10 @@ msgstr "最后，你应该提供一个强有力的理由来说服ISAT的开发�
 msgid ""
 "You can create a new issue to submit a feature request via the `GitHub "
 "issue <https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_."
-msgstr "你可以在Github上 `创建一个新的issue <https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ 来提交功能请求。"
+msgstr ""
+"你可以在Github上 `创建一个新的issue "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/issues>`_ "
+"来提交功能请求。"
 
 #: ../../source/feature_request.rst:21
 msgid ""
@@ -67,11 +70,14 @@ msgid ""
 "`discussion hub "
 "<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
 "before request feature."
-msgstr "如果你只是有一个简单的想法，提交功能请求前，可以在 `讨论区 <https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ 中进行交流。"
+msgstr ""
+"如果你只是有一个简单的想法，提交功能请求前，可以在 `讨论区 "
+"<https://github.com/yatengLG/ISAT_with_segment_anything/discussions>`_ "
+"中进行交流。"
 
 #: ../../source/feature_request.rst:24
-msgid "Template"
-msgstr "模版"
+msgid "2. Template"
+msgstr "2. 模版"
 
 #: ../../source/feature_request.rst:26
 msgid "Please create a feature request using the provided template."

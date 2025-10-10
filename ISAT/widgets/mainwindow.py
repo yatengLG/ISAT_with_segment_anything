@@ -1386,6 +1386,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 image_data = Image.open(file_path)
 
+            if image_data.mode not in ("L", "P", "RGB", "RGBA"):
+                warning_info = (
+                    "当前图像不是8位深。PIL获取的mode为：{}".format(image_data.mode)
+                    if self.cfg["software"]["language"] == "zh"
+                    else "This image is not 8-bit per channel. The mode from PIL is {}".format(image_data.mode)
+                )
+                QtWidgets.QMessageBox.warning(
+                    self, "Warning", warning_info, QtWidgets.QMessageBox.Ok
+                )
+
             png_palette = image_data.getpalette()
             if png_palette is not None and file_path.endswith(".png"):
                 self.statusbar.showMessage(

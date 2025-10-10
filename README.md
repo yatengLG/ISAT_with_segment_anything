@@ -7,7 +7,7 @@
     <a href='https://pypi.org/project/isat-sam/' target="_blank"><img alt="Pepy Total Downlods" src="https://img.shields.io/pepy/dt/isat-sam?style=social&logo=pypi"></a>
 </p>
 <p align='center'>
-⭐️ If you find this project helpful, please give it a Star! ⭐️
+<b>⭐️ If you find this project helpful, please give it a Star! ⭐️</b>
 </p>
 <p align='center'>
     <a href='README-cn.md'><b>[中文]</b></a>

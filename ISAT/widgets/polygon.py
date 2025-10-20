@@ -200,7 +200,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.redraw()
         if self.scene().mainwindow.cfg["software"]["real_time_area"]:
             self.area = self.calculate_area()
-        if self.scene().mainwindow.load_finished and not self.is_drawing:
+        if self.scene().mainwindow.load_finished and not self.is_drawing and self.scene().mode != STATUSMode.REPAINT:
             self.scene().mainwindow.set_saved_state(False)
 
     def removePoint(self, index):

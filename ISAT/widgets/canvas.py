@@ -1098,6 +1098,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     for point in points:
                         repaint_polygon.addPoint(point)
                     repaint_polygon.redraw()
+                    self.mainwindow.set_saved_state(False)
 
                     self.current_line.delete()  # 清除所有路径
                     self.removeItem(self.current_line)

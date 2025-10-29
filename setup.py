@@ -56,6 +56,7 @@ setup(
         "iopath",
         "orjson",
         "pydicom",
+        "requests",
     ],
     classifiers=[
         "Intended Audience :: Developers",  # 目标用户:开发者

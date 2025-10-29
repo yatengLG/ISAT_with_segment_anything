@@ -17,3 +17,4 @@ python-Levenshtein
 iopath
 orjson
 pydicom
+requests

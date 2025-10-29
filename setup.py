@@ -44,6 +44,7 @@ setup(
         "pillow",
         "pyqt5",
         "pyyaml",
+        "requests",
         "torch>=2.1.1",
         "torchvision",
         "pycocotools",

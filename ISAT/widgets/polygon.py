@@ -83,6 +83,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
                 selected_color = QtGui.QColor("#00A0FF")
                 self.setBrush(selected_color)
             else:
+                self.color.setAlpha(255)
                 self.setBrush(self.color)
 
         if (
@@ -117,6 +118,7 @@ class Vertex(QtWidgets.QGraphicsPathItem):
     def hoverLeaveEvent(self, event: "QGraphicsSceneHoverEvent"):
         self.scene().hovered_vertex = None
         if not self.isSelected():
+            self.color.setAlpha(255)
             self.setBrush(self.color)
         self.setPath(self.nohover)
         super(Vertex, self).hoverLeaveEvent(event)
@@ -325,9 +327,10 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.setPen(QtGui.QPen(color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
+
+        vertex_color = self.color
+        vertex_color.setAlpha(255)
         for vertex in self.vertices:
-            vertex_color = self.color
-            vertex_color.setAlpha(255)
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
             vertex.setBrush(vertex_color)
 
@@ -360,9 +363,11 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.note = note
 
         self.color = color
+        self.color.setAlpha(255)
+
         if not self.scene().mainwindow.cfg["software"]["show_edge"]:
-            color.setAlpha(0)
-        self.setPen(QtGui.QPen(color, self.line_width))
+            self.color.setAlpha(0)
+        self.setPen(QtGui.QPen(self.color, self.line_width))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
         if layer is not None:
@@ -490,6 +495,7 @@ class LineVertex(QtWidgets.QGraphicsPathItem):
                 selected_color = QtGui.QColor("#00A0FF")
                 self.setBrush(selected_color)
             else:
+                self.color.setAlpha(255)
                 self.setBrush(self.color)
 
         if (
@@ -627,6 +633,7 @@ class RectVertex(QtWidgets.QGraphicsPathItem):
                 selected_color = QtGui.QColor("#00A0FF")
                 self.setBrush(selected_color)
             else:
+                self.color.setAlpha(255)
                 self.setBrush(self.color)
 
         if (

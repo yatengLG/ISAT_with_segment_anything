@@ -1145,6 +1145,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg["software"]["mask_alpha"] = mask_alpha
         self.setting_dialog.horizontalSlider_mask_alpha.setValue(int(mask_alpha * 10))
 
+        polygon_alpha_hover = software_cfg.get("polygon_alpha_hover", 0.6)
+        self.cfg["software"]["polygon_alpha_hover"] = polygon_alpha_hover
+        self.setting_dialog.horizontalSlider_polygon_alpha_hover.setValue(
+            int(polygon_alpha_hover * 10)
+        )
+
+        polygon_alpha_no_hover = software_cfg.get("polygon_alpha_no_hover", 0.3)
+        self.cfg["software"]["polygon_alpha_no_hover"] = polygon_alpha_no_hover
+        self.setting_dialog.horizontalSlider_polygon_alpha_no_hover.setValue(
+            int(polygon_alpha_no_hover * 10)
+        )
+
         vertex_size = software_cfg.get("vertex_size", 1)
         self.cfg["software"]["vertex_size"] = int(vertex_size)
         self.setting_dialog.horizontalSlider_vertex_size.setValue(int(vertex_size))
@@ -1471,6 +1483,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     except Exception as e:
                         pass
                     polygon = Polygon()
+                    polygon.hover_alpha = int(
+                        self.cfg["software"]["polygon_alpha_hover"] * 255
+                    )
+                    polygon.nohover_alpha = int(
+                        self.cfg["software"]["polygon_alpha_no_hover"] * 255
+                    )
                     self.scene.addItem(polygon)
                     polygon.load_object(object)
                     self.polygons.append(polygon)
@@ -1756,6 +1774,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg["software"]["mask_alpha"] = value
         self.save_software_cfg()
         self.setting_dialog.label_mask_alpha.setText("{}".format(value))
+
+    def change_polygon_alpha_hover(self, value: int):
+        value = value / 10
+        self.cfg["software"]["polygon_alpha_hover"] = value
+        self.save_software_cfg()
+        if self.current_index is not None:
+            self.show_image(self.current_index, zoomfit=False)
+        self.setting_dialog.label_polygon_alpha_hover.setText("{}".format(value))
+
+    def change_polygon_alpha_no_hover(self, value: int):
+        value = value / 10
+        self.cfg["software"]["polygon_alpha_no_hover"] = value
+        self.save_software_cfg()
+        if self.current_index is not None:
+            self.show_image(self.current_index, zoomfit=False)
+        self.setting_dialog.label_polygon_alpha_no_hover.setText("{}".format(value))
 
     def change_vertex_size(self, value: int):
         """

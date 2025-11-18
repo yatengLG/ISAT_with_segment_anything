@@ -41,6 +41,12 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.comboBox_contour_mode.currentIndexChanged.connect(
             self.contour_mode_index_changed
         )
+        self.horizontalSlider_polygon_alpha_hover.valueChanged.connect(
+            self.mainwindow.change_polygon_alpha_hover
+        )
+        self.horizontalSlider_polygon_alpha_no_hover.valueChanged.connect(
+            self.mainwindow.change_polygon_alpha_no_hover
+        )
         self.pushButton_close.clicked.connect(self.close)
 
     def contour_mode_index_changed(self, index):

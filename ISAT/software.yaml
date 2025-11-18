@@ -158,6 +158,8 @@ software:
   current_converter: coco
   language: en
   mask_alpha: 0.6
+  polygon_alpha_hover: 0.6
+  polygon_alpha_no_hover: 0.3
   real_time_area: false
   show_edge: true
   show_prompt: true

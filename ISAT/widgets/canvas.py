@@ -291,6 +291,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionDelete.setEnabled(False)
         self.mainwindow.actionSave.setEnabled(True)
         self.mainwindow.actionVisible.setEnabled(False)
+        self.mainwindow.actionRepaint.setEnabled(False)
 
         self.mainwindow.modeState.setText("R")
         self.mainwindow.modeState.setStatusTip(
@@ -347,6 +348,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 绘图模式
         if self.mode == STATUSMode.CREATE:
             self.current_graph = Polygon()
+            self.current_graph.hover_alpha = int(
+                self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+            )
+            self.current_graph.nohover_alpha = int(
+                self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+            )
+            color = self.current_graph.color
+            color.setAlpha(self.current_graph.hover_alpha)
+            self.current_graph.setBrush(color)
             self.addItem(self.current_graph)
 
     def finish_draw(self):
@@ -398,6 +408,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     if self.current_graph is None:
                         self.current_graph = Polygon()
                         self.addItem(self.current_graph)
+
+                    self.current_graph.hover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                    )
+                    self.current_graph.nohover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                    )
 
                     if len(contour) < 3:
                         continue
@@ -659,6 +676,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
+                self.current_graph.hover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.current_graph.nohover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
                 for point in item.vertices:
                     x, y = point.x(), point.y()
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
@@ -719,6 +743,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
+                self.current_graph.hover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.current_graph.nohover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
                 for point in return_shapely.exterior.coords:
                     x, y = point[0], point[1]
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
@@ -775,6 +806,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
+                self.current_graph.hover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.current_graph.nohover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
                 for point in return_shapely.exterior.coords:
                     x, y = point[0], point[1]
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
@@ -790,6 +828,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     if self.current_graph is None:
                         self.current_graph = Polygon()
                         self.addItem(self.current_graph)
+
+                    self.current_graph.hover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                    )
+                    self.current_graph.nohover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                    )
 
                     for point in return_shapely_polygon.exterior.coords:
                         x, y = point[0], point[1]
@@ -847,6 +892,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
+                self.current_graph.hover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.current_graph.nohover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
                 for point in return_shapely.exterior.coords:
                     x, y = point[0], point[1]
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
@@ -862,6 +914,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     if self.current_graph is None:
                         self.current_graph = Polygon()
                         self.addItem(self.current_graph)
+
+                    self.current_graph.hover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                    )
+                    self.current_graph.nohover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                    )
 
                     for point in return_shapely_polygon.exterior.coords:
                         x, y = point[0], point[1]
@@ -919,6 +978,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.current_graph = Polygon()
                     self.addItem(self.current_graph)
 
+                self.current_graph.hover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.current_graph.nohover_alpha = int(
+                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
                 for point in return_shapely.exterior.coords:
                     x, y = point[0], point[1]
                     self.current_graph.addPoint(QtCore.QPointF(x, y))
@@ -934,6 +1000,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     if self.current_graph is None:
                         self.current_graph = Polygon()
                         self.addItem(self.current_graph)
+
+                    self.current_graph.hover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+                    )
+                    self.current_graph.nohover_alpha = int(
+                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+                    )
 
                     for point in return_shapely_polygon.exterior.coords:
                         x, y = point[0], point[1]

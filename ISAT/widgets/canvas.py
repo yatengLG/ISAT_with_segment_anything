@@ -1408,20 +1408,46 @@ class AnnotationView(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
+
+        self.ctrl_pressed = False
+        self.shift_pressed = False
         self.factor = 1.2
+        self.scroll = 40
 
         # 影响了窗口截图功能，暂时注释掉
         # self.setViewport(QtWidgets.QOpenGLWidget())
         # self.setRenderHint(QtGui.QPainter.Antialiasing, False)
 
+    def keyPressEvent(self, event):
+        if event.key() == QtCore.Qt.Key.Key_Control:
+            self.ctrl_pressed = True
+        if event.key() == QtCore.Qt.Key.Key_Shift:
+            self.shift_pressed = True
+        super(AnnotationView, self).keyPressEvent(event)
+
+    def keyReleaseEvent(self, event):
+        if event.key() == QtCore.Qt.Key.Key_Control:
+            self.ctrl_pressed = False
+        if event.key() == QtCore.Qt.Key.Key_Shift:
+            self.shift_pressed = False
+        super(AnnotationView, self).keyReleaseEvent(event)
+
     def wheelEvent(self, event: QtGui.QWheelEvent):
         angel = event.angleDelta()
         angelX, angelY = angel.x(), angel.y()
         point = event.pos()  # 当前鼠标位置
-        if angelY > 0:
-            self.zoom(self.factor, point)
+
+        if self.shift_pressed:
+            self.horizontal_scroll(angelY)
+
+        elif self.ctrl_pressed:
+            self.vertical_scroll(angelY)
+
         else:
-            self.zoom(1 / self.factor, point)
+            if angelY > 0:
+                self.zoom(self.factor, point)
+            else:
+                self.zoom(1 / self.factor, point)
 
     def zoom_in(self):
         self.zoom(self.factor)
@@ -1461,3 +1487,13 @@ class AnnotationView(QtWidgets.QGraphicsView):
             )
             center_new = mouse_old - mouse_now + center_now
             self.centerOn(center_new)
+
+    def horizontal_scroll(self, angle):
+        scroll_amount = angle / 120 * self.scroll
+        h_scroll = self.horizontalScrollBar()
+        h_scroll.setValue(h_scroll.value() - int(scroll_amount))
+
+    def vertical_scroll(self, angle):
+        scroll_amount = angle / 120 * self.scroll
+        v_scroll = self.verticalScrollBar()
+        v_scroll.setValue(v_scroll.value() - int(scroll_amount))

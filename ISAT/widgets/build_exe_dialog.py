@@ -102,6 +102,7 @@ class BuildExeDialog(QtWidgets.QDialog):
             self.log_text.append(f"✗ Python 未找到: {e}")
 
         # 检查PyInstaller
+        pyinstaller_found = False
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "pip", "show", "pyinstaller"],
@@ -117,7 +118,14 @@ class BuildExeDialog(QtWidgets.QDialog):
                         self.pyinstaller_label.setText(f"✓ PyInstaller: {version}")
                         self.pyinstaller_label.setStyleSheet("color: green;")
                         self.log_text.append(f"✓ PyInstaller {version}")
+                        pyinstaller_found = True
                         break
+
+                # 如果没有找到版本信息，说明格式不对
+                if not pyinstaller_found:
+                    self.pyinstaller_label.setText("✗ PyInstaller: 未安装")
+                    self.pyinstaller_label.setStyleSheet("color: orange;")
+                    self.log_text.append("⚠ PyInstaller 未安装，将自动安装")
             else:
                 self.pyinstaller_label.setText("✗ PyInstaller: 未安装")
                 self.pyinstaller_label.setStyleSheet("color: orange;")
@@ -237,10 +245,13 @@ class BuildThread(QtCore.QThread):
                     dir_path = os.path.join(self.project_root, dir_name)
                     if os.path.exists(dir_path):
                         try:
-                            shutil.rmtree(dir_path)
+                            # 使用ignore_errors=True避免权限问题卡住
+                            shutil.rmtree(dir_path, ignore_errors=True)
                             self.log_signal.emit(f"✓ 已删除 {dir_name}/")
                         except Exception as e:
                             self.log_signal.emit(f"⚠ 无法删除 {dir_name}/: {e}")
+                            # 即使删除失败也继续
+                            continue
             else:
                 self.log_signal.emit("\n[2/4] 跳过清理 / Skip cleaning")
 

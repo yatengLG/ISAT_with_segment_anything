@@ -156,7 +156,7 @@ software:
   contour_mode: external
   create_mode_invisible_polygon: true
   current_converter: coco
-  language: en
+  language: zh
   mask_alpha: 0.6
   polygon_alpha_hover: 0.6
   polygon_alpha_no_hover: 0.3

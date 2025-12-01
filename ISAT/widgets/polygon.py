@@ -214,11 +214,12 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         """
         if not self.points:
             return
-        self.points.pop(index)
+        point = self.points.pop(index)
         vertex = self.vertices.pop(index)
         self.scene().removeItem(vertex)
         del vertex
         self.redraw()
+        return point
 
     def delete(self):
         """Delete the polygon."""

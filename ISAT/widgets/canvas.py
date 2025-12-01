@@ -1069,7 +1069,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
-                    self.current_graph.removePoint(len(self.current_graph.points) - 1)
+                    point = self.current_graph.removePoint(len(self.current_graph.points) - 1)
+                    if point is not None:
+                        pos = point
                     # 添加当前点
                     self.current_graph.addPoint(pos)
                     # 添加随鼠标移动的点

@@ -28,6 +28,7 @@ from ISAT.widgets.about_dialog import AboutDialog
 from ISAT.widgets.annos_dock_widget import AnnosDockWidget
 from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
+from ISAT.widgets.build_exe_dialog import BuildExeDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.widgets.category_dock_widget import CategoriesDockWidget
 from ISAT.widgets.category_edit_dialog import CategoryEditDialog
@@ -973,6 +974,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
         self.annos_validator_dialog = AnnosValidatorDialog(self, self)
         self.process_exif_dialog = ProcessExifDialog(self, self)
+        self.build_exe_dialog = BuildExeDialog(parent=self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -1922,6 +1924,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Open process exif interface. Deal with the rotation problem of pictures with EXIF tags."""
         self.process_exif_dialog.show()
 
+    def build_exe(self):
+        """Open build EXE dialog. Package ISAT as standalone executable."""
+        self.build_exe_dialog.show()
+
     def shortcut(self):
         """Open shortcut interface."""
         self.shortcut_dialog.update_ui()
@@ -2177,6 +2183,7 @@ Categories=Development;System;
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
         self.actionProcess_EXIF_tag.triggered.connect(self.process_exif)
+        self.actionBuildExe.triggered.connect(self.build_exe)
 
         self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)

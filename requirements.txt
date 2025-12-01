@@ -18,4 +18,3 @@ iopath
 orjson
 pydicom
 requests
-pyinstaller

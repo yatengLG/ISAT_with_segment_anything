@@ -161,7 +161,9 @@ class BuildExeDialog(QtWidgets.QDialog):
         self.start_button.setEnabled(False)
         self.close_button.setEnabled(False)
         self.progress_bar.show()
-        self.log_text.append("\n=== 开始打包 / Start Building ===\n")
+        self.log_text.append("\n=== 开始打包 / Start Building ===")
+        self.log_text.append("⏱️  预计需要时间：15-20分钟 / Estimated time: 15-20 minutes")
+        self.log_text.append("📝 请耐心等待，可以最小化窗口继续其他工作 / Please be patient\n")
 
         # 在后台线程中执行打包
         self.build_thread = BuildThread(
@@ -257,7 +259,8 @@ class BuildThread(QtCore.QThread):
 
             # 3. 运行PyInstaller
             self.log_signal.emit("\n[3/4] 执行打包 / Running PyInstaller...")
-            self.log_signal.emit("这可能需要几分钟... / This may take several minutes...\n")
+            self.log_signal.emit("⏱️  这是最耗时的步骤，需要约15-20分钟 / This is the longest step, takes 15-20 minutes")
+            self.log_signal.emit("💡 提示：可以最小化此窗口，打包会在后台继续进行 / Tip: You can minimize this window\n")
 
             process = subprocess.Popen(
                 [sys.executable, "-m", "PyInstaller", "build_exe.spec", "--clean"],

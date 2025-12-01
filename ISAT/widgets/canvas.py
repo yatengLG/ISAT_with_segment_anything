@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
+import math  # 用于角度约束计算
 import time  # 拖动鼠标描点
 
 import cv2
@@ -76,6 +77,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.last_draw_time = time.time()
         self.draw_interval = 0.15
         self.pressed = False
+
+        # 按键状态
+        self.shift_pressed = False
+        self.ctrl_pressed = False
 
         #
         self.selected_polygons_list = list()
@@ -1192,6 +1197,49 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         super(AnnotationScene, self).mousePressEvent(event)
 
+    def _constrain_to_angle(self, last_point: QtCore.QPointF, current_point: QtCore.QPointF) -> QtCore.QPointF:
+        """
+        将当前点约束到与上一个点成0°、45°、90°、135°等角度的位置
+
+        Args:
+            last_point: 上一个点的位置
+            current_point: 当前鼠标位置
+
+        Returns:
+            约束后的点位置
+        """
+        # 计算相对坐标
+        dx = current_point.x() - last_point.x()
+        dy = current_point.y() - last_point.y()
+
+        # 计算距离
+        distance = math.sqrt(dx * dx + dy * dy)
+
+        if distance < 1:  # 距离太小，直接返回
+            return current_point
+
+        # 计算当前角度（弧度）
+        angle_rad = math.atan2(dy, dx)
+        # 转换为角度
+        angle_deg = math.degrees(angle_rad)
+
+        # 约束到最近的45度倍数（0°, 45°, 90°, 135°, 180°, -45°, -90°, -135°）
+        # 将角度归一化到[-180, 180]范围
+        if angle_deg > 180:
+            angle_deg -= 360
+
+        # 找到最近的45度倍数
+        constrained_angle_deg = round(angle_deg / 45.0) * 45.0
+
+        # 转换回弧度
+        constrained_angle_rad = math.radians(constrained_angle_deg)
+
+        # 根据约束后的角度和距离计算新位置
+        new_x = last_point.x() + distance * math.cos(constrained_angle_rad)
+        new_y = last_point.y() + distance * math.sin(constrained_angle_rad)
+
+        return QtCore.QPointF(new_x, new_y)
+
     # 拖动鼠标描点
     def mouseReleaseEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
         self.pressed = False
@@ -1236,6 +1284,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.CREATE:
             if self.draw_mode == DRAWMode.POLYGON:
                 # 随鼠标位置实时更新多边形
+                # 如果按住Shift键，则约束到横平竖直或45度角
+                if self.shift_pressed and len(self.current_graph.points) >= 2:
+                    # 获取上一个点（倒数第二个点）
+                    last_point = self.current_graph.points[-2]
+                    # 计算约束后的位置
+                    pos = self._constrain_to_angle(last_point, pos)
                 self.current_graph.movePoint(len(self.current_graph.points) - 1, pos)
             if self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
                 if self.current_sam_rect is not None:
@@ -1421,15 +1475,23 @@ class AnnotationView(QtWidgets.QGraphicsView):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Control:
             self.ctrl_pressed = True
+            if self.scene():  # 同步到scene
+                self.scene().ctrl_pressed = True
         if event.key() == QtCore.Qt.Key.Key_Shift:
             self.shift_pressed = True
+            if self.scene():  # 同步到scene
+                self.scene().shift_pressed = True
         super(AnnotationView, self).keyPressEvent(event)
 
     def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Control:
             self.ctrl_pressed = False
+            if self.scene():  # 同步到scene
+                self.scene().ctrl_pressed = False
         if event.key() == QtCore.Qt.Key.Key_Shift:
             self.shift_pressed = False
+            if self.scene():  # 同步到scene
+                self.scene().shift_pressed = False
         super(AnnotationView, self).keyReleaseEvent(event)
 
     def wheelEvent(self, event: QtGui.QWheelEvent):

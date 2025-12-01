@@ -6,3 +6,11 @@ ISAT/isat.yaml
 *.yaml
 ISAT/software.yaml
 ISAT/isat.yaml
+
+# PyInstaller打包相关
+build/
+dist/
+*.spec.bak
+build.log
+*.egg-info/
+__pycache__/

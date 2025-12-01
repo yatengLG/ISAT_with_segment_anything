@@ -24,6 +24,10 @@ if os.path.exists('ISAT/isat.yaml'):
 if os.path.exists('ISAT/software.yaml'):
     datas += [('ISAT/software.yaml', 'ISAT')]
 
+# 添加帮助文档
+if os.path.exists('ISAT/docs'):
+    datas += [('ISAT/docs', 'ISAT/docs')]
+
 # 收集PyQt5相关
 tmp_ret = collect_all('PyQt5')
 datas += tmp_ret[0]

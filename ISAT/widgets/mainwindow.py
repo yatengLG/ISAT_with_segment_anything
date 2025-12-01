@@ -2009,15 +2009,59 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         save_config(self.cfg, self.software_config_file)
 
     def open_docs(self):
-        """Open the docs."""
-        try:
-            if self.cfg["software"]["language"] == "zh":
-                url = "https://isat-sam.readthedocs.io/zh-cn/latest/"
-            else:
-                url = "https://isat-sam.readthedocs.io/en/latest/"
-            QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+        """Open the docs - show menu to choose between online docs and local help files."""
+        menu = QtWidgets.QMenu(self)
+        menu.setStyleSheet("""
+            QMenu {
+                background-color: white;
+                border: 1px solid #ccc;
+            }
+            QMenu::item {
+                padding: 5px 30px;
+            }
+            QMenu::item:selected {
+                background-color: #0078d7;
+                color: white;
+            }
+        """)
 
-        except Exception:
+        # 在线文档
+        online_action = menu.addAction("📚 在线文档 (Online Docs)")
+
+        # 本地帮助文档
+        menu.addSeparator()
+        shift_doc_action = menu.addAction("⌨️ Shift键正交约束功能说明")
+        package_doc_action = menu.addAction("📦 打包说明")
+
+        # 显示菜单并获取用户选择
+        action = menu.exec_(QtGui.QCursor.pos())
+
+        try:
+            if action == online_action:
+                # 打开在线文档
+                if self.cfg["software"]["language"] == "zh":
+                    url = "https://isat-sam.readthedocs.io/zh-cn/latest/"
+                else:
+                    url = "https://isat-sam.readthedocs.io/en/latest/"
+                QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
+
+            elif action == shift_doc_action:
+                # 打开Shift功能说明
+                doc_path = os.path.join(ISAT_ROOT, "docs", "Shift键正交约束功能说明.md")
+                if os.path.exists(doc_path):
+                    QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(doc_path))
+                else:
+                    QtWidgets.QMessageBox.information(self, "提示", "文档文件不存在")
+
+            elif action == package_doc_action:
+                # 打开打包说明
+                doc_path = os.path.join(ISAT_ROOT, "docs", "打包说明.md")
+                if os.path.exists(doc_path):
+                    QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(doc_path))
+                else:
+                    QtWidgets.QMessageBox.information(self, "提示", "文档文件不存在")
+
+        except Exception as e:
             pass
 
     def exit(self):

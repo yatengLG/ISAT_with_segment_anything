@@ -38,6 +38,9 @@ By pressing and holding the left mouse button and dragging the mouse, (0.15s per
 
 Hold the ``Shift`` key while drawing to constrain lines to horizontal, vertical, or 45-degree angles.
 
+.. image:: ../../display/shift_constraint.gif
+    :alt: shift_constraint.gif
+
 .. tip:: This feature is useful for annotating objects with regular shapes like buildings, documents, or signs. The line will automatically snap to the nearest 0°, 45°, 90°, 135°, or 180° direction.
 
 1.2 Semi-automatic Annotation

@@ -5,9 +5,9 @@ import numpy as np
 import PIL
 import torch
 
-from sam3.model import box_ops
+from . import box_ops
 
-from sam3.model.data_misc import FindStage, interpolate
+from .data_misc import FindStage, interpolate
 from torchvision.transforms import v2
 
 

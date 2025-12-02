@@ -14,7 +14,7 @@ import torchvision.transforms.functional as TF
 
 from PIL import Image
 
-from sam3.logger import get_logger
+from ..logger import get_logger
 from tqdm import tqdm
 
 logger = get_logger(__name__)

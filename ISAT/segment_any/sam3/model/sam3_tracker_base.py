@@ -5,14 +5,14 @@ import logging
 import torch
 import torch.nn.functional as F
 
-from sam3.model.memory import SimpleMaskEncoder
+from .memory import SimpleMaskEncoder
 
-from sam3.model.sam3_tracker_utils import get_1d_sine_pe, select_closest_cond_frames
+from .sam3_tracker_utils import get_1d_sine_pe, select_closest_cond_frames
 
-from sam3.sam.mask_decoder import MaskDecoder, MLP
-from sam3.sam.prompt_encoder import PromptEncoder
-from sam3.sam.transformer import TwoWayTransformer
-from sam3.train.data.collator import BatchedDatapoint
+from ..sam.mask_decoder import MaskDecoder, MLP
+from ..sam.prompt_encoder import PromptEncoder
+from ..sam.transformer import TwoWayTransformer
+from ..train.data.collator import BatchedDatapoint
 
 try:
     from timm.layers import trunc_normal_

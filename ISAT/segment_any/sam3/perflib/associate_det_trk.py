@@ -4,7 +4,7 @@ from collections import defaultdict
 
 import torch
 import torch.nn.functional as F
-from sam3.perflib.masks_ops import mask_iou
+from .masks_ops import mask_iou
 from scipy.optimize import linear_sum_assignment
 
 

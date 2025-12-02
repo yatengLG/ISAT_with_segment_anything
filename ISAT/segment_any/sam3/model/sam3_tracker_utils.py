@@ -4,8 +4,9 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from numpy.typing import NDArray
+from typing import Tuple
 
-from sam3.model.edt import edt_triton
+from .edt import edt_triton
 
 
 def sample_box_points(
@@ -14,7 +15,7 @@ def sample_box_points(
     noise_bound: int = 20,  # SAM default
     top_left_label: int = 2,
     bottom_right_label: int = 3,
-) -> tuple[NDArray, NDArray]:
+) -> Tuple[NDArray, NDArray]:
     """
     Sample a noised version of the top left and bottom right corners of a given `bbox`
 
@@ -407,7 +408,7 @@ def fill_holes_in_mask_scores(mask, max_area, fill_holes=True, remove_sprinkles=
 
 def _get_connected_components_with_padding(mask):
     """Get connected components from masks (possibly padding them to an even size)."""
-    from sam3.perflib.connected_components import connected_components
+    from ..perflib.connected_components import connected_components
 
     mask = mask.to(torch.uint8)
     _, _, H, W = mask.shape

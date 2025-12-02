@@ -7,39 +7,39 @@ import torch
 import torch.nn as nn
 from huggingface_hub import hf_hub_download
 from iopath.common.file_io import g_pathmgr
-from sam3.model.decoder import (
+from .model.decoder import (
     TransformerDecoder,
     TransformerDecoderLayer,
     TransformerDecoderLayerv2,
     TransformerEncoderCrossAttention,
 )
-from sam3.model.encoder import TransformerEncoderFusion, TransformerEncoderLayer
-from sam3.model.geometry_encoders import SequenceGeometryEncoder
-from sam3.model.maskformer_segmentation import PixelDecoder, UniversalSegmentationHead
-from sam3.model.memory import (
+from .model.encoder import TransformerEncoderFusion, TransformerEncoderLayer
+from .model.geometry_encoders import SequenceGeometryEncoder
+from .model.maskformer_segmentation import PixelDecoder, UniversalSegmentationHead
+from .model.memory import (
     CXBlock,
     SimpleFuser,
     SimpleMaskDownSampler,
     SimpleMaskEncoder,
 )
-from sam3.model.model_misc import (
+from .model.model_misc import (
     DotProductScoring,
     MLP,
     MultiheadAttentionWrapper as MultiheadAttention,
     TransformerWrapper,
 )
-from sam3.model.necks import Sam3DualViTDetNeck
-from sam3.model.position_encoding import PositionEmbeddingSine
-from sam3.model.sam1_task_predictor import SAM3InteractiveImagePredictor
-from sam3.model.sam3_image import Sam3Image, Sam3ImageOnVideoMultiGPU
-from sam3.model.sam3_tracking_predictor import Sam3TrackerPredictor
-from sam3.model.sam3_video_inference import Sam3VideoInferenceWithInstanceInteractivity
-from sam3.model.sam3_video_predictor import Sam3VideoPredictorMultiGPU
-from sam3.model.text_encoder_ve import VETextEncoder
-from sam3.model.tokenizer_ve import SimpleTokenizer
-from sam3.model.vitdet import ViT
-from sam3.model.vl_combiner import SAM3VLBackbone
-from sam3.sam.transformer import RoPEAttention
+from .model.necks import Sam3DualViTDetNeck
+from .model.position_encoding import PositionEmbeddingSine
+from .model.sam1_task_predictor import SAM3InteractiveImagePredictor
+from .model.sam3_image import Sam3Image, Sam3ImageOnVideoMultiGPU
+from .model.sam3_tracking_predictor import Sam3TrackerPredictor
+from .model.sam3_video_inference import Sam3VideoInferenceWithInstanceInteractivity
+from .model.sam3_video_predictor import Sam3VideoPredictorMultiGPU
+from .model.text_encoder_ve import VETextEncoder
+from .model.tokenizer_ve import SimpleTokenizer
+from .model.vitdet import ViT
+from .model.vl_combiner import SAM3VLBackbone
+from .sam.transformer import RoPEAttention
 
 
 # Setup TensorFloat-32 for Ampere GPUs if available
@@ -310,7 +310,7 @@ def _create_sam3_model(
 
     matcher = None
     if not eval_mode:
-        from sam3.train.matcher import BinaryHungarianMatcherV2
+        from .train.matcher import BinaryHungarianMatcherV2
 
         matcher = BinaryHungarianMatcherV2(
             focal=True,

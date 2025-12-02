@@ -10,7 +10,7 @@ import numpy as np
 
 import torch
 
-from sam3.sam.transformer import RoPEAttention
+from ..sam.transformer import RoPEAttention
 
 from torch import nn, Tensor
 from torchvision.ops.roi_align import RoIAlign

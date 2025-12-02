@@ -5,7 +5,7 @@ from typing import Any, get_args, get_origin, List, Union
 
 import torch
 
-from sam3.model.data_misc import (
+from ...model.data_misc import (
     BatchedDatapoint,
     BatchedFindTarget,
     BatchedInferenceMetadata,

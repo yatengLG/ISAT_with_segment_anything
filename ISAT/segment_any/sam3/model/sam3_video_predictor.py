@@ -15,7 +15,7 @@ from typing import List, Optional
 import psutil
 import torch
 
-from sam3.logger import get_logger
+from ..logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -37,7 +37,7 @@ class Sam3VideoPredictor:
     ):
         self.async_loading_frames = async_loading_frames
         self.video_loader_type = video_loader_type
-        from sam3.model_builder import build_sam3_video_model
+        from ..model_builder import build_sam3_video_model
 
         self.model = (
             build_sam3_video_model(

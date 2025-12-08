@@ -99,3 +99,12 @@ class CONTOURMode(Enum):
     """Only save external contour."""
     SAVE_ALL = 2
     """Only save all contour."""
+
+
+class CONTOURMethod(Enum):
+    """
+    Contour Method - ways to convert masks to polygons.
+    """
+    SIMPLE = 0
+    TC89_KCOS = 1
+    NONE = 2

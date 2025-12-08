@@ -1141,6 +1141,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg["software"]["contour_mode"] = contour_mode
         self.change_contour_mode(contour_mode)
 
+        contour_method = software_cfg.get("contour_method", "SIMPLE")
+        self.cfg["software"]["contour_method"] = contour_method
+        self.change_contour_method(contour_method)
+
         mask_alpha = software_cfg.get("mask_alpha", 0.5)
         self.cfg["software"]["mask_alpha"] = mask_alpha
         self.setting_dialog.horizontalSlider_mask_alpha.setValue(int(mask_alpha * 10))
@@ -1759,6 +1763,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             index = 0
         self.setting_dialog.comboBox_contour_mode.setCurrentIndex(index)
         self.cfg["software"]["contour_mode"] = contour_mode
+        self.save_software_cfg()
+
+    def change_contour_method(self, contour_method: str = "SIMPLE"):
+        if contour_method == "SIMPLE":
+            self.scene.change_contour_method_to_simple()
+            index = 0
+        elif contour_method == "TC89_KCOS":
+            self.scene.change_contour_method_to_tc89_kcos()
+            index = 1
+        elif contour_method == "NONE":
+            self.scene.change_contour_method_to_none()
+            index = 2
+        else:
+            self.scene.change_contour_method_to_simple()
+            index = 0
+        self.setting_dialog.comboBox_contour_method.setCurrentIndex(index)
+        self.cfg["software"]["contour_method"] = contour_method
         self.save_software_cfg()
 
     def change_mask_alpha(self, value: int):

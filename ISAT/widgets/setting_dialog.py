@@ -41,6 +41,9 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.comboBox_contour_mode.currentIndexChanged.connect(
             self.contour_mode_index_changed
         )
+        self.comboBox_contour_method.currentIndexChanged.connect(
+            self.contour_method_index_changed
+        )
         self.horizontalSlider_polygon_alpha_hover.valueChanged.connect(
             self.mainwindow.change_polygon_alpha_hover
         )
@@ -57,3 +60,12 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         else:
             contour_mode = "all"
         self.mainwindow.change_contour_mode(contour_mode)
+
+    def contour_method_index_changed(self, index):
+        if index == 0:
+            contour_method = "SIMPLE"
+        elif index == 1:
+            contour_method = "TC89_KCOS"
+        else:
+            contour_method = "NONE"
+        self.mainwindow.change_contour_method(contour_method)

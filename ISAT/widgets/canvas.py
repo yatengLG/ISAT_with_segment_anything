@@ -9,7 +9,7 @@ import shapely
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from ISAT.configs import CONTOURMode, DRAWMode, STATUSMode
+from ISAT.configs import CONTOURMode, CONTOURMethod, DRAWMode, STATUSMode
 from ISAT.utils.dicom import load_dcm_as_image
 from ISAT.widgets.polygon import Line, Polygon, PromptPoint, Rect, Vertex
 
@@ -64,6 +64,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             DRAWMode.SEGMENTANYTHING
         )  # 默认使用segment anything进行快速标注
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL  # 默认SAM只保留外轮廓
+        self.contour_method = CONTOURMethod.SIMPLE  # 默认使用Simple
         self.click_points = []  # SAM point prompt
         self.click_points_mode = []  # SAM point prompt
         self.prompt_points = []
@@ -322,6 +323,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         """Change to save external contour mode for convert masks to polygons."""
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL
 
+    def change_contour_method_to_simple(self):
+        self.contour_method = CONTOURMethod.SIMPLE
+
+    def change_contour_method_to_tc89_kcos(self):
+        self.contour_method = CONTOURMethod.TC89_KCOS
+
+    def change_contour_method_to_none(self):
+        self.contour_method = CONTOURMethod.NONE
+
     def start_segment_anything(self):
         """Start segmenting anything with point prompt."""
         self.draw_mode = DRAWMode.SEGMENTANYTHING
@@ -386,15 +396,24 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 h, w = masks.shape[-2:]
                 masks = masks.reshape(h, w)
 
+                if self.contour_method == CONTOURMethod.SIMPLE:
+                    contour_method = cv2.CHAIN_APPROX_SIMPLE
+                elif self.contour_method == CONTOURMethod.TC89_KCOS:
+                    contour_method = cv2.CHAIN_APPROX_TC89_KCOS
+                elif self.contour_method == CONTOURMethod.NONE:
+                    contour_method = cv2.CHAIN_APPROX_NONE
+                else:
+                    contour_method = cv2.CHAIN_APPROX_SIMPLE
+
                 if self.contour_mode == CONTOURMode.SAVE_ALL:
                     # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
                     contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
+                        masks, cv2.RETR_CCOMP, contour_method
                     )
                 else:
                     # 当只保留外轮廓或单个mask时，只检测外轮廓
                     contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
+                        masks, cv2.RETR_EXTERNAL, contour_method
                     )
 
                 if self.contour_mode == CONTOURMode.SAVE_MAX_ONLY:

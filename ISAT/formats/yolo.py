@@ -3,7 +3,7 @@
 
 import os
 
-import cv2
+from PIL import Image
 import numpy as np
 import tqdm
 
@@ -205,7 +205,7 @@ class YOLO(ISAT):
         anno = self.ANNO()
         anno.info = self.ANNO.INFO()
 
-        image = cv2.imread(image_path)  # load the image in BRG scale
+        image = np.array(Image.open(image_path))
 
         image_width, image_height = (
             image.shape[1],

@@ -123,6 +123,13 @@ class SegAny:
             self.model_type = "{}_{}".format(model_source, model_type)
             self.model_source = model_source
 
+        elif "sam3" in checkpoint:
+            from ISAT.segment_any.sam3.build_sam import sam_model_registry
+            from ISAT.segment_any.sam3.build_sam import Sam3Predictor as SamPredictor
+            model_source = "sam3"
+            self.model_type = "sam3"
+            self.model_source = model_source
+
         elif "med2d" in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import \
                 sam_model_registry
@@ -140,9 +147,9 @@ class SegAny:
         print("  - loading : {}".format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
-        sam = sam.eval().to(self.model_dtype)
-
-        sam.to(device=self.device)
+        # sam = sam.eval().to(self.model_dtype)
+        #
+        # sam.to(device=self.device)
         self.predictor = SamPredictor(sam)
         print("* Init SAM finished *")
         print("--" * 20)

@@ -206,6 +206,45 @@ class SegAnyThread(QThread):
                         "high_res_feats": tuple(feats[:-1]),
                     }
                     return _features, _orig_hw, _orig_hw
+                elif "sam3" in self.mainwindow.segany.model_type:
+                    # _features, _orig_hw = self.mainwindow.segany.predictor.encode(image)
+
+                    _orig_hw = tuple(image.shape[:2])
+                    image = self.mainwindow.segany.predictor._transforms(image)
+
+                    backbone_out = self.mainwindow.segany.predictor.model.backbone.forward_image(image)
+                    sam2_backbone_out = backbone_out["sam2_backbone_out"]
+                    sam2_backbone_out["backbone_fpn"][0] = (
+                        self.mainwindow.segany.predictor.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s0(
+                            sam2_backbone_out["backbone_fpn"][0]
+                        )
+                    )
+                    sam2_backbone_out["backbone_fpn"][1] = (
+                        self.mainwindow.segany.predictor.model.inst_interactive_predictor.model.sam_mask_decoder.conv_s1(
+                            sam2_backbone_out["backbone_fpn"][1]
+                        )
+                    )
+                    _, vision_feats, _, _ = (
+                        self.mainwindow.segany.predictor.model.inst_interactive_predictor.model._prepare_backbone_features(
+                            backbone_out["sam2_backbone_out"]
+                        )
+                    )
+                    vision_feats[-1] = (
+                            vision_feats[-1] + self.mainwindow.segany.predictor.model.inst_interactive_predictor.model.no_mem_embed
+                    )
+                    feats = [
+                                feat.permute(1, 2, 0).view(1, -1, *feat_size)
+                                for feat, feat_size in zip(
+                            vision_feats[::-1],
+                            self.mainwindow.segany.predictor.model.inst_interactive_predictor._bb_feat_sizes[::-1]
+                        )
+                            ][::-1]
+                    _features = {
+                        "image_embed": feats[-1],
+                        "high_res_feats": tuple(feats[:-1]),
+                    }
+                    return _features, _orig_hw, _orig_hw
+
                 else:
                     input_image = (
                         self.mainwindow.segany.predictor.transform.apply_image(image)
@@ -885,6 +924,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany.predictor._orig_hw = list(original_size)
             self.segany.predictor._features = features
             self.segany.predictor._is_image_set = True
+
+            if self.segany.model_source == "sam3":
+                self.segany.predictor.model.inst_interactive_predictor._is_image_set = True
+                self.segany.predictor.model.inst_interactive_predictor._orig_hw = [original_size]
+                self.segany.predictor.model.inst_interactive_predictor._features = features
 
             self.actionSegment_anything_point.setEnabled(True)
             self.actionSegment_anything_box.setEnabled(True)

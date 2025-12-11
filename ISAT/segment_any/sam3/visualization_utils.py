@@ -668,7 +668,7 @@ def get_annot_df(file_path: str):
     return dfs
 
 
-def get_annot_dfs(file_list: list[str]):
+def get_annot_dfs(file_list: list):
     dfs = {}
     for annot_file in tqdm(file_list):
         dataset_name = Path(annot_file).stem

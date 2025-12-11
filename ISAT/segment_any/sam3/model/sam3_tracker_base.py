@@ -12,7 +12,6 @@ from .sam3_tracker_utils import get_1d_sine_pe, select_closest_cond_frames
 from ..sam.mask_decoder import MaskDecoder, MLP
 from ..sam.prompt_encoder import PromptEncoder
 from ..sam.transformer import TwoWayTransformer
-from ..train.data.collator import BatchedDatapoint
 
 try:
     from timm.layers import trunc_normal_
@@ -434,7 +433,7 @@ class Sam3TrackerBase(torch.nn.Module):
             object_score_logits,
         )
 
-    def forward(self, input: BatchedDatapoint, is_inference=False):
+    def forward(self, input, is_inference=False):
         raise NotImplementedError(
             "Please use the corresponding methods in SAM3VideoPredictor for inference."
             "See examples/sam3_dense_video_tracking.ipynb for an inference example."
@@ -1141,7 +1140,7 @@ class Sam3TrackerBase(torch.nn.Module):
         # see https://github.com/pytorch/pytorch/blob/v2.5.1/torch/_dynamo/config.py#L42-L49
         torch._dynamo.config.cache_size_limit = 64
         torch._dynamo.config.accumulated_cache_size_limit = 2048
-        from sam3.perflib.compile import compile_wrapper
+        from ..perflib.compile import compile_wrapper
 
         logging.info("Compiling all components. First time may be very slow.")
 

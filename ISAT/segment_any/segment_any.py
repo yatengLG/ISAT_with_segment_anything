@@ -129,6 +129,7 @@ class SegAny:
             model_source = "sam3"
             self.model_type = "sam3"
             self.model_source = model_source
+            self.model_dtype = torch.float32
 
         elif "med2d" in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import \
@@ -147,9 +148,10 @@ class SegAny:
         print("  - loading : {}".format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
-        # sam = sam.eval().to(self.model_dtype)
-        #
-        # sam.to(device=self.device)
+        if "sam3" not in checkpoint:
+            sam = sam.eval().to(self.model_dtype)
+
+        sam.to(device=self.device)
         self.predictor = SamPredictor(sam)
         print("* Init SAM finished *")
         print("--" * 20)

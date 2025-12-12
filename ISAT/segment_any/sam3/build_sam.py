@@ -48,7 +48,7 @@ class Sam3Predictor:
         return image
 
     @torch.inference_mode()
-    def set_image(self, image: np.ndarray):
+    def encode(self, image):
         _orig_hw = tuple(image.shape[:2])
         image = self._transforms(image)
 
@@ -83,7 +83,10 @@ class Sam3Predictor:
             "image_embed": feats[-1],
             "high_res_feats": tuple(feats[:-1]),
         }
+        return _features, _orig_hw
 
+    def set_image(self, image: np.ndarray):
+        _features, _orig_hw = self.encode(image)
         self.model.inst_interactive_predictor._is_image_set = True
         self.model.inst_interactive_predictor._orig_hw = [_orig_hw]
         self.model.inst_interactive_predictor._features = _features

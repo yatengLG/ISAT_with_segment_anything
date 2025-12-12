@@ -216,9 +216,9 @@ model_dict = {
             "",
             ""
         ],
-        "memory": "0M",
-        "bf16_memory": "0M",
-        "params": "0M",
+        "memory": "8600M",
+        "bf16_memory": "8600M",
+        "params": "3450M",
         "image_segment": True,
         "video_segment": True,
     }

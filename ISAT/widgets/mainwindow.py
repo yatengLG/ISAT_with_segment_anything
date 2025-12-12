@@ -559,7 +559,7 @@ class InitSegAnyThread(QThread):
             except Exception as e:
                 print("Init SAM Error: ", e)
                 sam_tag = False
-            if "sam2" in self.model_path:
+            if "sam2" in self.model_path or "sam3" in self.model_path:
                 try:
                     self.mainwindow.segany_video = SegAnyVideo(
                         self.model_path, self.mainwindow.cfg["software"]["use_bfloat16"]

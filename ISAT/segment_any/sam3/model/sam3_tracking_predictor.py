@@ -345,13 +345,14 @@ class Sam3TrackerPredictor(Sam3TrackerBase):
         frame_idx,
         obj_id,
         mask,
-        add_mask_to_memory=False,
     ):
         """Add new mask to a frame."""
         obj_idx = self._obj_id_to_idx(inference_state, obj_id)
         point_inputs_per_frame = inference_state["point_inputs_per_obj"][obj_idx]
         mask_inputs_per_frame = inference_state["mask_inputs_per_obj"][obj_idx]
 
+        if not isinstance(mask, torch.Tensor):
+            mask = torch.tensor(mask, dtype=torch.bool)
         assert mask.dim() == 2
         mask_H, mask_W = mask.shape
         mask_inputs_orig = mask[None, None]  # add batch and channel dimension
@@ -743,7 +744,7 @@ class Sam3TrackerPredictor(Sam3TrackerBase):
             input_frames_inds.update(mask_inputs_per_frame.keys())
         assert all_consolidated_frame_inds == input_frames_inds
         # Record the first interacted frame index (for tracking start)
-        if inference_state["first_ann_frame_idx"] is None:
+        if inference_state.get("first_ann_frame_idx") is None:
             inference_state["first_ann_frame_idx"] = min(
                 input_frames_inds, default=None
             )
@@ -797,7 +798,7 @@ class Sam3TrackerPredictor(Sam3TrackerBase):
         tqdm_disable=False,
         obj_ids=None,
         run_mem_encoder=True,
-        propagate_preflight=False,
+        propagate_preflight=True,
     ):
         """Propagate the input points across frames to track in the entire video."""
         if propagate_preflight:
@@ -868,10 +869,10 @@ class Sam3TrackerPredictor(Sam3TrackerBase):
 
             # Resize the output mask to the original video resolution (we directly use
             # the mask scores on GPU for output to avoid any CPU conversion in between)
-            low_res_masks, video_res_masks = self._get_orig_video_res_output(
+            _, video_res_masks = self._get_orig_video_res_output(
                 inference_state, pred_masks
             )
-            yield frame_idx, obj_ids, low_res_masks, video_res_masks, obj_scores
+            yield frame_idx, obj_ids, video_res_masks
 
     def _add_output_per_object(
         self, inference_state, frame_idx, current_out, storage_key

@@ -21,9 +21,19 @@ def build_sam3(checkpoint):
     )
     return model
 
+def build_sam3_video(checkpoint):
+    model = build_sam3_video_model(
+        checkpoint_path=checkpoint,
+        bpe_path=bpe_path,
+        load_from_HF=False,
+    )
+    predictor = model.tracker
+    predictor.backbone = model.detector.backbone
+    return predictor
 
 sam_model_registry = {
     "sam3": build_sam3,
+    "sam3_video": build_sam3_video,
 }
 
 

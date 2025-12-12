@@ -129,7 +129,9 @@ class SegAny:
             model_source = "sam3"
             self.model_type = "sam3"
             self.model_source = model_source
-            self.model_dtype = torch.float32
+            if self.model_dtype == torch.bfloat16:
+                print("SAM3 don`t support bfloat16.")
+                self.model_dtype = torch.float32
 
         elif "med2d" in checkpoint:
             from ISAT.segment_any.segment_anything_med2d import \
@@ -148,10 +150,11 @@ class SegAny:
         print("  - loading : {}".format(checkpoint))
         sam = sam_model_registry[self.model_type](checkpoint=checkpoint)
 
+        sam = sam.eval()
         if "sam3" not in checkpoint:
-            sam = sam.eval().to(self.model_dtype)
-
+            sam.to(self.model_dtype)
         sam.to(device=self.device)
+
         self.predictor = SamPredictor(sam)
         print("* Init SAM finished *")
         print("--" * 20)
@@ -282,6 +285,14 @@ class SegAnyVideo:
             model_source = "sam2.1" if "sam2.1" in checkpoint else "sam2"
             self.model_type = "{}_{}_video".format(model_source, model_type)
             self.model_source = model_source
+        elif "sam3" in checkpoint:
+            from ISAT.segment_any.sam3.build_sam import sam_model_registry
+            model_source = "sam3"
+            self.model_type = "{}_video".format(model_source)
+            self.model_source = model_source
+            if self.model_dtype == torch.bfloat16:
+                print("SAM3 don`t support bfloat16.")
+                self.model_dtype = torch.float32
 
         torch.cuda.empty_cache()
 
@@ -289,9 +300,13 @@ class SegAnyVideo:
         print("  - device  : {}".format(self.device))
         print("  - dtype   : {}".format(self.model_dtype))
         print("  - loading : {}".format(checkpoint))
-        self.predictor = sam_model_registry[self.model_type](checkpoint=checkpoint)
-        self.predictor = self.predictor.eval().to(self.model_dtype)
-        self.predictor.to(device=self.device)
+        predictor = sam_model_registry[self.model_type](checkpoint=checkpoint)
+        predictor = predictor.eval()
+        if "sam3" not in checkpoint:
+            predictor = predictor.to(self.model_dtype)
+        predictor.to(device=self.device)
+        self.predictor = predictor
+
         print("* Init SAM for video finished *")
         print("--" * 20)
 

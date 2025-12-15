@@ -357,6 +357,15 @@
    <addaction name="actionDocs"/>
    <addaction name="actionAbout"/>
   </widget>
+  <widget class="QDockWidget" name="text_prompt_dock">
+   <property name="windowTitle">
+    <string>Text prompt</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_5"/>
+  </widget>
   <action name="actionImages_dir">
    <property name="icon">
     <iconset resource="../icons.qrc">

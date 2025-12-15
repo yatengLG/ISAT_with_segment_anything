@@ -99,37 +99,13 @@ class AutoSegmentThread(QThread):
 
                 cates.add(name)
 
-                masks = self.mainwindow.segany.predict_with_box_prompt(
+                mask = self.mainwindow.segany.predict_with_box_prompt(
                     box=np.array([xmin, ymin, xmax, ymax])
                 )
 
-                masks = masks.astype("uint8") * 255
-                h, w = masks.shape[-2:]
-                masks = masks.reshape(h, w)
-
-                if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
-                    # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
-                    contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
-                    )
-                else:
-                    # 当只保留外轮廓或单个mask时，只检测外轮廓
-                    contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
-                    )
-
-                if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY:
-                    largest_contour = max(
-                        contours, key=cv2.contourArea
-                    )  # 只保留面积最大的轮廓
-                    contours = [largest_contour]
+                contours, hierarchy = self.mainwindow.mask_to_polygon(mask)
 
                 for _, contour in enumerate(contours):
-                    # polydp
-                    if self.mainwindow.cfg["software"]["use_polydp"]:
-                        epsilon_factor = 0.001
-                        epsilon = epsilon_factor * cv2.arcLength(contour, True)
-                        contour = cv2.approxPolyDP(contour, epsilon, True)
 
                     object = {}
                     object["category"] = name

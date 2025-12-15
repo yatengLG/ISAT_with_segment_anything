@@ -34,8 +34,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         click_points (list): The click points for sam point prompt.
         click_points_mode (list): The tag for sam point prompt.
         prompt_points (list[PromptPoint, ...]): The prompt points for sam point prompt.
-        masks (np.ndarray): The masks output by sam model.
-        mask_alpha (float): The alpha value for the masks.
+        mask (np.ndarray): The mask output by sam model.
+        mask_alpha (float): The alpha value for the mask.
         guide_line_x (QtWidgets.QGraphicsLineItem): The guideline.
         guide_line_y (QtWidgets.QGraphicsLineItem):The guideline.
 
@@ -67,7 +67,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.click_points = []  # SAM point prompt
         self.click_points_mode = []  # SAM point prompt
         self.prompt_points = []
-        self.masks: np.ndarray = None
+        self.mask: np.ndarray = None
         self.mask_alpha = 0.5
 
         self.guide_line_x: QtWidgets.QGraphicsLineItem = None
@@ -311,15 +311,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         )
 
     def change_contour_mode_to_save_all(self):
-        """Change to save all contour mode for convert masks to polygons."""
+        """Change to save all contour mode for convert mask to polygons."""
         self.contour_mode = CONTOURMode.SAVE_ALL
 
     def change_contour_mode_to_save_max_only(self):
-        """Change to save max contour mode for convert masks to polygons."""
+        """Change to save max contour mode for convert mask to polygons."""
         self.contour_mode = CONTOURMode.SAVE_MAX_ONLY
 
     def change_contour_mode_to_save_external(self):
-        """Change to save external contour mode for convert masks to polygons."""
+        """Change to save external contour mode for convert mask to polygons."""
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL
 
     def start_segment_anything(self):
@@ -365,7 +365,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.addItem(self.current_graph)
 
     def finish_draw(self):
-        """Finish annotation. Convert masks to polygons when using sam, if the number of vertices less than 3, delete polygon."""
+        """Finish annotation. Convert mask to polygons when using sam, if the number of vertices less than 3, delete polygon."""
         if self.current_graph is None:
             return
 
@@ -380,35 +380,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         ):
             # mask to polygon
             # --------------
-            if self.masks is not None:
-                masks = self.masks
-                masks = masks.astype("uint8") * 255
-                h, w = masks.shape[-2:]
-                masks = masks.reshape(h, w)
+            if self.mask is not None:
+                mask = self.mask
 
-                if self.contour_mode == CONTOURMode.SAVE_ALL:
-                    # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
-                    contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
-                    )
-                else:
-                    # 当只保留外轮廓或单个mask时，只检测外轮廓
-                    contours, hierarchy = cv2.findContours(
-                        masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
-                    )
-
-                if self.contour_mode == CONTOURMode.SAVE_MAX_ONLY:
-                    largest_contour = max(
-                        contours, key=cv2.contourArea
-                    )  # 只保留面积最大的轮廓
-                    contours = [largest_contour]
+                contours, hierarchy = self.mainwindow.mask_to_polygon(mask)
 
                 for index, contour in enumerate(contours):
-                    # polydp
-                    if self.mainwindow.cfg["software"]["use_polydp"]:
-                        epsilon_factor = 0.001
-                        epsilon = epsilon_factor * cv2.arcLength(contour, True)
-                        contour = cv2.approxPolyDP(contour, epsilon, True)
 
                     if self.current_graph is None:
                         self.current_graph = Polygon()
@@ -463,7 +440,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.mainwindow.categories_dock_widget.lineEdit_currentGroup.setText(
                         str(self.mainwindow.current_group)
                     )
-                self.masks = None
+                self.mask = None
         elif self.draw_mode == DRAWMode.POLYGON:
             if len(self.current_graph.points) < 1:
                 return
@@ -1382,13 +1359,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             return
 
         if len(self.click_points) > 0 and len(self.click_points_mode) > 0:
-            masks = self.mainwindow.segany.predict_with_point_prompt(
+            mask = self.mainwindow.segany.predict_with_point_prompt(
                 self.click_points, self.click_points_mode
             )
-            self.masks = masks
+            self.mask = mask
             color = np.array([0, 0, 255])
-            h, w = masks.shape[-2:]
-            mask_image = masks.reshape(h, w, 1) * color.reshape(1, 1, -1)
+            h, w = mask.shape[-2:]
+            mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
             mask_image = mask_image.astype("uint8")
             mask_image = cv2.cvtColor(mask_image, cv2.COLOR_BGR2RGB)
             mask_image = cv2.addWeighted(
@@ -1405,12 +1382,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     max(point1.y(), point2.y()),
                 ]
             )
-            masks = self.mainwindow.segany.predict_with_box_prompt(box)
+            mask = self.mainwindow.segany.predict_with_box_prompt(box)
 
-            self.masks = masks
+            self.mask = mask
             color = np.array([0, 0, 255])
-            h, w = masks.shape[-2:]
-            mask_image = masks.reshape(h, w, 1) * color.reshape(1, 1, -1)
+            h, w = mask.shape[-2:]
+            mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
             mask_image = mask_image.astype("uint8")
             mask_image = cv2.cvtColor(mask_image, cv2.COLOR_BGR2RGB)
             # 这里通过调整原始图像的权重self.mask_alpha，来调整mask的明显程度。

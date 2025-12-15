@@ -35,6 +35,7 @@ from ISAT.widgets.category_setting_dialog import CategorySettingDialog
 from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.files_dock_widget import FilesDockWidget
 from ISAT.widgets.info_dock_widget import InfoDockWidget
+from ISAT.widgets.text_prompt_dock_widget import TextPromptDockWidget
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
 from ISAT.widgets.polygon import Polygon, PromptPoint
@@ -411,43 +412,14 @@ class SegAnyVideoThread(QThread):
                     objects = []
                     for index_mask, out_obj_id in enumerate(out_obj_ids):
 
-                        masks = out_mask_logits[index_mask]  # [1, h, w]
-                        masks = masks > 0
-                        masks = masks.cpu().numpy()
+                        mask = out_mask_logits[index_mask]  # [1, h, w]
+                        mask = mask > 0
+                        mask = mask.cpu().numpy()
 
                         # mask to polygon
-                        masks = masks.astype("uint8") * 255
-                        h, w = masks.shape[-2:]
-                        masks = masks.reshape(h, w)
-
-                        if self.mainwindow.scene.contour_mode == CONTOURMode.SAVE_ALL:
-                            # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
-                            contours, hierarchy = cv2.findContours(
-                                masks, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
-                            )
-                        else:
-                            # 当只保留外轮廓或单个mask时，只检测外轮廓
-                            contours, hierarchy = cv2.findContours(
-                                masks, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
-                            )
-
-                        if (
-                            self.mainwindow.scene.contour_mode
-                            == CONTOURMode.SAVE_MAX_ONLY
-                            and contours
-                        ):
-                            largest_contour = max(
-                                contours, key=cv2.contourArea
-                            )  # 只保留面积最大的轮廓
-                            contours = [largest_contour]
+                        contours, hierarchy = self.mainwindow.mask_to_polygon(mask)
 
                         for contour in contours:
-                            # polydp
-                            if self.mainwindow.cfg["software"]["use_polydp"]:
-                                epsilon_factor = 0.001
-                                epsilon = epsilon_factor * cv2.arcLength(contour, True)
-                                contour = cv2.approxPolyDP(contour, epsilon, True)
-
                             if len(contour) < 3:
                                 continue
 
@@ -951,6 +923,114 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.progressbar.setValue(0)
             self.setEnabled(True)
 
+    def predict_current_image_with_text_prompt(self, prompt:str=None):
+        if prompt is None or prompt == "":
+            return
+        if self.current_index is None:
+            return
+        if self.segany is None or self.segany.model_source != "sam3":
+            return
+
+        file_path = os.path.join(self.image_root, self.files_list[self.current_index])
+        image = Image.open(file_path).convert("RGB")
+        masks, scores = self.segany.predictor.predict_with_text_prompt(image, prompt)
+        num_masks = len(scores)
+        print("num_masks", num_masks)
+        print("masks", masks.shape)
+
+        for i in range(num_masks):
+            mask = masks[i]
+            contours, hierarchy = self.mask_to_polygon(mask)
+
+            for index, contour in enumerate(contours):
+                if len(contour) < 3:
+                    continue
+                if self.scene.current_graph is None:
+                    self.scene.current_graph = Polygon()
+                    self.scene.addItem(self.scene.current_graph)
+
+                self.scene.current_graph.hover_alpha = int(
+                    self.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.scene.current_graph.nohover_alpha = int(
+                    self.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
+                for point in contour:
+                    x, y = point[0]
+                    x = max(0.1, x)
+                    y = max(0.1, y)
+                    self.scene.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                if (
+                        self.scene.contour_mode == CONTOURMode.SAVE_ALL
+                        and hierarchy[0][index][3] != -1
+                ):
+                    # 保存所有轮廓，且当前轮廓为子轮廓，则自轮廓类别设置为背景
+                    category = "__background__"
+                    group = 0
+                else:
+                    category = prompt
+                    group = self.current_group
+
+                self.scene.current_graph.set_drawed(
+                    category,
+                    group,
+                    False,
+                    "",
+                    QtGui.QColor(
+                        self.category_color_dict.get(category, "#6F737A")
+                    ),
+                    len(self.polygons) + 1,
+                )
+
+                # 添加新polygon
+                self.polygons.append(self.scene.current_graph)
+                self.annos_dock_widget.listwidget_add_polygon(
+                    self.scene.current_graph
+                )
+                self.scene.current_graph = None
+            if self.group_select_mode == "auto":
+                self.current_group += 1
+                self.categories_dock_widget.lineEdit_currentGroup.setText(
+                    str(self.current_group)
+                )
+        return
+
+    def mask_to_polygon(self, mask:np.ndarray):
+        mask = mask.astype("uint8") * 255
+        h, w = mask.shape[-2:]
+        mask = mask.reshape(h, w)
+
+        if self.scene.contour_mode == CONTOURMode.SAVE_ALL:
+            # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
+            contours, hierarchy = cv2.findContours(
+                mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
+            )
+        else:
+            # 当只保留外轮廓或单个mask时，只检测外轮廓
+            contours, hierarchy = cv2.findContours(
+                mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
+            )
+
+        if contours and (self.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY):
+            largest_contour = max(
+                contours, key=cv2.contourArea
+            )  # 只保留面积最大的轮廓
+            contours = [largest_contour]
+
+        # polydp
+        if self.cfg["software"]["use_polydp"]:
+            epsilon_factor = 0.001
+            polydp_contours = []
+            for contour in contours:
+                epsilon = epsilon_factor * cv2.arcLength(contour, True)
+                contour = cv2.approxPolyDP(contour, epsilon, True)
+                polydp_contours.append(contour)
+            contours = polydp_contours
+
+        return contours, hierarchy
+
     def init_ui(self):
         self.category_setting_dialog = CategorySettingDialog(
             parent=self, mainwindow=self
@@ -967,6 +1047,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.info_dock_widget = InfoDockWidget(mainwindow=self)
         self.info_dock.setWidget(self.info_dock_widget)
+
+        self.text_prompt_dock_widget = TextPromptDockWidget(mainwindow=self)
+        self.text_prompt_dock.setWidget(self.text_prompt_dock_widget)
 
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
@@ -1735,7 +1818,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def change_contour_mode(self, contour_mode: str = "max_only"):
         """
-        Change contour mode. It has an effect when converting sam masks to polygons.
+        Change contour mode. It has an effect when converting sam mask to polygons.
 
         Arguments:
             contour_mode (str) : contour mode. which include 'max_only' 'external' and 'all'.
@@ -1841,7 +1924,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def change_approx_polygon_state(
         self, check_state: QtCore.Qt.CheckState
     ):  # 是否使用多边形拟合，来减少多边形顶点
-        """Change polygon state. It has an effect when converting sam masks to polygons, can reduce the number of vertices of the polygon."""
+        """Change polygon state. It has an effect when converting sam mask to polygons, can reduce the number of vertices of the polygon."""
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg["software"]["use_polydp"] = checked
         self.save_software_cfg()

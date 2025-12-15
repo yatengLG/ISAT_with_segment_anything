@@ -9,6 +9,8 @@ import os
 import torch
 import numpy as np
 from torchvision.transforms import v2
+import PIL
+
 
 bpe_path = os.path.join(__file__, "..", "bpe_simple_vocab_16e6.txt.gz")
 
@@ -116,13 +118,14 @@ class Sam3Predictor:
         )
         return masks, scores, logits
 
-    def predict_with_prompt(self, prompt:str):
-        self._sam3_processor.reset_all_prompts(self.inference_state)
-        self.inference_state = self._sam3_processor.set_text_prompt(state=self.inference_state, prompt=prompt)
-        masks = self.inference_state["masks"]
+    def predict_with_text_prompt(self, image: PIL.Image, prompt:str):
+        inference_state = self._sam3_processor.set_image(image)
+        self._sam3_processor.reset_all_prompts(inference_state)
+        inference_state = self._sam3_processor.set_text_prompt(state=inference_state, prompt=prompt)
+        masks = inference_state["masks"]
         print("masks:", masks.shape)
         masks = masks.squeeze(1).cpu().numpy()
         print("masks:", masks.shape)
-        scores = self.inference_state["scores"]
+        scores = inference_state["scores"]
         print(scores)
-        return masks, scores, None
+        return masks, scores

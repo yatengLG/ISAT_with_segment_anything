@@ -1801,6 +1801,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def model_manage(self):
         """Open the model management interface."""
+        self.model_manager_dialog.update_ui()
         self.model_manager_dialog.show()
 
     def remote_sam(self):

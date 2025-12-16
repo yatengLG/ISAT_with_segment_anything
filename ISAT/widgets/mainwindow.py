@@ -712,7 +712,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany_video_thread.tag.connect(self.seg_video_finish)
 
             # sam2 建议使用bfloat16
-            if self.segany_video.model_dtype == torch.float32:
+            if self.segany_video.model_dtype == torch.float32 and "sam2" in self.segany.model_source:
                 if self.cfg["software"]["language"] == "zh":
                     QtWidgets.QMessageBox.warning(
                         self,
@@ -994,7 +994,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.categories_dock_widget.lineEdit_currentGroup.setText(
                     str(self.current_group)
                 )
-        return
+        return num_masks
 
     def mask_to_polygon(self, mask:np.ndarray):
         mask = mask.astype("uint8") * 255
@@ -1173,6 +1173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.info_dock_widget.retranslateUi(self.info_dock_widget)
         self.annos_dock_widget.retranslateUi(self.annos_dock_widget)
         self.files_dock_widget.retranslateUi(self.files_dock_widget)
+        self.text_prompt_dock_widget.retranslateUi(self.text_prompt_dock_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
         self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
         self.category_setting_dialog.retranslateUi(self.category_setting_dialog)

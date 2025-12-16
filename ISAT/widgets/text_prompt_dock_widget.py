@@ -17,4 +17,7 @@ class TextPromptDockWidget(QtWidgets.QWidget, Ui_Form):
         self.pushButton_predict.clicked.connect(self.predict)
 
     def predict(self):
-        self.mainwindow.predict_current_image_with_text_prompt(self.lineEdit_prompt_text.text())
+        self.label_num_objects.setText("......")
+        self.label_num_objects.repaint()
+        num_masks = self.mainwindow.predict_current_image_with_text_prompt(self.lineEdit_prompt_text.text())
+        self.label_num_objects.setText(f"{num_masks}")

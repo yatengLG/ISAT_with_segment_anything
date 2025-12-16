@@ -405,11 +405,17 @@
       </property>
       <item>
        <widget class="QLabel" name="label_9">
-        <property name="styleSheet">
-         <string notr="true">color: rgb(255, 0, 0);</string>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="text">
-         <string>Only fine-tuned models of [sam], [sam2], [sam2.1], [mobile-sam], [sam-hq], [edge-sam] and [sam-med2d] are supported.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only fine-tuned models of [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2.1&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;mobile-sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-hq&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;edge-sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-med2d&lt;/span&gt;] and [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam3&lt;/span&gt;] are supported.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>

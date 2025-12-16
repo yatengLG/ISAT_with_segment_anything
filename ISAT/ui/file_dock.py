@@ -14,9 +14,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(264, 341)
+        Form.resize(300, 367)
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        Form.setFont(font)
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
-        self.verticalLayout.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout.setContentsMargins(6, 6, 6, 6)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.listWidget = QtWidgets.QListWidget(Form)

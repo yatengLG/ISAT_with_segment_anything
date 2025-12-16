@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>264</width>
-    <height>341</height>
+    <width>300</width>
+    <height>367</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Times New Roman</family>
+    <pointsize>12</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -18,16 +24,16 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>2</number>
+    <number>6</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>6</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>6</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>6</number>
    </property>
    <item>
     <widget class="QListWidget" name="listWidget"/>

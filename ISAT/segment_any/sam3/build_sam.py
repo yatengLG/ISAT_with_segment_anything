@@ -123,9 +123,6 @@ class Sam3Predictor:
         self._sam3_processor.reset_all_prompts(inference_state)
         inference_state = self._sam3_processor.set_text_prompt(state=inference_state, prompt=prompt)
         masks = inference_state["masks"]
-        print("masks:", masks.shape)
         masks = masks.squeeze(1).cpu().numpy()
-        print("masks:", masks.shape)
         scores = inference_state["scores"]
-        print(scores)
         return masks, scores

@@ -928,15 +928,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             return
         if self.current_index is None:
             return
-        if self.segany is None or self.segany.model_source != "sam3":
+        if (not self.use_segment_anything) or self.segany.model_source != "sam3":
+            QtWidgets.QMessageBox.warning(self, "warning", "Only SAM3 is supported!")
             return
 
         file_path = os.path.join(self.image_root, self.files_list[self.current_index])
         image = Image.open(file_path).convert("RGB")
         masks, scores = self.segany.predictor.predict_with_text_prompt(image, prompt)
         num_masks = len(scores)
-        print("num_masks", num_masks)
-        print("masks", masks.shape)
 
         for i in range(num_masks):
             mask = masks[i]

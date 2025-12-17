@@ -18,7 +18,7 @@ from skimage.draw.draw import polygon
 import ISAT.icons_rc
 from ISAT.annotation import Annotation, Object
 from ISAT.configs import (CHECKPOINT_PATH, CONFIG_FILE, ISAT_ROOT,
-                          SOFTWARE_CONFIG_FILE, CONTOURMode, MAPMode,
+                          SOFTWARE_CONFIG_FILE, CONTOURMode, MAPMode, CONTOURMethod,
                           STATUSMode, load_config, save_config)
 from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
 from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
@@ -495,6 +495,7 @@ class InitSegAnyThread(QThread):
                 sam_tag = True
             except Exception as e:
                 print("Init SAM Error: ", e)
+                self.mainwindow.segany = None
                 sam_tag = False
             if "sam2" in self.model_path or "sam3" in self.model_path:
                 try:
@@ -505,6 +506,10 @@ class InitSegAnyThread(QThread):
                 except Exception as e:
                     print("Init SAM2 video Error: ", e)
                     sam_video_tag = False
+            else:
+                self.mainwindow.segany_video = None
+
+        torch.cuda.empty_cache()
 
         sam_video_tag = sam_tag and sam_video_tag
         self.tag.emit(sam_tag, sam_video_tag)
@@ -1001,15 +1006,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         h, w = mask.shape[-2:]
         mask = mask.reshape(h, w)
 
+        if self.scene.contour_method == CONTOURMethod.SIMPLE:
+            contour_method = cv2.CHAIN_APPROX_SIMPLE
+        elif self.scene.contour_method == CONTOURMethod.TC89_KCOS:
+            contour_method = cv2.CHAIN_APPROX_TC89_KCOS
+        elif self.scene.contour_method == CONTOURMethod.NONE:
+            contour_method = cv2.CHAIN_APPROX_NONE
+        else:
+            contour_method = cv2.CHAIN_APPROX_SIMPLE
+
         if self.scene.contour_mode == CONTOURMode.SAVE_ALL:
             # 当保留所有轮廓时，检测所有轮廓，并建立二层等级关系
             contours, hierarchy = cv2.findContours(
-                mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS
+                mask, cv2.RETR_CCOMP, contour_method
             )
         else:
             # 当只保留外轮廓或单个mask时，只检测外轮廓
             contours, hierarchy = cv2.findContours(
-                mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_TC89_KCOS
+                mask, cv2.RETR_EXTERNAL, contour_method
             )
 
         if contours and (self.scene.contour_mode == CONTOURMode.SAVE_MAX_ONLY):

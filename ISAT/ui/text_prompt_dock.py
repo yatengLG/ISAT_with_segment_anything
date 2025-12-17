@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(320, 118)
+        Form.resize(320, 134)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -42,6 +42,8 @@ class Ui_Form(object):
         self.lineEdit_prompt_text_for_single_category.setObjectName("lineEdit_prompt_text_for_single_category")
         self.horizontalLayout.addWidget(self.lineEdit_prompt_text_for_single_category)
         self.pushButton_predict_for_single_category = QtWidgets.QPushButton(self.tab)
+        self.pushButton_predict_for_single_category.setMinimumSize(QtCore.QSize(80, 0))
+        self.pushButton_predict_for_single_category.setMaximumSize(QtCore.QSize(80, 16777215))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -57,6 +59,8 @@ class Ui_Form(object):
         self.pushButton_catgories_setting.setObjectName("pushButton_catgories_setting")
         self.horizontalLayout_4.addWidget(self.pushButton_catgories_setting)
         self.pushButton_predict_for_multi_categoriies = QtWidgets.QPushButton(self.tab_2)
+        self.pushButton_predict_for_multi_categoriies.setMinimumSize(QtCore.QSize(80, 0))
+        self.pushButton_predict_for_multi_categoriies.setMaximumSize(QtCore.QSize(80, 16777215))
         self.pushButton_predict_for_multi_categoriies.setObjectName("pushButton_predict_for_multi_categoriies")
         self.horizontalLayout_4.addWidget(self.pushButton_predict_for_multi_categoriies)
         self.tabWidget.addTab(self.tab_2, "")
@@ -81,9 +85,27 @@ class Ui_Form(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.verticalLayout.addWidget(self.widget_2)
+        self.progressBar = QtWidgets.QProgressBar(Form)
+        self.progressBar.setMinimumSize(QtCore.QSize(0, 10))
+        self.progressBar.setMaximumSize(QtCore.QSize(16777215, 10))
+        self.progressBar.setStyleSheet("QProgressBar {\n"
+"            border: 1px solid #888783;\n"
+"\n"
+"            border-radius: 3px;\n"
+"        }\n"
+"QProgressBar::chunk {\n"
+"            background-color: #74d65f;\n"
+"            border-radius: 2px;\n"
+"            width: 6px;\n"
+"            margin: 1px;\n"
+"        }")
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setTextVisible(False)
+        self.progressBar.setObjectName("progressBar")
+        self.verticalLayout.addWidget(self.progressBar)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

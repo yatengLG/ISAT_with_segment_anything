@@ -929,7 +929,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is None:
             return
         if (not self.use_segment_anything) or self.segany.model_source != "sam3":
-            QtWidgets.QMessageBox.warning(self, "warning", "Only SAM3 is supported!")
+            print("Only SAM3 is supported!")
             return
 
         file_path = os.path.join(self.image_root, self.files_list[self.current_index])

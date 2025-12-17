@@ -1,5 +1,6 @@
 include ISAT/checkpoints/mobile_sam.pt
 include ISAT/ISAT_new_64.svg
+include ISAT/segment_any/sam3/bpe_simple_vocab_16e6.txt.gz
 recursive-include ISAT/segment_any *.py
 recursive-include ISAT/widgets *
 recursive-include ISAT/ui *

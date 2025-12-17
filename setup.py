@@ -57,6 +57,12 @@ setup(
         "orjson",
         "pydicom",
         "requests",
+        "einops",
+        "decord",
+        "psutil",
+        "ftfy",
+        "regex",
+        "triton"
     ],
     classifiers=[
         "Intended Audience :: Developers",  # 目标用户:开发者

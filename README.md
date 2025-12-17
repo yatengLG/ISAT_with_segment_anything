@@ -22,7 +22,9 @@ Please refers to our latest [Documentation in English](https://isat-sam.readthed
 ---
 
 # News
-- &#x1F389;: **In version 1.4.0, ISAT add a plugin system.** You can use a small amount of code to extend the functionality of ISAT.
+- &#x1F389;: **In version 1.5.0, ISAT supports SAM3 and also supports text prompts.**
+
+- **In version 1.4.0, ISAT add a plugin system.** You can use a small amount of code to extend the functionality of ISAT.
   
     Here are some official plugin examples:
   - [ISAT_plugin_auto_annotate](https://github.com/yatengLG/ISAT_plugin_auto_annotate) ![PyPI - Version](https://img.shields.io/pypi/v/isat-plugin-auto-annotate?style=social&logo=pypi)

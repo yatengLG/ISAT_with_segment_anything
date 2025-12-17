@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>285</width>
     <height>134</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>285</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="font">
    <font>

@@ -138,6 +138,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
 
         self.init_ui()
         self.pushButton_clear_tmp.clicked.connect(self.clear_tmp)
+        self.pushButton_checkpoint_dir.clicked.connect(self.open_checkpoint_dir)
         self.pushButton_close.clicked.connect(self.close)
         self.pushButton_open_ft_model.clicked.connect(self.load_fine_tuned_model)
         self.radioButton_ft_model.clicked.connect(self.use_fine_tune_model)
@@ -295,16 +296,29 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'red')
                 ops_button.setStyleSheet("QWidget {color: %s}" % "red")
                 ops_button.setText("delete")
+                ops_button.disconnect()
                 ops_button.clicked.connect(partial(self.delete, model_name))
                 radio.setEnabled(True)
             else:
                 # ops_button.setStyleSheet('QWidget {background-color: %s}' % 'green')
                 ops_button.setStyleSheet("QWidget {color: %s}" % "green")
                 ops_button.setText("download")
+                ops_button.disconnect()
                 ops_button.clicked.connect(partial(self.download, model_name))
                 radio.setEnabled(False)
 
     def download(self, model_name):
+        # sam3 模型特殊处理
+        if "sam3" in model_name:
+            message = "Please manually download sam3.pt.\nThe download URL is https://huggingface.co/facebook/sam3." \
+                if self.mainwindow.cfg["software"]["language"] == "en" \
+                else "请手动下载sam3.pt。\n下载网址 https://huggingface.co/facebook/sam3"
+            QtWidgets.QMessageBox.warning(
+                self, "warning", message
+            )
+            return
+        # -----
+
         button = self.sender()
         button.setText("downloading")
         info_dict = model_dict.get(model_name, {})
@@ -321,6 +335,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         download_thread.start()
 
         button.setEnabled(False)
+        button.clicked.disconnect()
         button.clicked.connect(partial(self.pause, model_name))
         button.setEnabled(True)
 
@@ -330,6 +345,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
         if downloaded_size == -1 and total_size == -1:
             button.setText("continue")
             button.setEnabled(False)
+            button.clicked.disconnect()
             button.clicked.connect(partial(self.download, model_name))
             button.setEnabled(True)
 
@@ -337,6 +353,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             button.setText("delete")
             button.setStyleSheet("QWidget {color: %s}" % "red")
             button.setEnabled(False)
+            button.clicked.disconnect()
             button.clicked.connect(partial(self.delete, model_name))
             button.setEnabled(True)
             # self.mainwindow.update_menuSAM()
@@ -362,6 +379,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             button.setText("download")
             button.setStyleSheet("QWidget {color: %s}" % "green")
             button.setEnabled(False)
+            button.clicked.disconnect()
             button.clicked.connect(partial(self.download, model_name))
             button.setEnabled(True)
         except Exception as e:
@@ -395,10 +413,13 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             self, "clear tmp", "Remove tmp: [" + "],[".join(remove_list) + "]"
         )
 
+    @staticmethod
+    def open_checkpoint_dir(self):
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(CHECKPOINT_PATH))
+
     def load_fine_tuned_model(self):
-        filter = "Checkpoint (*.pt *.pth *.pkl);;All files (*)"
         path, suffix = QtWidgets.QFileDialog.getOpenFileName(
-            self, caption="Open file", filter=filter
+            self, caption="Open file", filter="Checkpoint (*.pt *.pth *.pkl);;All files (*)"
         )
         if path:
             self.lineEdit_ft_model.setText(path)
@@ -429,6 +450,7 @@ class ModelManagerDialog(QtWidgets.QDialog, Ui_Dialog):
             "sam2.1_hiera_base_plus",
             "sam2.1_hiera_small",
             "sam2.1_hiera_tiny",
+            "sam3"
         )
 
         if model_path and os.path.basename(model_path).startswith(

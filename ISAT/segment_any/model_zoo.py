@@ -211,4 +211,15 @@ model_dict = {
         "image_segment": True,
         "video_segment": True,
     },
+    "sam3.pt": {
+        "urls": [
+            "",
+            ""
+        ],
+        "memory": "8600M",
+        "bf16_memory": "8600M",
+        "params": "3450M",
+        "image_segment": True,
+        "video_segment": True,
+    }
 }

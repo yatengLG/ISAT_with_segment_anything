@@ -22,7 +22,9 @@
 ---
 
 # 更新
-- &#x1F389;: **V1.4.0版本添加了插件系统。** 可以使用较少量的代码，扩展ISAT的功能。
+- &#x1F389;: **V1.5.0版本，支持SAM3模型，并添加了文本提示（text prompt）功能**
+
+- **V1.4.0版本添加了插件系统。** 可以使用较少量的代码，扩展ISAT的功能。
   
     以下是一些插件示例:
   - [ISAT_plugin_auto_annotate](https://github.com/yatengLG/ISAT_plugin_auto_annotate) ![PyPI - Version](https://img.shields.io/pypi/v/isat-plugin-auto-annotate?style=social&logo=pypi)

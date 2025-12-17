@@ -47,6 +47,9 @@
    </item>
    <item>
     <widget class="QListWidget" name="listWidget">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
@@ -57,6 +60,9 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_category_setting">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="text">
       <string>Category setting</string>
      </property>
@@ -84,6 +90,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
        <property name="statusTip">
         <string>Group mode</string>
        </property>
@@ -103,6 +112,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
+       </property>
        <property name="statusTip">
         <string>Current group -</string>
        </property>
@@ -121,6 +133,9 @@
          <width>16777215</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
        </property>
        <property name="statusTip">
         <string>Current group</string>
@@ -146,6 +161,9 @@
          <width>20</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::ClickFocus</enum>
        </property>
        <property name="statusTip">
         <string>Current group +</string>

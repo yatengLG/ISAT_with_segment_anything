@@ -415,7 +415,7 @@
          </font>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only fine-tuned models of [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2.1&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;mobile-sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-hq&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;edge-sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-med2d&lt;/span&gt;] and [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam3&lt;/span&gt;] are supported.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only fine-tuned models of [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam2.1&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam3&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;mobile-sam&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-hq&lt;/span&gt;], [&lt;span style=&quot; color:#ff0000;&quot;&gt;edge-sam&lt;/span&gt;] and [&lt;span style=&quot; color:#ff0000;&quot;&gt;sam-med2d&lt;/span&gt;] are supported.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>

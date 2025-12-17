@@ -58,6 +58,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="text">
          <string>Visible</string>
         </property>
@@ -97,6 +100,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
+        </property>
         <property name="statusTip">
          <string>Prev group.</string>
         </property>
@@ -116,6 +122,9 @@
           <width>25</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
         </property>
         <property name="statusTip">
          <string>Next group.</string>
@@ -153,6 +162,9 @@
    </item>
    <item>
     <widget class="QListWidget" name="listWidget">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>

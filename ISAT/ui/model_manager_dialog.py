@@ -226,7 +226,7 @@ class Ui_Dialog(object):
         self.label_7.setText(_translate("Dialog", "Disk"))
         self.lineEdit_ft_model.setPlaceholderText(_translate("Dialog", "Load the fine tuned SAM model."))
         self.pushButton_open_ft_model.setText(_translate("Dialog", "Open"))
-        self.label_9.setText(_translate("Dialog", "<html><head/><body><p>Only fine-tuned models of [<span style=\" color:#ff0000;\">sam</span>], [<span style=\" color:#ff0000;\">sam2</span>], [<span style=\" color:#ff0000;\">sam2.1</span>], [<span style=\" color:#ff0000;\">mobile-sam</span>], [<span style=\" color:#ff0000;\">sam-hq</span>], [<span style=\" color:#ff0000;\">edge-sam</span>], [<span style=\" color:#ff0000;\">sam-med2d</span>] and [<span style=\" color:#ff0000;\">sam3</span>] are supported.</p></body></html>"))
+        self.label_9.setText(_translate("Dialog", "<html><head/><body><p>Only fine-tuned models of [<span style=\" color:#ff0000;\">sam</span>], [<span style=\" color:#ff0000;\">sam2</span>], [<span style=\" color:#ff0000;\">sam2.1</span>], [<span style=\" color:#ff0000;\">sam3</span>], [<span style=\" color:#ff0000;\">mobile-sam</span>], [<span style=\" color:#ff0000;\">sam-hq</span>], [<span style=\" color:#ff0000;\">edge-sam</span>] and [<span style=\" color:#ff0000;\">sam-med2d</span>] are supported.</p></body></html>"))
         self.pushButton_clear_tmp.setText(_translate("Dialog", "Clear tmp"))
         self.pushButton_checkpoint_dir.setText(_translate("Dialog", "Open dir"))
         self.pushButton_close.setText(_translate("Dialog", "&Close"))

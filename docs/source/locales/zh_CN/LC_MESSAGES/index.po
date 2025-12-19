@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 14:42+0800\n"
+"POT-Creation-Date: 2025-12-19 17:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -66,34 +66,40 @@ msgid ""
 msgstr "使用SAM的点提示与框提示，进行半自动标注。"
 
 #: ../../source/index.rst:18
+msgid "Supports text prompt based on sam3."
+msgstr "支持基于SAM3的文本提示功能。"
+
+#: ../../source/index.rst:19
 msgid ""
 "Supports `SAM <https://github.com/facebookresearch/segment-anything>`_, "
-"`SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `Sam-HQ"
-" <https://github.com/SysCV/sam-hq>`_, `MobileSAM "
+"`SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM3 "
+"<https://github.com/facebookresearch/sam3>`_, `Sam-HQ "
+"<https://github.com/SysCV/sam-hq>`_, `MobileSAM "
 "<https://github.com/ChaoningZhang/MobileSAM>`_, `EdgeSAM "
 "<https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM "
 "<https://github.com/bowang-lab/MedSAM>`_."
 msgstr ""
 "支持 `SAM <https://github.com/facebookresearch/segment-anything>`_, `SAM2 "
-"<https://github.com/facebookresearch/segment-anything-2>`_，`Sam-HQ "
+"<https://github.com/facebookresearch/segment-anything-2>`_，`SAM3 "
+"<https://github.com/facebookresearch/sam3>`_, `Sam-HQ "
 "<https://github.com/SysCV/sam-hq>`_, `MobileSAM "
 "<https://github.com/ChaoningZhang/MobileSAM>`_, `EdgeSAM "
 "<https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM "
 "<https://github.com/bowang-lab/MedSAM>`_。"
 
-#: ../../source/index.rst:19
+#: ../../source/index.rst:20
 msgid "Supports using remote server for SAM encoding."
 msgstr "支持使用远程服务器进行SAM编码。"
 
-#: ../../source/index.rst:20
+#: ../../source/index.rst:21
 msgid "Supports video annotation."
 msgstr "支持视频标注。"
 
-#: ../../source/index.rst:21
+#: ../../source/index.rst:22
 msgid "Supports plugin extensions."
 msgstr "支持插件扩展。"
 
-#: ../../source/index.rst:24
+#: ../../source/index.rst:25
 msgid "Contents"
 msgstr "内容"
 

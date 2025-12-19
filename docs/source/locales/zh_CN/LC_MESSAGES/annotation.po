@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-02 14:32+0800\n"
+"POT-Creation-Date: 2025-12-19 16:45+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -139,64 +139,80 @@ msgid "box_prompts.gif"
 msgstr ""
 
 #: ../../source/annotation.rst:71
+msgid "1.2.3 Text Prompt"
+msgstr "1.2.3 文本提示"
+
+#: ../../source/annotation.rst:73
+msgid "Since v1.5.0, ISAT supports the text prompt function based on sam3."
+msgstr "从v1.5.0开始，ISAT支持基于SAM3的文本提示功能。"
+
+#: ../../source/annotation.rst:75
+msgid "Input a prompt text for prediction."
+msgstr "输入提示文本进行预测。"
+
+#: ../../source/annotation.rst:79
+msgid "Using the categories set in ISAT to prediction."
+msgstr "使用ISAT设置的类别进行预测。"
+
+#: ../../source/annotation.rst:84
 msgid "2. Finish Annotation"
 msgstr "2. 完成标注"
 
-#: ../../source/annotation.rst:73
+#: ../../source/annotation.rst:86
 msgid ""
 "Click the ``Finish annotation`` button ``[E]`` in the toolbar to end the "
 "annotation."
 msgstr "点击工具栏中 ``完成标注`` 按钮 ``[E]`` 结束标注。"
 
-#: ../../source/annotation.rst:75
+#: ../../source/annotation.rst:88
 msgid ""
 "When using sam, finish annotation will convert the mask into a polygon on"
 " the canvas."
 msgstr "当使用SAM进行半自动标注时，完成标注会将画布上的掩码转换为多边形。"
 
-#: ../../source/annotation.rst:77
+#: ../../source/annotation.rst:90
 msgid ""
 "ISAT offers multiple conversion methods, which you can find in the "
 "settings interface."
 msgstr "ISAT提供了多种掩码转换多边形的逻辑，名为轮廓模式，你可以在设置界面中进行设置。"
 
-#: ../../source/annotation.rst:79
+#: ../../source/annotation.rst:92
 msgid "Contour mode:"
 msgstr "轮廓模式"
 
-#: ../../source/annotation.rst:81
+#: ../../source/annotation.rst:94
 msgid "External contours"
 msgstr "只保存外轮廓"
 
-#: ../../source/annotation.rst:82
+#: ../../source/annotation.rst:95
 msgid "Only max contour"
 msgstr "只保存最大轮廓"
 
-#: ../../source/annotation.rst:83
+#: ../../source/annotation.rst:96
 msgid "All contours"
 msgstr "保存所有轮廓"
 
-#: ../../source/annotation.rst:85
+#: ../../source/annotation.rst:98
 msgid ""
 "For detailed usage, please refer to `Contour mode <other.html#contour-"
 "mode>`_."
 msgstr "具体的使用细节，请参考 `轮廓模式 <other.html#contour-mode>`_."
 
-#: ../../source/annotation.rst:88
+#: ../../source/annotation.rst:101
 msgid "3. Cancel Annotation"
 msgstr "3. 取消标注"
 
-#: ../../source/annotation.rst:90
+#: ../../source/annotation.rst:103
 msgid ""
 "Click the ``Cancel annotation`` button ``[Esc]`` in the toolbar to end "
 "the annotation."
 msgstr "点击工具栏中 ``取消标注`` 按钮 ``[Esc]`` 取消标注。"
 
-#: ../../source/annotation.rst:93
+#: ../../source/annotation.rst:106
 msgid "4. Backspace"
 msgstr "4. 回退"
 
-#: ../../source/annotation.rst:95
+#: ../../source/annotation.rst:108
 msgid ""
 "Click the ``Backspace`` button ``[Z]`` in the toolbar to return to the "
 "previous annotation state."
@@ -206,11 +222,11 @@ msgstr "点击工具栏中 ``回退`` 按钮 ``[Z]`` 返回上一个标注状态
 msgid "backspace.gif"
 msgstr ""
 
-#: ../../source/annotation.rst:101
+#: ../../source/annotation.rst:114
 msgid "5. Video Annotation"
 msgstr "5. 视频标注"
 
-#: ../../source/annotation.rst:103
+#: ../../source/annotation.rst:116
 msgid ""
 "ISAT uses SAM2 for video annotation, provides the functions of annotating"
 " the next frame, the next five frames, and the entire video."
@@ -220,19 +236,19 @@ msgstr "ISAT使用SAM2模型实现视频标注，提供了下一帧，下五帧�
 msgid "video_annotation.gif"
 msgstr ""
 
-#: ../../source/annotation.rst:108
+#: ../../source/annotation.rst:121
 msgid "Video annotation process:"
 msgstr "视频标注流程："
 
-#: ../../source/annotation.rst:110
+#: ../../source/annotation.rst:123
 msgid "Select SAM2 or SAM2.1 model."
 msgstr "选择SAM2或SAM2.1模型"
 
-#: ../../source/annotation.rst:111
+#: ../../source/annotation.rst:124
 msgid "Start the video annotation with an already annotated frame."
 msgstr "从已标注完成的一帧开始。"
 
-#: ../../source/annotation.rst:112
+#: ../../source/annotation.rst:125
 msgid ""
 "Click the ``Video segment once`` button or ``Video segment five times`` "
 "button or ``Video segment`` button."

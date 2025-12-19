@@ -67,6 +67,19 @@ Click the ``Segment anything box`` button ``[W]`` in the toolbar to start SAM bo
 .. image:: ../../display/box_prompts.gif
     :alt: box_prompts.gif
 
+1.2.3 Text Prompt
+.................................
+
+Since v1.5.0, ISAT supports the text prompt function based on sam3.
+
+1. Input a prompt text for prediction.
+
+.. image:: ../../display/text_prompt1.gif
+
+2. Using the categories set in ISAT to prediction.
+
+.. image:: ../../display/text_prompt2.gif
+
 2. Finish Annotation
 ---------------------------------
 

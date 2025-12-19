@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 11:50+0800\n"
+"POT-Creation-Date: 2025-12-19 17:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -149,7 +149,8 @@ msgstr ""
 #: ../../source/sam_model.rst:161 ../../source/sam_model.rst:167
 #: ../../source/sam_model.rst:168 ../../source/sam_model.rst:174
 #: ../../source/sam_model.rst:175 ../../source/sam_model.rst:181
-#: ../../source/sam_model.rst:182
+#: ../../source/sam_model.rst:182 ../../source/sam_model.rst:188
+#: ../../source/sam_model.rst:189
 msgid "yes"
 msgstr ""
 
@@ -426,17 +427,33 @@ msgstr ""
 msgid "1194M"
 msgstr ""
 
+#: ../../source/sam_model.rst:183
+msgid "SAM3"
+msgstr ""
+
 #: ../../source/sam_model.rst:184
+msgid "sam3.pt"
+msgstr ""
+
+#: ../../source/sam_model.rst:185 ../../source/sam_model.rst:186
+msgid "8600M"
+msgstr ""
+
+#: ../../source/sam_model.rst:187
+msgid "3.5G"
+msgstr ""
+
+#: ../../source/sam_model.rst:191
 msgid ""
 "If you are running ISAT on a cpu, it is recommended to use the "
 "**sam_hq_vit_tiny.pth** or **mobile_sam.pt** model."
 msgstr "如果你在CPU上运行ISAT，推荐使用 **sam_hq_vit_tiny.pth** 或 **mobile_sam.pt** 模型。"
 
-#: ../../source/sam_model.rst:187
+#: ../../source/sam_model.rst:194
 msgid "4. Use fine tuned model"
 msgstr "4. 使用fine tuned模型"
 
-#: ../../source/sam_model.rst:189
+#: ../../source/sam_model.rst:196
 msgid ""
 "Click the ``Open`` button in the the model manager interface to select "
 "the fine-tuned sam model."
@@ -446,11 +463,11 @@ msgstr "在模型管理界面，点击 ``打开`` 按钮选择要使用的fine-t
 msgid "use_fine_tuned_model.png"
 msgstr ""
 
-#: ../../source/sam_model.rst:194
+#: ../../source/sam_model.rst:201
 msgid ""
-"The supported fine-tuned models: **sam**, **sam2**, **sam2.1**, **mobile-"
-"sam**, **edge-sam**, **sam-hq** and **sam-med2d**."
+"The supported fine-tuned models: **sam**, **sam2**, **sam2.1**, **sam3**,"
+" **mobile-sam**, **edge-sam**, **sam-hq** and **sam-med2d**."
 msgstr ""
-"支持的fine tuned模型有：**sam**, **sam2**, **sam2.1**, **mobile-sam**, **edge-"
+"支持的fine tuned模型有：**sam**, **sam2**, **sam2.1**, **sam3**, **mobile-sam**, **edge-"
 "sam**, **sam-hq** and **sam-med2d**。"
 

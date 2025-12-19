@@ -180,6 +180,13 @@ Click the ``Remote SAM`` button in the right toolbar to open the remote sam inte
      - 156M
      - yes
      - yes
+   * - SAM3
+     - sam3.pt
+     - 8600M
+     - 8600M
+     - 3.5G
+     - yes
+     - yes
 
 .. tip:: If you are running ISAT on a cpu, it is recommended to use the **sam_hq_vit_tiny.pth** or **mobile_sam.pt** model.
 
@@ -191,4 +198,4 @@ Click the ``Open`` button in the the model manager interface to select the fine-
 .. image:: ../../display/use_fine_tuned_model.png
     :alt: use_fine_tuned_model.png
 
-.. important:: The supported fine-tuned models: **sam**, **sam2**, **sam2.1**, **mobile-sam**, **edge-sam**, **sam-hq** and **sam-med2d**.
+.. important:: The supported fine-tuned models: **sam**, **sam2**, **sam2.1**, **sam3**, **mobile-sam**, **edge-sam**, **sam-hq** and **sam-med2d**.

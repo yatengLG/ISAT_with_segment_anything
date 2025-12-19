@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-18 15:12+0800\n"
+"POT-Creation-Date: 2025-12-19 16:45+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -108,10 +108,13 @@ msgstr ""
 #: ISAT.widgets.mainwindow.MainWindow.change_approx_polygon_state
 #: ISAT.widgets.mainwindow.MainWindow.change_auto_save_state
 #: ISAT.widgets.mainwindow.MainWindow.change_bfloat16_state
+#: ISAT.widgets.mainwindow.MainWindow.change_contour_method
 #: ISAT.widgets.mainwindow.MainWindow.change_contour_mode
 #: ISAT.widgets.mainwindow.MainWindow.change_create_mode_invisible_polygon_state
 #: ISAT.widgets.mainwindow.MainWindow.change_edge_state
 #: ISAT.widgets.mainwindow.MainWindow.change_mask_alpha
+#: ISAT.widgets.mainwindow.MainWindow.change_polygon_alpha_hover
+#: ISAT.widgets.mainwindow.MainWindow.change_polygon_alpha_no_hover
 #: ISAT.widgets.mainwindow.MainWindow.change_prompt_visiable
 #: ISAT.widgets.mainwindow.MainWindow.change_real_time_area_state
 #: ISAT.widgets.mainwindow.MainWindow.change_saturation
@@ -122,6 +125,8 @@ msgstr ""
 #: ISAT.widgets.mainwindow.MainWindow.jump_to
 #: ISAT.widgets.mainwindow.MainWindow.latest_version_tip
 #: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut
+#: ISAT.widgets.mainwindow.MainWindow.mask_to_polygon
+#: ISAT.widgets.mainwindow.MainWindow.predict_current_image_with_text_prompt
 #: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish
 #: ISAT.widgets.mainwindow.MainWindow.save_cfg
 #: ISAT.widgets.mainwindow.MainWindow.screen_shot
@@ -383,11 +388,11 @@ msgid "list[PromptPoint, ...]"
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene:80 of
-msgid "The masks output by sam model."
+msgid "The mask output by sam model."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene:86 of
-msgid "The alpha value for the masks."
+msgid "The alpha value for the mask."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene:88
@@ -490,17 +495,17 @@ msgid "Change to repaint mode."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_all:1 of
-msgid "Change to save all contour mode for convert masks to polygons."
+msgid "Change to save all contour mode for convert mask to polygons."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_max_only:1
 #: of
-msgid "Change to save max contour mode for convert masks to polygons."
+msgid "Change to save max contour mode for convert mask to polygons."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.change_contour_mode_to_save_external:1
 #: of
-msgid "Change to save external contour mode for convert masks to polygons."
+msgid "Change to save external contour mode for convert mask to polygons."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.start_segment_anything:1 of
@@ -521,8 +526,8 @@ msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.finish_draw:1 of
 msgid ""
-"Finish annotation. Convert masks to polygons when using sam, if the "
-"number of vertices less than 3, delete polygon."
+"Finish annotation. Convert mask to polygons when using sam, if the number"
+" of vertices less than 3, delete polygon."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.cancel_draw:1 of
@@ -1219,7 +1224,7 @@ msgstr ""
 
 #: ISAT.widgets.mainwindow.MainWindow.change_contour_mode:1 of
 msgid ""
-"Change contour mode. It has an effect when converting sam masks to "
+"Change contour mode. It has an effect when converting sam mask to "
 "polygons."
 msgstr ""
 
@@ -1259,7 +1264,7 @@ msgstr ""
 
 #: ISAT.widgets.mainwindow.MainWindow.change_approx_polygon_state:1 of
 msgid ""
-"Change polygon state. It has an effect when converting sam masks to "
+"Change polygon state. It has an effect when converting sam mask to "
 "polygons, can reduce the number of vertices of the polygon."
 msgstr ""
 
@@ -1779,4 +1784,39 @@ msgstr ""
 #: ../../source/_api/ISAT.widgets.rst:192
 msgid "Module contents"
 msgstr ""
+
+#~ msgid "The masks output by sam model."
+#~ msgstr ""
+
+#~ msgid "The alpha value for the masks."
+#~ msgstr ""
+
+#~ msgid "Change to save all contour mode for convert masks to polygons."
+#~ msgstr ""
+
+#~ msgid "Change to save max contour mode for convert masks to polygons."
+#~ msgstr ""
+
+#~ msgid "Change to save external contour mode for convert masks to polygons."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Finish annotation. Convert masks to "
+#~ "polygons when using sam, if the "
+#~ "number of vertices less than 3, "
+#~ "delete polygon."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Change contour mode. It has an "
+#~ "effect when converting sam masks to "
+#~ "polygons."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Change polygon state. It has an "
+#~ "effect when converting sam masks to "
+#~ "polygons, can reduce the number of "
+#~ "vertices of the polygon."
+#~ msgstr ""
 

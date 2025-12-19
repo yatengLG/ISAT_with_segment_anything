@@ -23,6 +23,16 @@ Please refers to our latest [Documentation in English](https://isat-sam.readthed
 
 # News
 - &#x1F389;: **In version 1.5.0, ISAT supports SAM3 and also supports text prompts.**
+    
+    **You should build and install [triton](https://github.com/triton-lang/triton) in Windows OS.**
+
+    <details>
+        <summary>Show example</summary>
+            <h3>For single category</h3>
+                <p align='center'><img src="./display/text_prompt1.gif" alt="text_prompt1.gif"></p>
+            <h3>For multiple categories</h3>
+                <p align='center'><img src="./display/text_prompt2.gif" alt="text_prompt2.gif"></p>
+    </details>
 
 - **In version 1.4.0, ISAT add a plugin system.** You can use a small amount of code to extend the functionality of ISAT.
   

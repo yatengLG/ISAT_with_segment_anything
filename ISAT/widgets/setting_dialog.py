@@ -32,6 +32,9 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.checkBox_use_bfloat16.stateChanged.connect(
             self.mainwindow.change_bfloat16_state
         )
+        self.checkBox_use_video_segmentation.stateChanged.connect(
+            self.mainwindow.change_use_video_segmentation_state
+        )
         self.horizontalSlider_vertex_size.valueChanged.connect(
             self.mainwindow.change_vertex_size
         )

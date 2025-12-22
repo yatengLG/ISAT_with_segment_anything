@@ -497,7 +497,7 @@ class InitSegAnyThread(QThread):
                 print("Init SAM Error: ", e)
                 self.mainwindow.segany = None
                 sam_tag = False
-            if "sam2" in self.model_path or "sam3" in self.model_path:
+            if self.mainwindow.cfg["software"]["use_video_segmentation"] and ("sam2" in self.model_path or "sam3" in self.model_path):
                 try:
                     self.mainwindow.segany_video = SegAnyVideo(
                         self.model_path, self.mainwindow.cfg["software"]["use_bfloat16"]
@@ -1295,7 +1295,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.cfg["software"]["use_bfloat16"] = bool(use_bfloat16)
         self.setting_dialog.checkBox_use_bfloat16.setChecked(use_bfloat16)
         self.setting_dialog.checkBox_use_bfloat16.setEnabled(torch.cuda.is_available())
-        self.model_manager_dialog.update_ui()
+
+        use_video_segmentation = software_cfg.get("use_video_segmentation", True)
+        self.cfg["software"]["use_video_segmentation"] = bool(use_video_segmentation)
+        self.setting_dialog.checkBox_use_video_segmentation.setChecked(use_video_segmentation)
 
         # 类别
         self.cfg.update(load_config(self.config_file))
@@ -1832,7 +1835,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         checked = check_state == QtCore.Qt.CheckState.Checked
         self.cfg["software"]["use_bfloat16"] = checked
         self.init_segment_anything()
-        self.model_manager_dialog.update_ui()
+        self.save_software_cfg()
+
+    def change_use_video_segmentation_state(self, check_state: QtCore.Qt.CheckState):
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg["software"]["use_video_segmentation"] = checked
+        self.init_segment_anything()
         self.save_software_cfg()
 
     def change_contour_mode(self, contour_mode: str = "max_only"):

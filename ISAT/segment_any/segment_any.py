@@ -155,7 +155,7 @@ class SegAny:
             sam.to(self.model_dtype)
         sam.to(device=self.device)
 
-        self.predictor = SamPredictor(sam)
+        self.predictor = SamPredictor(sam, device=self.device)
         print("* Init SAM finished *")
         print("--" * 20)
         self.image = None

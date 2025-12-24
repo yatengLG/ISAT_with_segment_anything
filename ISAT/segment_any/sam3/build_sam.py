@@ -40,9 +40,10 @@ sam_model_registry = {
 
 
 class Sam3Predictor:
-    def __init__(self, model, resolution=1008, device="cuda", confidence_threshold=0.5):
+    def __init__(self, model, resolution=1008, confidence_threshold=0.5):
         self.model = model
-        self._sam3_processor = Sam3Processor(model, resolution, device, confidence_threshold)
+        self.device = model.device
+        self._sam3_processor = Sam3Processor(model, resolution, self.device, confidence_threshold)
 
     def _transforms(self, image):
         image = v2.functional.to_image(image).to(self.model.device)

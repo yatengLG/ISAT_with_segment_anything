@@ -182,13 +182,17 @@ Click the ``Remote SAM`` button in the right toolbar to open the remote sam inte
      - yes
    * - SAM3
      - sam3.pt
-     - 8600M
-     - 8600M
+     - **8600M**
+     - **8600M**
      - 3.5G
      - yes
      - yes
 
 .. tip:: If you are running ISAT on a cpu, it is recommended to use the **sam_hq_vit_tiny.pth** or **mobile_sam.pt** model.
+
+.. tip:: Since v1.5.1, you can try disabling the ``video segmentation`` feature in the settings interface if you encounter insufficient VRAM.
+
+         After disabling the ``video segmentation`` feature, SAM3 requires only 6GB of VRAM to run.
 
 4. Use fine tuned model
 ---------------------------------

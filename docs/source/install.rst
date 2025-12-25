@@ -26,9 +26,7 @@ Option 1: Install with Pip
 
     .. attention::
 
-        To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
-
-        On the Windows OS, you can not directly install **triton** via the pip. You should to build and install **triton** from its `source code <https://github.com/triton-lang/triton>`_, or use **triton-windows** as an alternative.
+        To use GPU on Windows OS, install torch and torchvision from `Pytorch <https://pytorch.org/>`_
 
 3.  Run
 
@@ -38,7 +36,7 @@ Option 1: Install with Pip
 
         isat-sam
 
-.. tip:: Recommended install isat-sam using pip
+.. hint:: Recommended install isat-sam using pip
 
 Option 2: Install from Source Code
 ------------------------------------
@@ -80,9 +78,7 @@ Option 2: Install from Source Code
 
     .. attention::
 
-        To use GPU on Windows OS, install pytorch-gpu from `Pytorch <https://pytorch.org/>`_
-
-        On the Windows OS, you can not directly install **triton** via the pip. You should to build and install **triton** from its `source code <https://github.com/triton-lang/triton>`_, or use **triton-windows** as an alternative.
+        To use GPU on Windows OS, install torch and torchvision from `Pytorch <https://pytorch.org/>`_
 
 4.  Run
 

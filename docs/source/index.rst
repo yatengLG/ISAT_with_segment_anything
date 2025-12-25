@@ -11,7 +11,7 @@ You can `access the project <https://github.com/yatengLG/ISAT_with_segment_anyth
 Features
 ====================================
 
-.. tip:: Focusing on the field of image segmentation, we strive to create the best image segmentation annotation software.
+.. hint:: Focusing on the field of image segmentation, we strive to create the best image segmentation annotation software.
 
 - Better performance and a smoother annotation experience.
 - Utilizes `Segment anything model <https://github.com/facebookresearch/segment-anything>`_ with point and bounding box prompts to semi-automatic annotation.

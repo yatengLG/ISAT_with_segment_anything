@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 17:12+0800\n"
+"POT-Creation-Date: 2025-12-25 16:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -436,8 +436,8 @@ msgid "sam3.pt"
 msgstr ""
 
 #: ../../source/sam_model.rst:185 ../../source/sam_model.rst:186
-msgid "8600M"
-msgstr ""
+msgid "**8600M**"
+msgstr "**8600M**"
 
 #: ../../source/sam_model.rst:187
 msgid "3.5G"
@@ -449,11 +449,23 @@ msgid ""
 "**sam_hq_vit_tiny.pth** or **mobile_sam.pt** model."
 msgstr "如果你在CPU上运行ISAT，推荐使用 **sam_hq_vit_tiny.pth** 或 **mobile_sam.pt** 模型。"
 
-#: ../../source/sam_model.rst:194
+#: ../../source/sam_model.rst:193
+msgid ""
+"Since v1.5.1, you can try disabling the ``video segmentation`` feature in"
+" the settings interface if you encounter insufficient VRAM."
+msgstr "从v1.5.1版本起，可以在设置界面中关闭 ``视频分割`` 功能，来降低对显存的需求。"
+
+#: ../../source/sam_model.rst:195
+msgid ""
+"After disabling the ``video segmentation`` feature, SAM3 requires only "
+"6GB of VRAM to run."
+msgstr "关闭 ``视频分割`` 功能后，SAM3只需要6G显存即可运行。"
+
+#: ../../source/sam_model.rst:198
 msgid "4. Use fine tuned model"
 msgstr "4. 使用fine tuned模型"
 
-#: ../../source/sam_model.rst:196
+#: ../../source/sam_model.rst:200
 msgid ""
 "Click the ``Open`` button in the the model manager interface to select "
 "the fine-tuned sam model."
@@ -463,11 +475,10 @@ msgstr "在模型管理界面，点击 ``打开`` 按钮选择要使用的fine-t
 msgid "use_fine_tuned_model.png"
 msgstr ""
 
-#: ../../source/sam_model.rst:201
+#: ../../source/sam_model.rst:205
 msgid ""
 "The supported fine-tuned models: **sam**, **sam2**, **sam2.1**, **sam3**,"
 " **mobile-sam**, **edge-sam**, **sam-hq** and **sam-med2d**."
 msgstr ""
-"支持的fine tuned模型有：**sam**, **sam2**, **sam2.1**, **sam3**, **mobile-sam**, **edge-"
-"sam**, **sam-hq** and **sam-med2d**。"
-
+"支持的fine tuned模型有：**sam**, **sam2**, **sam2.1**, **sam3**, **mobile-sam**,"
+" **edge-sam**, **sam-hq** and **sam-med2d**。"

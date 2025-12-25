@@ -85,7 +85,7 @@ Since v1.5.0, ISAT supports the text prompt function based on sam3.
 
 Click the ``Finish annotation`` button ``[E]`` in the toolbar to end the annotation.
 
-When using sam, finish annotation will convert the mask into a polygon on the canvas.
+When using sam ``point prompt`` or ``box prompt``, ``finish annotation`` will convert the mask into a polygon on the canvas.
 
 .. tip:: ISAT offers multiple conversion methods, which you can find in the settings interface.
 
@@ -113,14 +113,14 @@ Click the ``Backspace`` button ``[Z]`` in the toolbar to return to the previous 
 5. Video Annotation
 ---------------------------------
 
-ISAT uses SAM2 for video annotation, provides the functions of annotating the next frame, the next five frames, and the entire video.
+ISAT uses SAM2 or SAM3 for video annotation, provides the functions of annotating the next frame, the next five frames, and the entire video.
 
 .. image:: ../../display/video_annotation.gif
     :alt: video_annotation.gif
 
 .. tip:: Video annotation process:
 
-    - Select SAM2 or SAM2.1 model.
+    - Select SAM2, SAM2.1 or SAM3 model.
     - Start the video annotation with an already annotated frame.
     - Click the ``Video segment once`` button or ``Video segment five times`` button or ``Video segment`` button.
 

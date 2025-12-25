@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 16:45+0800\n"
+"POT-Creation-Date: 2025-12-25 16:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -166,9 +166,9 @@ msgstr "点击工具栏中 ``完成标注`` 按钮 ``[E]`` 结束标注。"
 
 #: ../../source/annotation.rst:88
 msgid ""
-"When using sam, finish annotation will convert the mask into a polygon on"
-" the canvas."
-msgstr "当使用SAM进行半自动标注时，完成标注会将画布上的掩码转换为多边形。"
+"When using sam ``point prompt`` or ``box prompt``, ``finish annotation`` "
+"will convert the mask into a polygon on the canvas."
+msgstr "当使用SAM进行 ``点提示`` 或 ``框提示`` 半自动标注时， ``完成标注`` 会将画布上的掩码转换为多边形。"
 
 #: ../../source/annotation.rst:90
 msgid ""
@@ -228,9 +228,9 @@ msgstr "5. 视频标注"
 
 #: ../../source/annotation.rst:116
 msgid ""
-"ISAT uses SAM2 for video annotation, provides the functions of annotating"
-" the next frame, the next five frames, and the entire video."
-msgstr "ISAT使用SAM2模型实现视频标注，提供了下一帧，下五帧，所有帧的标注功能。"
+"ISAT uses SAM2 or SAM3 for video annotation, provides the functions of "
+"annotating the next frame, the next five frames, and the entire video."
+msgstr "ISAT使用 SAM2 或 SAM3 模型实现视频标注，提供了下一帧，下五帧，所有帧的标注功能。"
 
 #: ../../source/annotation.rst:-1
 msgid "video_annotation.gif"
@@ -241,8 +241,8 @@ msgid "Video annotation process:"
 msgstr "视频标注流程："
 
 #: ../../source/annotation.rst:123
-msgid "Select SAM2 or SAM2.1 model."
-msgstr "选择SAM2或SAM2.1模型"
+msgid "Select SAM2, SAM2.1 or SAM3 model."
+msgstr "选择 SAM2，SAM2.1 或 SAM3 模型"
 
 #: ../../source/annotation.rst:124
 msgid "Start the video annotation with an already annotated frame."

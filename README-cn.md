@@ -24,8 +24,6 @@
 # 更新
 - &#x1F389;: **V1.5.0版本，支持SAM3模型，并添加了文本提示（text prompt）功能**
 
-    **windows系统需要手动编译安装[triton](https://github.com/triton-lang/triton)库（SAM3的依赖）**
-
     <details>
         <summary>查看示例</summary>
             <h3>单类别</h3>

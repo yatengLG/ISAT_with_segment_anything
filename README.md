@@ -24,8 +24,6 @@ Please refers to our latest [Documentation in English](https://isat-sam.readthed
 # News
 - &#x1F389;: **In version 1.5.0, ISAT supports SAM3 and also supports text prompts.**
     
-    **You should build and install [triton](https://github.com/triton-lang/triton) in Windows OS.**
-
     <details>
         <summary>Show example</summary>
             <h3>For single category</h3>

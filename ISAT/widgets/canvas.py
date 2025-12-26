@@ -27,7 +27,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         image_data (np.ndarray): Image data.
         current_graph (Polygon): The polygon being annotated.
         prompt_box_item (Rect): The box for SAM box prompt.
-        current_line (Line): The line for repaint mode.
+        repaint_line_item (Line): The line for repaint mode.
         mode (STATUSMode): STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT.
         draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX
         contour_mode (CONTOURMode): The mode for convert sam mask to polygon.
@@ -72,7 +72,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.prompt_box_item: Rect = None
 
         # repaint line item
-        self.current_line: Line = None
+        self.repaint_line_item: Line = None
 
         self.mask: np.ndarray = None
         self.mask_alpha = 0.5
@@ -275,9 +275,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.REPAINT
         self.repaint_start_vertex = None
         self.repaint_end_vertex = None
-        if self.current_line is None:
-            self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
-            self.addItem(self.current_line)
+        if self.repaint_line_item is None:
+            self.repaint_line_item = Line()  # 重绘部分，由起始点开始的线段显示
+            self.addItem(self.repaint_line_item)
 
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
@@ -545,10 +545,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.removeItem(self.current_graph)
                 self.current_graph = None
         if self.mode == STATUSMode.REPAINT:
-            if self.current_line is not None:
-                self.current_line.delete()
-                self.removeItem(self.current_line)
-                self.current_line = None
+            if self.repaint_line_item is not None:
+                self.repaint_line_item.delete()
+                self.removeItem(self.repaint_line_item)
+                self.repaint_line_item = None
         if self.mode == STATUSMode.EDIT:
             for item in self.selectedItems():
                 item.setSelected(False)
@@ -1103,10 +1103,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 # 开始repaint
                 if self.hovered_vertex is not None:
                     self.repaint_start_vertex = self.hovered_vertex
-                    self.current_line.addPoint(
+                    self.repaint_line_item.addPoint(
                         self.repaint_start_vertex.pos()
                     )  # 添加当前点
-                    self.current_line.addPoint(
+                    self.repaint_line_item.addPoint(
                         self.repaint_start_vertex.pos()
                     )  # 添加随鼠标移动的点
             else:
@@ -1118,9 +1118,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.repaint_end_vertex = self.hovered_vertex
 
                     # 移除随鼠标移动的点
-                    self.current_line.removePoint(len(self.current_line.points) - 1)
+                    self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 1)
                     # 添加结束点
-                    self.current_line.addPoint(self.repaint_end_vertex.pos())
+                    self.repaint_line_item.addPoint(self.repaint_end_vertex.pos())
 
                     repaint_polygon = self.repaint_start_vertex.polygon
                     repaint_start_index = repaint_polygon.vertices.index(
@@ -1131,7 +1131,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     )
                     replace_points = [
                         QtCore.QPointF(vertex.pos())
-                        for vertex in self.current_line.vertices
+                        for vertex in self.repaint_line_item.vertices
                     ]
 
                     if repaint_start_index > repaint_end_index:
@@ -1173,20 +1173,20 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     repaint_polygon.redraw()
                     self.mainwindow.set_saved_state(False)
 
-                    self.current_line.delete()  # 清除所有路径
-                    self.removeItem(self.current_line)
-                    self.current_line = None
+                    self.repaint_line_item.delete()  # 清除所有路径
+                    self.removeItem(self.repaint_line_item)
+                    self.repaint_line_item = None
 
                     self.repaint_start_vertex = None
                     self.repaint_end_vertex = None
                     self.change_mode_to_view()
                 else:
                     # 移除随鼠标移动的点
-                    self.current_line.removePoint(len(self.current_line.points) - 1)
+                    self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 1)
                     # 添加当前点
-                    self.current_line.addPoint(pos)
+                    self.repaint_line_item.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_line.addPoint(pos)
+                    self.repaint_line_item.addPoint(pos)
 
         self.mainwindow.plugin_manager_dialog.trigger_on_mouse_press(pos)
 
@@ -1294,7 +1294,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.update_mask()
 
         if self.mode == STATUSMode.REPAINT:
-            self.current_line.movePoint(len(self.current_line.points) - 1, pos)
+            self.repaint_line_item.movePoint(len(self.repaint_line_item.points) - 1, pos)
 
         pen = QtGui.QPen()
         pen.setStyle(QtCore.Qt.PenStyle.DashLine)
@@ -1349,13 +1349,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加随鼠标移动的点
                     self.current_graph.addPoint(pos)
 
-            if self.mode == STATUSMode.REPAINT and self.current_line is not None:
+            if self.mode == STATUSMode.REPAINT and self.repaint_line_item is not None:
                 # 移除随鼠标移动的点
-                self.current_line.removePoint(len(self.current_line.points) - 1)
+                self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 1)
                 # 添加当前点
-                self.current_line.addPoint(pos)
+                self.repaint_line_item.addPoint(pos)
                 # 添加随鼠标移动的点
-                self.current_line.addPoint(pos)
+                self.repaint_line_item.addPoint(pos)
 
             self.mainwindow.plugin_manager_dialog.trigger_on_mouse_pressed_and_mouse_move(
                 pos
@@ -1445,9 +1445,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.current_graph.removePoint(len(self.current_graph.points) - 2)
 
         if self.mode == STATUSMode.REPAINT:
-            if len(self.current_line.points) < 2:
+            if len(self.repaint_line_item.points) < 2:
                 return
-            self.current_line.removePoint(len(self.current_line.points) - 2)
+            self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 2)
 
 
 class AnnotationView(QtWidgets.QGraphicsView):

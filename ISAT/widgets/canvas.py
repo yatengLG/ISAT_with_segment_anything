@@ -31,9 +31,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         mode (STATUSMode): STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT.
         draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX
         contour_mode (CONTOURMode): The mode for convert sam mask to polygon.
-        click_points (list): The click points for sam point prompt.
-        click_points_mode (list): The tag for sam point prompt.
-        prompt_points (list[PromptPoint, ...]): The prompt points for sam point prompt.
+        prompt_point_positions (list): The click points for sam point prompt.
+        prompt_point_labels (list): The tag for sam point prompt.
+        prompt_point_items (list[PromptPoint, ...]): The prompt points for sam point prompt.
         mask (np.ndarray): The mask output by sam model.
         mask_alpha (float): The alpha value for the mask.
         guide_line_x (QtWidgets.QGraphicsLineItem): The guideline.
@@ -65,9 +65,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         )  # 默认使用segment anything进行快速标注
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL  # 默认SAM只保留外轮廓
         self.contour_method = CONTOURMethod.SIMPLE  # 默认使用Simple
-        self.click_points = []  # SAM point prompt
-        self.click_points_mode = []  # SAM point prompt
-        self.prompt_points = []
+        self.prompt_point_positions = []  # SAM point prompt
+        self.prompt_point_labels = []  # SAM point prompt
+        self.prompt_point_items = []
         self.mask: np.ndarray = None
         self.mask_alpha = 0.5
 
@@ -519,14 +519,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.mainwindow.set_labels_visible(True)
 
         # mask清空
-        self.click_points.clear()
-        self.click_points_mode.clear()
-        for prompt_point in self.prompt_points:
+        self.prompt_point_positions.clear()
+        self.prompt_point_labels.clear()
+        for prompt_point_item in self.prompt_point_items:
             try:
-                self.removeItem(prompt_point)
+                self.removeItem(prompt_point_item)
             finally:
-                del prompt_point
-        self.prompt_points.clear()
+                del prompt_point_item
+        self.prompt_point_items.clear()
         self.update_mask()
 
         self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
@@ -556,14 +556,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
             self.mainwindow.set_labels_visible(True)
 
-        self.click_points.clear()
-        self.click_points_mode.clear()
-        for prompt_point in self.prompt_points:
+        self.prompt_point_positions.clear()
+        self.prompt_point_labels.clear()
+        for prompt_point_item in self.prompt_point_items:
             try:
-                self.removeItem(prompt_point)
+                self.removeItem(prompt_point_item)
             finally:
-                del prompt_point
-        self.prompt_points.clear()
+                del prompt_point_item
+        self.prompt_point_items.clear()
 
         self.update_mask()
 
@@ -1037,14 +1037,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-                    self.click_points.append([pos.x(), pos.y()])
-                    self.click_points_mode.append(1)
-                    prompt_point = PromptPoint(pos, 1)
-                    prompt_point.setVisible(
+                    self.prompt_point_positions.append([pos.x(), pos.y()])
+                    self.prompt_point_labels.append(1)
+                    prompt_point_item = PromptPoint(pos, 1)
+                    prompt_point_item.setVisible(
                         self.mainwindow.cfg["software"]["show_prompt"]
                     )
-                    self.prompt_points.append(prompt_point)
-                    self.addItem(prompt_point)
+                    self.prompt_point_items.append(prompt_point_item)
+                    self.addItem(prompt_point_item)
 
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:  # sam 矩形框提示
                     if self.current_sam_rect is None:
@@ -1067,14 +1067,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     raise ValueError("The draw mode named {} not supported.")
             if event.button() == QtCore.Qt.MouseButton.RightButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-                    self.click_points.append([pos.x(), pos.y()])
-                    self.click_points_mode.append(0)
-                    prompt_point = PromptPoint(pos, 0)
-                    prompt_point.setVisible(
+                    self.prompt_point_positions.append([pos.x(), pos.y()])
+                    self.prompt_point_labels.append(0)
+                    prompt_point_item = PromptPoint(pos, 0)
+                    prompt_point_item.setVisible(
                         self.mainwindow.cfg["software"]["show_prompt"]
                     )
-                    self.prompt_points.append(prompt_point)
-                    self.addItem(prompt_point)
+                    self.prompt_point_items.append(prompt_point_item)
+                    self.addItem(prompt_point_item)
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     pass
@@ -1368,9 +1368,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if not (self.image_data.ndim == 3 and self.image_data.shape[-1] == 3):
             return
 
-        if len(self.click_points) > 0 and len(self.click_points_mode) > 0:
+        if len(self.prompt_point_positions) > 0 and len(self.prompt_point_labels) > 0:
             mask = self.mainwindow.segany.predict_with_point_prompt(
-                self.click_points, self.click_points_mode
+                self.prompt_point_positions, self.prompt_point_labels
             )
             self.mask = mask
             color = np.array([0, 0, 255])
@@ -1423,14 +1423,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.CREATE:
             # 返回上一步操作
             if self.draw_mode == DRAWMode.SEGMENTANYTHING:
-                if len(self.click_points) > 0:
-                    self.click_points.pop()
-                if len(self.click_points_mode) > 0:
-                    self.click_points_mode.pop()
-                if len(self.prompt_points) > 0:
-                    prompt_point = self.prompt_points.pop()
-                    self.removeItem(prompt_point)
-                    del prompt_point
+                if len(self.prompt_point_positions) > 0:
+                    self.prompt_point_positions.pop()
+                if len(self.prompt_point_labels) > 0:
+                    self.prompt_point_labels.pop()
+                if len(self.prompt_point_items) > 0:
+                    prompt_point_item = self.prompt_point_items.pop()
+                    self.removeItem(prompt_point_item)
+                    del prompt_point_item
                 self.update_mask()
             elif self.draw_mode == DRAWMode.POLYGON:
                 if len(self.current_graph.points) < 2:

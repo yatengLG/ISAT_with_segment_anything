@@ -74,10 +74,12 @@ class DRAWMode(Enum):
 
     POLYGON = 0
     """Manually draw polygon"""
-    SEGMENTANYTHING = 1
+    SEGMENTANYTHING_POINT = 1
     """Segment anything with point prompt."""
     SEGMENTANYTHING_BOX = 2
     """Segment anything with box prompt."""
+    SEGMENTANYTHING_VISUAL = 2
+    """Segment anything with visual prompt."""
 
 
 class MAPMode(Enum):

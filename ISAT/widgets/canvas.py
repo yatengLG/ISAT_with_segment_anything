@@ -29,7 +29,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         prompt_box_item (Rect): The box for SAM box prompt.
         repaint_line_item (Line): The line for repaint mode.
         mode (STATUSMode): STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT.
-        draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX
+        draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING_POINT, SEGMENTANYTHING_BOX
         contour_mode (CONTOURMode): The mode for convert sam mask to polygon.
         prompt_point_positions (list): The click points for sam point prompt.
         prompt_point_labels (list): The tag for sam point prompt.
@@ -59,7 +59,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.current_graph: Polygon = None
 
         self.mode = STATUSMode.VIEW
-        self.draw_mode = DRAWMode.SEGMENTANYTHING   # 默认使用segment anything进行快速标注
+        self.draw_mode = DRAWMode.SEGMENTANYTHING_POINT   # 默认使用segment anything进行快速标注
         self.contour_mode = CONTOURMode.SAVE_EXTERNAL   # 默认SAM只保留外轮廓
         self.contour_method = CONTOURMethod.SIMPLE  # 默认使用Simple
 
@@ -340,7 +340,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def start_segment_anything(self):
         """Start segmenting anything with point prompt."""
-        self.draw_mode = DRAWMode.SEGMENTANYTHING
+        self.draw_mode = DRAWMode.SEGMENTANYTHING_POINT
         self.start_draw()
 
     def start_segment_anything_box(self):
@@ -391,7 +391,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         note = ""
 
         if (
-            self.draw_mode == DRAWMode.SEGMENTANYTHING
+            self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT
             or self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX
         ):
             # mask to polygon
@@ -1042,7 +1042,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.pressed = True
 
             if event.button() == QtCore.Qt.MouseButton.LeftButton:
-                if self.draw_mode == DRAWMode.SEGMENTANYTHING:
+                if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                     self.prompt_point_positions.append([pos.x(), pos.y()])
                     self.prompt_point_labels.append(1)
                     prompt_point_item = PromptPoint(pos, 1)
@@ -1072,7 +1072,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 else:
                     raise ValueError("The draw mode named {} not supported.")
             if event.button() == QtCore.Qt.MouseButton.RightButton:
-                if self.draw_mode == DRAWMode.SEGMENTANYTHING:
+                if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                     self.prompt_point_positions.append([pos.x(), pos.y()])
                     self.prompt_point_labels.append(0)
                     prompt_point_item = PromptPoint(pos, 0)
@@ -1091,7 +1091,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         pass
                 else:
                     raise ValueError("The draw mode named {} not supported.")
-            if self.draw_mode == DRAWMode.SEGMENTANYTHING:
+            if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                 self.update_mask()
 
         if self.mode == STATUSMode.REPAINT:
@@ -1428,7 +1428,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         """Backspace to the previous annotation state. Only work with create mode."""
         if self.mode == STATUSMode.CREATE:
             # 返回上一步操作
-            if self.draw_mode == DRAWMode.SEGMENTANYTHING:
+            if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                 if len(self.prompt_point_positions) > 0:
                     self.prompt_point_positions.pop()
                 if len(self.prompt_point_labels) > 0:

@@ -26,7 +26,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         mask_item (QtWidgets.QGraphicsPixmapItem): SAM mask pixmap item.
         image_data (np.ndarray): Image data.
         current_graph (Polygon): The polygon being annotated.
-        current_sam_rect (Rect): The box for SAM box prompt.
+        prompt_box_item (Rect): The box for SAM box prompt.
         current_line (Line): The line for repaint mode.
         mode (STATUSMode): STATUSMode. eg: CREATE, VIEW, EDIT, REPAINT.
         draw_mode (ISAT.configs.DRAWMode): draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX
@@ -57,17 +57,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mask_item: QtWidgets.QGraphicsPixmapItem = None
         self.image_data = None
         self.current_graph: Polygon = None
-        self.current_sam_rect: Rect = None
-        self.current_line: Line = None
+
         self.mode = STATUSMode.VIEW
-        self.draw_mode = (
-            DRAWMode.SEGMENTANYTHING
-        )  # 默认使用segment anything进行快速标注
-        self.contour_mode = CONTOURMode.SAVE_EXTERNAL  # 默认SAM只保留外轮廓
+        self.draw_mode = DRAWMode.SEGMENTANYTHING   # 默认使用segment anything进行快速标注
+        self.contour_mode = CONTOURMode.SAVE_EXTERNAL   # 默认SAM只保留外轮廓
         self.contour_method = CONTOURMethod.SIMPLE  # 默认使用Simple
-        self.prompt_point_positions = []  # SAM point prompt
-        self.prompt_point_labels = []  # SAM point prompt
+
+        # for point prompt
+        self.prompt_point_positions = []
+        self.prompt_point_labels = []
         self.prompt_point_items = []
+
+        # for box prompt
+        self.prompt_box_item: Rect = None
+
+        # repaint line item
+        self.current_line: Line = None
+
         self.mask: np.ndarray = None
         self.mask_alpha = 0.5
 
@@ -509,10 +515,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.current_graph = None
 
-        if self.current_sam_rect is not None:
-            self.current_sam_rect.delete()
-            self.removeItem(self.current_sam_rect)
-            self.current_sam_rect = None
+        if self.prompt_box_item is not None:
+            self.prompt_box_item.delete()
+            self.removeItem(self.prompt_box_item)
+            self.prompt_box_item = None
 
         self.change_mode_to_view()
         if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
@@ -547,10 +553,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for item in self.selectedItems():
                 item.setSelected(False)
 
-        if self.current_sam_rect is not None:
-            self.current_sam_rect.delete()
-            self.removeItem(self.current_sam_rect)
-            self.current_sam_rect = None
+        if self.prompt_box_item is not None:
+            self.prompt_box_item.delete()
+            self.removeItem(self.prompt_box_item)
+            self.prompt_box_item = None
 
         self.change_mode_to_view()
         if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
@@ -1047,12 +1053,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.addItem(prompt_point_item)
 
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:  # sam 矩形框提示
-                    if self.current_sam_rect is None:
-                        self.current_sam_rect = Rect()
-                        self.current_sam_rect.setZValue(2)
-                        self.addItem(self.current_sam_rect)
-                        self.current_sam_rect.addPoint(pos)
-                        self.current_sam_rect.addPoint(pos)
+                    if self.prompt_box_item is None:
+                        self.prompt_box_item = Rect()
+                        self.prompt_box_item.setZValue(2)
+                        self.addItem(self.prompt_box_item)
+                        self.prompt_box_item.addPoint(pos)
+                        self.prompt_box_item.addPoint(pos)
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
@@ -1281,9 +1287,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     pos = self._constrain_to_angle(last_point, pos)
                 self.current_graph.movePoint(len(self.current_graph.points) - 1, pos)
             if self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
-                if self.current_sam_rect is not None:
-                    self.current_sam_rect.movePoint(
-                        len(self.current_sam_rect.points) - 1, pos
+                if self.prompt_box_item is not None:
+                    self.prompt_box_item.movePoint(
+                        len(self.prompt_box_item.points) - 1, pos
                     )
                     self.update_mask()
 
@@ -1381,9 +1387,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             mask_image = cv2.addWeighted(
                 self.image_data, self.mask_alpha, mask_image, 1, 0
             )
-        elif self.current_sam_rect is not None:
-            point1 = self.current_sam_rect.points[0]
-            point2 = self.current_sam_rect.points[1]
+        elif self.prompt_box_item is not None:
+            point1 = self.prompt_box_item.points[0]
+            point2 = self.prompt_box_item.points[1]
             box = np.array(
                 [
                     min(point1.x(), point2.x()),

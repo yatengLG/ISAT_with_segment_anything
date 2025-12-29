@@ -1267,6 +1267,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.retranslateUi(self.annos_dock_widget)
         self.files_dock_widget.retranslateUi(self.files_dock_widget)
         self.text_prompt_dock_widget.retranslateUi(self.text_prompt_dock_widget)
+        self.visual_prompt_dock_widget.retranslateUi(self.visual_prompt_dock_widget)
         self.category_edit_widget.retranslateUi(self.category_edit_widget)
         self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
         self.category_setting_dialog.retranslateUi(self.category_setting_dialog)

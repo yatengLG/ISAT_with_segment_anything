@@ -367,6 +367,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def start_segment_anything_visual(self, positive: bool=True):
         """Start segmenting anything with visual prompt."""
+        if self.mainwindow.current_index is None:
+            return
 
         if self.prompt_visual_current_item is not None:
             try:

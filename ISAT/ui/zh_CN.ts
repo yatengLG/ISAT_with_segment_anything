@@ -1211,7 +1211,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Form</name>
     <message>
-        <location filename="info_dock.py" line="109"/>
+        <location filename="info_dock.py" line="114"/>
         <source>Form</source>
         <translation></translation>
     </message>
@@ -1221,27 +1221,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="info_dock.py" line="110"/>
+        <location filename="info_dock.py" line="115"/>
         <source>width :</source>
         <translation>宽:</translation>
     </message>
     <message>
-        <location filename="info_dock.py" line="111"/>
+        <location filename="info_dock.py" line="116"/>
         <source>height:</source>
         <translation>高:</translation>
     </message>
     <message>
-        <location filename="info_dock.py" line="112"/>
+        <location filename="info_dock.py" line="117"/>
         <source>depth :</source>
         <translation>通道:</translation>
     </message>
     <message>
-        <location filename="info_dock.py" line="113"/>
+        <location filename="info_dock.py" line="118"/>
         <source>note:</source>
         <translation>注释:</translation>
     </message>
     <message>
-        <location filename="info_dock.py" line="114"/>
+        <location filename="info_dock.py" line="119"/>
         <source>add extra image note here</source>
         <translation>为图片添加额外注释</translation>
     </message>
@@ -1351,90 +1351,105 @@ p, li { white-space: pre-wrap; }
         <translation>类别设置</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="114"/>
+        <location filename="text_prompt_dock.py" line="119"/>
         <source>Texr prompt</source>
         <translation>文本提示</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="115"/>
+        <location filename="text_prompt_dock.py" line="120"/>
         <source>Only english is supported.</source>
         <translation>只支持英文。</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="119"/>
+        <location filename="visual_prompt_dock.py" line="80"/>
         <source>Predict</source>
         <translation>预测</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="117"/>
+        <location filename="text_prompt_dock.py" line="122"/>
         <source>Single category</source>
         <translation>单类别</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="118"/>
+        <location filename="text_prompt_dock.py" line="123"/>
         <source>Categories setting</source>
         <translation>类别设置</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="120"/>
+        <location filename="text_prompt_dock.py" line="125"/>
         <source>Multiple categories</source>
         <translation>多类别</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="121"/>
+        <location filename="visual_prompt_dock.py" line="81"/>
         <source>Found</source>
         <translation>找到</translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="122"/>
+        <location filename="visual_prompt_dock.py" line="82"/>
         <source>......</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="text_prompt_dock.py" line="123"/>
+        <location filename="visual_prompt_dock.py" line="83"/>
         <source>object(s)</source>
         <translation>个目标</translation>
+    </message>
+    <message>
+        <location filename="visual_prompt_dock.py" line="77"/>
+        <source>Visual prompt</source>
+        <translation>视觉提示</translation>
+    </message>
+    <message>
+        <location filename="visual_prompt_dock.py" line="78"/>
+        <source>Positive box</source>
+        <translation>正例框</translation>
+    </message>
+    <message>
+        <location filename="visual_prompt_dock.py" line="79"/>
+        <source>Negative box</source>
+        <translation>反例框</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="491"/>
+        <location filename="MainWindow.py" line="497"/>
         <source>ISAT</source>
         <translation>ISAT 图片分割标注工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="492"/>
+        <location filename="MainWindow.py" line="498"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="493"/>
+        <location filename="MainWindow.py" line="499"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="494"/>
+        <location filename="MainWindow.py" line="500"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="495"/>
+        <location filename="MainWindow.py" line="501"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="546"/>
+        <location filename="MainWindow.py" line="553"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="498"/>
+        <location filename="MainWindow.py" line="504"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="499"/>
+        <location filename="MainWindow.py" line="505"/>
         <source>Info</source>
         <translation>图片信息</translation>
     </message>
@@ -1444,7 +1459,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">标签列表</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="501"/>
+        <location filename="MainWindow.py" line="507"/>
         <source>Files</source>
         <translation>文件列表</translation>
     </message>
@@ -1459,32 +1474,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="507"/>
+        <location filename="MainWindow.py" line="514"/>
         <source>Zoom in</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="509"/>
+        <location filename="MainWindow.py" line="516"/>
         <source>Zoom out</source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="512"/>
+        <location filename="MainWindow.py" line="519"/>
         <source>Fit window</source>
         <translation>适应窗口</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="514"/>
+        <location filename="MainWindow.py" line="521"/>
         <source>F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="515"/>
+        <location filename="MainWindow.py" line="522"/>
         <source>Setting</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="518"/>
+        <location filename="MainWindow.py" line="525"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -1494,12 +1509,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">标签保存位置</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="522"/>
+        <location filename="MainWindow.py" line="529"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="524"/>
+        <location filename="MainWindow.py" line="531"/>
         <source>S</source>
         <translation></translation>
     </message>
@@ -1509,12 +1524,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">上一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="526"/>
+        <location filename="MainWindow.py" line="533"/>
         <source>Prev image</source>
         <translation>上一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="528"/>
+        <location filename="MainWindow.py" line="535"/>
         <source>A</source>
         <translation></translation>
     </message>
@@ -1524,17 +1539,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">下一张</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="530"/>
+        <location filename="MainWindow.py" line="537"/>
         <source>Next image</source>
         <translation>下一张图片</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="532"/>
+        <location filename="MainWindow.py" line="539"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="534"/>
+        <location filename="MainWindow.py" line="541"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -1549,72 +1564,72 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">创建多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="572"/>
+        <location filename="MainWindow.py" line="579"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="539"/>
+        <location filename="MainWindow.py" line="546"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="540"/>
+        <location filename="MainWindow.py" line="547"/>
         <source>Delete polygon</source>
         <translation>删除多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="542"/>
+        <location filename="MainWindow.py" line="549"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="543"/>
+        <location filename="MainWindow.py" line="550"/>
         <source>Bit map</source>
         <translation>位图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="545"/>
+        <location filename="MainWindow.py" line="552"/>
         <source>Space</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="547"/>
+        <location filename="MainWindow.py" line="554"/>
         <source>Edit polygon</source>
         <translation>编辑多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="568"/>
+        <location filename="MainWindow.py" line="575"/>
         <source>E</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="549"/>
+        <location filename="MainWindow.py" line="556"/>
         <source>To top</source>
         <translation>置顶</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="550"/>
+        <location filename="MainWindow.py" line="557"/>
         <source>Move polygon to top layer</source>
         <translation>移动多边形到顶层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="552"/>
+        <location filename="MainWindow.py" line="559"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="553"/>
+        <location filename="MainWindow.py" line="560"/>
         <source>To bottom</source>
         <translation>置底</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="554"/>
+        <location filename="MainWindow.py" line="561"/>
         <source>Move polygon to bottom layer</source>
         <translation>移动多边形到底层</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="556"/>
+        <location filename="MainWindow.py" line="563"/>
         <source>B</source>
         <translation></translation>
     </message>
@@ -1634,7 +1649,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">语言</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="533"/>
+        <location filename="MainWindow.py" line="540"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
@@ -1644,42 +1659,42 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">中文</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="505"/>
+        <location filename="MainWindow.py" line="512"/>
         <source>Images dir</source>
         <translation>图片文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="506"/>
+        <location filename="MainWindow.py" line="513"/>
         <source>Open images dir.</source>
         <translation>打开图片文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="508"/>
+        <location filename="MainWindow.py" line="515"/>
         <source>Zoom in.</source>
         <translation>放大.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="510"/>
+        <location filename="MainWindow.py" line="517"/>
         <source>Zoom out.</source>
         <translation>缩小.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="513"/>
+        <location filename="MainWindow.py" line="520"/>
         <source>Fit window.</source>
         <translation>适应窗口.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="520"/>
+        <location filename="MainWindow.py" line="527"/>
         <source>Label dir</source>
         <translation>标签文件夹</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="521"/>
+        <location filename="MainWindow.py" line="528"/>
         <source>Open label dir.</source>
         <translation>打开标签文件夹.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="523"/>
+        <location filename="MainWindow.py" line="530"/>
         <source>Save annotation.</source>
         <translation>保存.</translation>
     </message>
@@ -1694,7 +1709,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开上一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="531"/>
+        <location filename="MainWindow.py" line="538"/>
         <source>Next image.</source>
         <translation>下一张图片.</translation>
     </message>
@@ -1704,127 +1719,127 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">打开下一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="541"/>
+        <location filename="MainWindow.py" line="548"/>
         <source>Delete polygon.</source>
         <translation>删除多边形.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="544"/>
+        <location filename="MainWindow.py" line="551"/>
         <source>Show instance or segmeent state.</source>
         <translation>显示语义与实例结果.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="548"/>
+        <location filename="MainWindow.py" line="555"/>
         <source>Edit polygon attribute.</source>
         <translation>编辑多边形属性.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="551"/>
+        <location filename="MainWindow.py" line="558"/>
         <source>Move polygon to top layer.</source>
         <translation>将多边形移动到最上层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="555"/>
+        <location filename="MainWindow.py" line="562"/>
         <source>Move polygon to bottom layer.</source>
         <translation>将多边形移动到最下层.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="516"/>
+        <location filename="MainWindow.py" line="523"/>
         <source>Setting.</source>
         <translation>设置.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="519"/>
+        <location filename="MainWindow.py" line="526"/>
         <source>Exit.</source>
         <translation>退出.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="527"/>
+        <location filename="MainWindow.py" line="534"/>
         <source>Prev image.</source>
         <translation>前一张图片.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="607"/>
+        <location filename="MainWindow.py" line="614"/>
         <source>Quick annotate using Segment anything.</source>
         <translation>使用Segment anything进行快速标注.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="538"/>
+        <location filename="MainWindow.py" line="545"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="558"/>
+        <location filename="MainWindow.py" line="565"/>
         <source>Backspace</source>
         <translation>回退</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="559"/>
+        <location filename="MainWindow.py" line="566"/>
         <source>Backspace.</source>
         <translation>回退.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="560"/>
+        <location filename="MainWindow.py" line="567"/>
         <source>Z</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="561"/>
+        <location filename="MainWindow.py" line="568"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="562"/>
+        <location filename="MainWindow.py" line="569"/>
         <source>Cancel annotation</source>
         <translation>取消标注</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="563"/>
+        <location filename="MainWindow.py" line="570"/>
         <source>Cancel annotation.</source>
         <translation>取消标注.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="564"/>
+        <location filename="MainWindow.py" line="571"/>
         <source>Esc</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="565"/>
+        <location filename="MainWindow.py" line="572"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="566"/>
+        <location filename="MainWindow.py" line="573"/>
         <source>Finish annotation</source>
         <translation>完成标注</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="567"/>
+        <location filename="MainWindow.py" line="574"/>
         <source>Finish annotation.</source>
         <translation>完成标注.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="569"/>
+        <location filename="MainWindow.py" line="576"/>
         <source>Polygon</source>
         <translation>多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="570"/>
+        <location filename="MainWindow.py" line="577"/>
         <source>Draw polygon</source>
         <translation>绘制多边形</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="571"/>
+        <location filename="MainWindow.py" line="578"/>
         <source>Accurately annotate by drawing polygon. </source>
         <translation>通过手动绘制多边形,进行精细标注. </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="574"/>
+        <location filename="MainWindow.py" line="581"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="576"/>
+        <location filename="MainWindow.py" line="583"/>
         <source>V</source>
         <translation></translation>
     </message>
@@ -1884,29 +1899,24 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">轮廓模式</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="497"/>
+        <location filename="MainWindow.py" line="503"/>
         <source>SAM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="500"/>
+        <location filename="MainWindow.py" line="506"/>
         <source>Annos</source>
         <translation>标注</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="502"/>
+        <location filename="MainWindow.py" line="508"/>
         <source>Categories</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="575"/>
+        <location filename="MainWindow.py" line="582"/>
         <source>Visible.</source>
         <translation>显示/隐藏.</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="554"/>
-        <source>Max only</source>
-        <translation type="obsolete">只保存最大轮廓</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="582"/>
@@ -1914,7 +1924,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">只保存最大轮廓.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="593"/>
+        <location filename="MainWindow.py" line="600"/>
         <source>Intersect</source>
         <translation>交集</translation>
     </message>
@@ -1939,17 +1949,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">模型管理</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="579"/>
+        <location filename="MainWindow.py" line="586"/>
         <source>Model manager</source>
         <translation>模型管理</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="582"/>
+        <location filename="MainWindow.py" line="589"/>
         <source>Converter</source>
         <translation>数据转换</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="583"/>
+        <location filename="MainWindow.py" line="590"/>
         <source>Auto segment with bounding box</source>
         <translation>自动分割[基于标注框]</translation>
     </message>
@@ -2064,52 +2074,52 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">像素值.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="584"/>
+        <location filename="MainWindow.py" line="591"/>
         <source>Annos validator</source>
         <translation>标注检查</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="585"/>
+        <location filename="MainWindow.py" line="592"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="586"/>
+        <location filename="MainWindow.py" line="593"/>
         <source>Ctrl+C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="587"/>
+        <location filename="MainWindow.py" line="594"/>
         <source>Union</source>
         <translation>并集</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="589"/>
+        <location filename="MainWindow.py" line="596"/>
         <source>Ctrl+A</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="590"/>
+        <location filename="MainWindow.py" line="597"/>
         <source>Subtract</source>
         <translation>差集</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="592"/>
+        <location filename="MainWindow.py" line="599"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="595"/>
+        <location filename="MainWindow.py" line="602"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="596"/>
+        <location filename="MainWindow.py" line="603"/>
         <source>Exclude</source>
         <translation>异或</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="598"/>
+        <location filename="MainWindow.py" line="605"/>
         <source>Ctrl+E</source>
         <translation></translation>
     </message>
@@ -2119,57 +2129,57 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">自动保存</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="599"/>
+        <location filename="MainWindow.py" line="606"/>
         <source>Video segment</source>
         <translation>视频分割</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="601"/>
+        <location filename="MainWindow.py" line="608"/>
         <source>Video segment once</source>
         <translation>视频分割1帧</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="603"/>
+        <location filename="MainWindow.py" line="610"/>
         <source>Video segment five times</source>
         <translation>视频分割5帧</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="600"/>
+        <location filename="MainWindow.py" line="607"/>
         <source>Video segment full frames.(only support sam2 model)</source>
         <translation>视频分割所有帧。（只支持sam2模型）</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="602"/>
+        <location filename="MainWindow.py" line="609"/>
         <source>Video segment the next frame.(only support sam2 model)</source>
         <translation>视频分割下一帧。（只支持sam2模型）</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="604"/>
+        <location filename="MainWindow.py" line="611"/>
         <source>Video segment next five frames.(only support sam2 model)</source>
         <translation>视频分割接下来五帧。（只支持sam2模型）</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="588"/>
+        <location filename="MainWindow.py" line="595"/>
         <source>Select two polygons from the canvas and calculate their union. </source>
         <translation>在画布上选择两个多边形并计算他们的并集。 </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="591"/>
+        <location filename="MainWindow.py" line="598"/>
         <source>Select two polygons from the canvas and calculate their subtract. </source>
         <translation>在画布上选择两个多边形并计算他们的差集。 </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="594"/>
+        <location filename="MainWindow.py" line="601"/>
         <source>Select two polygons from the canvas and calculate their intersect. </source>
         <translation>在画布上选择两个多边形并计算他们的交集。 </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="597"/>
+        <location filename="MainWindow.py" line="604"/>
         <source>Select two polygons from the canvas and calculate their exclude. </source>
         <translation>在画布上选择两个多边形并计算他们的异或。 </translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="605"/>
+        <location filename="MainWindow.py" line="612"/>
         <source>Video to frames</source>
         <translation>视频转帧图片</translation>
     </message>
@@ -2189,114 +2199,119 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">保存所有轮廓</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="606"/>
+        <location filename="MainWindow.py" line="613"/>
         <source>Segment anything box</source>
         <translation>Segment anything 框提示</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="608"/>
+        <location filename="MainWindow.py" line="615"/>
         <source>W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="609"/>
+        <location filename="MainWindow.py" line="616"/>
         <source>Prev group</source>
         <translation>上一组</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="610"/>
+        <location filename="MainWindow.py" line="617"/>
         <source>`</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="611"/>
+        <location filename="MainWindow.py" line="618"/>
         <source>Next group</source>
         <translation>下一组</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="612"/>
+        <location filename="MainWindow.py" line="619"/>
         <source>Ctrl+`</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="613"/>
+        <location filename="MainWindow.py" line="620"/>
         <source>Repaint</source>
         <translation>重绘</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="614"/>
+        <location filename="MainWindow.py" line="621"/>
         <source>R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="615"/>
+        <location filename="MainWindow.py" line="622"/>
         <source>Scene shot</source>
         <translation>图像截图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="616"/>
+        <location filename="MainWindow.py" line="623"/>
         <source>P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="617"/>
+        <location filename="MainWindow.py" line="624"/>
         <source>Window shot</source>
         <translation>窗口截图</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="618"/>
+        <location filename="MainWindow.py" line="625"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="536"/>
+        <location filename="MainWindow.py" line="543"/>
         <source>Segment anything point</source>
         <translation>Segment anything 点提示</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="503"/>
+        <location filename="MainWindow.py" line="509"/>
         <source>toolBar_2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="619"/>
+        <location filename="MainWindow.py" line="626"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="620"/>
+        <location filename="MainWindow.py" line="627"/>
         <source>Remote SAM</source>
         <translation>远程SAM服务器</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="621"/>
+        <location filename="MainWindow.py" line="628"/>
         <source>Process EXIF tag</source>
         <translation>处理EXIF标签</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="622"/>
+        <location filename="MainWindow.py" line="629"/>
         <source>Plugins</source>
         <translation>插件</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="581"/>
+        <location filename="MainWindow.py" line="588"/>
         <source>Model manager.</source>
         <translation>模型管理.</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="623"/>
+        <location filename="MainWindow.py" line="630"/>
         <source>Docs</source>
         <translation>文档</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="624"/>
+        <location filename="MainWindow.py" line="631"/>
         <source>Create a desktop shortcut</source>
         <translation>创建桌面快捷方式</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="504"/>
+        <location filename="MainWindow.py" line="510"/>
         <source>Text prompt</source>
         <translation>文本提示</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="511"/>
+        <source>Visual prompt</source>
+        <translation>视觉提示</translation>
     </message>
 </context>
 </TS>

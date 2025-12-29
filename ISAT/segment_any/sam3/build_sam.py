@@ -9,7 +9,7 @@ import os
 import torch
 import numpy as np
 from torchvision.transforms import v2
-import PIL
+from PIL import Image
 
 
 bpe_path = os.path.join(__file__, "..", "bpe_simple_vocab_16e6.txt.gz")
@@ -119,10 +119,29 @@ class Sam3Predictor:
         )
         return masks, scores, logits
 
-    def predict_with_text_prompt(self, image: PIL.Image, prompt:str):
+    def predict_with_text_prompt(self, image: Image, prompt:str):
         inference_state = self._sam3_processor.set_image(image)
         self._sam3_processor.reset_all_prompts(inference_state)
         inference_state = self._sam3_processor.set_text_prompt(state=inference_state, prompt=prompt)
+        masks = inference_state["masks"]
+        masks = masks.squeeze(1).cpu().numpy()
+        scores = inference_state["scores"]
+        return masks, scores
+
+    def predict_with_visual_prompt(self, image: Image.Image, boxes: list, labels: list):
+        height, width = image.height, image.width
+        # [xmin ymin, xmax, ymax] to [cx, cy, w, h]
+        boxes = [[(xmin + xmax) / 2, (ymin + ymax) / 2, xmax - xmin, ymax - ymin]
+                      for xmin, ymin, xmax, ymax in boxes]
+        # normalize
+        boxes = [[cx / width, cy / height, w / width, h / height] for cx, cy, w, h in boxes]
+
+        inference_state = self._sam3_processor.set_image(image)
+        self._sam3_processor.reset_all_prompts(inference_state)
+
+        for box, label in zip(boxes, labels):
+            inference_state = self._sam3_processor.add_geometric_prompt(state=inference_state, box=box, label=label)
+
         masks = inference_state["masks"]
         masks = masks.squeeze(1).cpu().numpy()
         scores = inference_state["scores"]

@@ -366,6 +366,15 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5"/>
   </widget>
+  <widget class="QDockWidget" name="visual_prompt_dock">
+   <property name="windowTitle">
+    <string>Visual prompt</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_7"/>
+  </widget>
   <action name="actionImages_dir">
    <property name="icon">
     <iconset resource="../icons.qrc">

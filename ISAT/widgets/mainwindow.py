@@ -36,6 +36,7 @@ from ISAT.widgets.converter_dialog import ConverterDialog
 from ISAT.widgets.files_dock_widget import FilesDockWidget
 from ISAT.widgets.info_dock_widget import InfoDockWidget
 from ISAT.widgets.text_prompt_dock_widget import TextPromptDockWidget
+from ISAT.widgets.visuall_prompt_dock_widget import VisualPromptDockWidget
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
 from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
 from ISAT.widgets.polygon import Polygon, PromptPoint
@@ -1001,6 +1002,80 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 )
         return num_masks
 
+    def predict_current_image_with_visual_prompt(self, visual_category: str, boxes:list, labels:list):
+        if len(boxes) != len(labels):
+            return
+
+        if self.current_index is None:
+            return
+        if (not self.use_segment_anything) or self.segany.model_source != "sam3":
+            print("Only SAM3 is supported!")
+            return
+
+        file_path = os.path.join(self.image_root, self.files_list[self.current_index])
+        image = Image.open(file_path).convert("RGB")
+        masks, scores = self.segany.predictor.predict_with_visual_prompt(image, boxes, labels)
+        num_masks = len(scores)
+
+        for i in range(num_masks):
+            mask = masks[i]
+            contours, hierarchy = self.mask_to_polygon(mask)
+
+            for index, contour in enumerate(contours):
+                if len(contour) < 3:
+                    continue
+                if self.scene.current_graph is None:
+                    self.scene.current_graph = Polygon()
+                    self.scene.addItem(self.scene.current_graph)
+
+                self.scene.current_graph.hover_alpha = int(
+                    self.cfg["software"]["polygon_alpha_hover"] * 255
+                )
+                self.scene.current_graph.nohover_alpha = int(
+                    self.cfg["software"]["polygon_alpha_no_hover"] * 255
+                )
+
+                for point in contour:
+                    x, y = point[0]
+                    x = max(0.1, x)
+                    y = max(0.1, y)
+                    self.scene.current_graph.addPoint(QtCore.QPointF(x, y))
+
+                if (
+                        self.scene.contour_mode == CONTOURMode.SAVE_ALL
+                        and hierarchy[0][index][3] != -1
+                ):
+                    # 保存所有轮廓，且当前轮廓为子轮廓，则自轮廓类别设置为背景
+                    category = "__background__"
+                    group = 0
+                else:
+                    category = visual_category
+                    group = self.current_group
+
+                self.scene.current_graph.set_drawed(
+                    category,
+                    group,
+                    False,
+                    "",
+                    QtGui.QColor(
+                        self.category_color_dict.get(category, "#6F737A")
+                    ),
+                    len(self.polygons) + 1,
+                )
+
+                # 添加新polygon
+                self.polygons.append(self.scene.current_graph)
+                self.annos_dock_widget.listwidget_add_polygon(
+                    self.scene.current_graph
+                )
+                self.scene.current_graph = None
+            if self.group_select_mode == "auto":
+                self.current_group += 1
+                self.categories_dock_widget.lineEdit_currentGroup.setText(
+                    str(self.current_group)
+                )
+        return num_masks
+
     def mask_to_polygon(self, mask:np.ndarray):
         mask = mask.astype("uint8") * 255
         h, w = mask.shape[-2:]
@@ -1045,6 +1120,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return contours, hierarchy
 
     def init_ui(self):
+        self.scene = AnnotationScene(mainwindow=self)
+
         self.category_setting_dialog = CategorySettingDialog(
             parent=self, mainwindow=self
         )
@@ -1064,13 +1141,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.text_prompt_dock_widget = TextPromptDockWidget(mainwindow=self)
         self.text_prompt_dock.setWidget(self.text_prompt_dock_widget)
 
+        self.visual_prompt_dock_widget = VisualPromptDockWidget(mainwindow=self)
+        self.visual_prompt_dock.setWidget(self.visual_prompt_dock_widget)
+
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
         self.remote_sam_dialog = RemoteSamDialog(self, self)
 
         self.plugin_manager_dialog = PluginManagerDialog(self, self)
 
-        self.scene = AnnotationScene(mainwindow=self)
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)

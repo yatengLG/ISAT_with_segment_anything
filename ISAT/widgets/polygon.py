@@ -668,6 +668,10 @@ class Rect(QtWidgets.QGraphicsRectItem):
         self.vertices = []
         self.color = QtGui.QColor("#ff0000")
 
+        pen = QtGui.QPen(self.color, self.line_width)
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
+
     def addPoint(self, point):
         self.points.append(point)
         vertex = RectVertex(

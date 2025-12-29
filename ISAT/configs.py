@@ -78,7 +78,7 @@ class DRAWMode(Enum):
     """Segment anything with point prompt."""
     SEGMENTANYTHING_BOX = 2
     """Segment anything with box prompt."""
-    SEGMENTANYTHING_VISUAL = 2
+    SEGMENTANYTHING_VISUAL = 3
     """Segment anything with visual prompt."""
 
 

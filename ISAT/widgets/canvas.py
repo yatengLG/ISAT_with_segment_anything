@@ -71,6 +71,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # for box prompt
         self.prompt_box_item: Rect = None
 
+        # for visual prompt
+        self.prompt_visual_current_item: Rect = None  # 当前正在绘制的矩形
+        self.prompt_visual_current_label: bool = True # 当前正在绘制的矩形类型
+        self.prompt_visual_items = []   # 存储已添加的矩形item
+        self.prompt_visual_labels = []  # 存储已添加的矩形类型
+
         # repaint line item
         self.repaint_line_item: Line = None
 
@@ -345,7 +351,39 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def start_segment_anything_box(self):
         """Start segmenting anything with box prompt."""
+        if self.prompt_box_item is not None:
+            try:
+                self.prompt_box_item.delete()
+                self.removeItem(self.prompt_box_item)
+            finally:
+                self.prompt_box_item = None
+
+        self.prompt_box_item = Rect()
+        self.prompt_box_item.setZValue(2)
+        self.addItem(self.prompt_box_item)
+
         self.draw_mode = DRAWMode.SEGMENTANYTHING_BOX
+        self.start_draw()
+
+    def start_segment_anything_visual(self, positive: bool=True):
+        """Start segmenting anything with visual prompt."""
+
+        if self.prompt_visual_current_item is not None:
+            try:
+                self.prompt_visual_current_item.delete()
+                self.removeItem(self.prompt_visual_current_item)
+            finally:
+                self.prompt_visual_current_item = None
+
+        self.prompt_visual_current_item = Rect()
+        self.prompt_visual_current_item.setZValue(2)
+        pen = QtGui.QPen(QtGui.QColor("#00ff00" if positive else "#ff0000"))
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.prompt_visual_current_item.setPen(pen)
+        self.prompt_visual_current_label = positive
+        self.addItem(self.prompt_visual_current_item)
+
+        self.draw_mode = DRAWMode.SEGMENTANYTHING_VISUAL
         self.start_draw()
 
     def start_draw_polygon(self):
@@ -382,8 +420,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def finish_draw(self):
         """Finish annotation. Convert mask to polygons when using sam, if the number of vertices less than 3, delete polygon."""
-        if self.current_graph is None:
-            return
 
         category = self.mainwindow.current_category
         group = self.mainwindow.current_group
@@ -458,7 +494,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     )
                 self.mask = None
         elif self.draw_mode == DRAWMode.POLYGON:
-            if len(self.current_graph.points) < 1:
+            if self.current_graph is None or len(self.current_graph.points) < 1:
                 return
 
             # 移除鼠标移动点
@@ -515,16 +551,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.current_graph = None
 
+        # prompt box clear
         if self.prompt_box_item is not None:
             self.prompt_box_item.delete()
             self.removeItem(self.prompt_box_item)
             self.prompt_box_item = None
 
-        self.change_mode_to_view()
-        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
-            self.mainwindow.set_labels_visible(True)
-
-        # mask清空
+        # prompt point clear
         self.prompt_point_positions.clear()
         self.prompt_point_labels.clear()
         for prompt_point_item in self.prompt_point_items:
@@ -533,6 +566,25 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             finally:
                 del prompt_point_item
         self.prompt_point_items.clear()
+
+        # visual prompt clear
+        if self.prompt_visual_current_item is not None:
+            self.prompt_visual_current_item.delete()
+            self.removeItem(self.prompt_visual_current_item)
+            self.prompt_visual_current_item = None
+        for prompt_visual_item in self.prompt_visual_items:
+            try:
+                prompt_visual_item.delete()
+                self.removeItem(prompt_visual_item)
+            finally:
+                del prompt_visual_item
+        self.prompt_visual_items.clear()
+        self.prompt_visual_labels.clear()
+
+        self.change_mode_to_view()
+        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
+            self.mainwindow.set_labels_visible(True)
+
         self.update_mask()
 
         self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
@@ -553,15 +605,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for item in self.selectedItems():
                 item.setSelected(False)
 
+        # prompt box clear
         if self.prompt_box_item is not None:
             self.prompt_box_item.delete()
             self.removeItem(self.prompt_box_item)
             self.prompt_box_item = None
 
-        self.change_mode_to_view()
-        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
-            self.mainwindow.set_labels_visible(True)
-
+        # prompt point clear
         self.prompt_point_positions.clear()
         self.prompt_point_labels.clear()
         for prompt_point_item in self.prompt_point_items:
@@ -570,6 +620,24 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             finally:
                 del prompt_point_item
         self.prompt_point_items.clear()
+
+        # visual prompt clear
+        if self.prompt_visual_current_item is not None:
+            self.prompt_visual_current_item.delete()
+            self.removeItem(self.prompt_visual_current_item)
+            self.prompt_visual_current_item = None
+        for prompt_visual_item in self.prompt_visual_items:
+            try:
+                prompt_visual_item.delete()
+                self.removeItem(prompt_visual_item)
+            finally:
+                del prompt_visual_item
+        self.prompt_visual_items.clear()
+        self.prompt_visual_labels.clear()
+
+        self.change_mode_to_view()
+        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
+            self.mainwindow.set_labels_visible(True)
 
         self.update_mask()
 
@@ -1053,12 +1121,26 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.addItem(prompt_point_item)
 
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:  # sam 矩形框提示
-                    if self.prompt_box_item is None:
-                        self.prompt_box_item = Rect()
-                        self.prompt_box_item.setZValue(2)
-                        self.addItem(self.prompt_box_item)
+                    if len(self.prompt_box_item.points) < 1:
                         self.prompt_box_item.addPoint(pos)
                         self.prompt_box_item.addPoint(pos)
+                    else:
+                        self.finish_draw()
+
+                elif self.draw_mode == DRAWMode.SEGMENTANYTHING_VISUAL:
+                    if len(self.prompt_visual_current_item.points) < 1:
+                        self.prompt_visual_current_item.addPoint(pos)
+                        self.prompt_visual_current_item.addPoint(pos)
+                    else:
+                        self.prompt_visual_current_item.removePoint(len(self.prompt_visual_current_item.points) - 1)
+                        self.prompt_visual_current_item.addPoint(pos)
+
+                        # add to list
+                        self.prompt_visual_items.append(self.prompt_visual_current_item)
+                        self.prompt_visual_labels.append(self.prompt_visual_current_label)
+
+                        self.prompt_visual_current_item = None
+                        self.change_mode_to_view()
 
                 elif self.draw_mode == DRAWMode.POLYGON:
                     # 移除随鼠标移动的点
@@ -1286,12 +1368,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 计算约束后的位置
                     pos = self._constrain_to_angle(last_point, pos)
                 self.current_graph.movePoint(len(self.current_graph.points) - 1, pos)
-            if self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
+
+            elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
                 if self.prompt_box_item is not None:
-                    self.prompt_box_item.movePoint(
-                        len(self.prompt_box_item.points) - 1, pos
-                    )
+                    self.prompt_box_item.movePoint(len(self.prompt_box_item.points) - 1, pos)
                     self.update_mask()
+
+            elif self.draw_mode == DRAWMode.SEGMENTANYTHING_VISUAL:
+                if self.prompt_visual_current_item is not None:
+                    self.prompt_visual_current_item.movePoint(len(self.prompt_visual_current_item.points) - 1, pos)
+
+            else:
+                pass
 
         if self.mode == STATUSMode.REPAINT:
             self.repaint_line_item.movePoint(len(self.repaint_line_item.points) - 1, pos)
@@ -1388,6 +1476,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.image_data, self.mask_alpha, mask_image, 1, 0
             )
         elif self.prompt_box_item is not None:
+            if len(self.prompt_box_item.points) < 2:
+                return
             point1 = self.prompt_box_item.points[0]
             point2 = self.prompt_box_item.points[1]
             box = np.array(

@@ -22,10 +22,16 @@
 ---
 
 # 更新
-- &#x1F389;: **V1.5.0版本，支持SAM3模型，并添加了文本提示（text prompt）功能**
+- **V1.5.2版本，支持基于sam3的视觉提示（visual prompt）功能**
+    <details>
+        <summary>视觉提示</summary>
+            <p align='center'><img src="./display/visual_prompt.gif" alt="visual_prompt.gif"></p>
+    </details>
+
+- **V1.5.0版本，支持SAM3模型，并添加了文本提示（text prompt）功能**
 
     <details>
-        <summary>查看示例</summary>
+        <summary>文本提示</summary>
             <h3>单类别</h3>
                 <p align='center'><img src="./display/text_prompt1.gif" alt="text_prompt1.gif"></p>
             <h3>多类别</h3>

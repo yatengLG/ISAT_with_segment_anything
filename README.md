@@ -22,10 +22,17 @@ Please refers to our latest [Documentation in English](https://isat-sam.readthed
 ---
 
 # News
-- &#x1F389;: **In version 1.5.0, ISAT supports SAM3 and also supports text prompts.**
+- **In version 1.5.2, ISAT supports visual prompt base on SAM3.**
     
     <details>
-        <summary>Show example</summary>
+        <summary>Visual prompt</summary>
+            <p align='center'><img src="./display/visual_prompt.gif" alt="visual_prompt.gif"></p>
+    </details>
+
+- **In version 1.5.0, ISAT supports SAM3 and also supports text prompt.**
+    
+    <details>
+        <summary>Text prompt</summary>
             <h3>For single category</h3>
                 <p align='center'><img src="./display/text_prompt1.gif" alt="text_prompt1.gif"></p>
             <h3>For multiple categories</h3>

@@ -180,10 +180,26 @@ ISAT.widgets.switch\_button module
    :undoc-members:
    :show-inheritance:
 
+ISAT.widgets.text\_prompt\_dock\_widget module
+----------------------------------------------
+
+.. automodule:: ISAT.widgets.text_prompt_dock_widget
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ISAT.widgets.video\_to\_frames\_dialog module
 ---------------------------------------------
 
 .. automodule:: ISAT.widgets.video_to_frames_dialog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ISAT.widgets.visuall\_prompt\_dock\_widget module
+-------------------------------------------------
+
+.. automodule:: ISAT.widgets.visuall_prompt_dock_widget
    :members:
    :undoc-members:
    :show-inheritance:

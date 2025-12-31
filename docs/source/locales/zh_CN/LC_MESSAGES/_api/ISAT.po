@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-21 17:34+0800\n"
+"POT-Creation-Date: 2025-12-31 14:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -27,11 +27,11 @@ msgstr ""
 msgid "Subpackages"
 msgstr ""
 
-#: ../../source/_api/ISAT.rst:15
+#: ../../source/_api/ISAT.rst:16
 msgid "Submodules"
 msgstr ""
 
-#: ../../source/_api/ISAT.rst:18
+#: ../../source/_api/ISAT.rst:19
 msgid "ISAT.annotation module"
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Save annotation to self.label_path"
 msgstr ""
 
-#: ../../source/_api/ISAT.rst:26
+#: ../../source/_api/ISAT.rst:27
 msgid "ISAT.configs module"
 msgstr ""
 
@@ -188,12 +188,16 @@ msgstr ""
 msgid "Manually draw polygon"
 msgstr ""
 
-#: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING:1 of
+#: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING_POINT:1 of
 msgid "Segment anything with point prompt."
 msgstr ""
 
 #: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING_BOX:1 of
 msgid "Segment anything with box prompt."
+msgstr ""
+
+#: ../../docstring ISAT.configs.DRAWMode.SEGMENTANYTHING_VISUAL:1 of
+msgid "Segment anything with visual prompt."
 msgstr ""
 
 #: ISAT.configs.MAPMode:1 of
@@ -216,11 +220,11 @@ msgstr ""
 msgid "Only save all contour."
 msgstr ""
 
-#: ../../source/_api/ISAT.rst:34
+#: ../../source/_api/ISAT.rst:35
 msgid "ISAT.main module"
 msgstr ""
 
-#: ../../source/_api/ISAT.rst:42
+#: ../../source/_api/ISAT.rst:43
 msgid "Module contents"
 msgstr ""
 

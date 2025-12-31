@@ -6,7 +6,7 @@
 
 ```shell
 # update apt docs
-sphinx-apidoc -o source/_api ../ISAT/ ../ISAT/segment_any/edge_sam/* ../ISAT/segment_any/mobile_sam/* ../ISAT/segment_any/sam2/* ../ISAT/segment_any/segment_anything/* ../ISAT/segment_any/segment_anything_hq/* ../ISAT/segment_any/segment_anything_fast/* ../ISAT/segment_any/segment_anything_med2d/* ../ISAT/ui/* ../ISAT/icons_rc.py -f
+sphinx-apidoc -o source/_api ../ISAT/ ../ISAT/segment_any/edge_sam/* ../ISAT/segment_any/mobile_sam/* ../ISAT/segment_any/sam2/* ../ISAT/segment_any/sam3/* ../ISAT/segment_any/segment_anything/* ../ISAT/segment_any/segment_anything_hq/* ../ISAT/segment_any/segment_anything_fast/* ../ISAT/segment_any/segment_anything_med2d/* ../ISAT/ui/* ../ISAT/icons_rc.py -f
 ```
 
 ### Internationalization

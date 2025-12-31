@@ -80,6 +80,15 @@ Since v1.5.0, ISAT supports the text prompt function based on sam3.
 
 .. image:: ../../display/text_prompt2.gif
 
+1.2.4 Visual Prompt
+.................................
+
+Since v1.5.2, ISAT supports the visual prompt function based on sam3.
+
+Use the positive box and negative box for prediction.
+
+.. image:: ../../display/visual_prompt.gif
+
 2. Finish Annotation
 ---------------------------------
 

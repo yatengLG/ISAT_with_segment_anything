@@ -14,11 +14,11 @@ Features
 .. hint:: Focusing on the field of image segmentation, we strive to create the best image segmentation annotation software.
 
 - Better performance and a smoother annotation experience.
-- Utilizes `Segment anything model <https://github.com/facebookresearch/segment-anything>`_ with point and bounding box prompts to semi-automatic annotation.
-- Supports text prompt based on sam3.
 - Supports `SAM <https://github.com/facebookresearch/segment-anything>`_, `SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM3 <https://github.com/facebookresearch/sam3>`_, `Sam-HQ <https://github.com/SysCV/sam-hq>`_, `MobileSAM <https://github.com/ChaoningZhang/MobileSAM>`_, `EdgeSAM <https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM <https://github.com/bowang-lab/MedSAM>`_.
+- Supports `Segment anything model <https://github.com/facebookresearch/segment-anything>`_ with ``point prompt`` and ``box prompt`` to semi-automatic annotation.
+- Supports ``text prompt`` and ``visual prompt`` based on sam3.
 - Supports using remote server for SAM encoding.
-- Supports video annotation.
+- Supports ``video annotation``.
 - Supports plugin extensions.
 
 Contents

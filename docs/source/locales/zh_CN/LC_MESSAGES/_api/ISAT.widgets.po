@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 16:45+0800\n"
+"POT-Creation-Date: 2025-12-31 14:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -96,6 +96,7 @@ msgstr ""
 #: ISAT.widgets.canvas.AnnotationScene.mouseMoveEvent
 #: ISAT.widgets.canvas.AnnotationScene.mousePressEvent
 #: ISAT.widgets.canvas.AnnotationScene.mouseReleaseEvent
+#: ISAT.widgets.canvas.AnnotationScene.start_segment_anything_visual
 #: ISAT.widgets.canvas.AnnotationView.wheelEvent
 #: ISAT.widgets.category_dock_widget.CategoriesDockWidget.item_choice
 #: ISAT.widgets.category_dock_widget.CategoriesDockWidget.radio_choice
@@ -118,6 +119,7 @@ msgstr ""
 #: ISAT.widgets.mainwindow.MainWindow.change_prompt_visiable
 #: ISAT.widgets.mainwindow.MainWindow.change_real_time_area_state
 #: ISAT.widgets.mainwindow.MainWindow.change_saturation
+#: ISAT.widgets.mainwindow.MainWindow.change_use_video_segmentation_state
 #: ISAT.widgets.mainwindow.MainWindow.change_vertex_size
 #: ISAT.widgets.mainwindow.MainWindow.closeEvent
 #: ISAT.widgets.mainwindow.MainWindow.init_sam_finish
@@ -127,6 +129,7 @@ msgstr ""
 #: ISAT.widgets.mainwindow.MainWindow.load_actions_shortcut
 #: ISAT.widgets.mainwindow.MainWindow.mask_to_polygon
 #: ISAT.widgets.mainwindow.MainWindow.predict_current_image_with_text_prompt
+#: ISAT.widgets.mainwindow.MainWindow.predict_current_image_with_visual_prompt
 #: ISAT.widgets.mainwindow.MainWindow.sam_encoder_finish
 #: ISAT.widgets.mainwindow.MainWindow.save_cfg
 #: ISAT.widgets.mainwindow.MainWindow.screen_shot
@@ -347,7 +350,7 @@ msgid "STATUSMode"
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene:50 of
-msgid "draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX"
+msgid "draw mode.eg:POLYGON, SEGMENTANYTHING_POINT, SEGMENTANYTHING_BOX"
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene:52 of
@@ -514,6 +517,10 @@ msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.start_segment_anything_box:1 of
 msgid "Start segmenting anything with box prompt."
+msgstr ""
+
+#: ISAT.widgets.canvas.AnnotationScene.start_segment_anything_visual:1 of
+msgid "Start segmenting anything with visual prompt."
 msgstr ""
 
 #: ISAT.widgets.canvas.AnnotationScene.start_draw_polygon:1 of
@@ -1818,5 +1825,8 @@ msgstr ""
 #~ "effect when converting sam masks to "
 #~ "polygons, can reduce the number of "
 #~ "vertices of the polygon."
+#~ msgstr ""
+
+#~ msgid "draw mode.eg:POLYGON, SEGMENTANYTHING, SEGMENTANYTHING_BOX"
 #~ msgstr ""
 

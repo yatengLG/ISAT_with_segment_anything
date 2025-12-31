@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ISAT-SAM \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 17:12+0800\n"
+"POT-Creation-Date: 2025-12-31 14:21+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -38,7 +38,8 @@ msgid ""
 "<https://github.com/yatengLG/ISAT_with_segment_anything>`_ on GitHub and "
 "view the source code."
 msgstr ""
-"你可以在Github上 `访问该项目 <https://github.com/yatengLG/ISAT_with_segment_anything>`_ ，并获取源码。"
+"你可以在Github上 `访问该项目 "
+"<https://github.com/yatengLG/ISAT_with_segment_anything>`_ ，并获取源码。"
 
 #: ../../source/index.rst:-1
 msgid "software.gif"
@@ -60,17 +61,6 @@ msgstr "更好的性能，更流畅的标注体验。"
 
 #: ../../source/index.rst:17
 msgid ""
-"Utilizes `Segment anything model <https://github.com/facebookresearch"
-"/segment-anything>`_ with point and bounding box prompts to semi-"
-"automatic annotation."
-msgstr "使用SAM的点提示与框提示，进行半自动标注。"
-
-#: ../../source/index.rst:18
-msgid "Supports text prompt based on sam3."
-msgstr "支持基于SAM3的文本提示功能。"
-
-#: ../../source/index.rst:19
-msgid ""
 "Supports `SAM <https://github.com/facebookresearch/segment-anything>`_, "
 "`SAM2 <https://github.com/facebookresearch/segment-anything-2>`_, `SAM3 "
 "<https://github.com/facebookresearch/sam3>`_, `Sam-HQ "
@@ -87,13 +77,24 @@ msgstr ""
 "<https://github.com/chongzhou96/EdgeSAM>`_ and `MedSAM "
 "<https://github.com/bowang-lab/MedSAM>`_。"
 
+#: ../../source/index.rst:18
+msgid ""
+"Supports `Segment anything model <https://github.com/facebookresearch"
+"/segment-anything>`_ with ``point prompt`` and ``box prompt`` to semi-"
+"automatic annotation."
+msgstr "使用SAM的 ``点提示`` 与 ``框提示``，进行半自动标注。"
+
+#: ../../source/index.rst:19
+msgid "Supports ``text prompt`` and ``visual prompt`` based on sam3."
+msgstr "支持基于SAM3的 ``文本提示`` 与 ``视觉提示``。"
+
 #: ../../source/index.rst:20
 msgid "Supports using remote server for SAM encoding."
 msgstr "支持使用远程服务器进行SAM编码。"
 
 #: ../../source/index.rst:21
-msgid "Supports video annotation."
-msgstr "支持视频标注。"
+msgid "Supports ``video annotation``."
+msgstr "支持 ``视频标注``。"
 
 #: ../../source/index.rst:22
 msgid "Supports plugin extensions."

@@ -28,6 +28,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
         self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
         self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
+        self.checkBox_lock.stateChanged.connect(self.set_all_polygon_lock)
 
         # addded group view
         self.comboBox_group_select.currentIndexChanged.connect(
@@ -225,6 +226,11 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             check_box = widget.findChild(QtWidgets.QCheckBox, "check_box")
             check_box.setChecked(visible)
         self.checkBox_visible.setChecked(visible)
+
+    def set_all_polygon_lock(self, locked: bool = None):
+        locked = self.checkBox_locked.isChecked() if locked is None else locked
+        for polygon in self.mainwindow.polygons:
+            polygon.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, not locked)
 
     def set_group_polygon_visible(self):
         """

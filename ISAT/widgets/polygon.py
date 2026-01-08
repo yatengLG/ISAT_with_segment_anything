@@ -378,6 +378,9 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         for vertex in self.vertices:
             vertex.setColor(color)
 
+        self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable,
+                        not self.scene().mainwindow.annos_dock_widget.checkBox_lock.isChecked())
+
     def calculate_area(self) -> float:
         """calculate area of polygon"""
         area = 0

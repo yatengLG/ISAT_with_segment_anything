@@ -1256,7 +1256,7 @@ p, li { white-space: pre-wrap; }
         <translation>跳转到指定图片.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="79"/>
+        <location filename="anno_dock.py" line="83"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
@@ -1326,17 +1326,17 @@ p, li { white-space: pre-wrap; }
         <translation>下一张图片的sam特征状态.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="80"/>
+        <location filename="anno_dock.py" line="86"/>
         <source>Select polygons by group.</source>
         <translation>通过组id筛选多边形.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="81"/>
+        <location filename="anno_dock.py" line="87"/>
         <source>Prev group.</source>
         <translation>上一组.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="82"/>
+        <location filename="anno_dock.py" line="88"/>
         <source>Next group.</source>
         <translation>下一组.</translation>
     </message>
@@ -1409,6 +1409,16 @@ p, li { white-space: pre-wrap; }
         <location filename="visual_prompt_dock.py" line="79"/>
         <source>Negative box</source>
         <translation>反例框</translation>
+    </message>
+    <message>
+        <location filename="anno_dock.py" line="85"/>
+        <source>Lock</source>
+        <translation>锁定</translation>
+    </message>
+    <message>
+        <location filename="anno_dock.py" line="84"/>
+        <source>Cannot be moved after locking.</source>
+        <translation>锁定后不可移动。</translation>
     </message>
 </context>
 <context>

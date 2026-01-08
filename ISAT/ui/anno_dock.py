@@ -33,7 +33,11 @@ class Ui_Form(object):
         self.checkBox_visible.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.checkBox_visible.setObjectName("checkBox_visible")
         self.horizontalLayout.addWidget(self.checkBox_visible)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.checkBox_lock = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_lock.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.checkBox_lock.setObjectName("checkBox_lock")
+        self.horizontalLayout.addWidget(self.checkBox_lock)
+        spacerItem = QtWidgets.QSpacerItem(0, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.comboBox_group_select = QtWidgets.QComboBox(self.widget)
         self.comboBox_group_select.setMaximumSize(QtCore.QSize(60, 16777215))
@@ -77,7 +81,8 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.checkBox_visible.setText(_translate("Form", "Visible"))
+        self.checkBox_lock.setToolTip(_translate("Form", "Cannot be moved after locking."))
+        self.checkBox_lock.setText(_translate("Form", "Lock"))
         self.comboBox_group_select.setStatusTip(_translate("Form", "Select polygons by group."))
         self.button_prev_group.setStatusTip(_translate("Form", "Prev group."))
         self.button_next_group.setStatusTip(_translate("Form", "Next group."))
-

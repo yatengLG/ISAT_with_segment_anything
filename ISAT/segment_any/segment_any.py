@@ -385,7 +385,7 @@ class SegAnyVideo:
             # the original video height and width, used for resizing final output scores
             inference_state["video_height"] = video_height
             inference_state["video_width"] = video_width
-            inference_state["device"] = torch.device("cuda")
+            inference_state["device"] = torch.device(self.device)
             if offload_state_to_cpu:
                 inference_state["storage_device"] = torch.device("cpu")
             else:

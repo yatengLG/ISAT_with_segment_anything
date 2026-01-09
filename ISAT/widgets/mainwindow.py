@@ -718,7 +718,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.segany_video_thread.tag.connect(self.seg_video_finish)
 
             # sam2 建议使用bfloat16
-            if self.segany_video.model_dtype == torch.float32 and "sam2" in self.segany.model_source:
+            if self.segany_video.model_dtype == torch.float32 and "sam2" in self.segany.model_source and torch.cuda.is_available():
                 if self.cfg["software"]["language"] == "zh":
                     QtWidgets.QMessageBox.warning(
                         self,

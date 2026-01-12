@@ -773,6 +773,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.statusbar.showMessage(
                 "Use the checkpoint named {}.".format(checkpoint_name), 3000
             )
+
+            # 非sam3时，隐藏text prompt 与 visual prompt窗口
+            is_sam3_model = self.segany.model_source == "sam3"
+            self.text_prompt_dock.setVisible(is_sam3_model)
+            self.visual_prompt_dock.setVisible(is_sam3_model)
+
         else:
             self.use_segment_anything = False
 

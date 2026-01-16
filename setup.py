@@ -44,7 +44,7 @@ setup(
         "pillow",
         "pyqt5",
         "pyyaml",
-        "torch>=2.1.1",
+        "torch>=2.3.0",
         "torchvision",
         "pycocotools",
         "timm",

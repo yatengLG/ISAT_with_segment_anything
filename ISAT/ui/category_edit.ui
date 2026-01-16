@@ -39,17 +39,11 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QCheckBox" name="checkBox_category_enabled">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>100</width>
           <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>16777215</height>
          </size>
         </property>
         <property name="text">
@@ -63,21 +57,39 @@
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_6" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QCheckBox" name="checkBox_group_enabled">
         <property name="minimumSize">
          <size>
-          <width>50</width>
+          <width>100</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -88,6 +100,15 @@
       </item>
       <item>
        <widget class="QSpinBox" name="spinBox_group">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
         <property name="maximum">
          <number>9999</number>
         </property>
@@ -112,16 +133,16 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QCheckBox" name="checkBox_note_enabled">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>100</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>60</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -140,53 +161,12 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>layer:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_layer">
-        <property name="minimumSize">
-         <size>
-          <width>60</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+    <widget class="QWidget" name="widget_7" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -199,7 +179,46 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
+      <item>
+       <widget class="QCheckBox" name="checkBox_iscrowded_enabled">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>crowded:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_iscrowded">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>is crowded</string>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
    <item>
@@ -218,11 +237,58 @@
        <number>0</number>
       </property>
       <item>
+       <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>layer:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_layer">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_5">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>80</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">
@@ -236,19 +302,6 @@
          <string/>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -268,13 +321,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QCheckBox" name="checkBox_iscrowded">
-        <property name="text">
-         <string>is crowded</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">

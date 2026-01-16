@@ -49,6 +49,9 @@
         <property name="text">
          <string>category:</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -95,6 +98,9 @@
         </property>
         <property name="text">
          <string>group:</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -149,6 +155,9 @@
         <property name="text">
          <string>note:</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -195,6 +204,9 @@
         </property>
         <property name="text">
          <string>crowded:</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

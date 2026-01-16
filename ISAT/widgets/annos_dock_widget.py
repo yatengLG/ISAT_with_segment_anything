@@ -25,6 +25,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.polygon_item_dict = {}
+        self.unique_groups = set()  # 存储group id
 
         self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
         self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
@@ -97,7 +98,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def update_listwidget(self):
         """Update the annotations list widget."""
-        current_group_id = self.comboBox_group_select.currentText()
+        self.unique_groups = set()
         self.listWidget.clear()
         self.polygon_item_dict.clear()
         self.checkBox_visible.setChecked(True)
@@ -108,27 +109,25 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             self.listWidget.setItemWidget(item, item_widget)
             self.polygon_item_dict[polygon] = item
 
+            self.unique_groups.add(str(polygon.group))
+
         if self.mainwindow.load_finished:
             self.mainwindow.set_saved_state(False)
 
-        unique_groups = {polygon.group for polygon in self.mainwindow.polygons}
+        self.update_combobox_group_select()
+
+    def update_combobox_group_select(self):
         self.comboBox_group_select.clear()
         self.comboBox_group_select.addItem("All")  # add an option to view all groups
         self.comboBox_group_select.addItems(
             sorted(
-                [str(item) for item in unique_groups],
+                self.unique_groups,
                 key=lambda s: [
                     int(t) if t.isdigit() else t for t in re.split(r"(\d+)", s)
                 ],
             )
         )
-        if any(
-            current_group_id == self.comboBox_group_select.itemText(i)
-            for i in range(self.comboBox_group_select.count())
-        ):
-            self.comboBox_group_select.setCurrentText(current_group_id)
-        else:
-            self.comboBox_group_select.setCurrentIndex(0)
+        self.comboBox_group_select.setCurrentIndex(0)
 
     def listwidget_add_polygon(self, polygon: Polygon):
         """
@@ -143,6 +142,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.polygon_item_dict[polygon] = item
         self.mainwindow.set_saved_state(False)
 
+        if str(polygon.group) not in self.unique_groups:
+            self.unique_groups.add(str(polygon.group))
+            self.update_combobox_group_select()
+
     def listwidget_remove_polygon(self, polygon: Polygon):
         """
         Remove a item from the list widget.
@@ -155,6 +158,13 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.listWidget.takeItem(self.listWidget.row(item))
         del self.polygon_item_dict[polygon]
         self.mainwindow.set_saved_state(False)
+
+        # 处理group下拉列表
+        for keep_polygon in self.mainwindow.polygons:
+            if polygon.group == keep_polygon.group:
+                return
+        self.unique_groups.remove(str(polygon.group))
+        self.update_combobox_group_select()
 
     def set_selected(self, polygon: Polygon):
         """Set item selected."""

@@ -129,6 +129,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         )
         self.comboBox_group_select.setCurrentIndex(0)
 
+        # polygons and groups num.
+        self.label_polygons_num.setText(str(len(self.mainwindow.polygons)))
+        self.label_groups_num.setText(str(len(self.unique_groups)))
+
     def listwidget_add_polygon(self, polygon: Polygon):
         """
         Add a new item to the list widget.

@@ -312,7 +312,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
 
     def mouseDoubleClickEvent(self, event: "QGraphicsSceneMouseEvent"):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            self.scene().mainwindow.category_edit_widget.polygon = self
+            self.scene().mainwindow.category_edit_widget.polygons = [self]
             self.scene().mainwindow.category_edit_widget.load_cfg()
             self.scene().mainwindow.category_edit_widget.show()
 

@@ -13,13 +13,31 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.mainwindow = mainwindow
         self.scene = scene
-        self.polygon = None
+        self.polygons = []
 
         self.listWidget.itemClicked.connect(self.get_category)
         self.pushButton_apply.clicked.connect(self.apply)
         self.pushButton_cancel.clicked.connect(self.cancel)
 
+        #
+        self.checkBox_category_enabled.stateChanged.connect(self.check_category_enabled)
+        self.checkBox_group_enabled.stateChanged.connect(self.check_group_enabled)
+        self.checkBox_note_enabled.stateChanged.connect(self.check_note_enabled)
+        self.checkBox_iscrowded_enabled.stateChanged.connect(self.check_crowded_enabled)
+
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+
+    def check_category_enabled(self, checked):
+        self.lineEdit_category.setEnabled(checked)
+
+    def check_group_enabled(self, checked):
+        self.spinBox_group.setEnabled(checked)
+
+    def check_note_enabled(self, checked):
+        self.lineEdit_note.setEnabled(checked)
+
+    def check_crowded_enabled(self, checked):
+        self.checkBox_iscrowded.setEnabled(checked)
 
     def load_cfg(self):
         """Load the cfg and update the interface."""
@@ -58,31 +76,37 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
             self.listWidget.addItem(item)
             self.listWidget.setItemWidget(item, widget)
 
-            if self.polygon is not None and self.polygon.category == name:
+            if len(self.polygons) == 1 and self.polygons[0].category == name:
                 self.listWidget.setCurrentItem(item)
 
-        if self.polygon is None:
+        if len(self.polygons) != 1:
             self.spinBox_group.clear()
             self.lineEdit_category.clear()
             self.checkBox_iscrowded.setCheckState(False)
             self.lineEdit_note.clear()
             self.label_layer.setText("{}".format(""))
             self.label_area.setText("{}".format(""))
-        else:
-            self.lineEdit_category.setText("{}".format(self.polygon.category))
+
+            self.checkBox_category_enabled.setChecked(False)
+            self.checkBox_group_enabled.setChecked(False)
+            self.checkBox_note_enabled.setChecked(False)
+            self.checkBox_iscrowded_enabled.setChecked(False)
+
+        elif len(self.polygons) == 1:
+            self.lineEdit_category.setText("{}".format(self.polygons[0].category))
             self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.spinBox_group.setValue(self.polygon.group)
+            self.spinBox_group.setValue(self.polygons[0].group)
             iscrowd = (
                 QtCore.Qt.CheckState.Checked
-                if self.polygon.iscrowd
+                if self.polygons[0].iscrowd
                 else QtCore.Qt.CheckState.Unchecked
             )
             self.checkBox_iscrowded.setCheckState(iscrowd)
-            self.lineEdit_note.setText("{}".format(self.polygon.note))
-            self.label_layer.setText("{}".format(self.polygon.zValue()))
+            self.lineEdit_note.setText("{}".format(self.polygons[0].note))
+            self.label_layer.setText("{}".format(self.polygons[0].zValue()))
             self.label_area.setText(
                 "{:.0f}{}".format(
-                    self.polygon.area,
+                    self.polygons[0].area,
                     (
                         ""
                         if self.mainwindow.cfg["software"]["real_time_area"]
@@ -90,6 +114,12 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
                     ),
                 )
             )
+
+            self.checkBox_category_enabled.setChecked(True)
+            self.checkBox_group_enabled.setChecked(True)
+            self.checkBox_note_enabled.setChecked(True)
+            self.checkBox_iscrowded_enabled.setChecked(True)
+
         if self.listWidget.count() == 0:
             QtWidgets.QMessageBox.warning(
                 self, "Warning", "Please set categorys before tagging."
@@ -109,28 +139,29 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
 
     def apply(self):
         """Set attributes of polygon."""
-        category = self.lineEdit_category.text()
-        group = self.spinBox_group.value()
+        for polygon in self.polygons:
+            category = self.lineEdit_category.text() if self.checkBox_category_enabled.isChecked() else polygon.category
+            group = self.spinBox_group.value() if self.checkBox_group_enabled.isChecked() else polygon.group
+            is_crowd = self.checkBox_iscrowded.isChecked() if self.checkBox_iscrowded_enabled.isChecked() else polygon.iscrowd
+            note = self.lineEdit_note.text() if self.checkBox_note_enabled.isChecked() else polygon.note
 
-        is_crowd = self.checkBox_iscrowded.isChecked()
-        note = self.lineEdit_note.text()
-        if not category:
-            QtWidgets.QMessageBox.warning(
-                self, "Warning", "Please select one category before submitting."
+            if not category:
+                QtWidgets.QMessageBox.warning(
+                    self, "Warning", "Please select one category before submitting."
+                )
+                return
+
+            # 设置polygon 属性
+            polygon.set_drawed(
+                category,
+                group,
+                is_crowd,
+                note,
+                QtGui.QColor(self.mainwindow.category_color_dict.get(category, "#6F737A")),
             )
-            return
+            self.mainwindow.annos_dock_widget.update_listwidget()
 
-        # 设置polygon 属性
-        self.polygon.set_drawed(
-            category,
-            group,
-            is_crowd,
-            note,
-            QtGui.QColor(self.mainwindow.category_color_dict.get(category, "#6F737A")),
-        )
-        self.mainwindow.annos_dock_widget.update_listwidget()
-
-        self.polygon = None
+        self.polygons = []
         self.scene.change_mode_to_view()
         self.close()
 

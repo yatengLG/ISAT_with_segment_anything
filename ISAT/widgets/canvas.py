@@ -688,10 +688,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         selectd_items = [item for item in selectd_items if isinstance(item, Polygon)]
         if len(selectd_items) < 1:
             return
-        item = selectd_items[0]
-        if not item:
-            return
-        self.mainwindow.category_edit_widget.polygon = item
+
+        self.mainwindow.category_edit_widget.polygons = selectd_items
         self.mainwindow.category_edit_widget.load_cfg()
         self.mainwindow.category_edit_widget.show()
 

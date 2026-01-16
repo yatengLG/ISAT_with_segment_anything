@@ -186,7 +186,6 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
             if len(items) > 1:
                 self.mainwindow.actionTo_top.setEnabled(False)
                 self.mainwindow.actionTo_bottom.setEnabled(False)
-                self.mainwindow.actionEdit.setEnabled(False)
                 self.mainwindow.actionCopy.setEnabled(False)
         else:
             self.mainwindow.scene.change_mode_to_view()

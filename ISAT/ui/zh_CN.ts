@@ -4,12 +4,12 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="category_edit.py" line="131"/>
+        <location filename="category_edit.py" line="160"/>
         <source>category:</source>
         <translation>类别:</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="132"/>
+        <location filename="category_edit.py" line="161"/>
         <source>group:</source>
         <translation>组:</translation>
     </message>
@@ -19,27 +19,27 @@
         <translation type="obsolete">id</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="133"/>
+        <location filename="category_edit.py" line="162"/>
         <source>note:</source>
         <translation>注释:</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="134"/>
+        <location filename="category_edit.py" line="163"/>
         <source>add extra note here</source>
         <translation>为标签添加额外注释</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="137"/>
+        <location filename="category_edit.py" line="165"/>
         <source>is crowded</source>
         <translation>拥挤</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="135"/>
+        <location filename="category_edit.py" line="166"/>
         <source>layer:</source>
         <translation>图层:</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="138"/>
+        <location filename="category_edit.py" line="168"/>
         <source>&amp;Cancel</source>
         <translation>&amp;取消</translation>
     </message>
@@ -960,12 +960,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="130"/>
+        <location filename="category_edit.py" line="159"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="category_edit.py" line="136"/>
+        <location filename="category_edit.py" line="167"/>
         <source>area:</source>
         <translation>面积:</translation>
     </message>
@@ -1207,6 +1207,11 @@ p, li { white-space: pre-wrap; }
         <source>Closing this feature can reduce VRAM requirements.</source>
         <translation>关闭该功能，可以显著减少显存需求。</translation>
     </message>
+    <message>
+        <location filename="category_edit.py" line="164"/>
+        <source>crowded:</source>
+        <translation>拥挤:</translation>
+    </message>
 </context>
 <context>
     <name>Form</name>
@@ -1256,7 +1261,7 @@ p, li { white-space: pre-wrap; }
         <translation>跳转到指定图片.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="83"/>
+        <location filename="anno_dock.py" line="97"/>
         <source>Visible</source>
         <translation>显示/隐藏</translation>
     </message>
@@ -1326,17 +1331,17 @@ p, li { white-space: pre-wrap; }
         <translation>下一张图片的sam特征状态.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="86"/>
+        <location filename="anno_dock.py" line="100"/>
         <source>Select polygons by group.</source>
         <translation>通过组id筛选多边形.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="87"/>
+        <location filename="anno_dock.py" line="101"/>
         <source>Prev group.</source>
         <translation>上一组.</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="88"/>
+        <location filename="anno_dock.py" line="102"/>
         <source>Next group.</source>
         <translation>下一组.</translation>
     </message>
@@ -1411,14 +1416,29 @@ p, li { white-space: pre-wrap; }
         <translation>反例框</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="85"/>
+        <location filename="anno_dock.py" line="99"/>
         <source>Lock</source>
         <translation>锁定</translation>
     </message>
     <message>
-        <location filename="anno_dock.py" line="84"/>
+        <location filename="anno_dock.py" line="98"/>
         <source>Cannot be moved after locking.</source>
         <translation>锁定后不可移动。</translation>
+    </message>
+    <message>
+        <location filename="anno_dock.py" line="103"/>
+        <source>Polygons num.</source>
+        <translation>多边形数量.</translation>
+    </message>
+    <message>
+        <location filename="anno_dock.py" line="106"/>
+        <source>--</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="anno_dock.py" line="105"/>
+        <source>Groups num.</source>
+        <translation>组数量.</translation>
     </message>
 </context>
 <context>

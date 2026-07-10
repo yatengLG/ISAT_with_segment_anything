@@ -120,119 +120,126 @@ class SegAnyThread(QThread):
             image : Image to be encoded.
         """
         if self.mainwindow.use_remote_sam:
-            shape = ",".join(map(str, image.shape))
-            dtype = image.dtype.name
-            response = requests.post(
-                url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/api/encode",
-                files={"file": ("", image.tobytes(), "application/octet-stream")},
-                data={"dtype": dtype, "shape": shape},
-            )
+            return self._sam_encoder_remote(image)
+        return self._sam_encoder_local(image)
 
-            if response.status_code == 200:
-                data = orjson.loads(response.content)
-                features = data["features"]
-                original_size = data["original_size"]
-                input_size = data["input_size"]
+    def _sam_encoder_remote(self, image: np.ndarray):
+        """Encode image via remote SAM server."""
+        shape = ",".join(map(str, image.shape))
+        dtype = image.dtype.name
+        response = requests.post(
+            url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/api/encode",
+            files={"file": ("", image.tobytes(), "application/octet-stream")},
+            data={"dtype": dtype, "shape": shape},
+        )
 
-                dtype = self.mainwindow.segany.model_dtype
-                device = self.mainwindow.segany.device
+        if response.status_code != 200:
+            raise RuntimeError(response.status_code)
 
-                if self.mainwindow.segany.model_source == "sam_hq":
-                    features, interm_features = features
-                    features = torch.tensor(
-                        features, dtype=torch.float32, device=device
-                    )
-                    interm_features = [
-                        torch.tensor(interm_feature, dtype=dtype, device=device)
-                        for interm_feature in interm_features
-                    ]
-                    features = (features, interm_features)
+        data = orjson.loads(response.content)
+        features = data["features"]
+        original_size = data["original_size"]
+        input_size = data["input_size"]
 
-                elif "sam2" in self.mainwindow.segany.model_source:
-                    image_embed = features["image_embed"]
-                    high_res_feats = features["high_res_feats"]
-                    image_embed = torch.tensor(
-                        image_embed, dtype=torch.float32, device=device
-                    )
-                    high_res_feats = [
-                        torch.tensor(high_res_feat, dtype=dtype, device=device)
-                        for high_res_feat in high_res_feats
-                    ]
-                    features["image_embed"] = image_embed
-                    features["high_res_feats"] = high_res_feats
-                else:
-                    features = torch.tensor(
-                        features, dtype=torch.float32, device=device
-                    )
-                return features, original_size, input_size
-            else:
-                raise RuntimeError(response.status_code)
+        dtype = self.mainwindow.segany.model_dtype
+        device = self.mainwindow.segany.device
 
+        if self.mainwindow.segany.model_source == "sam_hq":
+            features, interm_features = features
+            features = torch.tensor(features, dtype=torch.float32, device=device)
+            interm_features = [
+                torch.tensor(interm_feature, dtype=dtype, device=device)
+                for interm_feature in interm_features
+            ]
+            features = (features, interm_features)
+        elif "sam2" in self.mainwindow.segany.model_source:
+            image_embed = features["image_embed"]
+            high_res_feats = features["high_res_feats"]
+            image_embed = torch.tensor(image_embed, dtype=torch.float32, device=device)
+            high_res_feats = [
+                torch.tensor(high_res_feat, dtype=dtype, device=device)
+                for high_res_feat in high_res_feats
+            ]
+            features["image_embed"] = image_embed
+            features["high_res_feats"] = high_res_feats
         else:
-            torch.cuda.empty_cache()
-            with torch.inference_mode(), torch.autocast(
-                self.mainwindow.segany.device,
-                dtype=self.mainwindow.segany.model_dtype,
-                enabled=torch.cuda.is_available(),
-            ):
+            features = torch.tensor(features, dtype=torch.float32, device=device)
+        return features, original_size, input_size
 
-                # sam2 函数命名等发生很大改变，为了适应后续基于sam2的各类模型，这里分开处理sam1和sam2模型
-                if "sam2" in self.mainwindow.segany.model_type:
-                    _orig_hw = tuple([image.shape[:2]])
-                    input_image = self.mainwindow.segany.predictor._transforms(image)
-                    input_image = input_image[None, ...].to(
-                        self.mainwindow.segany.predictor.device
-                    )
-                    backbone_out = self.mainwindow.segany.predictor.model.forward_image(
-                        input_image
-                    )
-                    _, vision_feats, _, _ = (
-                        self.mainwindow.segany.predictor.model._prepare_backbone_features(
-                            backbone_out
-                        )
-                    )
-                    if self.mainwindow.segany.predictor.model.directly_add_no_mem_embed:
-                        vision_feats[-1] = (
-                            vision_feats[-1]
-                            + self.mainwindow.segany.predictor.model.no_mem_embed
-                        )
-                    feats = [
-                        feat.permute(1, 2, 0).view(1, -1, *feat_size)
-                        for feat, feat_size in zip(
-                            vision_feats[::-1],
-                            self.mainwindow.segany.predictor._bb_feat_sizes[::-1],
-                        )
-                    ][::-1]
-                    _features = {
-                        "image_embed": feats[-1],
-                        "high_res_feats": tuple(feats[:-1]),
-                    }
-                    return _features, _orig_hw, _orig_hw
-                elif "sam3" in self.mainwindow.segany.model_type:
-                    _features, _orig_hw = self.mainwindow.segany.predictor.encode(image)
-                    return _features, _orig_hw, _orig_hw
+    def _sam_encoder_local(self, image: np.ndarray):
+        """Encode image via local SAM model."""
+        torch.cuda.empty_cache()
+        with torch.inference_mode(), torch.autocast(
+            self.mainwindow.segany.device,
+            dtype=self.mainwindow.segany.model_dtype,
+            enabled=torch.cuda.is_available(),
+        ):
+            model_type = self.mainwindow.segany.model_type
+            if "sam2" in model_type:
+                return self._sam_encoder_local_sam2(image)
+            elif "sam3" in model_type:
+                return self._sam_encoder_local_sam3(image)
+            else:
+                return self._sam_encoder_local_sam1(image)
 
-                else:
-                    input_image = (
-                        self.mainwindow.segany.predictor.transform.apply_image(image)
-                    )
-                    input_image_torch = torch.as_tensor(
-                        input_image, device=self.mainwindow.segany.predictor.device
-                    )
-                    input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[
-                        None, :, :, :
-                    ]
+    def _sam_encoder_local_sam2(self, image: np.ndarray):
+        """Local encode for SAM2 models."""
+        _orig_hw = tuple([image.shape[:2]])
+        input_image = self.mainwindow.segany.predictor._transforms(image)
+        input_image = input_image[None, ...].to(
+            self.mainwindow.segany.predictor.device
+        )
+        backbone_out = self.mainwindow.segany.predictor.model.forward_image(
+            input_image
+        )
+        _, vision_feats, _, _ = (
+            self.mainwindow.segany.predictor.model._prepare_backbone_features(
+                backbone_out
+            )
+        )
+        if self.mainwindow.segany.predictor.model.directly_add_no_mem_embed:
+            vision_feats[-1] = (
+                vision_feats[-1]
+                + self.mainwindow.segany.predictor.model.no_mem_embed
+            )
+        feats = [
+            feat.permute(1, 2, 0).view(1, -1, *feat_size)
+            for feat, feat_size in zip(
+                vision_feats[::-1],
+                self.mainwindow.segany.predictor._bb_feat_sizes[::-1],
+            )
+        ][::-1]
+        _features = {
+            "image_embed": feats[-1],
+            "high_res_feats": tuple(feats[:-1]),
+        }
+        return _features, _orig_hw, _orig_hw
 
-                    original_size = image.shape[:2]
-                    input_size = tuple(input_image_torch.shape[-2:])
+    def _sam_encoder_local_sam3(self, image: np.ndarray):
+        """Local encode for SAM3 models."""
+        _features, _orig_hw = self.mainwindow.segany.predictor.encode(image)
+        return _features, _orig_hw, _orig_hw
 
-                    input_image = self.mainwindow.segany.predictor.model.preprocess(
-                        input_image_torch
-                    )
-                    features = self.mainwindow.segany.predictor.model.image_encoder(
-                        input_image
-                    )
-                    return features, original_size, input_size
+    def _sam_encoder_local_sam1(self, image: np.ndarray):
+        """Local encode for SAM1 models."""
+        input_image = self.mainwindow.segany.predictor.transform.apply_image(image)
+        input_image_torch = torch.as_tensor(
+            input_image, device=self.mainwindow.segany.predictor.device
+        )
+        input_image_torch = input_image_torch.permute(2, 0, 1).contiguous()[
+            None, :, :, :
+        ]
+
+        original_size = image.shape[:2]
+        input_size = tuple(input_image_torch.shape[-2:])
+
+        input_image = self.mainwindow.segany.predictor.model.preprocess(
+            input_image_torch
+        )
+        features = self.mainwindow.segany.predictor.model.image_encoder(
+            input_image
+        )
+        return features, original_size, input_size
 
     def run(self):
         if self.index is not None:
@@ -571,6 +578,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         group_select_mode (bool): The mode of group. Default is 'auto'.
     """
 
+    # Color constants
+    COLOR_DEFAULT = "#6F737A"
+    COLOR_STATE_SUCCESS = "#00FF00"
+    COLOR_STATE_DELETED = "#999999"
+    COLOR_STATE_WORKING = "#FFFF00"
+    # Mapping from SAM encoder state to display color
+    STATE_COLOR_MAP = {
+        0: "#999999",   # deleted
+        1: "#00FF00",   # success
+        2: "#FFFF00",   # working
+        3: "#999999",   # error
+    }
+
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
@@ -797,41 +817,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             state (int): The state of sam encoder result. 0 - delete; 1 - success; 2 - working; 3 - error.
             message (str): Error message.
         """
-        # 图片识别状态刷新
-        if state == 1:
-            color = "#00FF00"
-        elif state == 0:
-            color = "#999999"
-        elif state == 2:
-            color = "#FFFF00"
-        elif state == 3:
-            color = "#999999"
-            if index == self.current_index:
-                QtWidgets.QMessageBox.warning(
-                    self,
-                    "warning",
-                    "SAM not support the image: {}\nError: {}".format(
-                        self.files_list[index], message
-                    ),
-                )
+        color = self.STATE_COLOR_MAP.get(state, self.COLOR_STATE_DELETED)
 
-        else:
-            color = "#999999"
+        if state == 3 and index == self.current_index:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "warning",
+                "SAM not support the image: {}\nError: {}".format(
+                    self.files_list[index], message
+                ),
+            )
 
-        if index == self.current_index:
-            self.files_dock_widget.label_current_state.setStyleSheet(
+        # Update file dock state indicators
+        state_labels = {
+            self.current_index: self.files_dock_widget.label_current_state,
+            self.current_index - 1: self.files_dock_widget.label_prev_state,
+            self.current_index + 1: self.files_dock_widget.label_next_state,
+        }
+        if index in state_labels:
+            state_labels[index].setStyleSheet(
                 "background-color: {};".format(color)
             )
-        elif index == self.current_index - 1:
-            self.files_dock_widget.label_prev_state.setStyleSheet(
-                "background-color: {};".format(color)
-            )
-        elif index == self.current_index + 1:
-            self.files_dock_widget.label_next_state.setStyleSheet(
-                "background-color: {};".format(color)
-            )
-        else:
-            pass
 
         # item = self.files_dock_widget.listWidget.item(index)
         # widget = self.files_dock_widget.listWidget.itemWidget(item)
@@ -935,8 +941,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.progressbar.setValue(0)
             self.setEnabled(True)
 
-    def predict_current_image_with_text_prompt(self, prompt:str=None):
-        if prompt is None or prompt == "":
+    def predict_current_image_with_text_prompt(self, prompt: str = None):
+        if not prompt:
             return
         if self.current_index is None:
             return
@@ -947,71 +953,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         file_path = os.path.join(self.image_root, self.files_list[self.current_index])
         image = Image.open(file_path).convert("RGB")
         masks, scores = self.segany.predictor.predict_with_text_prompt(image, prompt)
-        num_masks = len(scores)
+        return self._process_sam_masks(masks, scores, prompt)
 
-        for i in range(num_masks):
-            mask = masks[i]
-            contours, hierarchy = self.mask_to_polygon(mask)
-
-            for index, contour in enumerate(contours):
-                if len(contour) < 3:
-                    continue
-                if self.scene.current_graph is None:
-                    self.scene.current_graph = Polygon()
-                    self.scene.addItem(self.scene.current_graph)
-
-                self.scene.current_graph.hover_alpha = int(
-                    self.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.scene.current_graph.nohover_alpha = int(
-                    self.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in contour:
-                    x, y = point[0]
-                    x = max(0.1, x)
-                    y = max(0.1, y)
-                    self.scene.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                if (
-                        self.scene.contour_mode == CONTOURMode.SAVE_ALL
-                        and hierarchy[0][index][3] != -1
-                ):
-                    # 保存所有轮廓，且当前轮廓为子轮廓，则自轮廓类别设置为背景
-                    category = "__background__"
-                    group = 0
-                else:
-                    category = prompt
-                    group = self.current_group
-
-                self.scene.current_graph.set_drawed(
-                    category,
-                    group,
-                    False,
-                    "",
-                    QtGui.QColor(
-                        self.category_color_dict.get(category, "#6F737A")
-                    ),
-                    len(self.polygons) + 1,
-                )
-
-                # 添加新polygon
-                self.polygons.append(self.scene.current_graph)
-                self.annos_dock_widget.listwidget_add_polygon(
-                    self.scene.current_graph
-                )
-                self.scene.current_graph = None
-            if self.group_select_mode == "auto":
-                self.current_group += 1
-                self.categories_dock_widget.lineEdit_currentGroup.setText(
-                    str(self.current_group)
-                )
-        return num_masks
-
-    def predict_current_image_with_visual_prompt(self, visual_category: str, boxes:list, labels:list):
+    def predict_current_image_with_visual_prompt(
+        self, visual_category: str, boxes: list, labels: list
+    ):
         if len(boxes) != len(labels):
             return
-
         if self.current_index is None:
             return
         if (not self.use_segment_anything) or self.segany.model_source != "sam3":
@@ -1020,67 +968,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         file_path = os.path.join(self.image_root, self.files_list[self.current_index])
         image = Image.open(file_path).convert("RGB")
-        masks, scores = self.segany.predictor.predict_with_visual_prompt(image, boxes, labels)
-        num_masks = len(scores)
-
-        for i in range(num_masks):
-            mask = masks[i]
-            contours, hierarchy = self.mask_to_polygon(mask)
-
-            for index, contour in enumerate(contours):
-                if len(contour) < 3:
-                    continue
-                if self.scene.current_graph is None:
-                    self.scene.current_graph = Polygon()
-                    self.scene.addItem(self.scene.current_graph)
-
-                self.scene.current_graph.hover_alpha = int(
-                    self.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.scene.current_graph.nohover_alpha = int(
-                    self.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in contour:
-                    x, y = point[0]
-                    x = max(0.1, x)
-                    y = max(0.1, y)
-                    self.scene.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                if (
-                        self.scene.contour_mode == CONTOURMode.SAVE_ALL
-                        and hierarchy[0][index][3] != -1
-                ):
-                    # 保存所有轮廓，且当前轮廓为子轮廓，则自轮廓类别设置为背景
-                    category = "__background__"
-                    group = 0
-                else:
-                    category = visual_category
-                    group = self.current_group
-
-                self.scene.current_graph.set_drawed(
-                    category,
-                    group,
-                    False,
-                    "",
-                    QtGui.QColor(
-                        self.category_color_dict.get(category, "#6F737A")
-                    ),
-                    len(self.polygons) + 1,
-                )
-
-                # 添加新polygon
-                self.polygons.append(self.scene.current_graph)
-                self.annos_dock_widget.listwidget_add_polygon(
-                    self.scene.current_graph
-                )
-                self.scene.current_graph = None
-            if self.group_select_mode == "auto":
-                self.current_group += 1
-                self.categories_dock_widget.lineEdit_currentGroup.setText(
-                    str(self.current_group)
-                )
-        return num_masks
+        masks, scores = self.segany.predictor.predict_with_visual_prompt(
+            image, boxes, labels
+        )
+        return self._process_sam_masks(masks, scores, visual_category)
 
     def mask_to_polygon(self, mask:np.ndarray):
         mask = mask.astype("uint8") * 255
@@ -1124,6 +1015,89 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             contours = polydp_contours
 
         return contours, hierarchy
+
+    def _setup_polygon_alpha(self, polygon: Polygon):
+        """Set hover and nohover alpha for a polygon from config."""
+        polygon.hover_alpha = int(
+            self.cfg["software"]["polygon_alpha_hover"] * 255
+        )
+        polygon.nohover_alpha = int(
+            self.cfg["software"]["polygon_alpha_no_hover"] * 255
+        )
+
+    def _create_polygon_from_contour(
+        self, contour, hierarchy, index: int, category: str, group: int
+    ):
+        """Create a Polygon from a single contour and add it to the scene.
+
+        Arguments:
+            contour: OpenCV contour points.
+            hierarchy: OpenCV contour hierarchy (may be None for RETR_EXTERNAL).
+            index: Index of this contour in the hierarchy.
+            category: Category name for the polygon.
+            group: Group id for the polygon.
+        """
+        if len(contour) < 3:
+            return
+
+        if self.scene.current_graph is None:
+            self.scene.current_graph = Polygon()
+            self.scene.addItem(self.scene.current_graph)
+
+        self._setup_polygon_alpha(self.scene.current_graph)
+
+        for point in contour:
+            x, y = point[0]
+            x = max(0.1, x)
+            y = max(0.1, y)
+            self.scene.current_graph.addPoint(QtCore.QPointF(x, y))
+
+        # Inner contours get __background__ when SAVE_ALL mode
+        if (
+            self.scene.contour_mode == CONTOURMode.SAVE_ALL
+            and hierarchy is not None
+            and hierarchy[0][index][3] != -1
+        ):
+            category = "__background__"
+            group = 0
+
+        self.scene.current_graph.set_drawed(
+            category,
+            group,
+            False,
+            "",
+            QtGui.QColor(self.category_color_dict.get(category, self.COLOR_DEFAULT)),
+            len(self.polygons) + 1,
+        )
+
+        self.polygons.append(self.scene.current_graph)
+        self.annos_dock_widget.listwidget_add_polygon(self.scene.current_graph)
+        self.scene.current_graph = None
+
+    def _process_sam_masks(self, masks, scores, category: str) -> int:
+        """Process SAM-predicted masks into polygons and add them to the scene.
+
+        Arguments:
+            masks: List of binary masks from SAM prediction.
+            scores: List of confidence scores from SAM prediction.
+            category: Category name for the resulting polygons.
+
+        Returns:
+            Number of masks processed.
+        """
+        num_masks = len(scores)
+        for i in range(num_masks):
+            contours, hierarchy = self.mask_to_polygon(masks[i])
+            for index, contour in enumerate(contours):
+                self._create_polygon_from_contour(
+                    contour, hierarchy, index, category, self.current_group
+                )
+            if self.group_select_mode == "auto":
+                self.current_group += 1
+                self.categories_dock_widget.lineEdit_currentGroup.setText(
+                    str(self.current_group)
+                )
+        return num_masks
 
     def init_ui(self):
         self.scene = AnnotationScene(mainwindow=self)
@@ -1269,25 +1243,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         _app = QtWidgets.QApplication.instance()
         _app.installTranslator(self.trans)
         self.retranslateUi(self)
-        self.info_dock_widget.retranslateUi(self.info_dock_widget)
-        self.annos_dock_widget.retranslateUi(self.annos_dock_widget)
-        self.files_dock_widget.retranslateUi(self.files_dock_widget)
-        self.text_prompt_dock_widget.retranslateUi(self.text_prompt_dock_widget)
-        self.visual_prompt_dock_widget.retranslateUi(self.visual_prompt_dock_widget)
-        self.category_edit_widget.retranslateUi(self.category_edit_widget)
-        self.categories_dock_widget.retranslateUi(self.categories_dock_widget)
-        self.category_setting_dialog.retranslateUi(self.category_setting_dialog)
-        self.model_manager_dialog.retranslateUi(self.model_manager_dialog)
-        self.remote_sam_dialog.retranslateUi(self.remote_sam_dialog)
-        self.plugin_manager_dialog.retranslateUi(self.plugin_manager_dialog)
-        self.about_dialog.retranslateUi(self.about_dialog)
-        self.shortcut_dialog.retranslateUi(self.shortcut_dialog)
-        self.Converter_dialog.retranslateUi(self.Converter_dialog)
-        self.video2frames_dialog.retranslateUi(self.video2frames_dialog)
-        self.auto_segment_dialog.retranslateUi(self.auto_segment_dialog)
-        self.annos_validator_dialog.retranslateUi(self.annos_validator_dialog)
-        self.process_exif_dialog.retranslateUi(self.process_exif_dialog)
-        self.setting_dialog.retranslateUi(self.setting_dialog)
+        # Retranslate all child widgets
+        _widget_names = (
+            "info_dock_widget", "annos_dock_widget", "files_dock_widget",
+            "text_prompt_dock_widget", "visual_prompt_dock_widget",
+            "category_edit_widget", "categories_dock_widget",
+            "category_setting_dialog", "model_manager_dialog",
+            "remote_sam_dialog", "plugin_manager_dialog",
+            "about_dialog", "shortcut_dialog", "Converter_dialog",
+            "video2frames_dialog", "auto_segment_dialog",
+            "annos_validator_dialog", "process_exif_dialog",
+            "setting_dialog",
+        )
+        for _name in _widget_names:
+            _widget = getattr(self, _name)
+            _widget.retranslateUi(_widget)
 
         # 手动添加翻译 ------
         _translate = QtCore.QCoreApplication.translate
@@ -1571,15 +1541,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.annos_dock_widget.listWidget.clear()
         self.change_bit_map_to_label()
         #
-        self.files_dock_widget.label_prev_state.setStyleSheet(
-            "background-color: {};".format("#999999")
-        )
-        self.files_dock_widget.label_current_state.setStyleSheet(
-            "background-color: {};".format("#999999")
-        )
-        self.files_dock_widget.label_next_state.setStyleSheet(
-            "background-color: {};".format("#999999")
-        )
+        for label in (
+            self.files_dock_widget.label_prev_state,
+            self.files_dock_widget.label_current_state,
+            self.files_dock_widget.label_next_state,
+        ):
+            label.setStyleSheet(
+                "background-color: {};".format(self.COLOR_STATE_DELETED)
+            )
 
         self.current_label = None
         self.load_finished = False
@@ -1682,12 +1651,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     except Exception as e:
                         pass
                     polygon = Polygon()
-                    polygon.hover_alpha = int(
-                        self.cfg["software"]["polygon_alpha_hover"] * 255
-                    )
-                    polygon.nohover_alpha = int(
-                        self.cfg["software"]["polygon_alpha_no_hover"] * 255
-                    )
+                    self._setup_polygon_alpha(polygon)
                     self.scene.addItem(polygon)
                     polygon.load_object(object)
                     self.polygons.append(polygon)
@@ -1792,7 +1756,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for vertex in polygon.vertices:
                 vertex.setVisible(False)
             polygon.change_color(
-                QtGui.QColor(self.category_color_dict.get(polygon.category, "#6F737A"))
+                QtGui.QColor(self.category_color_dict.get(polygon.category, self.COLOR_DEFAULT))
             )
             polygon.color.setAlpha(255)
             polygon.setBrush(polygon.color)
@@ -1855,7 +1819,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 # vertex.setEnabled(True)
                 vertex.setVisible(polygon.isVisible())
             polygon.change_color(
-                QtGui.QColor(self.category_color_dict.get(polygon.category, "#6F737A"))
+                QtGui.QColor(self.category_color_dict.get(polygon.category, self.COLOR_DEFAULT))
             )
             polygon.color.setAlpha(polygon.nohover_alpha)
             polygon.setBrush(polygon.color)

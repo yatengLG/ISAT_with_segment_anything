@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
 # @Author  : LG
-
-import codecs
 
 from setuptools import find_packages, setup
 
@@ -12,9 +9,12 @@ def get_version():
 
         return __version__
 
-    except FileExistsError:
-        FileExistsError("ISAT/__init__.py not exists.")
+    except ImportError:
+        raise ImportError("ISAT/__init__.py not found, cannot determine version.")
 
+
+with open("README.md", encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="isat-sam",  # 包名
@@ -22,7 +22,7 @@ setup(
     author="yatengLG",
     author_email="yatenglg@foxmail.com",
     description="Interactive semi-automatic annotation tool for image segmentation based on SAM(segment anything model).",
-    long_description=(codecs.open("README.md", encoding="utf-8").read()),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yatengLG/ISAT_with_segment_anything",  # 项目相关文件地址
     keywords=[
@@ -33,7 +33,7 @@ setup(
         "instance segmentation",
     ],
     license="Apache2.0",
-    packages=find_packages(),
+    packages=find_packages(exclude=["test", "test.*"]),
     include_package_data=True,
     python_requires=">=3.8",  # python 版本要求
     install_requires=[  # 必须直接指明，不然pip包不会自动安装

@@ -14,3 +14,5 @@ dist/
 build.log
 *.egg-info/
 __pycache__/
+.idea/
+*.iml

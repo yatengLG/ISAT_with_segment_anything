@@ -153,6 +153,7 @@ shortcut:
     key: ''
 software:
   auto_save: false
+  contour_method: SIMPLE
   contour_mode: external
   create_mode_invisible_polygon: true
   current_converter: coco
@@ -165,4 +166,5 @@ software:
   show_prompt: true
   use_bfloat16: false
   use_polydp: true
+  use_video_segmentation: true
   vertex_size: 1

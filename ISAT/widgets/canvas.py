@@ -110,6 +110,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         :return:
         """
         self.clear()
+        self.guide_line_x = None
+        self.guide_line_y = None
         if self.mainwindow.use_segment_anything:
             self.mainwindow.segany.reset_image()
 
@@ -144,6 +146,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
     def unload_image(self):
         """Unload image and clear scene."""
         self.clear()
+        self.guide_line_x = None
+        self.guide_line_y = None
         self.setSceneRect(QtCore.QRectF())
         self.mainwindow.polygons.clear()
         self.image_item = None
@@ -553,6 +557,18 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.current_graph = None
 
+        self._clear_prompts()
+
+        self.change_mode_to_view()
+        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
+            self.mainwindow.set_labels_visible(True)
+
+        self.update_mask()
+
+        self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
+
+    def _clear_prompts(self):
+        """Clear all prompt items (box, point, visual)."""
         # prompt box clear
         if self.prompt_box_item is not None:
             self.prompt_box_item.delete()
@@ -582,14 +598,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 del prompt_visual_item
         self.prompt_visual_items.clear()
         self.prompt_visual_labels.clear()
-
-        self.change_mode_to_view()
-        if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
-            self.mainwindow.set_labels_visible(True)
-
-        self.update_mask()
-
-        self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
 
     def cancel_draw(self):
         """Cancel draw. Remove the drawing polygons and masks, prompt points, prompt box eg."""
@@ -607,35 +615,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for item in self.selectedItems():
                 item.setSelected(False)
 
-        # prompt box clear
-        if self.prompt_box_item is not None:
-            self.prompt_box_item.delete()
-            self.removeItem(self.prompt_box_item)
-            self.prompt_box_item = None
-
-        # prompt point clear
-        self.prompt_point_positions.clear()
-        self.prompt_point_labels.clear()
-        for prompt_point_item in self.prompt_point_items:
-            try:
-                self.removeItem(prompt_point_item)
-            finally:
-                del prompt_point_item
-        self.prompt_point_items.clear()
-
-        # visual prompt clear
-        if self.prompt_visual_current_item is not None:
-            self.prompt_visual_current_item.delete()
-            self.removeItem(self.prompt_visual_current_item)
-            self.prompt_visual_current_item = None
-        for prompt_visual_item in self.prompt_visual_items:
-            try:
-                prompt_visual_item.delete()
-                self.removeItem(prompt_visual_item)
-            finally:
-                del prompt_visual_item
-        self.prompt_visual_items.clear()
-        self.prompt_visual_labels.clear()
+        self._clear_prompts()
 
         self.change_mode_to_view()
         if self.mainwindow.cfg["software"]["create_mode_invisible_polygon"]:
@@ -770,329 +750,91 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 self.current_graph = None
 
     # 感谢[XieDeWu](https://github.com/XieDeWu)提的有关交、并、差、异或的[建议](https://github.com/yatengLG/ISAT_with_segment_anything/issues/167)。
+
+    def _polygon_bool_op(self, method_name: str):
+        """通用多边形布尔操作。仅支持两个多边形，始终使用第一个多边形的属性。"""
+        if len(self.selected_polygons_list) != 2:
+            return
+
+        index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
+        poly0 = self.selected_polygons_list[0]
+        category = poly0.category
+        group = poly0.group
+        iscrowd = poly0.iscrowd
+        note = poly0.note
+        layer = poly0.zValue()
+        color = poly0.color
+
+        try:
+            polygon1_shapely = shapely.Polygon(
+                [(point.x(), point.y()) for point in poly0.vertices]
+            )
+            polygon2_shapely = shapely.Polygon(
+                [(point.x(), point.y())
+                 for point in self.selected_polygons_list[1].vertices]
+            )
+            result = getattr(polygon1_shapely, method_name)(polygon2_shapely)
+        except Exception as e:
+            QtWidgets.QMessageBox.warning(
+                self.mainwindow, "Warning", "Polygon warning: {}".format(e)
+            )
+            return
+
+        # 将 shapely 结果统一转换为多边形列表
+        if isinstance(result, shapely.Polygon):
+            geoms = [result]
+        elif isinstance(result, shapely.MultiPolygon):
+            geoms = list(result.geoms)
+        else:
+            geoms = []
+
+        for geom in geoms:
+            if self.current_graph is None:
+                self.current_graph = Polygon()
+                self.addItem(self.current_graph)
+
+            self.current_graph.hover_alpha = int(
+                self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
+            )
+            self.current_graph.nohover_alpha = int(
+                self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
+            )
+
+            for point in geom.exterior.coords:
+                x, y = point[0], point[1]
+                self.current_graph.addPoint(QtCore.QPointF(x, y))
+
+            self.current_graph.set_drawed(
+                category, group, iscrowd, note, color, layer
+            )
+            self.mainwindow.polygons.insert(index, self.current_graph)
+            self.current_graph = None
+
+        # 删除旧的多边形
+        for polygon_item in self.selected_polygons_list:
+            self.mainwindow.polygons.remove(polygon_item)
+            polygon_item.delete()
+            self.removeItem(polygon_item)
+            del polygon_item
+        self.selected_polygons_list.clear()
+
+        self.mainwindow.annos_dock_widget.update_listwidget()
+
     def polygons_union(self):
         """Union. Only support two polygons. Always use the attributes of the first polygon."""
-        if len(self.selected_polygons_list) == 2:
-            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
-
-            category = self.selected_polygons_list[0].category
-            group = self.selected_polygons_list[0].group
-            iscrowd = self.selected_polygons_list[0].iscrowd
-            note = self.selected_polygons_list[0].note
-            layer = self.selected_polygons_list[0].zValue()
-            color = self.selected_polygons_list[0].color
-
-            try:
-                polygon1_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[0].vertices
-                    ]
-                )
-                polygon2_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[1].vertices
-                    ]
-                )
-                return_shapely = polygon1_shapely.union(polygon2_shapely)
-            except Exception as e:
-                QtWidgets.QMessageBox.warning(
-                    self.mainwindow, "Warning", "Polygon warning: {}".format(e)
-                )
-                return
-
-            if isinstance(return_shapely, shapely.Polygon):
-
-                # 创建新多边形
-                if self.current_graph is None:
-                    self.current_graph = Polygon()
-                    self.addItem(self.current_graph)
-
-                self.current_graph.hover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.current_graph.nohover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in return_shapely.exterior.coords:
-                    x, y = point[0], point[1]
-                    self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                self.current_graph.set_drawed(
-                    category, group, iscrowd, note, color, layer
-                )
-                self.mainwindow.polygons.insert(index, self.current_graph)
-                self.current_graph = None
-
-                # 删除旧的多边形
-                for polygon_item in self.selected_polygons_list:
-                    self.mainwindow.polygons.remove(polygon_item)
-                    polygon_item.delete()
-                    self.removeItem(polygon_item)
-                    del polygon_item
-                self.selected_polygons_list.clear()
-
-                self.mainwindow.annos_dock_widget.update_listwidget()
+        self._polygon_bool_op("union")
 
     def polygons_difference(self):
         """Subtract. Only support two polygons. Always use the attributes of the first polygon."""
-        if len(self.selected_polygons_list) == 2:
-            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
-
-            category = self.selected_polygons_list[0].category
-            group = self.selected_polygons_list[0].group
-            iscrowd = self.selected_polygons_list[0].iscrowd
-            note = self.selected_polygons_list[0].note
-            layer = self.selected_polygons_list[0].zValue()
-            color = self.selected_polygons_list[0].color
-            try:
-                polygon1_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[0].vertices
-                    ]
-                )
-                polygon2_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[1].vertices
-                    ]
-                )
-                return_shapely = polygon1_shapely.difference(polygon2_shapely)
-            except Exception as e:
-                QtWidgets.QMessageBox.warning(
-                    self.mainwindow, "Warning", "Polygon warning: {}".format(e)
-                )
-                return
-
-            if isinstance(return_shapely, shapely.Polygon):
-                if self.current_graph is None:
-                    self.current_graph = Polygon()
-                    self.addItem(self.current_graph)
-
-                self.current_graph.hover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.current_graph.nohover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in return_shapely.exterior.coords:
-                    x, y = point[0], point[1]
-                    self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                self.current_graph.set_drawed(
-                    category, group, iscrowd, note, color, layer
-                )
-                self.mainwindow.polygons.insert(index, self.current_graph)
-                self.current_graph = None
-
-            elif isinstance(return_shapely, shapely.MultiPolygon):
-                for return_shapely_polygon in return_shapely.geoms:
-                    if self.current_graph is None:
-                        self.current_graph = Polygon()
-                        self.addItem(self.current_graph)
-
-                    self.current_graph.hover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                    )
-                    self.current_graph.nohover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                    )
-
-                    for point in return_shapely_polygon.exterior.coords:
-                        x, y = point[0], point[1]
-                        self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                    self.current_graph.set_drawed(
-                        category, group, iscrowd, note, color, layer
-                    )
-                    self.mainwindow.polygons.insert(index, self.current_graph)
-                    self.current_graph = None
-
-            # 删除旧的多边形
-            for polygon_item in self.selected_polygons_list:
-                self.mainwindow.polygons.remove(polygon_item)
-                polygon_item.delete()
-                self.removeItem(polygon_item)
-                del polygon_item
-            self.selected_polygons_list.clear()
-
-            self.mainwindow.annos_dock_widget.update_listwidget()
+        self._polygon_bool_op("difference")
 
     def polygons_intersection(self):
         """Intersect. Only support two polygons. Always use the attributes of the first polygon."""
-        if len(self.selected_polygons_list) == 2:
-            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
-
-            category = self.selected_polygons_list[0].category
-            group = self.selected_polygons_list[0].group
-            iscrowd = self.selected_polygons_list[0].iscrowd
-            note = self.selected_polygons_list[0].note
-            layer = self.selected_polygons_list[0].zValue()
-            color = self.selected_polygons_list[0].color
-            try:
-                polygon1_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[0].vertices
-                    ]
-                )
-                polygon2_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[1].vertices
-                    ]
-                )
-                return_shapely = polygon1_shapely.intersection(polygon2_shapely)
-            except Exception as e:
-                QtWidgets.QMessageBox.warning(
-                    self.mainwindow, "Warning", "Polygon warning: {}".format(e)
-                )
-                return
-
-            if isinstance(return_shapely, shapely.Polygon):
-                if self.current_graph is None:
-                    self.current_graph = Polygon()
-                    self.addItem(self.current_graph)
-
-                self.current_graph.hover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.current_graph.nohover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in return_shapely.exterior.coords:
-                    x, y = point[0], point[1]
-                    self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                self.current_graph.set_drawed(
-                    category, group, iscrowd, note, color, layer
-                )
-                self.mainwindow.polygons.insert(index, self.current_graph)
-                self.current_graph = None
-
-            elif isinstance(return_shapely, shapely.MultiPolygon):
-                for return_shapely_polygon in return_shapely.geoms:
-                    if self.current_graph is None:
-                        self.current_graph = Polygon()
-                        self.addItem(self.current_graph)
-
-                    self.current_graph.hover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                    )
-                    self.current_graph.nohover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                    )
-
-                    for point in return_shapely_polygon.exterior.coords:
-                        x, y = point[0], point[1]
-                        self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                    self.current_graph.set_drawed(
-                        category, group, iscrowd, note, color, layer
-                    )
-                    self.mainwindow.polygons.insert(index, self.current_graph)
-                    self.current_graph = None
-
-            # 删除旧的多边形
-            for polygon_item in self.selected_polygons_list:
-                self.mainwindow.polygons.remove(polygon_item)
-                polygon_item.delete()
-                self.removeItem(polygon_item)
-                del polygon_item
-            self.selected_polygons_list.clear()
-
-            self.mainwindow.annos_dock_widget.update_listwidget()
+        self._polygon_bool_op("intersection")
 
     def polygons_symmetric_difference(self):
         """Exclude. Only support two polygons. Always use the attributes of the first polygon."""
-        if len(self.selected_polygons_list) == 2:
-            index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
-
-            category = self.selected_polygons_list[0].category
-            group = self.selected_polygons_list[0].group
-            iscrowd = self.selected_polygons_list[0].iscrowd
-            note = self.selected_polygons_list[0].note
-            layer = self.selected_polygons_list[0].zValue()
-            color = self.selected_polygons_list[0].color
-            try:
-                polygon1_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[0].vertices
-                    ]
-                )
-                polygon2_shapely = shapely.Polygon(
-                    [
-                        (point.x(), point.y())
-                        for point in self.selected_polygons_list[1].vertices
-                    ]
-                )
-                return_shapely = polygon1_shapely.symmetric_difference(polygon2_shapely)
-            except Exception as e:
-                QtWidgets.QMessageBox.warning(
-                    self.mainwindow, "Warning", "Polygon warning: {}".format(e)
-                )
-                return
-
-            if isinstance(return_shapely, shapely.Polygon):
-                if self.current_graph is None:
-                    self.current_graph = Polygon()
-                    self.addItem(self.current_graph)
-
-                self.current_graph.hover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                )
-                self.current_graph.nohover_alpha = int(
-                    self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                )
-
-                for point in return_shapely.exterior.coords:
-                    x, y = point[0], point[1]
-                    self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                self.current_graph.set_drawed(
-                    category, group, iscrowd, note, color, layer
-                )
-                self.mainwindow.polygons.insert(index, self.current_graph)
-                self.current_graph = None
-
-            elif isinstance(return_shapely, shapely.MultiPolygon):
-                for return_shapely_polygon in return_shapely.geoms:
-                    if self.current_graph is None:
-                        self.current_graph = Polygon()
-                        self.addItem(self.current_graph)
-
-                    self.current_graph.hover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_hover"] * 255
-                    )
-                    self.current_graph.nohover_alpha = int(
-                        self.mainwindow.cfg["software"]["polygon_alpha_no_hover"] * 255
-                    )
-
-                    for point in return_shapely_polygon.exterior.coords:
-                        x, y = point[0], point[1]
-                        self.current_graph.addPoint(QtCore.QPointF(x, y))
-
-                    self.current_graph.set_drawed(
-                        category, group, iscrowd, note, color, layer
-                    )
-                    self.mainwindow.polygons.insert(index, self.current_graph)
-                    self.current_graph = None
-
-            # 删除旧的多边形
-            for polygon_item in self.selected_polygons_list:
-                self.mainwindow.polygons.remove(polygon_item)
-                polygon_item.delete()
-                self.removeItem(polygon_item)
-                del polygon_item
-            self.selected_polygons_list.clear()
-
-            self.mainwindow.annos_dock_widget.update_listwidget()
+        self._polygon_bool_op("symmetric_difference")
 
     def mousePressEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
         pos = event.scenePos()
@@ -1152,7 +894,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加随鼠标移动的点
                     self.current_graph.addPoint(pos)
                 else:
-                    raise ValueError("The draw mode named {} not supported.")
+                    raise ValueError(
+                        "The draw mode named {} not supported.".format(
+                            self.draw_mode
+                        )
+                    )
             if event.button() == QtCore.Qt.MouseButton.RightButton:
                 if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                     self.prompt_point_positions.append([pos.x(), pos.y()])
@@ -1169,10 +915,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:
                     try:
                         self.finish_draw()
-                    except:
+                    except Exception:
                         pass
                 else:
-                    raise ValueError("The draw mode named {} not supported.")
+                    raise ValueError(
+                        "The draw mode named {} not supported.".format(
+                            self.draw_mode
+                        )
+                    )
             if self.draw_mode == DRAWMode.SEGMENTANYTHING_POINT:
                 self.update_mask()
 
@@ -1336,17 +1086,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         super(AnnotationScene, self).mouseReleaseEvent(event)
 
     def mouseMoveEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
-        # 辅助线
-        if self.guide_line_x is not None and self.guide_line_y is not None:
-            if self.guide_line_x in self.items():
-                self.removeItem(self.guide_line_x)
-
-            if self.guide_line_y in self.items():
-                self.removeItem(self.guide_line_y)
-
-            self.guide_line_x = None
-            self.guide_line_y = None
-
         pos = event.scenePos()
         if pos.x() < 0:
             pos.setX(0)
@@ -1384,23 +1123,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.REPAINT:
             self.repaint_line_item.movePoint(len(self.repaint_line_item.points) - 1, pos)
 
+        # 辅助线（懒初始化，后续仅更新位置）
         pen = QtGui.QPen()
         pen.setStyle(QtCore.Qt.PenStyle.DashLine)
-        # 辅助线
-        if self.guide_line_x is None and self.width() > 0 and self.height() > 0:
-            self.guide_line_x = QtWidgets.QGraphicsLineItem(
-                QtCore.QLineF(pos.x(), 0, pos.x(), self.height())
-            )
-            self.guide_line_x.setPen(pen)
-            self.guide_line_x.setZValue(1)
-            self.addItem(self.guide_line_x)
-        if self.guide_line_y is None and self.width() > 0 and self.height() > 0:
-            self.guide_line_y = QtWidgets.QGraphicsLineItem(
-                QtCore.QLineF(0, pos.y(), self.width(), pos.y())
-            )
-            self.guide_line_y.setPen(pen)
-            self.guide_line_y.setZValue(1)
-            self.addItem(self.guide_line_y)
+        if self.width() > 0 and self.height() > 0:
+            if self.guide_line_x is None:
+                self.guide_line_x = QtWidgets.QGraphicsLineItem()
+                self.guide_line_x.setPen(pen)
+                self.guide_line_x.setZValue(1)
+                self.addItem(self.guide_line_x)
+            self.guide_line_x.setLine(QtCore.QLineF(pos.x(), 0, pos.x(), self.height()))
+
+            if self.guide_line_y is None:
+                self.guide_line_y = QtWidgets.QGraphicsLineItem()
+                self.guide_line_y.setPen(pen)
+                self.guide_line_y.setZValue(1)
+                self.addItem(self.guide_line_y)
+            self.guide_line_y.setLine(QtCore.QLineF(0, pos.y(), self.width(), pos.y()))
 
         # 状态栏,显示当前坐标
         if self.image_data is not None:
@@ -1462,19 +1201,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if not (self.image_data.ndim == 3 and self.image_data.shape[-1] == 3):
             return
 
+        mask = None
         if len(self.prompt_point_positions) > 0 and len(self.prompt_point_labels) > 0:
             mask = self.mainwindow.segany.predict_with_point_prompt(
                 self.prompt_point_positions, self.prompt_point_labels
             )
             self.mask = mask
-            color = np.array([0, 0, 255])
-            h, w = mask.shape[-2:]
-            mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
-            mask_image = mask_image.astype("uint8")
-            mask_image = cv2.cvtColor(mask_image, cv2.COLOR_BGR2RGB)
-            mask_image = cv2.addWeighted(
-                self.image_data, self.mask_alpha, mask_image, 1, 0
-            )
         elif self.prompt_box_item is not None:
             if len(self.prompt_box_item.points) < 2:
                 return
@@ -1489,16 +1221,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 ]
             )
             mask = self.mainwindow.segany.predict_with_box_prompt(box)
-
             self.mask = mask
+
+        if mask is not None:
             color = np.array([0, 0, 255])
             h, w = mask.shape[-2:]
             mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
             mask_image = mask_image.astype("uint8")
             mask_image = cv2.cvtColor(mask_image, cv2.COLOR_BGR2RGB)
-            # 这里通过调整原始图像的权重self.mask_alpha，来调整mask的明显程度。
+            # mask_alpha控制mask的明显程度：背景与mask权重互补，总和=1.0避免过曝
             mask_image = cv2.addWeighted(
-                self.image_data, self.mask_alpha, mask_image, 1, 0
+                self.image_data, 1.0 - self.mask_alpha, mask_image, self.mask_alpha, 0
             )
         else:
             mask_image = np.zeros(self.image_data.shape, dtype=np.uint8)

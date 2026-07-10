@@ -48,12 +48,12 @@ class Vertex(QtWidgets.QGraphicsPathItem):
             )
         )
         self.hover = QtGui.QPainterPath()
-        self.hover.addRect(
+        self.hover.addEllipse(
             QtCore.QRectF(
-                -self.nohover_size // 2,
-                -self.nohover_size // 2,
-                self.nohover_size,
-                self.nohover_size,
+                -self.hover_size // 2,
+                -self.hover_size // 2,
+                self.hover_size,
+                self.hover_size,
             )
         )
 
@@ -267,30 +267,31 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         if (
             change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange
         ):  # ItemPositionHasChanged
-            bias = value
-            l, t, b, r = (
-                self.boundingRect().left(),
-                self.boundingRect().top(),
-                self.boundingRect().bottom(),
-                self.boundingRect().right(),
-            )
-            if l + bias.x() < 0:
-                bias.setX(-l)
-            if r + bias.x() > self.scene().width():
-                bias.setX(self.scene().width() - r)
-            if t + bias.y() < 0:
-                bias.setY(-t)
-            if b + bias.y() > self.scene().height():
-                bias.setY(self.scene().height() - b)
+            if self.is_drawing:
+                value = 0
+            else:
+                bias = value
+                l, t, b, r = (
+                    self.boundingRect().left(),
+                    self.boundingRect().top(),
+                    self.boundingRect().bottom(),
+                    self.boundingRect().right(),
+                )
+                if l + bias.x() < 0:
+                    bias.setX(-l)
+                if r + bias.x() > self.scene().width():
+                    bias.setX(self.scene().width() - r)
+                if t + bias.y() < 0:
+                    bias.setY(-t)
+                if b + bias.y() > self.scene().height():
+                    bias.setY(self.scene().height() - b)
 
-            for index, point in enumerate(self.points):
-                self.moveVertex(index, point + bias)
+                for index, point in enumerate(self.points):
+                    self.moveVertex(index, point + bias)
 
-            if self.scene().mainwindow.load_finished and not self.is_drawing:
-                self.scene().mainwindow.set_saved_state(False)
+                if self.scene().mainwindow.load_finished:
+                    self.scene().mainwindow.set_saved_state(False)
 
-        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemPositionChange:
-            value = 0 if self.is_drawing else value
         if (
             change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged
             and self.isSelected()
@@ -308,7 +309,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         if not self.is_drawing and not self.isSelected():
             self.color.setAlpha(self.nohover_alpha)
             self.setBrush(self.color)
-        super(Polygon, self).hoverEnterEvent(event)
+        super(Polygon, self).hoverLeaveEvent(event)
 
     def mouseDoubleClickEvent(self, event: "QGraphicsSceneMouseEvent"):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
@@ -470,12 +471,12 @@ class LineVertex(QtWidgets.QGraphicsPathItem):
             )
         )
         self.hover = QtGui.QPainterPath()
-        self.hover.addRect(
+        self.hover.addEllipse(
             QtCore.QRectF(
-                -self.nohover_size // 2,
-                -self.nohover_size // 2,
-                self.nohover_size,
-                self.nohover_size,
+                -self.hover_size // 2,
+                -self.hover_size // 2,
+                self.hover_size,
+                self.hover_size,
             )
         )
 
@@ -608,12 +609,12 @@ class RectVertex(QtWidgets.QGraphicsPathItem):
             )
         )
         self.hover = QtGui.QPainterPath()
-        self.hover.addRect(
+        self.hover.addEllipse(
             QtCore.QRectF(
-                -self.nohover_size // 2,
-                -self.nohover_size // 2,
-                self.nohover_size,
-                self.nohover_size,
+                -self.hover_size // 2,
+                -self.hover_size // 2,
+                self.hover_size,
+                self.hover_size,
             )
         )
 

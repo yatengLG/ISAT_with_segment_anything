@@ -2,6 +2,7 @@
 # @Author  : LG
 import os
 import platform
+import time
 from collections import OrderedDict
 from typing import Union
 
@@ -160,6 +161,20 @@ class SegAny:
         print("--" * 20)
         self.image = None
 
+    def release(self):
+        """
+        Release image data.  The predictor is NOT deleted here for the
+        same reason as SegAnyVideo.release() — see its docstring.
+        """
+        if self.predictor is not None:
+            try:
+                self.predictor.reset_image()
+            except Exception:
+                pass
+        self.image = None
+        # Note: self.predictor is NOT deleted here (see SegAnyVideo.release
+        # docstring for rationale).
+
     def set_image(self, image: np.ndarray) -> None:
         """
         Set image to segment.
@@ -309,6 +324,63 @@ class SegAnyVideo:
 
         print("* Init SAM for video finished *")
         print("--" * 20)
+
+    def release(self):
+        """
+        Release inference state to free GPU memory used by video frames
+        and tracking outputs.
+
+        IMPORTANT: This method intentionally does NOT delete self.predictor.
+        Deleting a SAM2VideoPredictor (which inherits from nn.Module) triggers
+        a recursive C-level destructor that frees thousands of sub-module
+        parameter tensors while holding the Python GIL.  When called from a
+        background thread this starves the main thread's Qt event loop,
+        making the UI unresponsive (~"freeze").
+
+        Instead, the predictor is left alive and will be freed by Python GC
+        when the SegAnyVideo object itself goes out of scope at the end of
+        InitSegAnyThread.run().  At that point init_sam_finish has already
+        re-enabled the UI, so any brief GIL contention during scope-exit
+        cleanup does not cause a visible freeze.
+        """
+        if not self.inference_state:
+            return
+
+        # Step 1 – largest tensor: all video frames (N x 3 x H x W, ~GBs)
+        self.inference_state.pop("images", None)
+        time.sleep(0)  # release GIL so main thread can process events
+
+        # Step 2 – cached visual backbone features
+        self.inference_state.pop("cached_features", None)
+        time.sleep(0)
+
+        # Step 3 – tracking outputs: delete per-frame entries one at a time.
+        # output_dict["non_cond_frame_outputs"] may have hundreds of frames,
+        # each holding maskmem_features, pred_masks, obj_ptr, etc.  Deleting
+        # them individually with GIL-release points prevents a single massive
+        # recursive deletion.
+        output_dict = self.inference_state.pop("output_dict", None)
+        if output_dict is not None:
+            for storage_key in ("cond_frame_outputs", "non_cond_frame_outputs"):
+                frames = output_dict.get(storage_key, {})
+                for frame_idx in list(frames.keys()):
+                    del frames[frame_idx]
+                    time.sleep(0)
+
+        # Step 4 – per-object output views (slices sharing storage with output_dict)
+        per_obj = self.inference_state.pop("output_dict_per_obj", None)
+        if per_obj is not None:
+            for obj_dict in per_obj.values():
+                for storage_key in ("cond_frame_outputs", "non_cond_frame_outputs"):
+                    frames = obj_dict.get(storage_key, {})
+                    for frame_idx in list(frames.keys()):
+                        del frames[frame_idx]
+                        time.sleep(0)
+
+        # Step 5 – remaining lightweight entries
+        self.inference_state.clear()
+
+        # Note: self.predictor is NOT deleted here (see docstring).
 
     def init_state(
         self,

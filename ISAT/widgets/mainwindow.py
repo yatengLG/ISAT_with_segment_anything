@@ -496,6 +496,32 @@ class InitSegAnyThread(QThread):
         sam_tag = False
         sam_video_tag = False
         if self.model_path is not None:
+            # 在后台线程中释放旧模型资源，避免主线程阻塞
+            # 先保存旧模型引用并立即置空 mainwindow 的引用，防止主线程访问已释放的模型
+            old_segany = getattr(self.mainwindow, 'segany', None)
+            if old_segany is not None:
+                self.mainwindow.segany = None
+            old_segany_video = getattr(self.mainwindow, 'segany_video', None)
+            if old_segany_video is not None:
+                self.mainwindow.segany_video = None
+
+            # 释放旧模型资源（在后台线程执行，不阻塞 UI）
+            # 视频模型的 inference_state 可能包含大量帧数据，释放较慢
+            if old_segany is not None:
+                try:
+                    old_segany.release()
+                except Exception:
+                    pass
+            if old_segany_video is not None:
+                try:
+                    old_segany_video.release()
+                except Exception:
+                    pass
+
+            # 确保所有 CUDA 操作完成后再释放缓存，释放 GIL 给主线程
+            torch.cuda.synchronize()
+            torch.cuda.empty_cache()
+
             try:
                 self.mainwindow.segany = SegAny(
                     self.model_path, self.mainwindow.cfg["software"]["use_bfloat16"]
@@ -516,8 +542,6 @@ class InitSegAnyThread(QThread):
                     sam_video_tag = False
             else:
                 self.mainwindow.segany_video = None
-
-        torch.cuda.empty_cache()
 
         sam_video_tag = sam_tag and sam_video_tag
         self.tag.emit(sam_tag, sam_video_tag)
@@ -682,6 +706,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if isinstance(self.sender(), QtWidgets.QAction):
                 self.sender().setChecked(False)
 
+        # 注意：模型资源的释放在后台线程 InitSegAnyThread.run() 中执行，
+        # 避免在主线程同步释放大量显存（尤其是视频分割后）导致界面卡死
+
         if model_name == "":
             self.use_segment_anything = False
             self.model_manager_dialog.update_ui()
@@ -699,6 +726,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.model_manager_dialog.update_ui()
             return
 
+        # 每次都创建新的线程，避免 QThread 重启带来的潜在问题
+        self.init_segany_thread = InitSegAnyThread(self)
+        self.init_segany_thread.tag.connect(self.init_sam_finish)
         self.init_segany_thread.model_path = model_path
         self.init_segany_thread.start()
         self.setEnabled(False)
@@ -731,8 +761,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setEnabled(True)
         if sam_video_tag:
             self.use_segment_anything_video = True
-            if self.files_list:
-                self.segany_video.init_state(self.image_root, self.files_list)
+            # init_state() 延迟到视频分割线程中执行，避免在主线程同步加载所有帧导致界面卡顿
 
             self.segany_video_thread = SegAnyVideoThread(self)
             self.segany_video_thread.tag.connect(self.seg_video_finish)
@@ -755,7 +784,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             self.segany_video_thread = None
             self.use_segment_anything_video = False
-            torch.cuda.empty_cache()
+            # torch.cuda.empty_cache() 已在后台线程 InitSegAnyThread.run() 中调用，
+            # 此处无需在主线程重复调用，避免 GIL 阻塞 UI
 
         self.actionVideo_segment.setEnabled(self.use_segment_anything_video)
         self.actionVideo_segment_once.setEnabled(self.use_segment_anything_video)

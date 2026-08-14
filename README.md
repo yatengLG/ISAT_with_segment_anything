@@ -73,7 +73,7 @@ Please refers to our latest [Documentation in English](https://isat-sam.readthed
 # Star History
 
 **Please support us with a star—it's like a virtual coffee!**
-[![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.dera.page/#yatengLG/ISAT_with_segment_anything&Date)
 
 
 # Contributors

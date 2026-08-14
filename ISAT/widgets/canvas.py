@@ -569,10 +569,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 # User pressed Finish before the 3rd click.
                 # If we have 2 anchors + trailing point → complete now.
                 if len(graph.points) == 3:
-                    graph._complete_rectangle()
-                    graph.redraw()
-                    graph.is_drawing = False
-                    graph.area = graph.calculate_area()
+                    if graph._complete_rectangle():
+                        graph.redraw()
+                        graph.is_drawing = False
+                        graph.area = graph.calculate_area()
+                    # else: degenerate first edge → keep is_drawing True so the
+                    # shape falls through to the len<4 discard branch below.
                 else:
                     # Too few points — discard
                     graph.delete()
@@ -706,6 +708,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 del item
             elif isinstance(item, PolygonVertex):
                 polygon = item.parent_shape
+                if isinstance(polygon, OBB):
+                    # An OBB must stay a rectangle — deleting a single corner
+                    # would leave a broken 3-point shape that gets silently
+                    # re-completed on reload. Delete the whole OBB instead
+                    # (select the OBB shape, not its corners).
+                    self.mainwindow.statusbar.showMessage(
+                        "OBB corners cannot be deleted individually; "
+                        "select the whole OBB and press Delete.",
+                        4000,
+                    )
+                    continue
                 if polygon.vertices:
                     index = polygon.vertices.index(item)
                     item.parent_shape.removePoint(index)
@@ -942,14 +955,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_BOX:  # sam 矩形框提示
                     if len(self.prompt_box_item.points) < 1:
                         self.prompt_box_item.addPoint(pos)
-                        self.prompt_box_item.addPoint(pos)
+                        self.prompt_box_item._add_trailing(pos)
                     else:
                         self.finish_draw()
 
                 elif self.draw_mode == DRAWMode.SEGMENTANYTHING_VISUAL:
                     if len(self.prompt_visual_current_item.points) < 1:
                         self.prompt_visual_current_item.addPoint(pos)
-                        self.prompt_visual_current_item.addPoint(pos)
+                        self.prompt_visual_current_item._add_trailing(pos)
                     else:
                         self.prompt_visual_current_item.removePoint(len(self.prompt_visual_current_item.points) - 1)
                         self.prompt_visual_current_item.addPoint(pos)
@@ -969,22 +982,47 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加当前点
                     self.current_graph.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_graph.addPoint(pos)
+                    self.current_graph._add_trailing(pos)
                 elif self.draw_mode == DRAWMode.OBB:
-                    n = len(self.current_graph.points)
-                    if n >= 3:
-                        # 3rd click: remove trailing point, commit 3rd corner
-                        # → auto-complete fires inside OBB.addPoint (len==3)
-                        self.current_graph.removePoint(n - 1)
-                        self.current_graph.addPoint(pos)
-                        # No trailing point appended — rectangle is complete
-                    else:
-                        # 1st / 2nd click
-                        point = self.current_graph.removePoint(n - 1) if n > 0 else None
-                        if point is not None:
-                            pos = point
-                        self.current_graph.addPoint(pos)
-                        self.current_graph._add_trailing(pos)  # trailing point (no auto-complete)
+                    # Point adding mirrors the polygon flow: real points via
+                    # addPoint, mouse-following points via add_trailing.
+                    # Rectangle completion (_complete_rectangle) happens here
+                    # in the canvas — not inside OBB.addPoint.
+                    if self.current_graph.is_drawing:
+                        n = len(self.current_graph.points)
+                        if n >= 3:
+                            # 3rd click: remove trailing point, commit the 3rd
+                            # corner, complete the rectangle, then finish.
+                            self.current_graph.removePoint(n - 1)
+                            self.current_graph.addPoint(pos)
+                            if self.current_graph._complete_rectangle():
+                                self.current_graph.redraw()
+                                self.current_graph.is_drawing = False
+                                self.current_graph.area = (
+                                    self.current_graph.calculate_area()
+                                )
+                                self.finish_draw()
+                            else:
+                                # Degenerate first edge (P0 == P1): reject the
+                                # corner and restore the trailing point so the
+                                # user stays in drawing mode (no crash).
+                                self.current_graph.removePoint(
+                                    len(self.current_graph.points) - 1
+                                )
+                                self.current_graph._add_trailing(
+                                    self.current_graph.points[-1]
+                                )
+                        else:
+                            # 1st / 2nd click
+                            point = (
+                                self.current_graph.removePoint(n - 1)
+                                if n > 0
+                                else None
+                            )
+                            if point is not None:
+                                pos = point
+                            self.current_graph.addPoint(pos)
+                            self.current_graph._add_trailing(pos)
                 else:
                     raise ValueError(
                         "The draw mode named {} not supported.".format(
@@ -1028,13 +1066,21 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             if self.repaint_start_vertex is None:
                 # 开始repaint
                 if self.hovered_vertex is not None:
-                    self.repaint_start_vertex = self.hovered_vertex
-                    self.repaint_line_item.addPoint(
-                        self.repaint_start_vertex.pos()
-                    )  # 添加当前点
-                    self.repaint_line_item.addPoint(
-                        self.repaint_start_vertex.pos()
-                    )  # 添加随鼠标移动的点
+                    if isinstance(self.hovered_vertex.parent_shape, OBB):
+                        # 重绘对 OBB 无效：OBB 必须保持矩形约束，不能被
+                        # 自由点重建破坏。
+                        self.mainwindow.statusbar.showMessage(
+                            "Repaint is not supported for OBB annotations.",
+                            4000,
+                        )
+                    else:
+                        self.repaint_start_vertex = self.hovered_vertex
+                        self.repaint_line_item.addPoint(
+                            self.repaint_start_vertex.pos()
+                        )  # 添加当前点
+                        self.repaint_line_item._add_trailing(
+                            self.repaint_start_vertex.pos()
+                        )  # 添加随鼠标移动的点
             else:
                 # 结束repaint
                 if (
@@ -1112,7 +1158,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加当前点
                     self.repaint_line_item.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.repaint_line_item.addPoint(pos)
+                    self.repaint_line_item._add_trailing(pos)
 
         self.mainwindow.plugin_manager_dialog.trigger_on_mouse_press(pos)
 
@@ -1307,7 +1353,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加当前点
                     self.current_graph.addPoint(pos)
                     # 添加随鼠标移动的点
-                    self.current_graph.addPoint(pos)
+                    self.current_graph._add_trailing(pos)
 
             if self.mode == STATUSMode.REPAINT and self.repaint_line_item is not None:
                 # 移除随鼠标移动的点
@@ -1315,7 +1361,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 # 添加当前点
                 self.repaint_line_item.addPoint(pos)
                 # 添加随鼠标移动的点
-                self.repaint_line_item.addPoint(pos)
+                self.repaint_line_item._add_trailing(pos)
 
             self.mainwindow.plugin_manager_dialog.trigger_on_mouse_pressed_and_mouse_move(
                 pos

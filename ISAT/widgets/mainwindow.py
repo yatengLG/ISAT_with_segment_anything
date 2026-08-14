@@ -1536,6 +1536,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label.objects.clear()
         for polygon in self.polygons:
             object = polygon.to_object()
+            if object is None:
+                # e.g. a drawing-state polygon, or an invalid OBB — skip it.
+                continue
             self.current_label.objects.append(object)
         self.current_label.note = self.info_dock_widget.lineEdit_note.text()
 

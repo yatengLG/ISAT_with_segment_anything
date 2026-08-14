@@ -36,16 +36,8 @@ class PromptPoint(QtWidgets.QGraphicsPathItem):
 # ============================================================
 
 class BaseVertex(QtWidgets.QGraphicsPathItem):
-    """Base class for all draggable handle vertices.
-
-    Provides common appearance (ellipse shape, color, brush/pen),
-    scene-boundary clamping, and selection-highlight behavior.
-
-    Subclasses:
-        PolygonVertex — selectable, with hover effects for polygon editing.
-        LineVertex    — non-selectable, for repaint guide line.
-        PromptRectVertex    — non-selectable, for SAM box prompt.
-    """
+    """Base class for draggable handle vertices: common appearance,
+    scene-boundary clamping and selection highlighting."""
 
     def __init__(self, parent_shape, color, nohover_size=2, selectable=True):
         super().__init__()
@@ -175,25 +167,17 @@ class OBBVertex(PolygonVertex):
 # ============================================================
 
 class BaseShape:
-    """Mixin providing point-list and vertex management for shapes.
+    """Mixin providing point/vertex management for shapes.
 
-    Concrete classes must:
-      1. Inherit a QGraphicsItem subclass *and* BaseShape.
-      2. Call ``self._init_shape(vertex_cls)`` in ``__init__``.
-      3. Implement ``redraw()`` to re-render the shape from ``self.points``.
+    Subclasses must call ``_init_shape(vertex_cls)`` in ``__init__`` and
+    implement ``redraw()`` to re-render the shape from ``self.points``.
     """
 
     def _init_shape(self, vertex_cls):
-        """Initialise the point list and vertex factory.
-
-        Arguments:
-            vertex_cls: A BaseVertex subclass used to create draggable handles.
-        """
+        """Initialise the point list and the vertex factory."""
         self.points: list = []
         self.vertices: list = []
         self._vertex_cls = vertex_cls
-
-    # ---- point / vertex CRUD ------------------------------------------------
 
     def addPoint(self, point: QtCore.QPointF):
         """Append a point and its corresponding visual vertex to the scene."""
@@ -204,12 +188,16 @@ class BaseShape:
         self.vertices.append(vertex)
         vertex.setPos(point)
 
-    def movePoint(self, index: int, point: QtCore.QPointF):
-        """Move the *index*-th point to a new scene position.
+    def _add_trailing(self, point: QtCore.QPointF):
+        """Add a mouse-following trailing point.
 
-        Calls ``redraw()`` and the ``_on_point_moved`` hook so subclasses
-        (e.g. Polygon) can add extra behaviour like real-time area updates.
+        Default behaviour equals :meth:`addPoint`; shapes whose ``addPoint``
+        carries side effects (e.g. OBB completion) override this method.
         """
+        self.addPoint(point)
+
+    def movePoint(self, index: int, point: QtCore.QPointF):
+        """Move the *index*-th point to a new scene position."""
         if not 0 <= index < len(self.points):
             return
         self.points[index] = self.mapFromScene(point)
@@ -217,11 +205,7 @@ class BaseShape:
         self._on_point_moved(index, point)
 
     def _on_point_moved(self, index: int, point: QtCore.QPointF):
-        """Hook invoked after every successful ``movePoint``.
-
-        Override in subclasses that need side-effects (area calculation,
-        dirty-state tracking, etc.).  The default implementation is a no-op.
-        """
+        """Hook after ``movePoint``; subclasses may override (no-op by default)."""
 
     def removePoint(self, index):
         """Remove the *index*-th point and its vertex.  Returns the removed point."""
@@ -248,22 +232,10 @@ class BaseShape:
 # ============================================================
 
 class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
-    """
-    Polygon annotation.
+    """Polygon annotation shape.
 
-    Attributes:
-        line_width (int): The width of the edge.
-        hover_alpha (int): The alpha value of the polygon when hovering.
-        nohover_alpha (int): the alpha value of the polygon when nohovering.
-        points (list): Record the point pos of the polygon.
-        vertices (list[PolygonVertex]): Record the vertices of the polygon.
-        is_drawing (bool): The flag to indicate if the polygon is drawing.
-
-        category (str): The category of the polygon.
-        group (int): The group of the polygon.
-        iscrowd (bool): The flag to indicate if the polygon is crowd.
-        note (str): The note of the polygon.
-        area (float): The area of the polygon.
+    Key attributes: points/vertices (geometry), is_drawing (drawing state),
+    category/group/iscrowd/note/area (annotation data).
     """
 
     def __init__(self):
@@ -294,8 +266,6 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
         )
         self.setZValue(1e5)
 
-    # ---- point-moved hook ----------------------------------------------------
-
     def _on_point_moved(self, index: int, point: QtCore.QPointF):
         """Polygon-specific side-effects after a vertex is dragged."""
         if self.scene().mainwindow.cfg["software"]["real_time_area"]:
@@ -307,21 +277,14 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
         ):
             self.scene().mainwindow.set_saved_state(False)
 
-    # ---- vertex-only move (used when the whole polygon is dragged) -----------
-
     def moveVertex(self, index, point):
-        """
-        Move the vertex at the given index to the given point.
-        The vertex position is updated directly without going through movePoint.
-        """
+        """Set a vertex position directly (bypasses movePoint)."""
         if not 0 <= index < len(self.vertices):
             return
         vertex = self.vertices[index]
         vertex.setEnabled(False)
         vertex.setPos(point)
         vertex.setEnabled(True)
-
-    # ---- Qt item events ------------------------------------------------------
 
     def itemChange(
         self, change: "QGraphicsItem.GraphicsItemChange", value: typing.Any
@@ -396,8 +359,6 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
             self.scene().mainwindow.category_edit_widget.load_cfg()
             self.scene().mainwindow.category_edit_widget.show()
 
-    # ---- rendering -----------------------------------------------------------
-
     def redraw(self):
         if len(self.points) < 1:
             return
@@ -417,8 +378,6 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
             vertex.setBrush(vertex_color)
 
-    # ---- lifecycle -----------------------------------------------------------
-
     def set_drawed(
         self,
         category: str,
@@ -428,9 +387,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
         color: QtGui.QColor,
         layer: int = None,
     ):
-        """
-        Set attributes for polygon and set is_drawing attribute to False.
-        """
+        """Set annotation attributes and mark the shape as finished (is_drawing=False)."""
         self.is_drawing = False
         self.category = category
         if isinstance(group, str):
@@ -470,12 +427,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
             area += d
         return abs(area) / 2
 
-    # ---- serialisation -------------------------------------------------------
-
     def load_object(self, obj):
-        """
-        Load attributes from an Annotation Object.
-        """
+        """Load attributes from an Annotation Object."""
         segmentation = obj.segmentation
         for x, y in segmentation:
             point = QtCore.QPointF(x, y)
@@ -527,32 +480,16 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
 # ============================================================
 
 class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
-    """Oriented Bounding Box annotation.
+    """Oriented Bounding Box — a rectangle constrained to 4 corners.
 
-    An OBB is a rectangle defined by 4 corner points.  Unlike a free-form
-    Polygon, the 4 points are **constrained** to form a rectangle — dragging
-    one corner keeps the opposite corner fixed and preserves the current
-    orientation (rotation angle).
+    ``self.points`` holds the corners in **local** coordinates, clockwise
+    order ``[P0, P1, P3, P2]``: P0→P1 is the first edge, P1→P3 the
+    perpendicular (width) edge.  angle / centre / size are **derived** from
+    the points so the geometry always stays consistent.
 
-    Creation flow (3 clicks)::
-
-        P0, P1  → define the first edge (direction + length).
-        P_click → defines the perpendicular width; the click is projected
-                   onto the perpendicular so that P0-P1-P3-P2 is a true
-                   rectangle.
-
-    Internal representation
-    -----------------------
-    ``self.points`` holds the 4 corner points in **local** coordinates in
-    clockwise order ``[P0, P1, P3, P2]`` where::
-
-        P0 → P1   first edge
-        P1 → P3   perpendicular edge (width direction)
-        P3 → P2   opposite edge   (parallel to P0→P1)
-        P2 → P0   closing edge    (parallel to P1→P3)
-
-    The angle / centre / size properties are **derived** from ``self.points``
-    rather than stored — this keeps the geometry consistent with the points.
+    Creation is driven by the canvas (3 clicks): P0, P1 define the first
+    edge; the 3rd click is projected onto the perpendicular through P1 by
+    :meth:`_complete_rectangle`, then ``finish_draw`` is called immediately.
     """
 
     def __init__(self):
@@ -583,10 +520,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         )
         self.setZValue(1e5)
 
-    # ------------------------------------------------------------------
-    #  Derived geometric properties
-    # ------------------------------------------------------------------
-
     @property
     def angle(self) -> float:
         """Rotation angle of the first edge in radians (range [-π, π])."""
@@ -604,11 +537,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
     @property
     def size(self):
-        """Return ``(width, height)`` tuple.
-
-        *width* — length of the first edge ``|P0→P1|``.
-        *height* — length of the perpendicular edge ``|P0→P2|``.
-        """
+        """Return ``(width, height)`` = lengths of the first and perpendicular edges."""
         if len(self.points) < 4:
             return (0, 0)
         w = math.hypot(
@@ -621,26 +550,12 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         )
         return (w, h)
 
-    # ------------------------------------------------------------------
-    #  Point / vertex CRUD (override BaseShape)
-    # ------------------------------------------------------------------
-
     def addPoint(self, point: QtCore.QPointF):
         """Append a corner point.
 
-        Interactive drawing (3 clicks)::
-
-            click 1 → [P0, T]          (anchor + trailing)
-            click 2 → [P0, P1, T]      (2 anchors + trailing)
-            click 3 → [P0, P1, P2]     → auto-complete to 4 corners
-
-        During loading from disk the guard allows up to 4 points so that
-        existing 4-point annotations are restored without modification.
-
-        .. note::
-            Trailing points (the live mouse-following point) should be
-            added via :meth:`_add_trailing` instead so that they do **not**
-            trigger auto-complete.
+        Loading from disk allows up to 4 points; interactive drawing blocks
+        beyond 3 — the rectangle completion is done by the canvas via
+        :meth:`_complete_rectangle`.
         """
         _loading = getattr(self, "_loading", False)
         max_points = 4 if _loading else 3
@@ -649,35 +564,18 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         super().addPoint(point)
 
-        if _loading:
-            return
-
-        if len(self.points) == 3:
-            self._complete_rectangle()
-            self.redraw()
-            self.is_drawing = False
-            self.area = self.calculate_area()
-
     def _add_trailing(self, point: QtCore.QPointF):
-        """Add a mouse-following trailing point **without** triggering auto-complete.
-
-        This bypasses :meth:`addPoint` and calls :meth:`BaseShape.addPoint`
-        directly so that the trailing point is a plain vertex that can be
-        freely moved / removed without side-effects.
-        """
+        """Add a mouse-following trailing point (bypasses ``addPoint``)."""
         # pylint: disable=protected-access
         if len(self.points) >= 3:
             return
         super(OBB, self).addPoint(point)
 
-    def _complete_rectangle(self):
-        """Compute the true rectangle from 3 real corners.
+    def _complete_rectangle(self) -> bool:
+        """Complete ``[P0, P1, P_click]`` → ``[P0, P1, P3, P2]`` (clockwise).
 
-        Called when ``self.points == [P0, P1, P_click]`` where:
-        * P0, P1  — first edge (clicks 1 & 2)
-        * P_click — 3rd corner (click 3), projected onto perpendicular through P1
-
-        After this call ``self.points`` is ``[P0, P1, P3, P2]`` (clockwise).
+        Projects P_click onto the perpendicular through P1.  Returns False
+        (leaving the points untouched) when the first edge is degenerate.
         """
         p0 = self.points[0]
         p1 = self.points[1]
@@ -690,6 +588,9 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         # Project p_click onto the perpendicular line from P1
         v = p_click - p1
         denom = d_perp.x() * d_perp.x() + d_perp.y() * d_perp.y()
+        if denom < 1e-12:
+            # Zero-length first edge: perpendicular undefined → no rectangle.
+            return False
         t = (v.x() * d_perp.x() + v.y() * d_perp.y()) / denom
 
         p3 = QtCore.QPointF(p1.x() + t * d_perp.x(), p1.y() + t * d_perp.y())
@@ -706,14 +607,10 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         self.scene().addItem(vertex)
         self.vertices.append(vertex)
         vertex.setPos(p2)
+        return True
 
     def movePoint(self, index: int, point: QtCore.QPointF):
-        """Move a corner while maintaining the rectangular constraint.
-
-        The **opposite** corner ``(index+2)%4`` stays fixed.  The other two
-        corners are recalculated so that the rectangle keeps its current
-        orientation (``self.angle``).
-        """
+        """Move a corner; the opposite corner stays fixed, angle preserved."""
         if not 0 <= index < len(self.points):
             return
         if len(self.points) < 4:
@@ -785,10 +682,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         vertex.setPos(point)
         vertex.setEnabled(True)
 
-    # ------------------------------------------------------------------
-    #  Hook — side-effects after vertex drag
-    # ------------------------------------------------------------------
-
     def _on_point_moved(self, index: int, point: QtCore.QPointF):
         if self.scene().mainwindow.cfg["software"]["real_time_area"]:
             self.area = self.calculate_area()
@@ -798,10 +691,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             and self.scene().mode != STATUSMode.REPAINT
         ):
             self.scene().mainwindow.set_saved_state(False)
-
-    # ------------------------------------------------------------------
-    #  Qt item events
-    # ------------------------------------------------------------------
 
     def itemChange(
         self, change: "QGraphicsItem.GraphicsItemChange", value: typing.Any
@@ -877,10 +766,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             self.scene().mainwindow.category_edit_widget.load_cfg()
             self.scene().mainwindow.category_edit_widget.show()
 
-    # ------------------------------------------------------------------
-    #  Rendering
-    # ------------------------------------------------------------------
-
     def redraw(self):
         if len(self.points) < 1:
             return
@@ -900,10 +785,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
             vertex.setBrush(vertex_color)
 
-    # ------------------------------------------------------------------
-    #  Lifecycle
-    # ------------------------------------------------------------------
-
     def set_drawed(
         self,
         category: str,
@@ -913,6 +794,20 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         color: QtGui.QColor,
         layer: int = None,
     ):
+        """Mark the OBB as finished and set annotation attributes.
+
+        Enforces the completed-OBB invariant: exactly 4 corners.  A 3-point
+        shape is completed via :meth:`_complete_rectangle`; extra points are
+        truncated.  Drawing-state shapes never reach this method.
+        """
+        # 强制：完成的 OBB 必须恰好 4 个顶点（绘制中的 OBB 不会走到这里）。
+        if len(self.points) == 3:
+            self._complete_rectangle()
+            self.redraw()
+        elif len(self.points) > 4:
+            while len(self.points) > 4:
+                self.removePoint(len(self.points) - 1)
+
         self.is_drawing = False
         self.category = category
         if isinstance(group, str):
@@ -946,10 +841,6 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         w, h = self.size
         return w * h
 
-    # ------------------------------------------------------------------
-    #  Serialisation
-    # ------------------------------------------------------------------
-
     def load_object(self, obj):
         """Load attributes from an Annotation Object."""
         self._loading = True
@@ -957,9 +848,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             self.addPoint(QtCore.QPointF(x, y))
         self._loading = False
 
-        if len(self.points) == 3:
-            self._complete_rectangle()
-
+        # 3 点 / 多余点由 set_drawed 强制补全/截断为恰好 4 个顶点
         color = self.scene().mainwindow.category_color_dict.get(
             obj.category, "#6F737A"
         )
@@ -976,6 +865,15 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
     def to_object(self) -> Object:
         """Convert to an Annotation Object for serialisation."""
         if self.is_drawing:
+            return None
+
+        # An OBB must serialise as exactly 4 corners — an invalid shape must
+        # not reach disk (load_object would silently re-complete it).
+        if len(self.points) != 4:
+            print(
+                "Warning: skip saving invalid OBB with {} points "
+                "(exactly 4 required).".format(len(self.points))
+            )
             return None
 
         segmentation = []

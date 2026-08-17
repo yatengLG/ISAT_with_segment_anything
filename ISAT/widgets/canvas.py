@@ -718,6 +718,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         "select the whole OBB and press Delete.",
                         4000,
                     )
+                    item.setSelected(False)
                     continue
                 if polygon.vertices:
                     index = polygon.vertices.index(item)
@@ -844,6 +845,14 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
     def _polygon_bool_op(self, method_name: str):
         """通用多边形布尔操作。仅支持两个多边形，始终使用第一个多边形的属性。"""
         if len(self.selected_polygons_list) != 2:
+            return
+
+        # OBB 不参与布尔运算（结果无法保持矩形约束）
+        if any(isinstance(p, OBB) for p in self.selected_polygons_list):
+            self.mainwindow.statusbar.showMessage(
+                "Boolean operations are not supported for OBB annotations.",
+                4000,
+            )
             return
 
         index = self.mainwindow.polygons.index(self.selected_polygons_list[0])
@@ -1448,16 +1457,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
             elif self.draw_mode == DRAWMode.OBB:
                 graph = self.current_graph
-                if len(graph.points) >= 4:
-                    # Undo auto-complete: remove auto-computed corners, restore trailing point
-                    graph.is_drawing = True
-                    graph.removePoint(3)
-                    graph.removePoint(2)
-                    # Restore trailing point (no auto-complete)
-                    if len(graph.points) >= 1:
-                        last = QtCore.QPointF(graph.points[-1])
-                        graph._add_trailing(last)
-                elif len(graph.points) >= 2:
+                if len(graph.points) >= 2:
                     graph.removePoint(len(graph.points) - 2)
 
         if self.mode == STATUSMode.REPAINT:
@@ -1502,10 +1502,11 @@ class AnnotationView(QtWidgets.QGraphicsView):
                     scene.start_draw_obb()
             elif event.key() == QtCore.Qt.Key.Key_N:
                 # Rotate selected OBB counter-clockwise
-                scene.rotate_selected_obb(math.radians(15))
+                # (screen y points down → negative angle is counter-clockwise)
+                scene.rotate_selected_obb(math.radians(-15))
             elif event.key() == QtCore.Qt.Key.Key_M:
                 # Rotate selected OBB clockwise
-                scene.rotate_selected_obb(math.radians(-15))
+                scene.rotate_selected_obb(math.radians(15))
 
         super(AnnotationView, self).keyPressEvent(event)
 

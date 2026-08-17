@@ -909,6 +909,33 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         )
         self.area = obj.area
 
+    def _ordered_points(self):
+        """Return the 4 corners in a canonical order for serialisation.
+
+        Convention: **clockwise** in image coordinates (y axis points down),
+        starting from the top-left-most vertex (minimum x, tie-broken by
+        minimum y).  Internal ``self.points`` keeps its own (drag-rotated)
+        order — only the exported point list is normalised, so the saved
+        ``segmentation`` order is stable regardless of editing history and
+        directly usable by YOLO-OBB / DOTA-style consumers.
+        """
+        pts = list(self.points)
+        if len(pts) != 4:
+            return pts
+        start = min(range(4), key=lambda i: (pts[i].x(), pts[i].y()))
+        cw = [pts[(start + k) % 4] for k in range(4)]
+        ccw = [pts[(start - k) % 4] for k in range(4)]
+
+        def signed_area(seq):
+            return 0.5 * sum(
+                seq[i].x() * seq[(i + 1) % 4].y()
+                - seq[(i + 1) % 4].x() * seq[i].y()
+                for i in range(4)
+            )
+
+        # Positive shoelace area = clockwise in image coords (y down).
+        return cw if signed_area(cw) >= 0 else ccw
+
     def to_object(self) -> Object:
         """Convert to an Annotation Object for serialisation."""
         if self.is_drawing:
@@ -923,8 +950,9 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             )
             return None
 
+        # 规范化点序：顺时针（图像 y 向下）+ 首点左上（x 最小，并列 y 最小）
         segmentation = []
-        for point in self.points:
+        for point in self._ordered_points():
             pt = point + self.pos()
             segmentation.append((round(pt.x(), 2), round(pt.y(), 2)))
 

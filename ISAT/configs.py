@@ -10,6 +10,7 @@ __all__ = [
     "DRAWMode",
     "MAPMode",
     "CONTOURMode",
+    "ShapeType",
 ]
 
 ISAT_ROOT = os.path.split(os.path.abspath(__file__))[0]
@@ -112,3 +113,12 @@ class CONTOURMethod(Enum):
     SIMPLE = 0
     TC89_KCOS = 1
     NONE = 2
+
+
+class ShapeType(Enum):
+    """The annotation shape type (stored as a string in the ISAT json)."""
+
+    POLYGON = "polygon"
+    """Free-form polygon annotation."""
+    OBB = "obb"
+    """Oriented bounding box (4-corner rectangle)."""

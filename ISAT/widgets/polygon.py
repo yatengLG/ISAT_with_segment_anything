@@ -7,7 +7,7 @@ import typing
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ISAT.annotation import Object
-from ISAT.configs import STATUSMode
+from ISAT.configs import STATUSMode, ShapeType
 
 
 # ============================================================
@@ -472,6 +472,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
             bbox=(xmin, ymin, xmax, ymax),
             iscrowd=self.iscrowd,
             note=self.note,
+            shape_type=ShapeType.POLYGON.value,
         )
         return object
 
@@ -976,7 +977,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             bbox=(xmin, ymin, xmax, ymax),
             iscrowd=self.iscrowd,
             note=self.note,
-            is_obb=True,
+            shape_type=ShapeType.OBB.value,
         )
         return obj
 

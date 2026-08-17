@@ -19,7 +19,7 @@ import ISAT.icons_rc
 from ISAT.annotation import Annotation, Object
 from ISAT.configs import (CHECKPOINT_PATH, CONFIG_FILE, ISAT_ROOT,
                           SOFTWARE_CONFIG_FILE, CONTOURMode, MAPMode, CONTOURMethod,
-                          STATUSMode, load_config, save_config)
+                          STATUSMode, ShapeType, load_config, save_config)
 from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
 from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.ui.MainWindow import Ui_MainWindow
@@ -1691,7 +1691,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.current_group = 1
                     except Exception as e:
                         pass
-                    if getattr(object, 'is_obb', False):
+                    if object.shape_type == ShapeType.OBB.value:
                         polygon = OBB()
                     else:
                         polygon = Polygon()

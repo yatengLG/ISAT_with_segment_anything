@@ -74,6 +74,7 @@ class ISAT:
             bbox = None
             iscrowd = False
             note = ""
+            shape_type = "polygon"
 
         info: INFO
         objs: Tuple[OBJ, ...] = ()
@@ -198,6 +199,7 @@ class ISAT:
                 area = obj.get("area", 0)
                 layer = obj.get("layer", 2)
                 bbox = obj.get("bbox", [])
+                shape_type = obj.get("shape_type", "polygon")
 
                 obj = self.ANNO.OBJ()
                 obj.category = category
@@ -208,6 +210,7 @@ class ISAT:
                 obj.bbox = bbox
                 obj.iscrowd = iscrowd
                 obj.note = note
+                obj.shape_type = shape_type
                 objs.append(obj)
 
             anno.objs = tuple(objs)
@@ -244,6 +247,7 @@ class ISAT:
             object["bbox"] = obj.bbox
             object["iscrowd"] = obj.iscrowd
             object["note"] = obj.note
+            object["shape_type"] = obj.shape_type
             dataset["objects"].append(object)
 
         with open(save_path, "w", encoding="utf-8") as f:

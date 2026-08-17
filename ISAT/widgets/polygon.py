@@ -504,6 +504,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         self.iscrowd = False
         self.note = ""
         self.area = 0
+        self._out_of_bounds = False  # 出图状态，用于边框高亮提示
 
         self.color = QtGui.QColor("#ff0000")
         self.is_drawing = True
@@ -623,7 +624,47 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         self._recompute_from_diagonal(index, new_corner, opposite_idx, fixed_corner)
         self.redraw()
+        self._check_bounds()
         self._on_point_moved(index, point)
+
+    # ------------------------------------------------------------------
+    #  出图检测：移动 / 旋转 / 拖顶点后检查 OBB 是否超出图像，出图则高亮边框
+    # ------------------------------------------------------------------
+
+    def _check_bounds(self):
+        """Update the out-of-image state and highlight the border if needed.
+
+        Called after whole-shape move, rotation or vertex drag; restores the
+        normal border once the shape is back inside the image.
+        """
+        if len(self.points) < 4 or self.scene() is None:
+            return
+        w = self.scene().width()
+        h = self.scene().height()
+        pos = self.pos()
+        out = False
+        for p in self.points:
+            x, y = p.x() + pos.x(), p.y() + pos.y()
+            if x < 0 or x > w - 1 or y < 0 or y > h - 1:
+                out = True
+                break
+        if out != self._out_of_bounds:
+            self._out_of_bounds = out
+            self._apply_bounds_pen()
+
+    def _apply_bounds_pen(self):
+        """Set the border pen according to the current out-of-image state."""
+        if self._out_of_bounds:
+            # 出图：红色高亮 + 加粗长虚线边框
+            pen = QtGui.QPen(QtGui.QColor("#FF0000"), self.line_width + 2)
+            pen.setStyle(QtCore.Qt.PenStyle.DashLine)
+        else:
+            edge_color = QtGui.QColor(self.color)
+            if not self.scene().mainwindow.cfg["software"]["show_edge"]:
+                edge_color.setAlpha(0)
+            pen = QtGui.QPen(edge_color, self.line_width)
+            pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
 
     def _recompute_from_diagonal(self, dragged_idx, new_pos, fixed_idx, fixed_pos):
         """Recompute all 4 corners from a new diagonal, preserving angle."""
@@ -672,6 +713,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             self.moveVertex(i, self.mapToScene(self.points[i]))
 
         self.redraw()
+        self._check_bounds()
 
     def moveVertex(self, index, point):
         """Direct vertex position update (bypasses ``movePoint``)."""
@@ -737,6 +779,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
                 for index, point in enumerate(self.points):
                     self.moveVertex(index, point + bias)
 
+                self._check_bounds()
                 if self.scene().mainwindow.load_finished:
                     self.scene().mainwindow.set_saved_state(False)
 
@@ -784,6 +827,8 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         for vertex in self.vertices:
             vertex.setPen(QtGui.QPen(vertex_color, self.line_width))
             vertex.setBrush(vertex_color)
+
+        self._apply_bounds_pen()
 
     def set_drawed(
         self,
@@ -835,6 +880,8 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable,
             not self.scene().mainwindow.annos_dock_widget.checkBox_lock.isChecked(),
         )
+
+        self._apply_bounds_pen()
 
     def calculate_area(self) -> float:
         """Return width × height."""

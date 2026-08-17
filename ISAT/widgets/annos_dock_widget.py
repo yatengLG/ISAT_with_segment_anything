@@ -7,7 +7,7 @@ import re
 from PyQt5 import QtCore, QtWidgets
 
 from ISAT.ui.anno_dock import Ui_Form
-from ISAT.widgets.polygon import Polygon
+from ISAT.widgets.polygon import OBB, Polygon
 
 
 class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
@@ -188,9 +188,17 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         if have_selected:
             self.mainwindow.scene.change_mode_to_edit()
 
+            # 当前列表选中的形状（避免依赖可能滞后的 selected_polygons_list）
+            selected_shapes = [
+                polygon
+                for polygon in self.mainwindow.polygons
+                if polygon in self.polygon_item_dict
+                and self.polygon_item_dict[polygon] in items
+            ]
             if (
                 len(self.mainwindow.scene.selected_polygons_list) != 2
-                or len(self.listWidget.selectedItems()) != 2
+                or len(items) != 2
+                or any(isinstance(p, OBB) for p in selected_shapes)
             ):
                 self.mainwindow.actionUnion.setEnabled(False)
                 self.mainwindow.actionSubtract.setEnabled(False)

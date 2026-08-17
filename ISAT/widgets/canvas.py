@@ -1452,17 +1452,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             elif self.draw_mode == DRAWMode.POLYGON:
                 if len(self.current_graph.points) < 2:
                     return
-                # 移除随鼠标移动的点
+                # 删除最后添加的点，非鼠标跟随点
                 self.current_graph.removePoint(len(self.current_graph.points) - 2)
 
             elif self.draw_mode == DRAWMode.OBB:
-                graph = self.current_graph
-                if len(graph.points) >= 2:
-                    graph.removePoint(len(graph.points) - 2)
+                # 只有一个点，与跟随点时，直接清空
+                if len(self.current_graph.points) <= 2:
+                    for _ in range(len(self.current_graph.points)):
+                        self.current_graph.removePoint(-1)
+                    return
+                # 删除最后添加的点，非鼠标跟随点
+                self.current_graph.removePoint(len(self.current_graph.points) - 2)
 
         if self.mode == STATUSMode.REPAINT:
-            if len(self.repaint_line_item.points) < 2:
+            # 第一个点为起始点，不可删除
+            if len(self.repaint_line_item.points) <= 2:
                 return
+            # 删除最后添加的点，非鼠标跟随点
             self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 2)
 
 

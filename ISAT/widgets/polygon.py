@@ -321,12 +321,12 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
                 )
                 if l + bias.x() < 0:
                     bias.setX(-l)
-                if r + bias.x() > self.scene().width():
-                    bias.setX(self.scene().width() - r)
+                if r + bias.x() > self.scene().width() - 1:
+                    bias.setX(self.scene().width() - 1 - r)
                 if t + bias.y() < 0:
                     bias.setY(-t)
-                if b + bias.y() > self.scene().height():
-                    bias.setY(self.scene().height() - b)
+                if b + bias.y() > self.scene().height() - 1:
+                    bias.setY(self.scene().height() - 1 - b)
 
                 for index, point in enumerate(self.points):
                     self.moveVertex(index, point + bias)
@@ -769,12 +769,12 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
                 )
                 if l + bias.x() < 0:
                     bias.setX(-l)
-                if r + bias.x() > self.scene().width():
-                    bias.setX(self.scene().width() - r)
+                if r + bias.x() > self.scene().width() - 1:
+                    bias.setX(self.scene().width() - 1 - r)
                 if t + bias.y() < 0:
                     bias.setY(-t)
-                if b + bias.y() > self.scene().height():
-                    bias.setY(self.scene().height() - b)
+                if b + bias.y() > self.scene().height() - 1:
+                    bias.setY(self.scene().height() - 1 - b)
 
                 for index, point in enumerate(self.points):
                     self.moveVertex(index, point + bias)

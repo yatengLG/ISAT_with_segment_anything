@@ -1158,9 +1158,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.text_prompt_dock_widget = TextPromptDockWidget(mainwindow=self)
         self.text_prompt_dock.setWidget(self.text_prompt_dock_widget)
+        self.text_prompt_dock.setVisible(False)
 
         self.visual_prompt_dock_widget = VisualPromptDockWidget(mainwindow=self)
         self.visual_prompt_dock.setWidget(self.visual_prompt_dock_widget)
+        self.visual_prompt_dock.setVisible(False)
 
         self.model_manager_dialog = ModelManagerDialog(self, self)
 

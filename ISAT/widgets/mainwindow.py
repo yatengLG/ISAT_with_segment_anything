@@ -39,6 +39,7 @@ from ISAT.widgets.info_dock_widget import InfoDockWidget
 from ISAT.widgets.text_prompt_dock_widget import TextPromptDockWidget
 from ISAT.widgets.visuall_prompt_dock_widget import VisualPromptDockWidget
 from ISAT.widgets.model_manager_dialog import ModelManagerDialog
+from ISAT.widgets.plugin_manager import PluginManager
 from ISAT.widgets.plugin_manager_dialog import PluginManagerDialog
 from ISAT.widgets.polygon import OBB, Polygon, PromptPoint
 from ISAT.widgets.process_exif_dialog import ProcessExifDialog
@@ -665,7 +666,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.check_latest_version_thread.tag.connect(self.latest_version_tip)
         self.check_latest_version_thread.start()
 
-        self.plugin_manager_dialog.trigger_application_start()
+        self.plugin_manager.trigger_application_start()
 
     def init_segment_anything(self, model_path: str = None, checked: bool = True):
         """
@@ -883,7 +884,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # 如果当前图片刚识别完，需刷新segany状态
             if self.current_index == index:
                 self.SeganyEnabled()
-                self.plugin_manager_dialog.trigger_after_sam_encode_finished(index)
+                self.plugin_manager.trigger_after_sam_encode_finished(index)
 
     def SeganyEnabled(self):
         """If current image has cached feature map by SAM encoder thread, enable semi-automatic annotation."""
@@ -1169,7 +1170,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.remote_sam_dialog = RemoteSamDialog(self, self)
 
-        self.plugin_manager_dialog = PluginManagerDialog(self, self)
+        # 插件引擎（发现/生命周期/事件分发，无 UI）与插件管理界面（纯视图）
+        self.plugin_manager = PluginManager(self)
+        self.plugin_manager.load_plugins()
+        self.plugin_manager_dialog = PluginManagerDialog(self.plugin_manager, parent=self)
 
         self.category_edit_widget = CategoryEditDialog(self, self, self.scene)
 
@@ -1457,7 +1461,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.setWindowTitle("*{}".format(self.current_label.label_path))
 
         if not is_saved:
-            self.plugin_manager_dialog.trigger_after_annotation_changed()
+            self.plugin_manager.trigger_after_annotation_changed()
 
     def open_dir(self):
         """
@@ -1545,14 +1549,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.current_label.objects.append(object)
         self.current_label.note = self.info_dock_widget.lineEdit_note.text()
 
-        self.plugin_manager_dialog.trigger_before_annotations_save()
+        self.plugin_manager.trigger_before_annotations_save()
 
         self.current_label.save_annotation()
         # 保存标注文件的同时保存一份isat配置文件
         self.save_cfg(os.path.join(self.label_root, "isat.yaml"))
         self.set_saved_state(True)
 
-        self.plugin_manager_dialog.trigger_after_annotations_saved()
+        self.plugin_manager.trigger_after_annotations_saved()
 
     def update_group_display(self):
         self.categories_dock_widget.lineEdit_currentGroup.setText(
@@ -1603,7 +1607,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.current_index = index
             file_path = os.path.join(self.image_root, self.files_list[index])
 
-            self.plugin_manager_dialog.trigger_before_image_open(file_path)
+            self.plugin_manager.trigger_before_image_open(file_path)
 
             if file_path.lower().endswith(".dcm"):
                 image_data = load_dcm_as_image(file_path)
@@ -1729,7 +1733,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 self.actionNext_image.setEnabled(False)
 
-            self.plugin_manager_dialog.trigger_after_image_open()
+            self.plugin_manager.trigger_after_image_open()
 
     def prev_image(self):
         """Previous image."""
@@ -2259,7 +2263,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 保存软件配置
         self.save_software_cfg()
 
-        self.plugin_manager_dialog.trigger_application_shutdown()
+        self.plugin_manager.trigger_application_shutdown()
 
         self.close()
 

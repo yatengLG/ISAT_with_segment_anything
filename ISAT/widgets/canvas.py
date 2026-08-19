@@ -420,7 +420,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode != STATUSMode.VIEW:
             return
 
-        self.mainwindow.plugin_manager_dialog.trigger_before_annotation_start()
+        self.mainwindow.plugin_manager.trigger_before_annotation_start()
 
         # 否则，切换到绘图模式
         self.change_mode_to_create()
@@ -637,7 +637,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.update_mask()
 
-        self.mainwindow.plugin_manager_dialog.trigger_after_annotation_created()
+        self.mainwindow.plugin_manager.trigger_after_annotation_created()
 
     def _clear_prompts(self):
         """Clear all prompt items (box, point, visual)."""
@@ -1181,7 +1181,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加随鼠标移动的点
                     self.repaint_line_item._add_trailing(pos)
 
-        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_press(pos)
+        self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
 
         super(AnnotationScene, self).mousePressEvent(event)
 
@@ -1263,7 +1263,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if pos.y() > self.height() - 1:
             pos.setY(self.height() - 1)
 
-        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_release(pos)
+        self.mainwindow.plugin_manager.trigger_on_mouse_release(pos)
 
         super(AnnotationScene, self).mouseReleaseEvent(event)
 
@@ -1384,11 +1384,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 # 添加随鼠标移动的点
                 self.repaint_line_item._add_trailing(pos)
 
-            self.mainwindow.plugin_manager_dialog.trigger_on_mouse_pressed_and_mouse_move(
+            self.mainwindow.plugin_manager.trigger_on_mouse_pressed_and_mouse_move(
                 pos
             )
 
-        self.mainwindow.plugin_manager_dialog.trigger_on_mouse_move(pos)
+        self.mainwindow.plugin_manager.trigger_on_mouse_move(pos)
 
         super(AnnotationScene, self).mouseMoveEvent(event)
 

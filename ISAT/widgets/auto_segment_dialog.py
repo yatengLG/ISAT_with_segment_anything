@@ -2,7 +2,6 @@
 # @Author  : LG
 
 import os
-from json import dump
 from xml.etree import ElementTree as ET
 
 import cv2
@@ -13,6 +12,7 @@ from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread, pyqtSignal
 
+from ISAT.annotation import Annotation, Object
 from ISAT.configs import CONTOURMode
 from ISAT.ui.auto_segment import Ui_Dialog
 
@@ -76,17 +76,15 @@ class AutoSegmentThread(QThread):
                 self.message.emit(-1, -1, "Load xml error: {}".format(e))
                 continue
 
-            # isat
-            dataset = {}
-            dataset["info"] = {}
-            dataset["info"]["description"] = "ISAT"
-            dataset["info"]["folder"] = self.image_dir
-            dataset["info"]["name"] = image_name
-            dataset["info"]["width"] = width
-            dataset["info"]["height"] = height
-            dataset["info"]["depth"] = depth
-            dataset["info"]["note"] = ""
-            dataset["objects"] = []
+            # 通过 annotation.py 构造并保存 ISAT 标注（不自行拼接 json）
+            save_path = os.path.join(
+                self.save_dir, ".".join(image_name.split(".")[:-1]) + ".json"
+            )
+            anno = Annotation(image_path, save_path)
+            anno.img_folder = self.image_dir
+            anno.img_name = image_name
+            anno.width, anno.height, anno.depth = width, height, depth
+            anno.note = ""
 
             for group, obj in enumerate(objs):
                 name = obj.find("name").text
@@ -106,26 +104,25 @@ class AutoSegmentThread(QThread):
                 contours, hierarchy = self.mainwindow.mask_to_polygon(mask)
 
                 for _, contour in enumerate(contours):
-
-                    object = {}
-                    object["category"] = name
-                    object["group"] = group + 1
-                    object["segmentation"] = [
+                    segmentation = [
                         (int(point[0][0]), int(point[0][1])) for point in contour
                     ]
-                    object["area"] = None
-                    object["layer"] = group + 1
-                    object["bbox"] = [xmin, ymin, xmax, ymax]
-                    object["iscrowd"] = False
-                    object["note"] = ""
-                    dataset["objects"].append(object)
+                    anno.objects.append(
+                        Object(
+                            name,
+                            group + 1,
+                            segmentation,
+                            None,
+                            group + 1,
+                            [xmin, ymin, xmax, ymax],
+                            iscrowd=False,
+                            note="",
+                            shape_type="polygon",
+                        )
+                    )
 
             try:
-                save_path = os.path.join(
-                    self.save_dir, ".".join(image_name.split(".")[:-1]) + ".json"
-                )
-                with open(save_path, "w") as f:
-                    dump(dataset, f, indent=4)
+                anno.save_annotation()
                 self.message.emit(-1, -1, "{}".format("Save finished!"))
             except Exception as e:
                 self.message.emit(-1, -1, "Save ISAT json error: {}".format(e))

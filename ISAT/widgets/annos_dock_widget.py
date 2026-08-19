@@ -57,7 +57,7 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         """
         color = self.mainwindow.category_color_dict.get(polygon.category, "#6F737A")
         item = QtWidgets.QListWidgetItem()
-        item.setSizeHint(QtCore.QSize(200, 30))
+        item.setSizeHint(QtCore.QSize(235, 30))
         item_widget = QtWidgets.QWidget()
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(9, 1, 9, 1)
@@ -74,6 +74,20 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         label_color.setFixedWidth(10)
         label_color.setStyleSheet("background-color: {};".format(color))
         layout.addWidget(label_color)
+
+        # 形状徽标：OBB 显示 "OBB"，其余形状不显示（保持行布局一致）
+        label_shape = QtWidgets.QLabel("OBB" if isinstance(polygon, OBB) else "")
+        label_shape.setFixedWidth(30)
+        if isinstance(polygon, OBB):
+            label_shape.setStyleSheet(
+                "background-color: #FFD3B6; color: #B85C00;"
+                "border-radius: 3px; border: 1px solid #E8967A;"
+            )
+            label_shape.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            label_shape.setToolTip("Oriented Bounding Box (OBB)")
+        else:
+            label_shape.setVisible(False)
+        layout.addWidget(label_shape)
 
         category = QtWidgets.QLabel(polygon.category)
 

@@ -660,11 +660,12 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
             pen = QtGui.QPen(QtGui.QColor("#FF0000"), self.line_width + 2)
             pen.setStyle(QtCore.Qt.PenStyle.DashLine)
         else:
+            # 与 Polygon 一致：实线、不透明（show_edge 关闭时隐藏）
             edge_color = QtGui.QColor(self.color)
+            edge_color.setAlpha(255)
             if not self.scene().mainwindow.cfg["software"]["show_edge"]:
                 edge_color.setAlpha(0)
             pen = QtGui.QPen(edge_color, self.line_width)
-            pen.setStyle(QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
 
     def _recompute_from_diagonal(self, dragged_idx, new_pos, fixed_idx, fixed_pos):

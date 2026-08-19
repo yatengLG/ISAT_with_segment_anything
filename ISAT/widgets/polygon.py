@@ -413,7 +413,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         self.setFlag(
             QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable,
-            not self.scene().mainwindow.annos_dock_widget.checkBox_lock.isChecked(),
+            not self.scene().mainwindow.polygon_locked,
         )
 
     def calculate_area(self) -> float:
@@ -880,7 +880,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         self.setFlag(
             QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable,
-            not self.scene().mainwindow.annos_dock_widget.checkBox_lock.isChecked(),
+            not self.scene().mainwindow.polygon_locked,
         )
 
         self._apply_bounds_pen()

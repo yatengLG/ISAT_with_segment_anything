@@ -130,7 +130,7 @@ class SegAnyThread(QThread):
         shape = ",".join(map(str, image.shape))
         dtype = image.dtype.name
         response = requests.post(
-            url=f"http://{self.mainwindow.remote_sam_dialog.lineEdit_host.text()}:{self.mainwindow.remote_sam_dialog.lineEdit_port.text()}/api/encode",
+            url=f"http://{self.mainwindow.remote_sam_host}:{self.mainwindow.remote_sam_port}/api/encode",
             files={"file": ("", image.tobytes(), "application/octet-stream")},
             data={"dtype": dtype, "shape": shape},
         )
@@ -648,6 +648,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.use_segment_anything = False
         self.use_segment_anything_video = False
         self.use_remote_sam = False
+        # 运行时瞬态状态（不写 cfg、不落盘）
+        self.remote_sam_host = "127.0.0.1"
+        self.remote_sam_port = "8000"
+        self.polygon_locked = False
 
         # 新增 手动/自动 group选择
         self.group_select_mode = "auto"

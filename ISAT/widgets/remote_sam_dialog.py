@@ -27,8 +27,22 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
         self.pushButton_check.clicked.connect(self.check_connection)
         self.checkBox_use_remote.stateChanged.connect(self.use_remote_sam)
         self.pushButton_close.clicked.connect(self.close)
+        self.lineEdit_host.editingFinished.connect(self._sync_host_port)
+        self.lineEdit_port.editingFinished.connect(self._sync_host_port)
+        self._sync_host_port()
+
+    def _sync_host_port(self):
+        """Copy the host/port inputs into the main window's runtime state.
+
+        The values are kept in memory only (``mainwindow.remote_sam_host /
+        remote_sam_port``) — they are not written to the config / disk, and
+        worker threads read the plain attributes instead of the widgets.
+        """
+        self.mainwindow.remote_sam_host = self.lineEdit_host.text()
+        self.mainwindow.remote_sam_port = self.lineEdit_port.text()
 
     def check_connection(self):
+        self._sync_host_port()
         host = self.lineEdit_host.text()
         port = self.lineEdit_port.text()
         try:
@@ -65,6 +79,7 @@ class RemoteSamDialog(QtWidgets.QDialog, Ui_Dialog):
             QtWidgets.QMessageBox.warning(self, "Error", str(e))
 
     def use_remote_sam(self, check_state):
+        self._sync_host_port()
         if check_state == QtCore.Qt.CheckState.Checked:
             model_name = self.label_name.text()
             loadl_model_path = os.path.join(CHECKPOINT_PATH, model_name)

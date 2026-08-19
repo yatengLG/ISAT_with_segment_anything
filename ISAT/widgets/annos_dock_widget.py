@@ -263,7 +263,10 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.checkBox_visible.setChecked(visible)
 
     def set_all_polygon_lock(self, locked: bool = None):
-        locked = self.checkBox_locked.isChecked() if locked is None else locked
+        if locked is None:
+            locked = self.checkBox_lock.isChecked()
+        # 同步运行时状态（瞬态，不写 cfg / 不落盘）
+        self.mainwindow.polygon_locked = bool(locked)
         for polygon in self.mainwindow.polygons:
             polygon.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, not locked)
 

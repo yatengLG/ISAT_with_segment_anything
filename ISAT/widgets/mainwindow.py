@@ -1338,11 +1338,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         auto_save = software_cfg.get("auto_save", False)
         self.cfg["software"]["auto_save"] = auto_save
-        self.setting_dialog.checkBox_auto_save.setChecked(auto_save)
 
         real_time_area = software_cfg.get("real_time_area", False)
         self.cfg["software"]["real_time_area"] = real_time_area
-        self.setting_dialog.checkBox_real_time_area.setChecked(real_time_area)
 
         contour_mode = software_cfg.get("contour_mode", "max_only")
         self.cfg["software"]["contour_mode"] = contour_mode
@@ -1354,39 +1352,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         mask_alpha = software_cfg.get("mask_alpha", 0.5)
         self.cfg["software"]["mask_alpha"] = mask_alpha
-        self.setting_dialog.horizontalSlider_mask_alpha.setValue(int(mask_alpha * 10))
 
         polygon_alpha_hover = software_cfg.get("polygon_alpha_hover", 0.6)
         self.cfg["software"]["polygon_alpha_hover"] = polygon_alpha_hover
-        self.setting_dialog.horizontalSlider_polygon_alpha_hover.setValue(
-            int(polygon_alpha_hover * 10)
-        )
 
         polygon_alpha_no_hover = software_cfg.get("polygon_alpha_no_hover", 0.3)
         self.cfg["software"]["polygon_alpha_no_hover"] = polygon_alpha_no_hover
-        self.setting_dialog.horizontalSlider_polygon_alpha_no_hover.setValue(
-            int(polygon_alpha_no_hover * 10)
-        )
 
         vertex_size = software_cfg.get("vertex_size", 1)
         self.cfg["software"]["vertex_size"] = int(vertex_size)
-        self.setting_dialog.horizontalSlider_vertex_size.setValue(int(vertex_size))
 
         show_prompt = software_cfg.get("show_prompt", False)
         self.cfg["software"]["show_prompt"] = bool(show_prompt)
-        self.setting_dialog.checkBox_show_prompt.setChecked(show_prompt)
 
         show_edge = software_cfg.get("show_edge", True)
         self.cfg["software"]["show_edge"] = bool(show_edge)
-        self.setting_dialog.checkBox_show_edge.setChecked(show_edge)
 
         use_polydp = software_cfg.get("use_polydp", True)
         self.cfg["software"]["use_polydp"] = bool(use_polydp)
-        self.setting_dialog.checkBox_approx_polygon.setChecked(use_polydp)
 
         invisible_polygon = software_cfg.get("create_mode_invisible_polygon", True)
         self.cfg["software"]["create_mode_invisible_polygon"] = bool(invisible_polygon)
-        self.setting_dialog.checkBox_polygon_invisible.setChecked(invisible_polygon)
 
         use_bfloat16 = (
             software_cfg.get("use_bfloat16", False)
@@ -1394,12 +1380,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else False
         )
         self.cfg["software"]["use_bfloat16"] = bool(use_bfloat16)
-        self.setting_dialog.checkBox_use_bfloat16.setChecked(use_bfloat16)
-        self.setting_dialog.checkBox_use_bfloat16.setEnabled(torch.cuda.is_available())
 
         use_video_segmentation = software_cfg.get("use_video_segmentation", True)
         self.cfg["software"]["use_video_segmentation"] = bool(use_video_segmentation)
-        self.setting_dialog.checkBox_use_video_segmentation.setChecked(use_video_segmentation)
 
         # 类别
         self.cfg.update(load_config(self.config_file))
@@ -1969,32 +1952,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 "The contour mode [{}] not support.".format(contour_mode), 3000
             )
 
-        if contour_mode == "external":
-            index = 0
-        elif contour_mode == "max_only":
-            index = 1
-        elif contour_mode == "all":
-            index = 2
-        else:
-            index = 0
-        self.setting_dialog.comboBox_contour_mode.setCurrentIndex(index)
         self.cfg["software"]["contour_mode"] = contour_mode
         self.save_software_cfg()
 
     def change_contour_method(self, contour_method: str = "SIMPLE"):
         if contour_method == "SIMPLE":
             self.scene.change_contour_method_to_simple()
-            index = 0
         elif contour_method == "TC89_KCOS":
             self.scene.change_contour_method_to_tc89_kcos()
-            index = 1
         elif contour_method == "NONE":
             self.scene.change_contour_method_to_none()
-            index = 2
         else:
             self.scene.change_contour_method_to_simple()
-            index = 0
-        self.setting_dialog.comboBox_contour_method.setCurrentIndex(index)
         self.cfg["software"]["contour_method"] = contour_method
         self.save_software_cfg()
 
@@ -2010,7 +1979,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.scene.update_mask()
         self.cfg["software"]["mask_alpha"] = value
         self.save_software_cfg()
-        self.setting_dialog.label_mask_alpha.setText("{}".format(value))
 
     def change_polygon_alpha_hover(self, value: int):
         value = value / 10
@@ -2018,7 +1986,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
-        self.setting_dialog.label_polygon_alpha_hover.setText("{}".format(value))
 
     def change_polygon_alpha_no_hover(self, value: int):
         value = value / 10
@@ -2026,7 +1993,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
-        self.setting_dialog.label_polygon_alpha_no_hover.setText("{}".format(value))
 
     def change_vertex_size(self, value: int):
         """
@@ -2039,7 +2005,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
-        self.setting_dialog.label_vertex_size.setText("{}".format(value))
 
     def change_auto_save_state(self, check_state: QtCore.Qt.CheckState):
         checked = check_state == QtCore.Qt.CheckState.Checked
@@ -2170,7 +2135,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def setting(self):
         """Open setting interface."""
-        # self.setting_dialog.update_ui()
+        self.setting_dialog.load_from_cfg()
         self.setting_dialog.show()
 
     def screen_shot(self, type: str = "scene"):

@@ -26,6 +26,9 @@ class Converter(QThread, ISAT):
         super(Converter, self).__init__()
         self.cancel = False
         self.isat_json_root = None
+        # 本次转换支持的类型白名单：仅白名单内的 shape_type 会参与转换。
+        # 子类可覆写以支持更多类型（如未来的 YOLOOBBConverter 覆写为 ["obb"]）。
+        self.supported_shape_types = ["polygon"]
 
     def run(self):
         raise NotImplementedError
@@ -51,6 +54,25 @@ class Converter(QThread, ISAT):
             )
             try:
                 anno = self.load_one_isat_json(os.path.join(self.isat_json_root, file))
+                # 按 supported_shape_types 白名单过滤：不在白名单内的
+                # shape_type（如当前各格式均不支持 OBB）跳过并提示数量。
+                kept_objs = [
+                    obj
+                    for obj in anno.objs
+                    if getattr(obj, "shape_type", "polygon")
+                    in self.supported_shape_types
+                ]
+                skipped = len(anno.objs) - len(kept_objs)
+                if skipped:
+                    self.message.emit(
+                        -1,
+                        -1,
+                        " " * 18
+                        + "| Skipped {} object(s) in {} (shape type not supported).".format(
+                            skipped, file
+                        ),
+                    )
+                anno.objs = tuple(kept_objs)
                 self.annos[self.remove_file_suffix(file)] = anno
             except Exception as e:
                 self.message.emit(-1, -1, " " * 18 + "| Error: {}.".format(e))

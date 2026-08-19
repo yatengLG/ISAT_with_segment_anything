@@ -85,6 +85,15 @@ shortcut:
   actionNext_image:
     default_key: D
     key: D
+  actionObb:
+    default_key: O
+    key: O
+  actionObb_rotate_left:
+    default_key: N
+    key: N
+  actionObb_rotate_right:
+    default_key: M
+    key: M
   actionPolygon:
     default_key: C
     key: C

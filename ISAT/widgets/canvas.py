@@ -167,6 +167,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
+        self.mainwindow.actionObb.setEnabled(False)
+        self.mainwindow.actionObb_rotate_left.setEnabled(False)
+        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
         self.mainwindow.actionFinish.setEnabled(True)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -208,6 +211,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionNext_image.setEnabled(True)
         self.mainwindow.SeganyEnabled()
         self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
+        self.mainwindow.actionObb.setEnabled(self.mainwindow.can_be_annotated)
+        self.mainwindow.actionObb_rotate_left.setEnabled(False)
+        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -251,12 +257,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
+        self.mainwindow.actionObb.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
 
         self.mainwindow.actionTo_top.setEnabled(True)
         self.mainwindow.actionTo_bottom.setEnabled(True)
+        self.mainwindow.actionObb_rotate_left.setEnabled(True)
+        self.mainwindow.actionObb_rotate_right.setEnabled(True)
         self.mainwindow.actionEdit.setEnabled(True)
         self.mainwindow.actionCopy.setEnabled(True)
         self.mainwindow.actionUnion.setEnabled(True)
@@ -298,6 +307,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSegment_anything_point.setEnabled(False)
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
+        self.mainwindow.actionObb.setEnabled(False)
+        self.mainwindow.actionObb_rotate_left.setEnabled(False)
+        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -1498,21 +1510,6 @@ class AnnotationView(QtWidgets.QGraphicsView):
             self.shift_pressed = True
             if self.scene():  # 同步到scene
                 self.scene().shift_pressed = True
-
-        # --- Temporary OBB shortcuts ---
-        scene = self.scene()
-        if scene is not None:
-            if event.key() == QtCore.Qt.Key.Key_O:
-                # Start OBB drawing (VIEW mode only)
-                if scene.mode == STATUSMode.VIEW:
-                    scene.start_draw_obb()
-            elif event.key() == QtCore.Qt.Key.Key_N:
-                # Rotate selected OBB counter-clockwise
-                # (screen y points down → negative angle is counter-clockwise)
-                scene.rotate_selected_obb(math.radians(-15))
-            elif event.key() == QtCore.Qt.Key.Key_M:
-                # Rotate selected OBB clockwise
-                scene.rotate_selected_obb(math.radians(15))
 
         super(AnnotationView, self).keyPressEvent(event)
 

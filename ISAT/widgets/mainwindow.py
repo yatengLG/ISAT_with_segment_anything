@@ -2,6 +2,7 @@
 # @Author  : LG
 
 import functools
+import math
 import os
 
 import cv2  # 调整图像饱和度
@@ -2367,6 +2368,13 @@ Categories=Development;System;
             self.scene.start_segment_anything_box
         )
         self.actionPolygon.triggered.connect(self.scene.start_draw_polygon)
+        self.actionObb.triggered.connect(self.scene.start_draw_obb)
+        self.actionObb_rotate_left.triggered.connect(
+            lambda: self.scene.rotate_selected_obb(math.radians(-1))
+        )
+        self.actionObb_rotate_right.triggered.connect(
+            lambda: self.scene.rotate_selected_obb(math.radians(1))
+        )
         self.actionRepaint.triggered.connect(self.scene.change_mode_to_repaint)
         self.actionCancel.triggered.connect(self.scene.cancel_draw)
         self.actionBackspace.triggered.connect(self.scene.backspace)
@@ -2427,6 +2435,9 @@ Categories=Development;System;
         self.actionSegment_anything_point.setEnabled(False)
         self.actionSegment_anything_box.setEnabled(False)
         self.actionPolygon.setEnabled(False)
+        self.actionObb.setEnabled(False)
+        self.actionObb_rotate_left.setEnabled(False)
+        self.actionObb_rotate_right.setEnabled(False)
         self.actionRepaint.setEnabled(False)
         self.actionVideo_segment.setEnabled(False)
         self.actionVideo_segment_once.setEnabled(False)

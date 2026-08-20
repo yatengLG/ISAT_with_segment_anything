@@ -1181,6 +1181,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加随鼠标移动的点
                     self.repaint_line_item._add_trailing(pos)
 
+            # REPAINT 模式下所有按下交互都已在分支内处理完毕，不再调用
+            # super() 分发事件，避免点击命中多边形主体时将其选中。
+            event.accept()  # 关键：通知 view 事件已处理，维持鼠标抓取
+            self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
+            return
+
         self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
 
         super(AnnotationScene, self).mousePressEvent(event)

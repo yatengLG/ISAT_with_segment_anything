@@ -98,7 +98,7 @@ class BaseVertex(QtWidgets.QGraphicsPathItem):
                 return self.pos()
             value = self._clamp_to_scene(value)
             index = self.parent_shape.vertices.index(self)
-            self.parent_shape.movePoint(index, value)
+            self.parent_shape.movePoint(index, value, move_vertex=False)
 
         return super().itemChange(change, value)
 
@@ -146,6 +146,7 @@ class LineVertex(BaseVertex):
 
     def __init__(self, parent_shape, color, nohover_size=2):
         super().__init__(parent_shape, color, nohover_size, selectable=False)
+        self.setAcceptHoverEvents(False)
 
 
 class PromptRectVertex(BaseVertex):
@@ -201,11 +202,16 @@ class BaseShape:
         """
         self.addPoint(point)
 
-    def movePoint(self, index: int, point: QtCore.QPointF):
+    def movePoint(self, index: int, point: QtCore.QPointF, move_vertex: bool=True):
         """Move the *index*-th point to a new scene position."""
         if not 0 <= index < len(self.points):
             return
         self.points[index] = self.mapFromScene(point)
+        if move_vertex:
+            vertex = self.vertices[index]
+            vertex.setEnabled(False)
+            vertex.setPos(point)
+            vertex.setEnabled(True)
         self.redraw()
         self._on_point_moved(index, point)
 
@@ -616,12 +622,12 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         vertex.setPos(p2)
         return True
 
-    def movePoint(self, index: int, point: QtCore.QPointF):
+    def movePoint(self, index: int, point: QtCore.QPointF, move_vertex: bool = True):
         """Move a corner; the opposite corner stays fixed, angle preserved."""
         if not 0 <= index < len(self.points):
             return
         if len(self.points) < 4:
-            super().movePoint(index, point)
+            super().movePoint(index, point, move_vertex)
             return
 
         new_corner = self.mapFromScene(point)

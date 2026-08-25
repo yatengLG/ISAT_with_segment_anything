@@ -94,7 +94,7 @@ class BaseVertex(QtWidgets.QGraphicsPathItem):
             # 锁定时顶点不可拖动（绘制中的形状除外——跟随点仍需随鼠标移动）
             if self.scene().mainwindow.polygon_locked and not getattr(
                 self.parent_shape, "is_drawing", False
-            ):
+            ) and self.scene().mode != STATUSMode.REPAINT:
                 return self.pos()
             value = self._clamp_to_scene(value)
             index = self.parent_shape.vertices.index(self)

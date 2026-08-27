@@ -47,6 +47,7 @@ from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
 from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.setting_dialog import SettingDialog
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
+from ISAT.widgets.stats_dialog import StatsDialog
 from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 
 
@@ -1186,6 +1187,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
         self.annos_validator_dialog = AnnosValidatorDialog(self, self)
         self.process_exif_dialog = ProcessExifDialog(self, self)
+        self.stats_dialog = StatsDialog(self, self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -2128,6 +2130,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Open process exif interface. Deal with the rotation problem of pictures with EXIF tags."""
         self.process_exif_dialog.show()
 
+    def annotation_stats(self):
+        """Open annotation statistics interface."""
+        self.stats_dialog.show()
+
     def shortcut(self):
         """Open shortcut interface."""
         self.shortcut_dialog.update_ui()
@@ -2390,7 +2396,7 @@ Categories=Development;System;
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
         self.actionAnno_validator.triggered.connect(self.annos_validator)
         self.actionProcess_EXIF_tag.triggered.connect(self.process_exif)
-
+        self.actionAnnotation_statistics.triggered.connect(self.annotation_stats)
         self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)
 

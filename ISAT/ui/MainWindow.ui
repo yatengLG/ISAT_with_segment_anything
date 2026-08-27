@@ -156,6 +156,7 @@
     <addaction name="actionAuto_segment_with_bounding_box"/>
     <addaction name="actionAnno_validator"/>
     <addaction name="actionProcess_EXIF_tag"/>
+    <addaction name="actionAnnotation_statistics"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -367,7 +368,7 @@
     <string>Text prompt</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+    <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5"/>
   </widget>
@@ -376,7 +377,7 @@
     <string>Visual prompt</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+    <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_7"/>
   </widget>
@@ -1085,6 +1086,11 @@
    </property>
    <property name="text">
     <string>Obb rotate right</string>
+   </property>
+  </action>
+  <action name="actionAnnotation_statistics">
+   <property name="text">
+    <string>Annotation statistics</string>
    </property>
   </action>
  </widget>

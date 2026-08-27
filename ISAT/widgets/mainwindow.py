@@ -26,8 +26,8 @@ from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.ui.MainWindow import Ui_MainWindow
 from ISAT.utils.dicom import load_dcm_as_image
 from ISAT.widgets.about_dialog import AboutDialog
+from ISAT.widgets.annotation_data_tools import AnnotationDataToolsDialog
 from ISAT.widgets.annos_dock_widget import AnnosDockWidget
-from ISAT.widgets.annos_validator_dialog import AnnosValidatorDialog
 from ISAT.widgets.auto_segment_dialog import AutoSegmentDialog
 from ISAT.widgets.canvas import AnnotationScene, AnnotationView
 from ISAT.widgets.category_dock_widget import CategoriesDockWidget
@@ -47,7 +47,6 @@ from ISAT.widgets.remote_sam_dialog import RemoteSamDialog
 from ISAT.widgets.right_button_menu import RightButtonMenu
 from ISAT.widgets.setting_dialog import SettingDialog
 from ISAT.widgets.shortcut_dialog import ShortcutDialog
-from ISAT.widgets.stats_dialog import StatsDialog
 from ISAT.widgets.video_to_frames_dialog import Video2FramesDialog
 
 
@@ -1185,9 +1184,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Converter_dialog = ConverterDialog(self, mainwindow=self)
         self.video2frames_dialog = Video2FramesDialog(self, self)
         self.auto_segment_dialog = AutoSegmentDialog(self, self)
-        self.annos_validator_dialog = AnnosValidatorDialog(self, self)
+        self.annotation_data_tools_dialog = AnnotationDataToolsDialog(self, self)
         self.process_exif_dialog = ProcessExifDialog(self, self)
-        self.stats_dialog = StatsDialog(self, self)
 
         self.view = AnnotationView(parent=self)
         self.view.setScene(self.scene)
@@ -1303,7 +1301,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             "remote_sam_dialog", "plugin_manager_dialog",
             "about_dialog", "shortcut_dialog", "Converter_dialog",
             "video2frames_dialog", "auto_segment_dialog",
-            "annos_validator_dialog", "process_exif_dialog",
+            "annotation_data_tools_dialog", "process_exif_dialog",
             "setting_dialog",
         )
         for _name in _widget_names:
@@ -2123,16 +2121,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self, "Warning", "Select a sam model before auto segment."
             )
 
-    def annos_validator(self):
-        self.annos_validator_dialog.show()
-
     def process_exif(self):
         """Open process exif interface. Deal with the rotation problem of pictures with EXIF tags."""
         self.process_exif_dialog.show()
 
     def annotation_stats(self):
-        """Open annotation statistics interface."""
-        self.stats_dialog.show()
+        """Open annotation data tools on the Statistics tab."""
+        self.annotation_data_tools_dialog.tabWidget.setCurrentIndex(0)
+        self.annotation_data_tools_dialog.show()
 
     def shortcut(self):
         """Open shortcut interface."""
@@ -2394,9 +2390,8 @@ Categories=Development;System;
         self.actionConverter.triggered.connect(self.converter)
         self.actionVideo_to_frames.triggered.connect(self.video2frames)
         self.actionAuto_segment_with_bounding_box.triggered.connect(self.auto_segment)
-        self.actionAnno_validator.triggered.connect(self.annos_validator)
         self.actionProcess_EXIF_tag.triggered.connect(self.process_exif)
-        self.actionAnnotation_statistics.triggered.connect(self.annotation_stats)
+        self.actionAnnotation_data_tools.triggered.connect(self.annotation_stats)
         self.actionShortcut.triggered.connect(self.shortcut)
         self.actionAbout.triggered.connect(self.about)
 

@@ -154,9 +154,8 @@
     <addaction name="actionConverter"/>
     <addaction name="actionVideo_to_frames"/>
     <addaction name="actionAuto_segment_with_bounding_box"/>
-    <addaction name="actionAnno_validator"/>
     <addaction name="actionProcess_EXIF_tag"/>
-    <addaction name="actionAnnotation_statistics"/>
+    <addaction name="actionAnnotation_data_tools"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="font">
@@ -804,15 +803,6 @@
     <string>Auto segment with bounding box</string>
    </property>
   </action>
-  <action name="actionAnno_validator">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/检查_inspection.svg</normaloff>:/icon/icons/检查_inspection.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Annos validator</string>
-   </property>
-  </action>
   <action name="actionCopy">
    <property name="icon">
     <iconset resource="../icons.qrc">
@@ -1088,9 +1078,9 @@
     <string>Obb rotate right</string>
    </property>
   </action>
-  <action name="actionAnnotation_statistics">
+  <action name="actionAnnotation_data_tools">
    <property name="text">
-    <string>Annotation statistics</string>
+    <string>Annotation data tools</string>
    </property>
   </action>
  </widget>

@@ -105,9 +105,16 @@ class ScanThread(QtCore.QThread):
         ]
 
     def _scan_file(self, path):
-        """Return (counts_delta, problems, is_valid, n_objects)."""
+        """Return (counts_delta, problems, is_valid, n_objects, empty_objs).
+
+        ``empty_objs`` counts objects whose segmentation has fewer than 3
+        points (empty or degenerate) inside a valid file — they are not real
+        annotations and are excluded from the per-category counts.
+        """
         problems = []
         counts_delta = {}
+        empty_objs = 0
+        valid_objs = 0
         with open(path, "r", encoding="utf-8") as f:
             dataset = json.load(f)
         info = dataset.get("info", {})
@@ -115,7 +122,7 @@ class ScanThread(QtCore.QThread):
             problems.append(
                 (os.path.basename(path), "Error", -1, "Not an ISAT json.")
             )
-            return counts_delta, problems, False, 0
+            return counts_delta, problems, False, 0, 0
         width = info.get("width")
         height = info.get("height")
         objects = dataset.get("objects", [])
@@ -123,7 +130,7 @@ class ScanThread(QtCore.QThread):
             problems.append(
                 (os.path.basename(path), "Info", -1, "ISAT file with no objects.")
             )
-            return counts_delta, problems, True, 0
+            return counts_delta, problems, True, 0, 0
 
         for obj_index, obj in enumerate(objects):
             tag = self._ordinal(obj_index)
@@ -132,13 +139,21 @@ class ScanThread(QtCore.QThread):
             segmentation = obj.get("segmentation", [])
             points = [[float(p[0]), float(p[1])] for p in segmentation]
 
+            if len(points) == 0:
+                # 空目标：对象存在但没有任何分割点
+                problems.append(
+                    (os.path.basename(path), "Error", obj_index,
+                     "{} empty target (no segmentation points).".format(tag))
+                )
+                empty_objs += 1
+                continue
             if len(points) < 3:
                 problems.append(
                     (os.path.basename(path), "Error", obj_index,
                      "{} polygon error. Vertex < 3.".format(tag))
                 )
+                empty_objs += 1
                 continue
-
             if shape_type == "obb":
                 if not self._is_rectangle(points):
                     problems.append(
@@ -169,8 +184,9 @@ class ScanThread(QtCore.QThread):
                 entry["obb"] += 1
             else:
                 entry["polygon"] += 1
+            valid_objs += 1
 
-        return counts_delta, problems, True, len(objects)
+        return counts_delta, problems, True, valid_objs, empty_objs
 
     def run(self):
         counts = {}
@@ -193,8 +209,8 @@ class ScanThread(QtCore.QThread):
                 break
             self.progress.emit(i + 1, total, os.path.basename(path))
             try:
-                counts_delta, file_problems, is_valid, n_objects = self._scan_file(
-                    path
+                counts_delta, file_problems, is_valid, n_objects, empty_objs = (
+                    self._scan_file(path)
                 )
             except Exception:
                 # unreadable / corrupt / unexpected shape
@@ -212,6 +228,7 @@ class ScanThread(QtCore.QThread):
                 empty_files += 1
                 valid_files += 1
                 continue
+            empty_objects += empty_objs
             for category, entry in counts_delta.items():
                 for key in ("polygon", "obb"):
                     counts.setdefault(category, {"polygon": 0, "obb": 0})[

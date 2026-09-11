@@ -723,15 +723,20 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def clear_selection_ui(self):
         """Clear every selection marker (scene items, list, dock highlight)."""
-        for shape in self.selected_polygons_list:
+        # 遍历副本：Polygon.itemChange 会从 selected_polygons_list 中移除自身
+        for shape in list(self.selected_polygons_list):
             shape.setSelected(False)
         self.selected_polygons_list.clear()
         self.clearSelection()
         # clear the dock selection row (set_selected(None) is not supported)
         dock = self.mainwindow.annos_dock_widget
-        for polygon, item in dock.polygon_item_dict.items():
-            if item.isSelected():
-                item.setSelected(False)
+        dock._syncing = True
+        try:
+            for polygon, item in list(dock.polygon_item_dict.items()):
+                if item.isSelected():
+                    item.setSelected(False)
+        finally:
+            dock._syncing = False
 
     def _undo_push_add(self, shape):
         """Push an AddShape command for a freshly appended finished shape.

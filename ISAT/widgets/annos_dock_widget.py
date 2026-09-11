@@ -26,6 +26,12 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.mainwindow = mainwindow
         self.polygon_item_dict = {}
         self.unique_groups = set()  # 存储group id
+        # _syncing: 批量重建列表期间为 True（update_listwidget）
+        # _in_sync: set_polygon_selected 执行期间为 True
+        # 两者共同断开 listWidget.itemSelectionChanged 与
+        # Polygon.itemChange 之间的互递归，同时保留正常选中的信号传递
+        self._syncing = False
+        self._in_sync = False
 
         self.listWidget.itemSelectionChanged.connect(self.set_polygon_selected)
         self.checkBox_visible.stateChanged.connect(self.set_all_polygon_visible)
@@ -112,18 +118,27 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
 
     def update_listwidget(self):
         """Update the annotations list widget."""
-        self.unique_groups = set()
-        self.listWidget.clear()
-        self.polygon_item_dict.clear()
-        self.checkBox_visible.setChecked(True)
+        # 重建期间阻断 listWidget 的选中信号：clear()/addItem() 会触发
+        # itemSelectionChanged -> set_polygon_selected -> polygon.setSelected
+        # -> Polygon.itemChange -> dock.set_selected 的递归链。
+        self._syncing = True
+        self.listWidget.blockSignals(True)
+        try:
+            self.unique_groups = set()
+            self.listWidget.clear()
+            self.polygon_item_dict.clear()
+            self.checkBox_visible.setChecked(True)
 
-        for polygon in self.mainwindow.polygons:
-            item, item_widget = self.generate_item_and_itemwidget(polygon)
-            self.listWidget.addItem(item)
-            self.listWidget.setItemWidget(item, item_widget)
-            self.polygon_item_dict[polygon] = item
+            for polygon in self.mainwindow.polygons:
+                item, item_widget = self.generate_item_and_itemwidget(polygon)
+                self.listWidget.addItem(item)
+                self.listWidget.setItemWidget(item, item_widget)
+                self.polygon_item_dict[polygon] = item
 
-            self.unique_groups.add(str(polygon.group))
+                self.unique_groups.add(str(polygon.group))
+        finally:
+            self.listWidget.blockSignals(False)
+            self._syncing = False
 
         if self.mainwindow.load_finished:
             self.mainwindow.set_saved_state(False)
@@ -185,8 +200,18 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
         self.update_combobox_group_select()
 
     def set_selected(self, polygon: Polygon):
-        """Set item selected."""
-        item = self.polygon_item_dict[polygon]
+        """Set item selected (scene -> dock).
+
+        Signal must NOT be blocked here: the resulting ``itemSelectionChanged``
+        is what drives ``set_polygon_selected`` and thus enables the Edit /
+        Delete / boolean actions.  Only batch rebuilds are guarded, via
+        ``_syncing``.
+        """
+        if self._syncing:
+            return
+        item = self.polygon_item_dict.get(polygon)
+        if item is None:
+            return
         if polygon.isSelected():
             if not item.isSelected():
                 item.setSelected(True)
@@ -196,7 +221,23 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 item.setSelected(False)
 
     def set_polygon_selected(self):
-        """Set polygon selected on canvas."""
+        """Set polygon selected on canvas (dock -> scene).
+
+        Guarded against re-entrancy: applying the selection triggers
+        ``Polygon.itemChange`` -> ``set_selected`` -> ``item.setSelected``,
+        which would re-emit ``itemSelectionChanged`` and recurse.  Skipping
+        only the *nested* sync keeps the outer call (and therefore the
+        Edit/Delete/boolean action enabling below) fully functional.
+        """
+        if self._syncing or self._in_sync:
+            return
+        self._in_sync = True
+        try:
+            self._apply_polygon_selected()
+        finally:
+            self._in_sync = False
+
+    def _apply_polygon_selected(self):
         items = self.listWidget.selectedItems()
         have_selected = True if items else False
         if have_selected:

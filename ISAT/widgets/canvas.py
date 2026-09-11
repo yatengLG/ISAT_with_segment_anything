@@ -110,10 +110,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.repaint_end_vertex: PolygonVertex = None
         self.hovered_vertex: PolygonVertex = None
 
-        # undo 拖动捕获：按下时记下被拖形状的 scene 快照，
-        # 松开时对比，若几何变化则向 mainwindow.undo_stack push 命令
-        self._undo_press_shape = None
-        self._undo_press_snapshot = None
+        # undo 拖动捕获：按下时记下被拖形状（可多选）的 scene 快照，
+        # 松开时逐个对比，变化的形状合成一步撤销
+        self._undo_press_shapes = []
+        self._undo_press_snapshots = []
 
     def load_image(self, image_path: str):
         """
@@ -1246,26 +1246,45 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
 
-        # undo：记录本次按下可能拖动的已完成形状（本体或顶点）的 scene 快照
-        self._undo_press_shape = None
-        self._undo_press_snapshot = None
+        # undo：记录本次按下可能拖动的一组已完成形状（本体或顶点）的 scene 快照。
+        # 多选时 Qt 会同时移动所有选中项，因此要按“选中集合”整体记录，
+        # 松开时逐个对比，用 macro 合成一步撤销。
+        self._undo_press_shapes = []
+        self._undo_press_snapshots = []
         if (
             self.mode in (STATUSMode.VIEW, STATUSMode.EDIT)
             and not self.mainwindow.polygon_locked
         ):
             item = self.itemAt(pos, QtGui.QTransform())
-            shape = None
+            hit_shape = None
             if isinstance(item, (Polygon, OBB)):
-                shape = item
+                hit_shape = item
             elif isinstance(item, PolygonVertex):
-                shape = item.parent_shape
-            if (
-                shape is not None
-                and shape in self.mainwindow.polygons
-                and not getattr(shape, "is_drawing", False)
-            ):
-                self._undo_press_shape = shape
-                self._undo_press_snapshot = snapshot_shape(shape)
+                hit_shape = item.parent_shape
+
+            candidates = []
+            if hit_shape is not None and hit_shape in self.mainwindow.polygons:
+                # 命中的形状本身一定参与拖动
+                candidates.append(hit_shape)
+                # 命中已完成的形状本体（非顶点）时，同一选中集合会一起移动
+                if isinstance(item, (Polygon, OBB)):
+                    for shape in self.selected_polygons_list:
+                        if (
+                            shape is not hit_shape
+                            and shape in self.mainwindow.polygons
+                            and isinstance(shape, (Polygon, OBB))
+                            and not getattr(shape, "is_drawing", False)
+                        ):
+                            candidates.append(shape)
+
+            for shape in candidates:
+                if getattr(shape, "is_drawing", False):
+                    continue
+                snapshot = snapshot_shape(shape)
+                if snapshot is None:
+                    continue
+                self._undo_press_shapes.append(shape)
+                self._undo_press_snapshots.append(snapshot)
 
         super(AnnotationScene, self).mousePressEvent(event)
 
@@ -1353,19 +1372,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         # undo：先让 Qt 完成 grabber 释放，再对比快照入栈，
         # 避免在拖动尚未结束（mouse grabber 未释放）时删除/重建被拖 item。
-        if (
-            self._undo_press_shape is not None
-            and self._undo_press_shape in self.mainwindow.polygons
+        changed = []
+        for shape, before in zip(
+            self._undo_press_shapes, self._undo_press_snapshots
         ):
-            shape = self._undo_press_shape
+            if shape not in self.mainwindow.polygons:
+                continue
             after = snapshot_shape(shape)
-            before = self._undo_press_snapshot
-            if (
-                before is not None
-                and after is not None
-                and not _snapshots_match(before, after)
-            ):
-                self.mainwindow.undo_stack.push(
+            if after is None:
+                continue
+            if not _snapshots_match(before, after):
+                changed.append((shape, before, after))
+
+        if changed:
+            stack = self.mainwindow.undo_stack
+            if len(changed) == 1:
+                shape, before, after = changed[0]
+                stack.push(
                     ShapeStateCommand(
                         self,
                         "Move {}".format("OBB" if isinstance(shape, OBB) else "polygon"),
@@ -1374,8 +1397,25 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         after,
                     )
                 )
-        self._undo_press_shape = None
-        self._undo_press_snapshot = None
+            else:
+                # 多选整体移动：合成一步撤销
+                stack.beginMacro("Move {} shapes".format(len(changed)))
+                for shape, before, after in changed:
+                    stack.push(
+                        ShapeStateCommand(
+                            self,
+                            "Move {}".format(
+                                "OBB" if isinstance(shape, OBB) else "polygon"
+                            ),
+                            shape,
+                            before,
+                            after,
+                        )
+                    )
+                stack.endMacro()
+
+        self._undo_press_shapes = []
+        self._undo_press_snapshots = []
 
     def mouseMoveEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
         pos = event.scenePos()

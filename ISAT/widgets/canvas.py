@@ -13,8 +13,11 @@ from ISAT.configs import CONTOURMode, CONTOURMethod, DRAWMode, STATUSMode
 from ISAT.utils.dicom import load_dcm_as_image
 from ISAT.widgets.polygon import Line, OBB, Polygon, PolygonVertex, PromptPoint, PromptRect
 from ISAT.widgets.undo_commands import (
+    SceneStateCommand,
     ShapeStateCommand,
+    _scene_snapshots_match,
     _snapshots_match,
+    snapshot_all_shapes,
     snapshot_shape,
 )
 
@@ -745,6 +748,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def delete_selected_graph(self):
         """Delete selected graph. Graph can be polygons or vertices, support multiple selection modes by pressing the CTRL key."""
+        # undo：删除会同时影响多个形状与 z 层级，用全场景快照记录 before
+        undo_before = snapshot_all_shapes(self)
         deleted_layer = None
         for item in self.selectedItems():
             if isinstance(item, (Polygon, OBB)) and (item in self.mainwindow.polygons):
@@ -793,6 +798,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             for p in self.mainwindow.polygons:
                 if p.zValue() > deleted_layer:
                     p.setZValue(p.zValue() - 1)
+
+        # undo：仅当确有形状/顶点被删（或 z 变化）时入栈
+        undo_after = snapshot_all_shapes(self)
+        if not _scene_snapshots_match(undo_before, undo_after):
+            self.mainwindow.undo_stack.push(
+                SceneStateCommand(self, "Delete", undo_before, undo_after)
+            )
 
     def edit_polygon(self):
         """Edit the selected polygon. Open edit window then edit the attributes of the polygon."""
@@ -888,6 +900,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 )
                 item.setSelected(False)
                 self.current_graph.setSelected(True)
+                # undo：副本已进入 polygons，push 一条 Add 命令
+                self._undo_push_add(self.current_graph)
                 self.current_graph = None
 
     # 感谢[XieDeWu](https://github.com/XieDeWu)提的有关交、并、差、异或的[建议](https://github.com/yatengLG/ISAT_with_segment_anything/issues/167)。

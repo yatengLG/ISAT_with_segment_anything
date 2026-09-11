@@ -1173,6 +1173,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.repaint_line_item.addPoint(self.repaint_end_vertex.pos())
 
                     repaint_polygon = self.repaint_start_vertex.parent_shape
+                    # undo：在改动几何之前记录原轮廓快照
+                    repaint_before = snapshot_shape(repaint_polygon)
                     repaint_start_index = repaint_polygon.vertices.index(
                         self.repaint_start_vertex
                     )
@@ -1222,6 +1224,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                         repaint_polygon.addPoint(point)
                     repaint_polygon.redraw()
                     self.mainwindow.set_saved_state(False)
+
+                    # undo：重绘替换（点数可能变化）记为一条单形状命令
+                    repaint_after = snapshot_shape(repaint_polygon)
+                    if (
+                        repaint_before is not None
+                        and repaint_after is not None
+                        and not _snapshots_match(repaint_before, repaint_after)
+                    ):
+                        self.mainwindow.undo_stack.push(
+                            ShapeStateCommand(
+                                self,
+                                "Repaint",
+                                repaint_polygon,
+                                repaint_before,
+                                repaint_after,
+                            )
+                        )
 
                     self.repaint_line_item.delete()  # 清除所有路径
                     self.removeItem(self.repaint_line_item)

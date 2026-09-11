@@ -2373,6 +2373,11 @@ Categories=Development;System;
         self.actionUndo.triggered.connect(self.undo_stack.undo)
         self.actionRedo.triggered.connect(self.undo_stack.redo)
         self.actionUndo_history.toggled.connect(self.undo_dock.setVisible)
+        # enable 状态同步
+        self.undo_stack.canUndoChanged.connect(self.actionUndo.setEnabled)
+        self.undo_stack.canRedoChanged.connect(self.actionRedo.setEnabled)
+        self.actionUndo.setEnabled(self.undo_stack.canUndo())
+        self.actionRedo.setEnabled(self.undo_stack.canRedo())
 
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)

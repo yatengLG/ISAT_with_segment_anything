@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icon">
+    <file>../icons/撤销_undo.svg</file>
+    <file>../icons/重新_redo.svg</file>
     <file>../icons/书籍1_book-one.svg</file>
     <file>../icons/拼图_puzzle.svg</file>
     <file>../icons/旋转框_obb.svg</file>

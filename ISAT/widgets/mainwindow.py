@@ -624,6 +624,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
 
+        # 撤销/重做栈：所有已完成形状的编辑操作统一走这里
+        self.undo_stack = QtWidgets.QUndoStack(self)
+
         self.image_root: str = None
         self.label_root: str = None
 
@@ -1170,6 +1173,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.visual_prompt_dock.setWidget(self.visual_prompt_dock_widget)
         self.visual_prompt_dock.setVisible(False)
 
+        # 撤销历史面板（QUndoView），默认折叠隐藏
+        self.undo_dock = QtWidgets.QDockWidget("History", self)
+        self.undo_dock.setObjectName("undo_dock")
+        self.undo_view = QtWidgets.QUndoView(self.undo_stack)
+        self.undo_dock.setWidget(self.undo_view)
+        self.addDockWidget(QtCore.Qt.DockWidgetArea.RightDockWidgetArea, self.undo_dock)
+        self.undo_dock.setVisible(False)
+
         self.model_manager_dialog = ModelManagerDialog(self, self)
 
         self.remote_sam_dialog = RemoteSamDialog(self, self)
@@ -1588,6 +1599,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_label = None
         self.load_finished = False
         self.saved = True
+        # 真正切换图片（index 变化）才清空撤销栈；同图刷新（如调 alpha
+        # 后 show_image(current_index, zoomfit=False)）保留撤销历史。
+        if self.current_index != index:
+            self.undo_stack.clear()
         if not -1 < index < len(self.files_list):
             return
         try:
@@ -2354,6 +2369,11 @@ Categories=Development;System;
         self.actionCancel.triggered.connect(self.scene.cancel_draw)
         self.actionBackspace.triggered.connect(self.scene.backspace)
         self.actionFinish.triggered.connect(self.scene.finish_draw)
+
+        self.actionUndo.triggered.connect(self.undo_stack.undo)
+        self.actionRedo.triggered.connect(self.undo_stack.redo)
+        self.actionUndo_history.toggled.connect(self.undo_dock.setVisible)
+
         self.actionEdit.triggered.connect(self.scene.edit_polygon)
         self.actionDelete.triggered.connect(self.scene.delete_selected_graph)
         self.actionSave.triggered.connect(self.save)

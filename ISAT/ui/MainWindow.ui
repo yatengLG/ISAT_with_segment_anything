@@ -117,6 +117,8 @@
     <addaction name="separator"/>
     <addaction name="actionScene_shot"/>
     <addaction name="actionWindow_shot"/>
+    <addaction name="separator"/>
+    <addaction name="actionUndo_history"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="font">
@@ -179,6 +181,9 @@
     <addaction name="actionBackspace"/>
     <addaction name="actionFinish"/>
     <addaction name="actionCancel"/>
+    <addaction name="separator"/>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="actionEdit"/>
     <addaction name="actionDelete"/>
@@ -261,6 +266,9 @@
    <addaction name="actionBackspace"/>
    <addaction name="actionFinish"/>
    <addaction name="actionCancel"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
    <addaction name="separator"/>
    <addaction name="actionEdit"/>
    <addaction name="actionCopy"/>
@@ -1081,6 +1089,38 @@
   <action name="actionAnnotation_data_tools">
    <property name="text">
     <string>Annotation data tools</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/撤销_undo.svg</normaloff>:/icon/icons/撤销_undo.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icon/icons/重新_redo.svg</normaloff>:/icon/icons/重新_redo.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionUndo_history">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Undo history</string>
    </property>
   </action>
  </widget>

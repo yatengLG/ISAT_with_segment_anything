@@ -12,6 +12,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ISAT.configs import CONTOURMode, CONTOURMethod, DRAWMode, STATUSMode
 from ISAT.utils.dicom import load_dcm_as_image
 from ISAT.widgets.polygon import Line, OBB, Polygon, PolygonVertex, PromptPoint, PromptRect
+from ISAT.widgets.undo_commands import (
+    ShapeStateCommand,
+    _snapshots_match,
+    snapshot_shape,
+)
 
 
 class AnnotationScene(QtWidgets.QGraphicsScene):
@@ -101,6 +106,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.repaint_start_vertex: PolygonVertex = None
         self.repaint_end_vertex: PolygonVertex = None
         self.hovered_vertex: PolygonVertex = None
+
+        # undo 拖动捕获：按下时记下被拖形状的 scene 快照，
+        # 松开时对比，若几何变化则向 mainwindow.undo_stack push 命令
+        self._undo_press_shape = None
+        self._undo_press_snapshot = None
 
     def load_image(self, image_path: str):
         """
@@ -511,6 +521,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     self.mainwindow.annos_dock_widget.listwidget_add_polygon(
                         self.current_graph
                     )
+                    self._undo_push_add(self.current_graph)
 
                     self.current_graph = None
                 if self.mainwindow.group_select_mode == "auto":
@@ -570,6 +581,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             # 添加新polygon
             self.mainwindow.polygons.append(self.current_graph)
             self.mainwindow.annos_dock_widget.listwidget_add_polygon(self.current_graph)
+            self._undo_push_add(self.current_graph)
 
         elif self.draw_mode == DRAWMode.OBB:
             if self.current_graph is None:
@@ -622,6 +634,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
             self.mainwindow.polygons.append(graph)
             self.mainwindow.annos_dock_widget.listwidget_add_polygon(graph)
+            self._undo_push_add(graph)
 
         # 选择类别
         # self.mainwindow.category_choice_widget.load_cfg()
@@ -704,6 +717,31 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 rotated = True
         if rotated:
             self.mainwindow.set_saved_state(False)
+
+    def clear_selection_ui(self):
+        """Clear every selection marker (scene items, list, dock highlight)."""
+        for shape in self.selected_polygons_list:
+            shape.setSelected(False)
+        self.selected_polygons_list.clear()
+        self.clearSelection()
+        # clear the dock selection row (set_selected(None) is not supported)
+        dock = self.mainwindow.annos_dock_widget
+        for polygon, item in dock.polygon_item_dict.items():
+            if item.isSelected():
+                item.setSelected(False)
+
+    def _undo_push_add(self, shape):
+        """Push an AddShape command for a freshly appended finished shape.
+
+        Must be called right after the shape joined ``mainwindow.polygons``.
+        """
+        obj = snapshot_shape(shape)
+        if obj is None:
+            return
+        text = "Add {}".format("OBB" if isinstance(shape, OBB) else "polygon")
+        self.mainwindow.undo_stack.push(
+            ShapeStateCommand(self, text, shape, None, obj)
+        )
 
     def delete_selected_graph(self):
         """Delete selected graph. Graph can be polygons or vertices, support multiple selection modes by pressing the CTRL key."""
@@ -1189,6 +1227,27 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
 
+        # undo：记录本次按下可能拖动的已完成形状（本体或顶点）的 scene 快照
+        self._undo_press_shape = None
+        self._undo_press_snapshot = None
+        if (
+            self.mode in (STATUSMode.VIEW, STATUSMode.EDIT)
+            and not self.mainwindow.polygon_locked
+        ):
+            item = self.itemAt(pos, QtGui.QTransform())
+            shape = None
+            if isinstance(item, (Polygon, OBB)):
+                shape = item
+            elif isinstance(item, PolygonVertex):
+                shape = item.parent_shape
+            if (
+                shape is not None
+                and shape in self.mainwindow.polygons
+                and not getattr(shape, "is_drawing", False)
+            ):
+                self._undo_press_shape = shape
+                self._undo_press_snapshot = snapshot_shape(shape)
+
         super(AnnotationScene, self).mousePressEvent(event)
 
     def _constrain_to_perpendicular(
@@ -1272,6 +1331,32 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.plugin_manager.trigger_on_mouse_release(pos)
 
         super(AnnotationScene, self).mouseReleaseEvent(event)
+
+        # undo：先让 Qt 完成 grabber 释放，再对比快照入栈，
+        # 避免在拖动尚未结束（mouse grabber 未释放）时删除/重建被拖 item。
+        if (
+            self._undo_press_shape is not None
+            and self._undo_press_shape in self.mainwindow.polygons
+        ):
+            shape = self._undo_press_shape
+            after = snapshot_shape(shape)
+            before = self._undo_press_snapshot
+            if (
+                before is not None
+                and after is not None
+                and not _snapshots_match(before, after)
+            ):
+                self.mainwindow.undo_stack.push(
+                    ShapeStateCommand(
+                        self,
+                        "Move {}".format("OBB" if isinstance(shape, OBB) else "polygon"),
+                        shape,
+                        before,
+                        after,
+                    )
+                )
+        self._undo_press_shape = None
+        self._undo_press_snapshot = None
 
     def mouseMoveEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
         pos = event.scenePos()

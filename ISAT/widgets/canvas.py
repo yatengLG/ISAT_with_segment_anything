@@ -11,7 +11,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ISAT.configs import CONTOURMode, CONTOURMethod, DRAWMode, STATUSMode
 from ISAT.utils.dicom import load_dcm_as_image
-from ISAT.widgets.polygon import Line, OBB, Polygon, PolygonVertex, PromptPoint, PromptRect
+from ISAT.widgets.polygon import (
+    Line,
+    OBB,
+    Polygon,
+    PolygonVertex,
+    PromptPoint,
+    PromptRect,
+    edge_pen,
+)
 from ISAT.widgets.undo_commands import (
     SceneStateCommand,
     ShapeStateCommand,
@@ -408,9 +416,13 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.prompt_visual_current_item = PromptRect()
         self.prompt_visual_current_item.setZValue(2)
-        pen = QtGui.QPen(QtGui.QColor("#00ff00" if positive else "#ff0000"))
-        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
-        self.prompt_visual_current_item.setPen(pen)
+        # cosmetic pen：预览框线宽固定 1 设备像素（PromptRect 自带 pen 会被这里覆盖）
+        self.prompt_visual_current_item.setPen(
+            edge_pen(
+                QtGui.QColor("#00ff00" if positive else "#ff0000"),
+                QtCore.Qt.PenStyle.DotLine,
+            )
+        )
         self.prompt_visual_current_label = positive
         self.addItem(self.prompt_visual_current_item)
 
@@ -1493,8 +1505,8 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.repaint_line_item.movePoint(len(self.repaint_line_item.points) - 1, pos)
 
         # 辅助线（懒初始化，后续仅更新位置）
-        pen = QtGui.QPen()
-        pen.setStyle(QtCore.Qt.PenStyle.DashLine)
+        # cosmetic pen：线宽固定 1 设备像素；线本身仍横跨整幅图像（几何必须随缩放）
+        pen = edge_pen(QtGui.QColor("#000000"), QtCore.Qt.PenStyle.DashLine)
         if self.width() > 0 and self.height() > 0:
             if self.guide_line_x is None:
                 self.guide_line_x = QtWidgets.QGraphicsLineItem()

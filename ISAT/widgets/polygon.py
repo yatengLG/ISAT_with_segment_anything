@@ -11,21 +11,58 @@ from ISAT.configs import STATUSMode, ShapeType
 
 
 # ============================================================
+#  Outline pen
+# ============================================================
+
+def edge_pen(color: QtGui.QColor, style=None) -> QtGui.QPen:
+    """Build the outline pen shared by every annotation shape.
+
+    The pen is **cosmetic**: Qt draws it 1 device pixel wide regardless of the
+    view transform.  A plain pen width is measured in scene units, so on a
+    fitted high-resolution image (6000×4000 in a 1200×800 view → scale ≈ 0.2)
+    a 1-unit outline renders ~0.2 px and becomes invisible, while zooming in
+    makes it grow thick.  Cosmetic keeps it crisp and constant at any zoom.
+
+    ``show_edge = False`` is still honoured by the callers: they pass a colour
+    with alpha 0, which keeps the outline invisible.
+    """
+    pen = QtGui.QPen(color)
+    pen.setWidth(0)  # width 0 == cosmetic (1 device pixel)
+    pen.setCosmetic(True)
+    if style is not None:
+        pen.setStyle(style)
+    return pen
+
+
+# ============================================================
 #  Prompt point (SAM point prompt visual)
 # ============================================================
 
+# SAM 点提示的直径（设备/屏幕像素）。与顶点同理，加上
+# ItemIgnoresTransformations 后不再随视图缩放，否则在高分辨率图像
+# （fit 后 scale 很小）上会缩到看不见。
+PROMPT_POINT_DIAMETER = 10
+
+
 class PromptPoint(QtWidgets.QGraphicsPathItem):
-    """SAM prompt point."""
+    """SAM prompt point (fixed screen-pixel size)."""
 
     def __init__(self, pos, type=0):
         super(PromptPoint, self).__init__()
         self.color = QtGui.QColor("#0000FF") if type == 0 else QtGui.QColor("#00FF00")
         self.color.setAlpha(255)
+        half = PROMPT_POINT_DIAMETER / 2.0
         self.painterpath = QtGui.QPainterPath()
-        self.painterpath.addEllipse(QtCore.QRectF(-1, -1, 2, 2))
+        self.painterpath.addEllipse(
+            QtCore.QRectF(-half, -half, PROMPT_POINT_DIAMETER, PROMPT_POINT_DIAMETER)
+        )
         self.setPath(self.painterpath)
         self.setBrush(self.color)
-        self.setPen(QtGui.QPen(self.color, 3))
+        self.setPen(edge_pen(self.color))
+        # 位置仍是场景坐标，只有尺寸固定在设备像素
+        self.setFlag(
+            QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations, True
+        )
         self.setZValue(1e5)
 
         self.setPos(pos)
@@ -34,6 +71,30 @@ class PromptPoint(QtWidgets.QGraphicsPathItem):
 # ============================================================
 #  Vertex hierarchy
 # ============================================================
+
+# 顶点直径按“设备像素（屏幕像素）”计算：BaseVertex 设置了
+# ItemIgnoresTransformations，顶点不随视图缩放变大/变小 —— 否则在高分辨率
+# 图像（fit 后 scale 很小）上，顶点会被缩到不足一个像素而看不见、也点不中。
+#
+# cfg["software"]["vertex_size"]（设置界面滑块的值）**直接就是顶点直径**，
+# 单位设备像素，不做任何换算；觉得 0~5 偏小，把滑块的 maximum 调大即可。
+VERTEX_DIAMETER_MIN = 1  # 0 会让顶点完全不可见且不可点，兜底为 1px
+DEFAULT_VERTEX_DIAMETER = 8  # cfg 缺失/非法时的兜底值
+# 命中半径 = 顶点直径 → 命中圆直径 = 顶点直径 × VERTEX_HIT_SCALE
+VERTEX_HIT_SCALE = 2
+
+
+def vertex_diameter(cfg_value) -> int:
+    """Return the vertex diameter in device pixels.
+
+    ``cfg["software"]["vertex_size"]`` is used 1:1 as the diameter.
+    """
+    try:
+        value = int(cfg_value)
+    except (TypeError, ValueError):
+        return DEFAULT_VERTEX_DIAMETER
+    return max(VERTEX_DIAMETER_MIN, value)
+
 
 class BaseVertex(QtWidgets.QGraphicsPathItem):
     """Base class for draggable handle vertices: common appearance,
@@ -44,16 +105,24 @@ class BaseVertex(QtWidgets.QGraphicsPathItem):
         self.parent_shape = parent_shape
         self.color = QtGui.QColor(color)
         self.color.setAlpha(255)
-        self.nohover_size = nohover_size
+        # 下限兜底：0 会造出看不见也点不中的顶点
+        self.nohover_size = max(VERTEX_DIAMETER_MIN, int(nohover_size))
         self.hover_size = self.nohover_size + 2
+        # 命中半径 = 顶点直径，因此命中圆直径 = 顶点直径 × VERTEX_HIT_SCALE
+        self.hit_size = self.nohover_size * VERTEX_HIT_SCALE
         self.line_width = 0
 
         self.nohover_path = self._make_ellipse(self.nohover_size)
         self.hover_path = self._make_ellipse(self.hover_size)
+        self.hit_path = self._make_ellipse(self.hit_size)
 
         self.setPath(self.nohover_path)
         self.setBrush(self.color)
         self.setPen(QtGui.QPen(self.color, self.line_width))
+        # 尺寸固定在设备像素：忽略视图的缩放/旋转，高分辨率图像上依然可见
+        self.setFlag(
+            QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations, True
+        )
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, selectable)
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
         self.setFlag(
@@ -64,10 +133,28 @@ class BaseVertex(QtWidgets.QGraphicsPathItem):
 
     @staticmethod
     def _make_ellipse(size):
-        """Create a circle-shaped QPainterPath centred at origin."""
+        """Create a circle-shaped QPainterPath centred at origin.
+
+        Uses float division so odd diameters (e.g. 1/3/5px, which the 1:1
+        ``vertex_size`` mapping can produce) stay exactly centred.
+        """
         path = QtGui.QPainterPath()
-        path.addEllipse(QtCore.QRectF(-size // 2, -size // 2, size, size))
+        half = size / 2.0
+        path.addEllipse(QtCore.QRectF(-half, -half, size, size))
         return path
+
+    def shape(self):
+        """Enlarged circular hit area (device px); the painted dot stays small."""
+        return self.hit_path
+
+    def boundingRect(self):
+        """Cover the enlarged hit area.
+
+        ``shape()`` must stay inside ``boundingRect()``, otherwise Qt's item
+        lookup (scene index / culling) cannot find the outer part of the hit
+        area and clicks there would be ignored.
+        """
+        return self.hit_path.boundingRect()
 
     def setColor(self, color):
         """Update the vertex colour."""
@@ -188,7 +275,9 @@ class BaseShape:
     def addPoint(self, point: QtCore.QPointF):
         """Append a point and its corresponding visual vertex to the scene."""
         self.points.append(point)
-        vertex_size = self.scene().mainwindow.cfg["software"]["vertex_size"] * 2
+        vertex_size = vertex_diameter(
+            self.scene().mainwindow.cfg["software"]["vertex_size"]
+        )
         vertex = self._vertex_cls(self, self.color, vertex_size)
         self.scene().addItem(vertex)
         self.vertices.append(vertex)
@@ -264,8 +353,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         self.color = QtGui.QColor("#ff0000")
         self.is_drawing = True
-        pen = QtGui.QPen(self.color, self.line_width)
-        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        pen = edge_pen(self.color, QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
         self.setBrush(QtGui.QBrush(self.color, QtCore.Qt.BrushStyle.FDiagPattern))
 
@@ -379,7 +467,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
         self.color = color
         if not self.scene().mainwindow.cfg["software"]["show_edge"]:
             color.setAlpha(0)
-        self.setPen(QtGui.QPen(color, self.line_width))
+        self.setPen(edge_pen(color))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
 
@@ -412,7 +500,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         if not self.scene().mainwindow.cfg["software"]["show_edge"]:
             self.color.setAlpha(0)
-        self.setPen(QtGui.QPen(self.color, self.line_width))
+        self.setPen(edge_pen(self.color))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
         if layer is not None:
@@ -520,8 +608,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         self.color = QtGui.QColor("#ff0000")
         self.is_drawing = True
-        pen = QtGui.QPen(self.color, self.line_width)
-        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        pen = edge_pen(self.color, QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
         self.setBrush(QtGui.QBrush(self.color, QtCore.Qt.BrushStyle.FDiagPattern))
 
@@ -615,7 +702,9 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         # Append the 4th corner (P2)
         self.points.append(p2)
-        vertex_size = self.scene().mainwindow.cfg["software"]["vertex_size"] * 2
+        vertex_size = vertex_diameter(
+            self.scene().mainwindow.cfg["software"]["vertex_size"]
+        )
         vertex = self._vertex_cls(self, self.color, vertex_size)
         self.scene().addItem(vertex)
         self.vertices.append(vertex)
@@ -667,16 +756,17 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
     def _apply_bounds_pen(self):
         """Set the border pen according to the current out-of-image state."""
         if self._out_of_bounds:
-            # 出图：红色高亮 + 加粗长虚线边框
-            pen = QtGui.QPen(QtGui.QColor("#FF0000"), self.line_width + 2)
-            pen.setStyle(QtCore.Qt.PenStyle.DashLine)
+            # 出图：红色长虚线高亮（cosmetic 描边固定 1 设备像素，
+            # 因此靠颜色 + 更长的虚线区分，而不是靠加粗）
+            pen = edge_pen(QtGui.QColor("#FF0000"))
+            pen.setDashPattern([6.0, 4.0])
         else:
             # 与 Polygon 一致：实线、不透明（show_edge 关闭时隐藏）
             edge_color = QtGui.QColor(self.color)
             edge_color.setAlpha(255)
             if not self.scene().mainwindow.cfg["software"]["show_edge"]:
                 edge_color.setAlpha(0)
-            pen = QtGui.QPen(edge_color, self.line_width)
+            pen = edge_pen(edge_color)
         self.setPen(pen)
 
     def _recompute_from_diagonal(self, dragged_idx, new_pos, fixed_idx, fixed_pos):
@@ -831,7 +921,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         self.color = color
         if not self.scene().mainwindow.cfg["software"]["show_edge"]:
             color.setAlpha(0)
-        self.setPen(QtGui.QPen(color, self.line_width))
+        self.setPen(edge_pen(color))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
 
@@ -879,7 +969,7 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
 
         if not self.scene().mainwindow.cfg["software"]["show_edge"]:
             self.color.setAlpha(0)
-        self.setPen(QtGui.QPen(self.color, self.line_width))
+        self.setPen(edge_pen(self.color))
         self.color.setAlpha(self.nohover_alpha)
         self.setBrush(self.color)
         if layer is not None:
@@ -1006,8 +1096,7 @@ class Line(QtWidgets.QGraphicsPathItem, BaseShape):
 
         self.line_width = 1
         self.color = QtGui.QColor("#ff0000")
-        pen = QtGui.QPen(self.color, self.line_width)
-        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        pen = edge_pen(self.color, QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
         self.setZValue(1e5)
 
@@ -1038,8 +1127,7 @@ class PromptRect(QtWidgets.QGraphicsRectItem, BaseShape):
         self.line_width = 1
         self.color = QtGui.QColor("#ff0000")
 
-        pen = QtGui.QPen(self.color, self.line_width)
-        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        pen = edge_pen(self.color, QtCore.Qt.PenStyle.DotLine)
         self.setPen(pen)
 
     def redraw(self):

@@ -131,8 +131,9 @@ class ShapeType(Enum):
 
 
 polydp_epsilon_factor_dict = {
-    "Fine": 0.0001,
-    "Standard": 0.001,
-    "Compact": 0.005,
-    "Minimal": 0.01,
+    0: 0,       # Off
+    1: 0.0001,  # Fine
+    2: 0.001,   # Standard
+    3: 0.005,   # Compact
+    4: 0.01,    # Minimal
 }

@@ -6,6 +6,7 @@ import torch
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ISAT.ui.setting_dialog import Ui_Dialog
+from ISAT.configs import polydp_epsilon_factor_dict
 
 
 class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
@@ -139,11 +140,12 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         try:
             self.checkBox_auto_save.setChecked(cfg.get("auto_save", False))
             self.checkBox_real_time_area.setChecked(cfg.get("real_time_area", False))
-            use_polydp = cfg.get("use_polydp", "Standard")
-            # 兼容旧版
-            if isinstance(use_polydp, bool):
-                use_polydp = "Standard" if use_polydp else "Off"
-            self.comboBox_approx_polygon.setCurrentText(use_polydp)
+            use_polydp = cfg.get("use_polydp", 2)
+            if use_polydp not in polydp_epsilon_factor_dict:
+                use_polydp = 2
+            self.comboBox_approx_polygon.setCurrentIndex(
+                use_polydp
+            )
             self.checkBox_polygon_invisible.setChecked(
                 cfg.get("create_mode_invisible_polygon", True)
             )

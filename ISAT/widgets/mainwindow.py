@@ -1052,12 +1052,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             contours = [largest_contour]
 
         # polydp
-        use_polydp = self.cfg["software"].get("use_polydp", "Standard")
-        # 兼容旧版
-        if isinstance(use_polydp, bool):
-            use_polydp = "Standard" if use_polydp else "Off"
-        if use_polydp != "Off":
-            epsilon_factor = polydp_epsilon_factor_dict[use_polydp]
+        use_polydp = self.cfg["software"].get("use_polydp", 2)
+
+        epsilon_factor = polydp_epsilon_factor_dict.get(use_polydp, 0.001)
+        if epsilon_factor > 0:
             polydp_contours = []
             for contour in contours:
                 epsilon = epsilon_factor * cv2.arcLength(contour, True)
@@ -1387,8 +1385,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         show_edge = software_cfg.get("show_edge", True)
         self.cfg["software"]["show_edge"] = bool(show_edge)
 
-        use_polydp = software_cfg.get("use_polydp", True)
-        self.cfg["software"]["use_polydp"] = bool(use_polydp)
+        use_polydp = software_cfg.get("use_polydp", 2)
+        # 兼容旧版
+        if isinstance(use_polydp, bool):
+            use_polydp = 2 if use_polydp else 0
+        self.cfg["software"]["use_polydp"] = use_polydp
 
         invisible_polygon = software_cfg.get("create_mode_invisible_polygon", True)
         self.cfg["software"]["create_mode_invisible_polygon"] = bool(invisible_polygon)
@@ -2056,23 +2057,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def approx_polygon_index_changed(self, index):  # 是否使用多边形拟合，来减少多边形顶点
         """Change polygon state. It has an effect when converting sam mask to polygons, can reduce the number of vertices of the polygon."""
-        if index == 0:
-            use_ploydp = "Off"
-        elif index == 1:
-            use_ploydp = "Fine"
-        elif index == 2:
-            use_ploydp = "Standard"
-        elif index == 3:
-            use_ploydp = "Compact"
-        elif index == 4:
-            use_ploydp = "Minimal"
-        else:
-            use_ploydp = "Standard"
-
-        self.cfg["software"]["use_polydp"] = use_ploydp
+        if index not in polydp_epsilon_factor_dict:
+            index = 2
+        self.cfg["software"]["use_polydp"] = index
         self.save_software_cfg()
-        if self.current_index is not None:
-            self.show_image(self.current_index, zoomfit=False)
 
     def change_create_mode_invisible_polygon_state(
         self, check_state: QtCore.Qt.CheckState

@@ -1557,7 +1557,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                     # 添加随鼠标移动的点
                     self.current_graph._add_trailing(pos)
 
-            if self.mode == STATUSMode.REPAINT and self.repaint_line_item is not None:
+            if (self.mode == STATUSMode.REPAINT
+                    and self.repaint_start_vertex is not None
+                    and self.repaint_line_item is not None
+            ):
                 # 移除随鼠标移动的点
                 self.repaint_line_item.removePoint(len(self.repaint_line_item.points) - 1)
                 # 添加当前点

@@ -4,6 +4,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ISAT.ui.category_edit import Ui_Dialog
+from ISAT.widgets.undo_commands import (
+    ShapeStateCommand,
+    _snapshots_match,
+    snapshot_shape,
+)
 
 
 class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
@@ -138,19 +143,45 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
         self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
     def apply(self):
-        """Set attributes of polygon."""
-        for polygon in self.polygons:
-            category = self.lineEdit_category.text() if self.checkBox_category_enabled.isChecked() else polygon.category
-            group = self.spinBox_group.value() if self.checkBox_group_enabled.isChecked() else polygon.group
-            is_crowd = self.checkBox_iscrowded.isChecked() if self.checkBox_iscrowded_enabled.isChecked() else polygon.iscrowd
-            note = self.lineEdit_note.text() if self.checkBox_note_enabled.isChecked() else polygon.note
+        """Set attributes of polygon (undoable).
 
+        先整体解析目标属性并校验，再统一应用；应用时记录每个形状修改前/后的
+        快照，作为一条（或多选时一个 macro 的）撤销步骤。
+        """
+        # 1) 解析目标属性（沿用原有“勾选才生效”的语义）
+        targets = []
+        for polygon in self.polygons:
+            category = (
+                self.lineEdit_category.text()
+                if self.checkBox_category_enabled.isChecked()
+                else polygon.category
+            )
             if not category:
                 QtWidgets.QMessageBox.warning(
                     self, "Warning", "Please select one category before submitting."
                 )
                 return
+            group = (
+                self.spinBox_group.value()
+                if self.checkBox_group_enabled.isChecked()
+                else polygon.group
+            )
+            is_crowd = (
+                self.checkBox_iscrowded.isChecked()
+                if self.checkBox_iscrowded_enabled.isChecked()
+                else polygon.iscrowd
+            )
+            note = (
+                self.lineEdit_note.text()
+                if self.checkBox_note_enabled.isChecked()
+                else polygon.note
+            )
+            targets.append((polygon, category, group, is_crowd, note))
 
+        # 2) 应用，并记录 undo 快照（before 必须在 set_drawed 之前取）
+        changed = []
+        for polygon, category, group, is_crowd, note in targets:
+            before = snapshot_shape(polygon)
             # 设置polygon 属性
             polygon.set_drawed(
                 category,
@@ -159,6 +190,36 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
                 note,
                 QtGui.QColor(self.mainwindow.category_color_dict.get(category, "#6F737A")),
             )
+            after = snapshot_shape(polygon)
+            if (
+                before is not None
+                and after is not None
+                and not _snapshots_match(before, after)
+            ):
+                changed.append((polygon, before, after))
+
+        # 3) 入撤销栈：单个直接 push，多选合成一步
+        if changed:
+            stack = self.mainwindow.undo_stack
+            if len(changed) == 1:
+                polygon, before, after = changed[0]
+                stack.push(
+                    ShapeStateCommand(
+                        self.scene, "Edit attributes", polygon, before, after
+                    )
+                )
+            else:
+                stack.beginMacro("Edit attributes ({} shapes)".format(len(changed)))
+                for polygon, before, after in changed:
+                    stack.push(
+                        ShapeStateCommand(
+                            self.scene, "Edit attributes", polygon, before, after
+                        )
+                    )
+                stack.endMacro()
+
+        # 4) 刷新列表（原来在循环内刷新，多选时是 O(N²)，这里只刷一次）
+        if targets:
             self.mainwindow.annos_dock_widget.update_listwidget()
 
         self.polygons = []

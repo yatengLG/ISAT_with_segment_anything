@@ -28,8 +28,8 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.checkBox_real_time_area.stateChanged.connect(
             self.mainwindow.change_real_time_area_state
         )
-        self.checkBox_approx_polygon.stateChanged.connect(
-            self.mainwindow.change_approx_polygon_state
+        self.comboBox_approx_polygon.currentIndexChanged.connect(
+            self.mainwindow.approx_polygon_index_changed
         )
         self.checkBox_polygon_invisible.stateChanged.connect(
             self.mainwindow.change_create_mode_invisible_polygon_state
@@ -121,7 +121,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         widgets = (
             self.checkBox_auto_save,
             self.checkBox_real_time_area,
-            self.checkBox_approx_polygon,
+            self.comboBox_approx_polygon,
             self.checkBox_polygon_invisible,
             self.checkBox_show_edge,
             self.checkBox_show_prompt,
@@ -139,7 +139,11 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         try:
             self.checkBox_auto_save.setChecked(cfg.get("auto_save", False))
             self.checkBox_real_time_area.setChecked(cfg.get("real_time_area", False))
-            self.checkBox_approx_polygon.setChecked(cfg.get("use_polydp", True))
+            use_polydp = cfg.get("use_polydp", "Standard")
+            # 兼容旧版
+            if isinstance(use_polydp, bool):
+                use_polydp = "Standard" if use_polydp else "Off"
+            self.comboBox_approx_polygon.setCurrentText(use_polydp)
             self.checkBox_polygon_invisible.setChecked(
                 cfg.get("create_mode_invisible_polygon", True)
             )

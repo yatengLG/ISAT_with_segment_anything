@@ -6,11 +6,17 @@ import yaml
 __all__ = [
     "load_config",
     "save_config",
+    "ISAT_ROOT",
+    "CHECKPOINT_PATH",
+    "CONFIG_FILE",
+    "SOFTWARE_CONFIG_FILE",
     "STATUSMode",
     "DRAWMode",
     "MAPMode",
     "CONTOURMode",
+    "CONTOURMethod",
     "ShapeType",
+    "polydp_epsilon_factor_dict",
 ]
 
 ISAT_ROOT = os.path.split(os.path.abspath(__file__))[0]
@@ -122,3 +128,11 @@ class ShapeType(Enum):
     """Free-form polygon annotation."""
     OBB = "obb"
     """Oriented bounding box (4-corner rectangle)."""
+
+
+polydp_epsilon_factor_dict = {
+    "Fine": 0.0001,
+    "Standard": 0.001,
+    "Compact": 0.005,
+    "Minimal": 0.01,
+}

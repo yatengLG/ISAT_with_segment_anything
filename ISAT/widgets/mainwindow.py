@@ -20,7 +20,7 @@ import ISAT.icons_rc
 from ISAT.annotation import Annotation, Object
 from ISAT.configs import (CHECKPOINT_PATH, CONFIG_FILE, ISAT_ROOT,
                           SOFTWARE_CONFIG_FILE, CONTOURMode, MAPMode, CONTOURMethod,
-                          STATUSMode, ShapeType, load_config, save_config)
+                          STATUSMode, ShapeType, load_config, save_config, polydp_epsilon_factor_dict)
 from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
 from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.ui.MainWindow import Ui_MainWindow
@@ -1052,8 +1052,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             contours = [largest_contour]
 
         # polydp
-        if self.cfg["software"]["use_polydp"]:
-            epsilon_factor = 0.001
+        use_polydp = self.cfg["software"].get("use_polydp", "Standard")
+        # 兼容旧版
+        if isinstance(use_polydp, bool):
+            use_polydp = "Standard" if use_polydp else "Off"
+        if use_polydp != "Off":
+            epsilon_factor = polydp_epsilon_factor_dict[use_polydp]
             polydp_contours = []
             for contour in contours:
                 epsilon = epsilon_factor * cv2.arcLength(contour, True)
@@ -2050,12 +2054,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
 
-    def change_approx_polygon_state(
-        self, check_state: QtCore.Qt.CheckState
-    ):  # 是否使用多边形拟合，来减少多边形顶点
+    def approx_polygon_index_changed(self, index):  # 是否使用多边形拟合，来减少多边形顶点
         """Change polygon state. It has an effect when converting sam mask to polygons, can reduce the number of vertices of the polygon."""
-        checked = check_state == QtCore.Qt.CheckState.Checked
-        self.cfg["software"]["use_polydp"] = checked
+        if index == 0:
+            use_ploydp = "Off"
+        elif index == 1:
+            use_ploydp = "Fine"
+        elif index == 2:
+            use_ploydp = "Standard"
+        elif index == 3:
+            use_ploydp = "Compact"
+        elif index == 4:
+            use_ploydp = "Minimal"
+        else:
+            use_ploydp = "Standard"
+
+        self.cfg["software"]["use_polydp"] = use_ploydp
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)

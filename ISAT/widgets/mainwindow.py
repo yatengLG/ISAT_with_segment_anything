@@ -1793,6 +1793,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if 0 <= index < len(self.files_list):
                 self.show_image(index)
                 self.files_dock_widget.lineEdit_jump.clear()
+                self.files_dock_widget.lineEdit_jump.clearFocus()
             else:
                 QtWidgets.QMessageBox.warning(
                     self,
@@ -1800,7 +1801,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     "Index must be in [1, {}].".format(len(self.files_list)),
                 )
                 self.files_dock_widget.lineEdit_jump.clear()
-                self.files_dock_widget.lineEdit_jump.clearFocus()
                 return
 
     def category_setting(self):

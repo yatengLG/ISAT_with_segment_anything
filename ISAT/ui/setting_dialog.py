@@ -192,7 +192,7 @@ class Ui_Dialog(object):
         self.horizontalSlider_vertex_size.setMinimumSize(QtCore.QSize(200, 0))
         self.horizontalSlider_vertex_size.setMaximumSize(QtCore.QSize(200, 16777215))
         self.horizontalSlider_vertex_size.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.horizontalSlider_vertex_size.setMaximum(5)
+        self.horizontalSlider_vertex_size.setMaximum(10)
         self.horizontalSlider_vertex_size.setPageStep(1)
         self.horizontalSlider_vertex_size.setTracking(True)
         self.horizontalSlider_vertex_size.setOrientation(QtCore.Qt.Horizontal)

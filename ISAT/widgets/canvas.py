@@ -1523,7 +1523,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             angle_deg -= 360
 
         # 找到最近的45度倍数
-        constrained_angle_deg = round(angle_deg / 45.0) * 45.0
+        constrained_angle_deg = round(angle_deg / 15.0) * 15.0
 
         # 转换回弧度
         constrained_angle_rad = math.radians(constrained_angle_deg)

@@ -30,6 +30,27 @@ from ISAT.widgets.undo_commands import (
 )
 
 
+# ============================================================
+#  OBB 旋转（Alt + 拖动）
+# ============================================================
+
+# 激活旋转的修饰键。Alt 在场景里没有其它用途，不会与
+# Ctrl+点击（多选）、Shift+拖动（约束角度）冲突。
+# 注意：KDE 默认 Alt+拖动 = 移动窗口，Linux 用户若冲突可改这里
+# （例如换成 QtCore.Qt.KeyboardModifier.MetaModifier）。
+OBB_ROTATE_MODIFIER = QtCore.Qt.KeyboardModifier.AltModifier
+# 旋转时按住 Shift 的吸附步长
+OBB_ROTATE_SNAP_STEP = math.radians(15)
+
+
+def _normalize_angle_diff(a: float, b: float) -> float:
+    """Return ``a - b`` wrapped into ``[-π, π]`` (robust across the ±π seam)."""
+    diff = (a - b) % (2 * math.pi)
+    if diff > math.pi:
+        diff -= 2 * math.pi
+    return diff
+
+
 class AnnotationScene(QtWidgets.QGraphicsScene):
     """
     Annotation Scene.
@@ -122,6 +143,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         # 松开时逐个对比，变化的形状合成一步撤销
         self._undo_press_shapes = []
         self._undo_press_snapshots = []
+
+        # OBB 旋转会话（Alt + 拖动）。会话期间由本类独占处理鼠标事件，
+        # 不进入 Qt 的默认（选中/移动/顶点拖动）分支。
+        self._rotate_obb = None  # 被抓住的那个 OBB（提供中心与角度基准）
+        self._rotate_obbs = []  # 一起旋转的 OBB（多选时各绕自身中心）
+        self._rotate_center = None  # 旋转中心（场景坐标）
+        self._rotate_start_angle = 0.0  # 起始角度（第一条边方向）
+        self._rotate_total = 0.0  # 鼠标驱动的累计角度（未吸附）
+        self._rotate_last_mouse_angle = 0.0
+        self._rotate_shift = False  # 上一帧是否按住 Shift
+        self._rotate_changed = False
 
     def load_image(self, image_path: str):
         """
@@ -733,6 +765,105 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if rotated:
             self.mainwindow.set_saved_state(False)
 
+    # ------------------------------------------------------------
+    #  OBB 旋转：Alt + 拖动（各绕自身中心）
+    # ------------------------------------------------------------
+
+    def _try_start_obb_rotate(self, event, pos) -> bool:
+        """Start an Alt+drag rotation session; return True when it took over.
+
+        Grabbing the shape body keeps the target large — no small handle to
+        find.  The session owns the mouse until release, so neither Qt's
+        default move/select handling nor the undo drag-capture runs.
+        """
+        if self.mode not in (STATUSMode.VIEW, STATUSMode.EDIT):
+            return False
+        if event.button() != QtCore.Qt.MouseButton.LeftButton:
+            return False
+        if not (event.modifiers() & OBB_ROTATE_MODIFIER):
+            return False
+        if self.mainwindow.polygon_locked:
+            return False
+
+        item = self.itemAt(pos, QtGui.QTransform())
+        if isinstance(item, OBB):
+            obb = item
+        elif isinstance(item, PolygonVertex) and isinstance(item.parent_shape, OBB):
+            obb = item.parent_shape
+        else:
+            return False
+        if obb.is_drawing or obb not in self.mainwindow.polygons:
+            return False
+
+        # 多选时：抓住的 OBB 若在选中集合内，则整个选中集合一起转
+        # （各自绕自身中心，相对朝向保持不变）
+        targets = [obb]
+        if obb in self.selected_polygons_list:
+            targets += [
+                shape
+                for shape in self.selected_polygons_list
+                if shape is not obb and isinstance(shape, OBB) and not shape.is_drawing
+            ]
+
+        center = obb.mapToScene(obb.center)
+        self._rotate_obb = obb
+        self._rotate_obbs = targets
+        self._rotate_center = center
+        self._rotate_start_angle = obb.angle
+        self._rotate_total = 0.0
+        self._rotate_last_mouse_angle = math.atan2(
+            pos.y() - center.y(), pos.x() - center.x()
+        )
+        self._rotate_shift = False
+        self._rotate_changed = False
+        # 本次按下不参与“移动”的 undo 捕获
+        self._undo_press_shapes = []
+        self._undo_press_snapshots = []
+        event.accept()  # 通知 view 事件已处理，维持鼠标抓取
+        return True
+
+    def _update_obb_rotate(self, event, pos):
+        """Apply one rotation step while dragging (Shift snaps to 15°)."""
+        center = self._rotate_center
+        mouse_angle = math.atan2(pos.y() - center.y(), pos.x() - center.x())
+        increment = _normalize_angle_diff(mouse_angle, self._rotate_last_mouse_angle)
+        self._rotate_last_mouse_angle = mouse_angle
+        self._rotate_total += increment
+
+        shift = bool(event.modifiers() & QtCore.Qt.KeyboardModifier.ShiftModifier)
+        if shift:
+            if not self._rotate_shift:
+                # 刚按下 Shift：以当前实际角度重置累计量，避免跳变
+                self._rotate_total = _normalize_angle_diff(
+                    self._rotate_obb.angle, self._rotate_start_angle
+                )
+            self._rotate_shift = True
+            step = OBB_ROTATE_SNAP_STEP
+            target = (
+                round((self._rotate_start_angle + self._rotate_total) / step) * step
+            )
+            apply = _normalize_angle_diff(target, self._rotate_obb.angle)
+        else:
+            self._rotate_shift = False
+            apply = increment
+
+        if apply:
+            for obb in self._rotate_obbs:
+                obb.rotate(apply)
+            self._rotate_changed = True
+
+    def _finish_obb_rotate(self):
+        """End the rotation session."""
+        if self._rotate_changed:
+            # TODO(3.3): 在此处入撤销栈（按下时存快照，这里 push 一条命令）
+            self.mainwindow.set_saved_state(False)
+        self._rotate_obb = None
+        self._rotate_obbs = []
+        self._rotate_center = None
+        self._rotate_total = 0.0
+        self._rotate_shift = False
+        self._rotate_changed = False
+
     def clear_selection_ui(self):
         """Clear every selection marker (scene items, list, dock highlight)."""
         # 遍历副本：Polygon.itemChange 会从 selected_polygons_list 中移除自身
@@ -1277,6 +1408,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.plugin_manager.trigger_on_mouse_press(pos)
 
+        # OBB 旋转：Alt + 在形状内部拖动。命中整个形状（大目标，无需找小把手），
+        # 会话期间独占鼠标事件，不进入下面的 undo 捕获与 Qt 默认分发。
+        if self._try_start_obb_rotate(event, pos):
+            return
+
         # undo：记录本次按下可能拖动的一组已完成形状（本体或顶点）的 scene 快照。
         # 多选时 Qt 会同时移动所有选中项，因此要按“选中集合”整体记录，
         # 松开时逐个对比，用 macro 合成一步撤销。
@@ -1387,6 +1523,12 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
     def mouseReleaseEvent(self, event: "QtWidgets.QGraphicsSceneMouseEvent"):
         self.pressed = False
 
+        # OBB 旋转会话结束（本次按下没有走 undo 捕获分支）
+        if self._rotate_obb is not None:
+            self._finish_obb_rotate()
+            super(AnnotationScene, self).mouseReleaseEvent(event)
+            return
+
         pos = event.scenePos()
         if pos.x() < 0:
             pos.setX(0)
@@ -1459,6 +1601,11 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if pos.y() > self.height() - 1:
             pos.setY(self.height() - 1)
         # 限制在图片范围内
+
+        # OBB 旋转会话独占鼠标移动
+        if self._rotate_obb is not None:
+            self._update_obb_rotate(event, pos)
+            return
 
         if self.mode == STATUSMode.CREATE:
             if self.draw_mode == DRAWMode.POLYGON:

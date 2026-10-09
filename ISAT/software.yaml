@@ -88,12 +88,6 @@ shortcut:
   actionObb:
     default_key: O
     key: O
-  actionObb_rotate_left:
-    default_key: N
-    key: N
-  actionObb_rotate_right:
-    default_key: M
-    key: M
   actionPolygon:
     default_key: C
     key: C
@@ -112,9 +106,6 @@ shortcut:
   actionScene_shot:
     default_key: P
     key: P
-  actionSegment_anything_box:
-    default_key: W
-    key: W
   actionSegment_anything_point:
     default_key: Q
     key: Q
@@ -174,6 +165,6 @@ software:
   show_edge: true
   show_prompt: true
   use_bfloat16: false
-  use_polydp: true
-  use_video_segmentation: true
-  vertex_size: 1
+  use_polydp: 2
+  use_video_segmentation: false
+  vertex_size: 5

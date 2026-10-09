@@ -154,6 +154,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self._rotate_last_mouse_angle = 0.0
         self._rotate_shift = False  # 上一帧是否按住 Shift
         self._rotate_changed = False
+        self._rotate_undo_before = []  # [(obb, snapshot)] 旋转前快照
 
     def load_image(self, image_path: str):
         """
@@ -221,8 +222,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionObb.setEnabled(False)
-        self.mainwindow.actionObb_rotate_left.setEnabled(False)
-        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
         self.mainwindow.actionFinish.setEnabled(True)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -265,8 +264,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.SeganyEnabled()
         self.mainwindow.actionPolygon.setEnabled(self.mainwindow.can_be_annotated)
         self.mainwindow.actionObb.setEnabled(self.mainwindow.can_be_annotated)
-        self.mainwindow.actionObb_rotate_left.setEnabled(False)
-        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(False)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -317,8 +314,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.actionTo_top.setEnabled(True)
         self.mainwindow.actionTo_bottom.setEnabled(True)
-        self.mainwindow.actionObb_rotate_left.setEnabled(True)
-        self.mainwindow.actionObb_rotate_right.setEnabled(True)
         self.mainwindow.actionEdit.setEnabled(True)
         self.mainwindow.actionCopy.setEnabled(True)
         self.mainwindow.actionUnion.setEnabled(True)
@@ -361,8 +356,6 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mainwindow.actionSegment_anything_box.setEnabled(False)
         self.mainwindow.actionPolygon.setEnabled(False)
         self.mainwindow.actionObb.setEnabled(False)
-        self.mainwindow.actionObb_rotate_left.setEnabled(False)
-        self.mainwindow.actionObb_rotate_right.setEnabled(False)
         self.mainwindow.actionBackspace.setEnabled(True)
         self.mainwindow.actionFinish.setEnabled(False)
         self.mainwindow.actionCancel.setEnabled(True)
@@ -755,15 +748,21 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.update_mask()
 
-    def rotate_selected_obb(self, delta_angle: float):
-        """Rotate all selected OBB shapes by *delta_angle* radians."""
-        rotated = False
-        for item in self.selectedItems():
-            if isinstance(item, OBB):
-                item.rotate(delta_angle)
-                rotated = True
-        if rotated:
-            self.mainwindow.set_saved_state(False)
+    def _push_obb_rotate_commands(self, changed):
+        """Push the result of one rotation gesture.
+
+        One command for a single OBB; a macro when several OBBs were rotated
+        together, so a single Ctrl+Z reverts the whole gesture.
+        """
+        stack = self.mainwindow.undo_stack
+        if len(changed) == 1:
+            obb, before, after = changed[0]
+            stack.push(ShapeStateCommand(self, "Rotate OBB", obb, before, after))
+            return
+        stack.beginMacro("Rotate {} OBBs".format(len(changed)))
+        for obb, before, after in changed:
+            stack.push(ShapeStateCommand(self, "Rotate OBB", obb, before, after))
+        stack.endMacro()
 
     # ------------------------------------------------------------
     #  OBB 旋转：Alt + 拖动（各绕自身中心）
@@ -816,6 +815,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         )
         self._rotate_shift = False
         self._rotate_changed = False
+        # undo：记录本次旋转涉及的全部形状修改前快照（松开时合成一步）
+        self._rotate_undo_before = [
+            (target, snapshot_shape(target)) for target in targets
+        ]
         # 本次按下不参与“移动”的 undo 捕获
         self._undo_press_shapes = []
         self._undo_press_snapshots = []
@@ -853,16 +856,28 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self._rotate_changed = True
 
     def _finish_obb_rotate(self):
-        """End the rotation session."""
+        """End the rotation session and record it as one undo step."""
         if self._rotate_changed:
-            # TODO(3.3): 在此处入撤销栈（按下时存快照，这里 push 一条命令）
-            self.mainwindow.set_saved_state(False)
+            changed = []
+            for obb, before in self._rotate_undo_before:
+                if obb not in self.mainwindow.polygons:
+                    continue
+                after = snapshot_shape(obb)
+                if before is None or after is None:
+                    continue
+                if not _snapshots_match(before, after):
+                    changed.append((obb, before, after))
+            if changed:
+                self.mainwindow.set_saved_state(False)
+                # 一次拖拽 = 一条撤销命令（多选时一个 macro）
+                self._push_obb_rotate_commands(changed)
         self._rotate_obb = None
         self._rotate_obbs = []
         self._rotate_center = None
         self._rotate_total = 0.0
         self._rotate_shift = False
         self._rotate_changed = False
+        self._rotate_undo_before = []
 
     def clear_selection_ui(self):
         """Clear every selection marker (scene items, list, dock highlight)."""

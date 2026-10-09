@@ -30,7 +30,7 @@ class ShortcutDialog(QtWidgets.QDialog, Ui_Dialog):
             self.mainwindow.actionSetting,
             self.mainwindow.actionExit,
             self.mainwindow.actionSegment_anything_point,
-            self.mainwindow.actionSegment_anything_box,
+            # self.mainwindow.actionSegment_anything_box,
             self.mainwindow.actionPolygon,
             self.mainwindow.actionRepaint,
             self.mainwindow.actionVideo_segment,

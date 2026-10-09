@@ -170,13 +170,13 @@
      <string>Edit</string>
     </property>
     <addaction name="actionSegment_anything_point"/>
-    <addaction name="actionSegment_anything_box"/>
     <addaction name="actionPolygon"/>
+    <addaction name="actionObb"/>
     <addaction name="actionRepaint"/>
     <addaction name="separator"/>
-    <addaction name="actionVideo_segment"/>
     <addaction name="actionVideo_segment_once"/>
     <addaction name="actionVideo_segment_five_times"/>
+    <addaction name="actionVideo_segment"/>
     <addaction name="separator"/>
     <addaction name="actionBackspace"/>
     <addaction name="actionFinish"/>
@@ -186,9 +186,9 @@
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
     <addaction name="actionEdit"/>
+    <addaction name="actionCopy"/>
     <addaction name="actionDelete"/>
     <addaction name="actionSave"/>
-    <addaction name="actionCopy"/>
     <addaction name="separator"/>
     <addaction name="actionTo_top"/>
     <addaction name="actionTo_bottom"/>
@@ -250,14 +250,11 @@
    <addaction name="actionNext_image"/>
    <addaction name="separator"/>
    <addaction name="actionSegment_anything_point"/>
-   <addaction name="actionSegment_anything_box"/>
    <addaction name="separator"/>
    <addaction name="actionPolygon"/>
+   <addaction name="actionObb"/>
    <addaction name="actionRepaint"/>
    <addaction name="separator"/>
-   <addaction name="actionObb"/>
-   <addaction name="actionObb_rotate_right"/>
-   <addaction name="actionObb_rotate_left"/>
    <addaction name="separator"/>
    <addaction name="actionVideo_segment_once"/>
    <addaction name="actionVideo_segment_five_times"/>
@@ -272,8 +269,8 @@
    <addaction name="separator"/>
    <addaction name="actionEdit"/>
    <addaction name="actionCopy"/>
-   <addaction name="actionSave"/>
    <addaction name="actionDelete"/>
+   <addaction name="actionSave"/>
    <addaction name="separator"/>
    <addaction name="actionTo_top"/>
    <addaction name="actionTo_bottom"/>
@@ -939,9 +936,6 @@
    <property name="statusTip">
     <string>Quick annotate using Segment anything.</string>
    </property>
-   <property name="shortcut">
-    <string>W</string>
-   </property>
   </action>
   <action name="actionPrev_group">
    <property name="icon">
@@ -1066,24 +1060,6 @@
    </property>
    <property name="text">
     <string>Obb</string>
-   </property>
-  </action>
-  <action name="actionObb_rotate_left">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/旋转框左旋_obb-rotate-left.svg</normaloff>:/icon/icons/旋转框左旋_obb-rotate-left.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Obb rotate left</string>
-   </property>
-  </action>
-  <action name="actionObb_rotate_right">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icon/icons/旋转框右旋_obb-rotate-right.svg</normaloff>:/icon/icons/旋转框右旋_obb-rotate-right.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Obb rotate right</string>
    </property>
   </action>
   <action name="actionAnnotation_data_tools">

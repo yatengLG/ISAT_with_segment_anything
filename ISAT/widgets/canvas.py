@@ -1104,6 +1104,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             QtWidgets.QMessageBox.warning(
                 self.mainwindow, "Warning", "Polygon warning: {}".format(e)
             )
+            self.change_mode_to_view()
             return
 
         # 将 shapely 结果统一转换为多边形列表
@@ -1145,6 +1146,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.selected_polygons_list.clear()
 
         self.mainwindow.annos_dock_widget.update_listwidget()
+        self.change_mode_to_view()
 
     def polygons_union(self):
         """Union. Only support two polygons. Always use the attributes of the first polygon."""

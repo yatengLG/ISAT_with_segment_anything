@@ -190,16 +190,40 @@ class BaseVertex(QtWidgets.QGraphicsPathItem):
         return super().itemChange(change, value)
 
     def _clamp_to_scene(self, value):
-        """Constrain the vertex position to lie within the scene bounds."""
+        """Constrain the vertex position to lie within the scene bounds.
+
+        Two cases bypass the clamp entirely:
+
+        * **loading from disk** (``parent_shape._loading``) — an annotation
+          stored with out-of-image corners must survive a save/load round-trip
+          instead of being silently pulled back inside the image;
+        * **OBB corners** while the ``obb_can_be_out_of_image`` software option
+          is enabled — the user explicitly allows OBBs to leave the image.
+
+        Interactive dragging of polygon vertices is still clamped.
+        """
+        scene = self.scene()
+        if scene is None or getattr(self.parent_shape, "_loading", False):
+            return value
+        if self._may_leave_image():
+            return value
         if value.x() < 0:
             value.setX(0)
-        if value.x() > self.scene().width() - 1:
-            value.setX(self.scene().width() - 1)
+        if value.x() > scene.width() - 1:
+            value.setX(scene.width() - 1)
         if value.y() < 0:
             value.setY(0)
-        if value.y() > self.scene().height() - 1:
-            value.setY(self.scene().height() - 1)
+        if value.y() > scene.height() - 1:
+            value.setY(scene.height() - 1)
         return value
+
+    def _may_leave_image(self) -> bool:
+        """True when this vertex is allowed outside the image bounds.
+
+        Delegates to the owning shape so dragging and whole-shape moving share
+        one policy (see :meth:`BaseShape.may_leave_image`).
+        """
+        return bool(self.parent_shape.may_leave_image())
 
 
 class PolygonVertex(BaseVertex):
@@ -306,6 +330,15 @@ class BaseShape:
 
     def _on_point_moved(self, index: int, point: QtCore.QPointF):
         """Hook after ``movePoint``; subclasses may override (no-op by default)."""
+
+    def may_leave_image(self) -> bool:
+        """True when this shape may be dragged / moved outside the image.
+
+        Default is False: whole-shape moves "stick" at the image border and
+        vertex drags are clamped.  :class:`OBB` overrides this to follow the
+        ``obb_can_be_out_of_image`` software option.
+        """
+        return False
 
     def removePoint(self, index):
         """Remove the *index*-th point and its vertex.  Returns the removed point."""
@@ -527,11 +560,20 @@ class Polygon(QtWidgets.QGraphicsPolygonItem, BaseShape):
         return abs(area) / 2
 
     def load_object(self, obj):
-        """Load attributes from an Annotation Object."""
-        segmentation = obj.segmentation
-        for x, y in segmentation:
-            point = QtCore.QPointF(x, y)
-            self.addPoint(point)
+        """Load attributes from an Annotation Object.
+
+        ``_loading`` is set while the stored points are replayed so that
+        :meth:`BaseVertex._clamp_to_scene` does not pull out-of-image points
+        back inside — a saved annotation must reload unchanged.
+        """
+        self._loading = True
+        try:
+            segmentation = obj.segmentation
+            for x, y in segmentation:
+                point = QtCore.QPointF(x, y)
+                self.addPoint(point)
+        finally:
+            self._loading = False
         color = self.scene().mainwindow.category_color_dict.get(obj.category, "#6F737A")
         self.set_drawed(
             obj.category,
@@ -732,17 +774,23 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
     #  出图检测：移动 / 旋转 / 拖顶点后检查 OBB 是否超出图像，出图则高亮边框
     # ------------------------------------------------------------------
 
-    def _check_bounds(self):
+    def _check_bounds(self, position: QtCore.QPointF = None):
         """Update the out-of-image state and highlight the border if needed.
 
         Called after whole-shape move, rotation or vertex drag; restores the
         normal border once the shape is back inside the image.
+
+        ``position`` overrides the item position used for the test.  Inside
+        ``itemChange(ItemPositionChange)`` Qt has **not** applied the new
+        position yet — ``self.pos()`` still returns the previous one — so the
+        caller passes the incoming ``value`` and the red dashed hint appears on
+        the very same event instead of lagging one move behind.
         """
         if len(self.points) < 4 or self.scene() is None:
             return
         w = self.scene().width()
         h = self.scene().height()
-        pos = self.pos()
+        pos = self.pos() if position is None else position
         out = False
         for p in self.points:
             x, y = p.x() + pos.x(), p.y() + pos.y()
@@ -837,6 +885,21 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
         ):
             self.scene().mainwindow.set_saved_state(False)
 
+    def may_leave_image(self) -> bool:
+        """Follow the ``obb_can_be_out_of_image`` software option.
+
+        When enabled, OBB corners may be dragged outside the image and
+        whole-shape moves are no longer stopped at the border.
+        """
+        scene = self.scene()
+        if scene is None:
+            return False
+        mainwindow = getattr(scene, "mainwindow", None)
+        if mainwindow is None:
+            return False
+        software = mainwindow.cfg.get("software", {})
+        return bool(software.get("obb_can_be_out_of_image", False))
+
     def itemChange(
         self, change: "QGraphicsItem.GraphicsItemChange", value: typing.Any
     ):
@@ -864,25 +927,30 @@ class OBB(QtWidgets.QGraphicsPolygonItem, BaseShape):
                 value = QtCore.QPointF(0, 0)
             else:
                 bias = value
-                l, t, b, r = (
-                    self.boundingRect().left(),
-                    self.boundingRect().top(),
-                    self.boundingRect().bottom(),
-                    self.boundingRect().right(),
-                )
-                if l + bias.x() < 0:
-                    bias.setX(-l)
-                if r + bias.x() > self.scene().width() - 1:
-                    bias.setX(self.scene().width() - 1 - r)
-                if t + bias.y() < 0:
-                    bias.setY(-t)
-                if b + bias.y() > self.scene().height() - 1:
-                    bias.setY(self.scene().height() - 1 - b)
+                # 默认把位移压到"包围盒刚好贴边"（顶住，不允许出图）；
+                # 打开 obb_can_be_out_of_image 后 OBB 可以直接移出图像。
+                if not self.may_leave_image():
+                    l, t, b, r = (
+                        self.boundingRect().left(),
+                        self.boundingRect().top(),
+                        self.boundingRect().bottom(),
+                        self.boundingRect().right(),
+                    )
+                    if l + bias.x() < 0:
+                        bias.setX(-l)
+                    if r + bias.x() > self.scene().width() - 1:
+                        bias.setX(self.scene().width() - 1 - r)
+                    if t + bias.y() < 0:
+                        bias.setY(-t)
+                    if b + bias.y() > self.scene().height() - 1:
+                        bias.setY(self.scene().height() - 1 - b)
 
                 for index, point in enumerate(self.points):
                     self.moveVertex(index, point + bias)
 
-                self._check_bounds()
+                # bias 与 value 是同一个对象：顶住时已被就地钳制，
+                # 所以这里传 value 就是本次移动的最终位置。
+                self._check_bounds(value)
                 if self.scene().mainwindow.load_finished:
                     self.scene().mainwindow.set_saved_state(False)
 

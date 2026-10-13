@@ -45,6 +45,10 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
         self.checkBox_use_video_segmentation.stateChanged.connect(
             self.mainwindow.change_use_video_segmentation_state
         )
+        self.checkBox_obb_can_out_of_image.stateChanged.connect(
+            self.mainwindow.change_obb_can_be_out_of_image_state
+        )
+
         # 滑块：先更新自身标签，再通知 mainwindow 应用（mainwindow 不再回写本对话框）
         self.horizontalSlider_mask_alpha.valueChanged.connect(
             self._mask_alpha_changed
@@ -128,6 +132,7 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
             self.checkBox_show_prompt,
             self.checkBox_use_bfloat16,
             self.checkBox_use_video_segmentation,
+            self.checkBox_obb_can_out_of_image,
             self.horizontalSlider_mask_alpha,
             self.horizontalSlider_polygon_alpha_hover,
             self.horizontalSlider_polygon_alpha_no_hover,
@@ -151,12 +156,10 @@ class SettingDialog(QtWidgets.QDialog, Ui_Dialog):
             )
             self.checkBox_show_edge.setChecked(cfg.get("show_edge", True))
             self.checkBox_show_prompt.setChecked(cfg.get("show_prompt", False))
-
             self.checkBox_use_bfloat16.setChecked(cfg.get("use_bfloat16", False))
             self.checkBox_use_bfloat16.setEnabled(torch.cuda.is_available())
-            self.checkBox_use_video_segmentation.setChecked(
-                cfg.get("use_video_segmentation", True)
-            )
+            self.checkBox_use_video_segmentation.setChecked(cfg.get("use_video_segmentation", True))
+            self.checkBox_obb_can_out_of_image.setChecked(cfg.get("obb_can_be_out_of_image", False))
 
             mask_alpha = cfg.get("mask_alpha", 0.5)
             self.horizontalSlider_mask_alpha.setValue(int(mask_alpha * 10))

@@ -1384,6 +1384,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         show_edge = software_cfg.get("show_edge", True)
         self.cfg["software"]["show_edge"] = bool(show_edge)
 
+        # 是否允许 OBB 拖出图像边界（默认不允许，与旧行为一致）
+        obb_out_of_image = software_cfg.get("obb_can_be_out_of_image", False)
+        self.cfg["software"]["obb_can_be_out_of_image"] = bool(obb_out_of_image)
+
         use_polydp = software_cfg.get("use_polydp", 2)
         # 兼容旧版
         if isinstance(use_polydp, bool):
@@ -2053,6 +2057,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_software_cfg()
         if self.current_index is not None:
             self.show_image(self.current_index, zoomfit=False)
+
+    def change_obb_can_be_out_of_image_state(
+        self, check_state: QtCore.Qt.CheckState
+    ):
+        """Allow OBB corners to be dragged outside the image bounds.
+
+        Only affects interactive vertex dragging; the flag is read by
+        ``BaseVertex._may_leave_image``.  Rotating or moving a shape could
+        already push it out of the image before this option existed, which is
+        reported by the red dashed border and the annotation validator.
+        """
+        checked = check_state == QtCore.Qt.CheckState.Checked
+        self.cfg["software"]["obb_can_be_out_of_image"] = checked
+        self.save_software_cfg()
 
     def approx_polygon_index_changed(self, index):  # 是否使用多边形拟合，来减少多边形顶点
         """Change polygon state. It has an effect when converting sam mask to polygons, can reduce the number of vertices of the polygon."""

@@ -51,6 +51,15 @@ def _normalize_angle_diff(a: float, b: float) -> float:
     return diff
 
 
+# shapely 方法名 -> 撤销历史里显示的操作名
+BOOL_OP_TEXTS = {
+    "union": "Union",
+    "difference": "Subtract",
+    "intersection": "Intersect",
+    "symmetric_difference": "Exclude",
+}
+
+
 class AnnotationScene(QtWidgets.QGraphicsScene):
     """
     Annotation Scene.
@@ -1107,6 +1116,10 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             self.change_mode_to_view()
             return
 
+        # undo：布尔运算会删除 2 个形状，并可能新增多个（差集/异或可能得到
+        # MultiPolygon），个数与顺序都会变，因此用全场景有序快照记录。
+        undo_before = snapshot_all_shapes(self)
+
         # 将 shapely 结果统一转换为多边形列表
         if isinstance(result, shapely.Polygon):
             geoms = [result]
@@ -1147,6 +1160,20 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
         self.mainwindow.annos_dock_widget.update_listwidget()
         self.change_mode_to_view()
+
+        # undo：整步记一条命令（形状个数与顺序都会变）
+        undo_after = snapshot_all_shapes(self)
+        if not _scene_snapshots_match(undo_before, undo_after):
+            self.mainwindow.undo_stack.push(
+                SceneStateCommand(
+                    self,
+                    "Boolean {}".format(
+                        BOOL_OP_TEXTS.get(method_name, method_name)
+                    ),
+                    undo_before,
+                    undo_after,
+                )
+            )
 
     def polygons_union(self):
         """Union. Only support two polygons. Always use the attributes of the first polygon."""

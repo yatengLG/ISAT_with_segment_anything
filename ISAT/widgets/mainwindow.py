@@ -1469,6 +1469,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not is_saved:
             self.plugin_manager.trigger_after_annotation_changed()
 
+    def on_undo_stack_clean_changed(self, clean: bool):
+        """Link the undo stack's clean state to the "modified" indicator.
+
+        Undoing back to (or redoing forward to) the position of the last save
+        clears the ``*`` title marker, so switching images no longer asks
+        "Proceed without saved?" when nothing is actually unsaved.
+
+        Only the *clean* transition is handled: every edit path already marks
+        the annotation dirty explicitly, and doing it here as well would fire
+        the auto-save/plugin hooks twice and fight the
+        ``save() -> setClean()`` ordering.
+        """
+        if clean and not self.saved:
+            self.set_saved_state(True)
+
     def open_dir(self):
         """
         Open image root. Update file list and show the first image.
@@ -1561,6 +1576,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # 保存标注文件的同时保存一份isat配置文件
         self.save_cfg(os.path.join(self.label_root, "isat.yaml"))
         self.set_saved_state(True)
+        # 把当前撤销栈位置标记为"已保存点"：之后撤销回到这里时，
+        # cleanChanged 会清掉标题的 * 标记（见 on_undo_stack_clean_changed）。
+        self.undo_stack.setClean()
 
         self.plugin_manager.trigger_after_annotations_saved()
 
@@ -2389,6 +2407,8 @@ Categories=Development;System;
         # enable 状态同步
         self.undo_stack.canUndoChanged.connect(self.actionUndo.setEnabled)
         self.undo_stack.canRedoChanged.connect(self.actionRedo.setEnabled)
+        # 撤销回到上次保存点时清除"未保存"标记
+        self.undo_stack.cleanChanged.connect(self.on_undo_stack_clean_changed)
         self.actionUndo.setEnabled(self.undo_stack.canUndo())
         self.actionRedo.setEnabled(self.undo_stack.canRedo())
 

@@ -98,27 +98,45 @@ class CategoryEditDialog(QtWidgets.QDialog, Ui_Dialog):
             self.checkBox_iscrowded_enabled.setChecked(False)
 
         elif len(self.polygons) == 1:
-            self.lineEdit_category.setText("{}".format(self.polygons[0].category))
+            polygon = self.polygons[0]
+            self.lineEdit_category.setText("{}".format(polygon.category))
             self.lineEdit_category.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.spinBox_group.setValue(self.polygons[0].group)
+            # group 可能是浮点（如 1.0）或 None，而 QSpinBox.setValue 只接受 int
+            group = polygon.group
+            try:
+                group = int(group)
+            except (TypeError, ValueError):
+                group = 0
+            self.spinBox_group.setValue(group)
             iscrowd = (
                 QtCore.Qt.CheckState.Checked
-                if self.polygons[0].iscrowd
+                if polygon.iscrowd
                 else QtCore.Qt.CheckState.Unchecked
             )
             self.checkBox_iscrowded.setCheckState(iscrowd)
-            self.lineEdit_note.setText("{}".format(self.polygons[0].note))
-            self.label_layer.setText("{}".format(self.polygons[0].zValue()))
-            self.label_area.setText(
-                "{:.0f}{}".format(
-                    self.polygons[0].area,
-                    (
-                        ""
-                        if self.mainwindow.cfg["software"]["real_time_area"]
-                        else "(no real time)"
-                    ),
+            # note 可能是 null，直接格式化会显示字符串 "None"
+            self.lineEdit_note.setText("{}".format(polygon.note or ""))
+            # layer 在 json 与 Qt 里都是浮点（如 1.0），整数时按整数显示
+            layer = polygon.zValue()
+            if isinstance(layer, float) and layer.is_integer():
+                layer = int(layer)
+            self.label_layer.setText("{}".format(layer))
+            # 由转换脚本生成的数据通常没有 area（COCO 的 area 是组面积，
+            # 转换器不照抄），此处只做显示兜底，不修改 polygon.area
+            area = polygon.area
+            if area is None:
+                self.label_area.setText("")
+            else:
+                self.label_area.setText(
+                    "{:.0f}{}".format(
+                        area,
+                        (
+                            ""
+                            if self.mainwindow.cfg["software"]["real_time_area"]
+                            else "(no real time)"
+                        ),
+                    )
                 )
-            )
 
             self.checkBox_category_enabled.setChecked(True)
             self.checkBox_group_enabled.setChecked(True)

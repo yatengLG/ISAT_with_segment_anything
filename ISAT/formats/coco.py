@@ -68,12 +68,16 @@ class COCO(ISAT):
                     "area", None
                 )  # coco中，area是组面积，isat中是单个polygon面积
                 iscrowd = anno_coco.get("iscrowd", False)
+                # COCO 的 iscrowd 是整数 0/1（不是 JSON 布尔）。必须先转成 bool：
+                # 用 `is False` / `is True` 做身份比较时，整数 0/1 两个分支都不成立，
+                # 会一条标注都不产出（6c7fea0 引入的回归，之前是 == 0 / == 1）。
+                iscrowd = bool(iscrowd)
                 image_id = anno_coco.get("image_id", None)
                 bbox = anno_coco.get("bbox", [])
                 category_id = anno_coco.get("category_id", None)
                 id = anno_coco.get("id", None)
 
-                if iscrowd is False:
+                if not iscrowd:
                     # polygon
                     for segmentation in segmentations:
                         xs = segmentation[::2]
@@ -94,7 +98,7 @@ class COCO(ISAT):
 
                         objs.append(obj)
 
-                elif iscrowd is True and self.keep_crowd:
+                elif self.keep_crowd:
                     if isinstance(segmentations, dict) and "counts" in segmentations:
                         # RLE
                         rles = mscoco_mask.frPyObjects(segmentations, height, width)

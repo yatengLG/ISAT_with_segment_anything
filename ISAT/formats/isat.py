@@ -4,7 +4,7 @@
 import os
 from json import dump, load
 from typing import Dict, Tuple
-
+from ISAT.utils.check import calculate_area
 import imgviz
 import tqdm
 import yaml
@@ -197,6 +197,8 @@ class ISAT:
                 iscrowd = obj.get("iscrowd", False)
                 note = obj.get("note", "")
                 area = obj.get("area", 0)
+                if area is None:
+                    area = calculate_area(segmentation)
                 layer = obj.get("layer", 2)
                 bbox = obj.get("bbox", [])
                 shape_type = obj.get("shape_type", "polygon")

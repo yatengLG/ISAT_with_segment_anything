@@ -277,6 +277,16 @@ class AnnosDockWidget(QtWidgets.QWidget, Ui_Form):
                 if polygon.isSelected():
                     polygon.setSelected(False)
 
+        # 上面的启用判断发生在同步场景选中状态之前，读到的是滞后的
+        # selected_polygons_list：在列表中正好选中两个形状时，并、差、交、异或
+        # 可能被错误地禁用。这里根据同步后的选中状态重新判断。
+        if have_selected:
+            picked = [p for p in self.mainwindow.polygons if p.isSelected()]
+            two = len(picked) == 2 and not any(isinstance(p, OBB) for p in picked)
+            for action in (self.mainwindow.actionUnion, self.mainwindow.actionSubtract,
+                           self.mainwindow.actionIntersect, self.mainwindow.actionExclude):
+                action.setEnabled(two)
+
     def set_polygon_show(self, polygon: Polygon):
         """
         Set polygon visible.

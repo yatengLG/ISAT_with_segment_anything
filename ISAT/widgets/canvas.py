@@ -1080,7 +1080,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
     def _polygon_bool_op(self, method_name: str):
         """通用多边形布尔操作。仅支持两个多边形，始终使用第一个多边形的属性。"""
+        # selected_polygons_list 在每次选中状态变化时追加，可能滞后或重复；
+        # 以场景中真正处于选中状态的形状为准，并保留原列表顺序（决定"第一个多边形"）。
+        picked = [p for p in self.mainwindow.polygons if p.isSelected()]
+        if len(picked) == 2:
+            order = [p for p in dict.fromkeys(self.selected_polygons_list) if p in picked]
+            self.selected_polygons_list = order + [p for p in picked if p not in order]
         if len(self.selected_polygons_list) != 2:
+            self.mainwindow.statusbar.showMessage(
+                "Select exactly two shapes (now {}).".format(len(picked)), 5000)
             return
 
         # OBB 不参与布尔运算（结果无法保持矩形约束）
@@ -1100,6 +1108,23 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         layer = poly0.zValue()
         color = poly0.color
 
+        def _polygonal(geom):
+            # 只保留结果中的面状部分。自相交或退化（面积近零）的轮廓会让 shapely
+            # 返回 GeometryCollection（含线、点），此前这种情况会把两个输入都删掉。
+            if geom is None or geom.is_empty:
+                return None
+            if isinstance(geom, (shapely.Polygon, shapely.MultiPolygon)):
+                parts = [geom]
+            elif hasattr(geom, "geoms"):
+                parts = [g for g in geom.geoms
+                         if isinstance(g, (shapely.Polygon, shapely.MultiPolygon))]
+            else:
+                parts = []
+            parts = [p for p in parts if not p.is_empty and p.area >= 1.0]
+            if not parts:
+                return None
+            return parts[0] if len(parts) == 1 else shapely.unary_union(parts)
+
         try:
             polygon1_shapely = shapely.Polygon(
                 [(point.x(), point.y()) for point in poly0.vertices]
@@ -1108,7 +1133,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
                 [(point.x(), point.y())
                  for point in self.selected_polygons_list[1].vertices]
             )
-            result = getattr(polygon1_shapely, method_name)(polygon2_shapely)
+            # 手画或编辑过的轮廓可能自相交，先修复，否则 GEOS 会报错或返回非面结果。
+            polygon1_shapely = _polygonal(shapely.make_valid(polygon1_shapely))
+            polygon2_shapely = _polygonal(shapely.make_valid(polygon2_shapely))
+            if polygon1_shapely is None or polygon2_shapely is None:
+                self.mainwindow.statusbar.showMessage(
+                    "One of the two shapes has no area; nothing changed.", 5000)
+                self.change_mode_to_view()
+                return
+            result = _polygonal(getattr(polygon1_shapely, method_name)(polygon2_shapely))
         except Exception as e:
             QtWidgets.QMessageBox.warning(
                 self.mainwindow, "Warning", "Polygon warning: {}".format(e)
@@ -1127,6 +1160,15 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             geoms = list(result.geoms)
         else:
             geoms = []
+        geoms = [g for g in geoms if not g.is_empty and len(g.exterior.coords) >= 4]
+
+        # 只有在运算确实得到了形状时才删除两个输入，否则保持原样。
+        if not geoms:
+            self.mainwindow.statusbar.showMessage(
+                "{}: the result has no area; nothing changed.".format(
+                    BOOL_OP_TEXTS.get(method_name, method_name)), 5000)
+            self.change_mode_to_view()
+            return
 
         for geom in geoms:
             if self.current_graph is None:
